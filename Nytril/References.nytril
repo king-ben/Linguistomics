@@ -303,8 +303,6 @@ readonly namespace<PersonClass> People {
 readonly namespace<OrganizationClass> Organizations {
   AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press");
 
-  Wikipedia = new(#91ad9fc1-65a7-4d76-9411-19d5d2e0c1fe#, "Wikipedia");
-
   InternationalPhoneticAlphabet = new(#b825acb6-e103-49b7-96b8-d7183d0223ff#, "InternationalPhoneticAlphabet.org");
 
   ASJP = new(#b1147318-10aa-4a99-a3b0-1d4ebb69df1d#, "ASJP");
@@ -343,10 +341,6 @@ readonly namespace<OrganizationClass> Organizations {
 
   UCBIntegrativeBiology = new(#214a2b7c-8d26-49dd-855a-a90f47035356#, "Department of Integrative Biology") {
     DepartmentLink to UCB;
-  };
-
-  NytrilLLC =  new(#d61d8a42-0321-444c-bbf7-5d8363ff0269#, "Nytril LLC") {
-    StreetAddress("2904 Horsehead Bay Dr. NW", new CityClass(#05484dff-bfba-4bea-89f1-ddfe0eaa8e9e#, "Gig Harbor") {Link to USStates.Washington}, "98335");
   };
 
   PlanckInstitute = new(#61c1f544-7067-42d5-aeb4-d6c3474c6bd3#, "Max Planck Institute for the Science of Human History");
@@ -414,18 +408,14 @@ readonly namespace<OrganizationClass> Organizations {
   MachineLearning = new(#16f8bccc-776c-4fa9-9127-7938f4bf93e5#, "Machine Learning");
   ModelesLinguistiques = new(#1519533d-5a52-465b-a8c3-e74e766cc9b4#, "Modéles linguistiques");
   MolBioEvo = new(#d87e27f8-fd0d-447d-a99f-72d650b2b38a#, "Molecular Biology and Evolution");
-  Nature = new(#f6b2ff41-58c5-466d-908d-b87a42a05cb4#, "Nature");
   NatureReviewsGenetics = new(#504ce20f-7e63-4b12-b6ea-83ffdb277e40#, "Nature Reviews Genetics");
   Phonology = new(#a8d7c34d-9b50-4247-9626-616b29db249a#, "Phonology");
-  PlosOne = new(#95ae8b30-d1dd-4bac-a443-755163e06624#, "PLoS ONE");
-  PNAS = new(#2be60534-bb9c-45d7-86df-1856b38160fa#, "Proceedings of the National Academy of Sciences, U.S.A.");
   ProceedingsRoyalSocietyB = new(#c1263f01-ce2b-40c4-97a3-1e22a7571ce3#, "Proceedings of the Royal Society B");
   ProceedingsAmPhilSoc = new(#487324cb-f877-413d-b8ec-dad3eecd74dc#, "Proceedings of the American Philosophical Society");
   PsychonomicBulletinAndReview = new(#0e811652-e183-49f3-a74e-da2fd87cefc1#, "Psychonomic Bulletin & Review");
   RevueDeLinguistiqueRomane = new(#a1669d89-ddcf-4eb8-9e58-a5f6036ef41a#, "Revue de linguistique romane");
   LeFrançaisModerne = new(#638e1adf-418b-4d97-b518-045603375fa9#, "Le Français Moderne - Revue de linguistique Française");
   RomancePhilology = new(#27f6ad04-5e4c-48bc-8ba3-512c12334643#, "Romance Philology");
-  Science = new(#78c1a35e-b3e7-447f-985c-e24c76c5e962#, "Science");
   SystematicBiology = new(#6d87c032-db7d-40dc-841e-f2667e2e3836#, "Systematic Biology");
   TheAnnalsOfMathematicalStatistics = new(#faa5265f-0f19-4bc9-8f06-81cf1efd7570#, "The Annals of Mathematical Statistics");
   TransactionsPhilologicalSociety = new(#b7c81d38-4bbc-4156-b021-943cd5fba900#, "Transactions of the Philological Society");
@@ -435,12 +425,6 @@ readonly namespace<OrganizationClass> Organizations {
 
 
   // publishers
-  Rothe = new(#9057e148-cef3-48c8-8626-ed0c3d1f4e8e#, "Rothe");
-  AcademicPress = new(#1c5fc589-4924-4ffa-9b8d-430c03fbb00a#, "Academic Press");
-  SpringerVerlag = new(#0bfff7d9-371f-484b-b9ab-fb2a63123a1e#, "Springer Verlag");
-  Elsevier = new(#41883d93-b1b1-4c2b-a8d1-de4462846b99#, "Elsevier") {
-    Link to Cities.NewYork;
-  };
   LINCOM = new(#cdbac7cc-d315-4dc4-80c5-a62a33581d1c#, "LINCOM") {
     Link to Cities.Munich;
   };
@@ -1374,7 +1358,7 @@ readonly namespace<ReferenceClass> References {
     Link to WorldLanguages.Spanish;
   };
 
-   Stefenelli1992 = new(#b4fb845d-509b-4d55-8104-eea5b45ced3d#, Book) {
+  Stefenelli1992 = new(#b4fb845d-509b-4d55-8104-eea5b45ced3d#, Book) {
     Title: "Das Schicksal des lateinischen Wortschatzes in den romanischen Sprachen";
     Date : #1992#;
     AuthorLink to People.Stefenelli_Arnulf;

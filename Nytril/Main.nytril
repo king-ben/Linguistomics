@@ -69,7 +69,7 @@ class JOLEStyleClass: OUPStyleClass {
 
 class OtherStyleClass: PNASStyleClass {
   Constructor {
-    super.Constructor(TemplateOptions.LineNumbers | TemplateOptions.TwoColumn);
+    super.Constructor("PNAS", TemplateOptions.LineNumbers | TemplateOptions.TwoColumn);
     TexPackages.AddEach(["jabbrv", "fontspec", "noto", "xspace"]);
   }
 
