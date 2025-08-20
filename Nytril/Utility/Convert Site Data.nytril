@@ -89,8 +89,10 @@ class Convertlass {
 
       Span {
         "namespace ";
-        TextCase: TextCases.FirstUpper;
-        c.Name;
+        Span {
+          TextCase: TextCases.FirstUpper;
+          c.Name;
+        };
         " {";
       };
       "  Confidence = 10;";
@@ -114,7 +116,6 @@ class Convertlass {
           Span {
             Span {
               TextColor: Colors.DarkRed;
-              TextFamily: TextFamilies.LinuxLibertineO;
               w.Text;
             };
             "\";";
