@@ -10,7 +10,7 @@ class EulerDiagramClass {
   EX(x)      = ChartSize * x * 0.01;
   EY(y)      = ChartSize * y * 0.01;
 
-  Enclosure(x, y, w, h, ColorClass color) = Canvas(EX(w), EY(h), 1 pt) {
+  Enclosure(x, y, w, h, Color color) = Canvas(EX(w), EY(h), 1 pt) {
     BorderRadius: 6 pts;
     Background: color;
     X: EX(x);
@@ -18,7 +18,7 @@ class EulerDiagramClass {
   };
 
   NameBox(name, angle=0) = HBox {
-    Transform: TransformClass.Rotate(angle);
+    Transform: Transform.Rotate(angle);
     TransformFit: true;
     Paragraph {
       TitleStyle;
@@ -28,7 +28,7 @@ class EulerDiagramClass {
     };
   };
 
-  VNameFrame(name, x, y, width, height, ColorClass color) = Enclosure(x, y, width, height, color) {
+  VNameFrame(name, x, y, width, height, Color color) = Enclosure(x, y, width, height, color) {
     VAlign: VAligns.Center;
     NameBox(name, 90 degrees)
   };
@@ -562,7 +562,7 @@ class SegmentDisplayClass {
     return i;
   }
 
-  FrequencyChart(ContentStyleClass style, SizeClass size) = Chart(size.Width, size.Height) {
+  FrequencyChart(ContentStyleClass style, Size size) = Chart(size.Width, size.Height) {
     TextHeight: 11 pts;
     style.SansSerif;
     ChartType: ChartTypes.Column;
@@ -637,7 +637,6 @@ class SegmentDisplayClass {
        };
 
       Paragraph {
-        ParAlignment: Justify;
         PaperStyle.IPAFamily;
         SpaceAfter: 10 pts;
         Span {

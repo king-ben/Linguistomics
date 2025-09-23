@@ -154,7 +154,7 @@ class ConceptGroupsClass: DataContentClass {
   override GetBody(ContentStyleClass style, title) = Block {
     var concepts = Data.UsedConcepts.ToSortedArray();
     WordGroups[] groups = WordGroups.ValueArray[1..];
-    Table(PaperStyle.TableBorder, null, [ColumnClass.Fit(2 inches)]) {
+    Table(PaperStyle.TableBorder, PadLR(3 pts), [ColumnClass.Fit(2 inches)]) {
       Row {
         PaperStyle.HeaderCell(style);
         PaperStyle.HeaderCell(style) {
@@ -214,8 +214,7 @@ class CognateCoverageClass: DataContentClass {
       "By Language";
     };
 
-    var size = new SizeClass(ExtentWidth, 3 inches);
-    Chart(size.Width, size.Height) {
+    Chart(100%, 3") {
       ChartType: ChartTypes.Column;
       TextHeight: 10 pts;
       ValueLabel: "%";
@@ -231,12 +230,23 @@ class CognateCoverageClass: DataContentClass {
       };
     };
     Paragraph;
+
+
     style.Heading1 {
       "By Number of Languages";
     };
 
-    var coverage = Data.CoverageByLanguages;
-    Chart(size.Width, size.Height) {
+    var count = new Vector<int>(Data.Taxa.Length+1, 0.0);
+    foreach (var c in Data.UsedCognates) {
+      var used = 0;
+      foreach (var word in c.Words) {
+        if (word is valid and word.Text is valid)
+          ++used;
+      }
+      ++count[used];
+    }
+
+    Chart(100%, 3") {
       ChartType: ChartTypes.Column;
       TextHeight: 10 pts;
 
@@ -246,13 +256,12 @@ class CognateCoverageClass: DataContentClass {
       ValueAxis: ChartAxis;
 
       XAxis: ChartAxis {
-        0..<coverage.Length step 1;
+        0..<count.Length step 1;
       };
       XLabel: "Languages Included";
 
       ChartSeries {
-        foreach (var c in coverage)
-          c;
+        count.ToArray;
       };
     };
   };
@@ -392,11 +401,11 @@ class WordViewClass: DocumentClass {
 
       foreach (var cognate in Data.UsedCognates) {
         var concept = cognate.Concept;
-        var lvector = new VectorClass(Data.LanguageSet.Length, null);
+        var lvector = new Vector(Data.LanguageSet.Length, null);
 
         foreach (var word in cognate.Words) {
           if (word.Aligned is valid)
-            lvector.SetValue(word.Language.LangIndex, word);
+            lvector[word.Language.LangIndex] = word;
         }
 
         Span {

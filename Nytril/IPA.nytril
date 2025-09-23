@@ -102,8 +102,8 @@ flags SegmentFeatures {
 
 //======================================================================
 
-typedef SegmentSetClass HashSetClass<SegPartClass>;
-typedef SegPartDictionary StringDictionaryClass<SegPartClass>;
+typedef SegmentSetClass HashSet<SegPartClass>;
+typedef SegPartDictionary StringDictionary<SegPartClass>;
 
 class SegmentClass: FactClass {
   field string          Ipa;
@@ -120,7 +120,7 @@ class SegmentClass: FactClass {
                         Description;
 
   Constructor(ipa, sampa, impossible=false) {
-    super.Constructor(guid.FromHash(ipa ?? Empty));
+    super.Constructor(Guid.FromHash(ipa ?? Empty));
     if (ipa is valid)
       Ipa = string.Normalize(ipa, NormalizationForms.FormC);
     CharacterLetter = Ipa;
@@ -151,7 +151,7 @@ class SegmentClass: FactClass {
       if (Diacritic)
         Description;
       else
-        ShowFeature(each Features.ToArray);
+        ShowFeature(each Features.GetFlagArray);
     }
   };
 

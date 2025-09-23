@@ -234,8 +234,8 @@ class GappinessSignificanceClass {
     double lnL1    = 0.0;
     double lnL0    = 0.0;
 
-    VectorClass<double> statistic = new(spectrum.Length, 0.0);
-    VectorClass<double> countVals = new(spectrum[0].Length, 0.0);
+    Vector<double> statistic = new(spectrum.Length, 0.0);
+    Vector<double> countVals = new(spectrum[0].Length, 0.0);
     foreach (var gap in spectrum) {
       var ni = Math.Sum(gap);
       n += ni;
@@ -243,9 +243,9 @@ class GappinessSignificanceClass {
         if (value != 0)
           lnL1 += value * Math.Log(value / ni);
       }
-      statistic.SetValue(each0, n);
+      statistic[each0] = n;
       foreach (var value in gap)
-        countVals.AddValue(each0, value);
+        countVals[each0] += value;
     }
 
     foreach (var value in countVals) {
@@ -346,7 +346,7 @@ class ExchangeabilityTableClass: ContentClass {
           Frame(w) {
             ParAlignment: Center;
             TextHeight: th*0.8;
-            TextColor: p.Color;
+            TextColor: p.BackColor;
             p.Name.Split(Space);
           };
         }
@@ -358,7 +358,7 @@ class ExchangeabilityTableClass: ContentClass {
           Frame(w) {
             ParAlignment: Right;
             var p = partitions[i];
-            TextColor: p.Color;
+            TextColor: p.BackColor;
             p;
           };
 
@@ -427,7 +427,7 @@ class NaturalClassRateChartClass: ContentClass {
         foreach (var p in partitions) {
           HBox(null, d, PadR(2)) {
             VAlign: Center;
-            TextColor: p.Color;
+            TextColor: p.BackColor;
             p;
           }
         }
@@ -441,8 +441,8 @@ class NaturalClassRateChartClass: ContentClass {
           foreach (var p in partitions) {
             HBox(null, d, PadR(0 pts)) {
               X: d * (each0 + 0.3);
-              TextColor: p.Color;
-              Transform: TransformClass.Rotate(-90 degrees);
+              TextColor: p.BackColor;
+              Transform: Transform.Rotate(-90 degrees);
               TransformFit: true;
               p;
             };
@@ -460,7 +460,7 @@ class NaturalClassRateChartClass: ContentClass {
                   if (c is valid) {
 
                     Tip: c;
-                    var center = new PointClass(d * 0.5);
+                    var center = new Point(d * 0.5);
                     var x      = d  * Math.Sqrt(c.Upper * factor);
                     Shape(90%) {
                       EllipsePath(new(new(center.X - x*0.5 , center.Y - x*0.5), x));
@@ -513,7 +513,7 @@ class EquilibriumFrequencyChartClass: ContentClass {
       foreach (var p in partitions) {
         Span {
           Tip: p;
-          TextColor: p.Color;
+          TextColor: p.BackColor;
           p.Name;
         }
       }
@@ -526,7 +526,7 @@ class EquilibriumFrequencyChartClass: ContentClass {
           ErrorLo: c.Mean - c.Lower;
           ErrorHi: c.Upper - c.Mean;
           Reference: c;
-          Fill: p.Color;
+          Fill: p.BackColor;
         }
       }
     };
@@ -602,21 +602,6 @@ class GappinessChartClass: ContentClass {
         "Number of Gaps"
       };
     };
-  };
-}
-
-//======================================================================
-
-readonly FractionGapsChartClass Figures.FractionGapsChart  = new;
-
-class FractionGapsChartClass: ContentClass {
-  Constructor {
-    super.Constructor("Deletions at the right edge");
-  }
-
-  override GetBody(ContentStyleClass style, title) = Block {
-    style.SansSerif;
-    "To be completed";
   };
 }
 
@@ -1101,7 +1086,7 @@ class AlignmentClass: ContentClass {
     Equation {label};
   };
 
-  ArrowFigure(SizeClass size) = Canvas(size.Width, size.Height) {
+  ArrowFigure(Size size) = Canvas(size.Width, size.Height) {
     Shape(null, new(1.5, ArrowColor)) {
       OpenPath(0) {
         QuadTo(new(size.Width*0.92, size.Height*0.4), new(size.Width - Arrowhead*0.5, size.Height - Arrowhead));
@@ -1180,10 +1165,10 @@ class AlignmentClass: ContentClass {
 
     HBox {
       VAlign: Bottom;
-      var fsize = new SizeClass(ArrowWidth, data.Taxa.Length * 8 pts);
+      var fsize = new Size(ArrowWidth, data.Taxa.Length * 8 pts);
 
       ArrowFigure(fsize) {
-        Transform: new TransformClass(-1, 0, 0, 1, fsize.Width, 0);
+        Transform: new Transform(-1, 0, 0, 1, fsize.Width, 0);
       };
       HBox {
         VAlign: Top;
@@ -1226,7 +1211,7 @@ namespace StateSection {
 
   GetStates(count) = 'A'..('A' + (count - 1)) step 1;
 
-  StateTable(count) = Table(new ThicknessClass(1 pts, 1 pts, 3 pts, null), null, [new ColumnClass(56 pts, BorderR(PaperStyle.TableEdgeSize)), 32 pts]) {
+  StateTable(count) = Table(new Thickness(1 pts, 1 pts, 3 pts, null), null, [new ColumnClass(56 pts, BorderR(PaperStyle.TableEdgeSize)), 32 pts]) {
     ParAlignment: Center;
     VAlign: Center;
     HAlign: Center;
@@ -1483,14 +1468,14 @@ class WordTransformationClass: ContentClass {
   SelfArrow(text) = Span {text; Tex.rightarrow; text};
 
   override GetBody(ContentStyleClass style, title) = Block {
-    var data       = MainResults.Data;
-    var rule       = data.Rule;
-    var rp         = rule.Filters.Length;
-    var partitions = data.Rule.Partitions;
-    var diagonal   = new ListClass<PartitionValueClass>(partitions.Length);
+    var data        = MainResults.Data;
+    var rule        = data.Rule;
+    var rp          = rule.Filters.Length;
+    var partitions  = data.Rule.Partitions;
+    var diagonal    = new List<PartitionValueClass>(partitions.Length);
     var stats       = MainResults.MainRun.NCQRates;
     var numSegments = data.UniqueSegments.Length - 1;
-    var smallOnes   = new ListClass<PartitionClass>(partitions.Length);
+    var smallOnes   = new List<PartitionClass>(partitions.Length);
     var numClasses  = partitions.Length;
     var cntSame     = 0;
     var cntDiff     = 0;
@@ -1510,7 +1495,7 @@ class WordTransformationClass: ContentClass {
     style.TitlePar(title) {
       style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal elements of the rate matrix of the continuous-time Markov model describing phonemic ";
           "change estimated under the "; NaturalModelName; DotSpace;
-      "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
+      "These diagonal elements can be interpreted as a Measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
       "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
       "The higher the rate, the more rapidly a change to another segment occurs on average. ";
       "The most striking aspect of "; style.FigureReference(Figures.QRatesDiagonal); " is the division between vowels and consonants. ";
@@ -1998,11 +1983,8 @@ class ManualAlignmentClass: ContentClass {
       Row {
         word.Language;
         TextIpa {word};
-        Span {
-          foreach (var segment in word.Padded)
-            segment.ShowSegment;
-        }
-      };
+        word.ShowPadded;
+      }
     }
   };
 }

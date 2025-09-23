@@ -100,7 +100,7 @@ class LogSchemaClass: SchemaClass {
   }
 
   GetFieldList(view, f) {
-    var list = new ListClass(view.Length);
+    var list = new List(view.Length);
     foreach (var row in view)
       list.Add(row.FindValue(f));
     return list.Values;
@@ -112,7 +112,7 @@ class LogSchemaClass: SchemaClass {
     var max  = Ceiling(Max(list));
     var d    = 0.125;
     var bins = Round((max - min) / d);
-    var data = new ListClass(bins, BinClass);
+    var data = new List(bins, BinClass);
     var x    = min;
     foreach (var i in 0..<bins) {
       var xd = x + d;

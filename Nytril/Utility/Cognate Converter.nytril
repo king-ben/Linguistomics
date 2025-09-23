@@ -106,8 +106,8 @@ GetWords(list, concepts) = TextBlock {
 };
 
 GetConcepts = TextBlock {
-  var list     = new ListClass(3000);
-  var concepts = new StringDictionaryClass(300);
+  var list     = new List(3000);
+  var concepts = new StringDictionary(300);
   Collect(list, concepts);
   GetWords(list.ToArray(), concepts);
 };

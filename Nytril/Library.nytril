@@ -46,14 +46,14 @@ RateDescriptor(text) = Span {
 class AlignPairClass: DocumentClass {
   var DataSetClass     Data;
   var AlignDataClass[] Alignments;
-  var SizeClass        BoxSize;
+  var Size             BoxSize;
 
   Constructor(DataSetClass data, AlignIndexClass cognate) {
-    super.Constructor(guid.FromHash("Align" + cognate.CognateName + cognate.ConceptName), cognate.ConceptName);
+    super.Constructor(Guid.FromHash("Align" + cognate.CognateName + cognate.ConceptName), cognate.ConceptName);
 
     Data       = data;
     Alignments = cognate.Alignments;
-    BoxSize    = new SizeClass(14 pts, 14 pts);
+    BoxSize    = new Size(14 pts, 14 pts);
     if (cognate.CognateName != DefaultCognate)
       Name += "-" + cognate.CognateName;
   }
@@ -100,7 +100,7 @@ class AlignPairClass: DocumentClass {
                   part = IPAParts.Gap;
                 else if (c >= 0 and c < Data.UniqueSegments.Length) {
                   part = Data.UniqueSegments[c];
-                  Background: part.Partition.Color;
+                  Background: part.Partition.BackColor;
                   TextColor: part.Partition.TextColor;
                 }
                 else
@@ -118,7 +118,7 @@ class AlignPairClass: DocumentClass {
 
   override GetDocument = ShowDetails(50, true, 10 pts);
 
-  GetChart(SizeClass size, int max) = Chart(size.Width, size.Height) {
+  GetChart(Size size, int max) = Chart(size.Width, size.Height) {
     TextHeight: 6 pts;
     ValueLabel: PaperStyle.ValueLabel {
       "Probability";
@@ -263,7 +263,7 @@ class LanguageClass: FactClass {
   var string     ShortName;
   var int        LangIndex;
   var            ImagePath;
-  var ColorClass MapColor;
+  var Color      MapColor;
 
   Constructor(id, name, cases=0, imagepath=null) {
     super.Constructor(id);
@@ -320,7 +320,7 @@ class WordClass: FactClass {
   var                Variable;
 
   Constructor(id, text, TaxonClass taxon, CognateClass cognate) {
-    super.Constructor(guid.FromHash(id));
+    super.Constructor(Guid.FromHash(id));
     Text     = text;
     Taxon    = taxon;
     Language = taxon.Language;
@@ -331,14 +331,6 @@ class WordClass: FactClass {
     Segments = [];
     Aligned  = [];
   }
-
-  ShowPlain = Span {
-    Action: new ActionClass(Actions.ToSource, Variable);
-    foreach (var c in Text) {
-      if (c != IPASegments.GapSegment.Ipa and c != IPASegments.PrimaryStress.Ipa)
-        c;
-    }
-  };
 
   void InitRaw(variable, SegPartDictionary lookup) {
     // IPA text and word text must be in the same unicode normaization form so comparisons are accurate
@@ -388,6 +380,20 @@ class WordClass: FactClass {
     }
   };
 
+  ShowPlain = Span {
+    PaperStyle.IPAFamily;
+    TextLiteral: true;  // No spell checking
+
+    Action: new ActionClass(Actions.ToSource, Variable);
+    // Strip out gaps and stress characters
+    Text.FindSlice(c => c != IPASegments.GapSegment.Ipa and c != IPASegments.PrimaryStress.Ipa) as string;
+  };
+
+  ShowPadded = Span {
+    foreach (var segment in Padded)
+      segment.ShowSegment;
+  };
+
   ShowPaddedBlocks(textheight, index=-1) = HBox {
     TextHeight: textheight;
 
@@ -432,7 +438,6 @@ class WordClass: FactClass {
       ColonSpace;
       Cognate.GetTitle;
     };
-//    super.GetLayoutFact;
   };
 }
 
@@ -447,7 +452,7 @@ class ConceptClass: FactClass {
   var WordGroups     WordGroup;
 
   Constructor(AttributeClass a) {
-    super.Constructor(guid.FromHash(a.FullName));
+    super.Constructor(Guid.FromHash(a.FullName));
     Attribute = a;
     Variable  = a.Value;
     Name      = a.Name;
@@ -488,7 +493,7 @@ class CognateClass: FactClass {
   var AttributeClass Attribute;
 
   Constructor(ConceptClass concept, AttributeClass cognate) {
-    super.Constructor(guid.FromHash(cognate.FullName));
+    super.Constructor(Guid.FromHash(cognate.FullName));
 
     Name      = cognate.Name;
     Attribute = cognate;
@@ -651,31 +656,31 @@ readonly namespace TreeExamples {
 //======================================================================
 
 class DataSetClass {
-  var LanguageClass[]                   LanguageSet;
-  var SegPartClass[]                    UniqueSegments;
-  var CognateClass[]                    SortedCognates;
-  var ListClass<ConceptClass>           UsedConcepts;
-  var ListClass<CognateClass>           UsedCognates;
-  var VectorClass<WordClass>            WordList;
-  var ListClass<SegPartClass>           SegmentBuffer;
-  var TaxonClass[]                      Taxa;
-  var StringDictionaryClass<TaxonClass> TaxonSet;
-  var RuleClass                         Rule;
-  var WordClass                         DefWord;
-  var TreeSetClass[]                    TreeSets;
-  var ListClass                         PlainBuffer,
-                                        TextBuffer;
-  var AttributeClass                    ExampleConcept,
-                                        FigureConcept,
-                                        DataConcept;
-  var                                   WordCutoff,
-                                        RootFolder,
-                                        Name,
-                                        MaxLanguageName,
-                                        WordCount,
-                                        SegmentCount,
-                                        WordFile;
-  var bool                              RawData;
+  var LanguageClass[]              LanguageSet;
+  var SegPartClass[]               UniqueSegments;
+  var CognateClass[]               SortedCognates;
+  var List<ConceptClass>           UsedConcepts;
+  var List<CognateClass>           UsedCognates;
+  var Vector<WordClass>            WordList;
+  var List<SegPartClass>           SegmentBuffer;
+  var TaxonClass[]                 Taxa;
+  var StringDictionary<TaxonClass> TaxonSet;
+  var RuleClass                    Rule;
+  var WordClass                    DefWord;
+  var TreeSetClass[]               TreeSets;
+  var List                         PlainBuffer,
+                                   TextBuffer;
+  var AttributeClass               ExampleConcept,
+                                   FigureConcept,
+                                   DataConcept;
+  var                              WordCutoff,
+                                   RootFolder,
+                                   Name,
+                                   MaxLanguageName,
+                                   WordCount,
+                                   SegmentCount,
+                                   WordFile;
+  var bool                         RawData;
 
   Constructor(config, name, rootfolder) {
     Name            = name;
@@ -770,8 +775,8 @@ class DataSetClass {
     WordCutoff  = run.Info.WordCutoff;
     AddLanguageSet(run.LanguageSet);
 
-    var slist  = new ListClass<SegPartClass>(run.Segments.Length);
-    var lookup = new StringDictionaryClass<SegmentClass>(IPASegments.Length);
+    var slist  = new List<SegPartClass>(run.Segments.Length);
+    var lookup = new StringDictionary<SegmentClass>(IPASegments.Length);
     foreach (var segment in IPASegments) {
       if (segment.Ipa is valid)
         lookup.Add(segment, segment.Ipa);
@@ -810,7 +815,7 @@ class DataSetClass {
     LanguageSet = languageset;
     TaxonSet    = new(LanguageSet.Length);
 
-    ListClass<TaxonClass> tlist = new(LanguageSet.Length);
+    List<TaxonClass> tlist = new(LanguageSet.Length);
 
     foreach (var l in LanguageSet) {
       l.LangIndex = each0;
@@ -858,19 +863,6 @@ class DataSetClass {
     return used / count;
   }
 
-  CoverageByLanguages {
-    var count = new VectorClass(Taxa.Length+1, 0.0);
-    foreach (var c in UsedCognates) {
-      var used = 0;
-      foreach (var word in c.Words) {
-        if (word is valid and word.Text is valid)
-          ++used;
-      }
-      count.AddValue(used, 1.0);
-    }
-    return count;
-  }
-
   CognateClass[] GetSortedCognates {
     SortedCognates ??= UsedCognates.ToArray;
     return SortedCognates;
@@ -879,7 +871,7 @@ class DataSetClass {
   CognateClass GetCognate(AttributeClass concept) = UsedCognates.FindFirst(c => c.Concept.Name == concept.Name);
 
   void ComputeRawCognate(SegPartDictionary lookup, CognateClass cognate) {
-    WordList.SetAllValues(DefWord);
+    WordList.Initialize(DefWord);
     var maxlength = 0;
     foreach (var tvar in cognate.Attribute.Children) {
       var text  = tvar.Value;
@@ -895,9 +887,9 @@ class DataSetClass {
             ++count;
         }
 
-        SegmentCount       += count;
-        taxon.SegmentCount += count;
-        WordList.SetValue(taxon.Index, word);
+        SegmentCount         += count;
+        taxon.SegmentCount   += count;
+        WordList[taxon.Index] = word;
       }
     }
 
@@ -932,7 +924,7 @@ class DataSetClass {
   }
 
   void ComputeExperimentCognate(CognateClass cognate, AttributeClass cognatevar) {
-    WordList.SetAllValues(DefWord);
+    WordList.Initialize(DefWord);
 
     var maxlength = 0;
     foreach (var word in cognatevar.Value) {
@@ -975,7 +967,7 @@ class DataSetClass {
           w.InitExperiment(word, SegmentBuffer.ToArray);
           if (w.Aligned.Length > maxlength)
             maxlength = w.Aligned.Length;
-          WordList.SetValue(taxon.Index, w);
+          WordList[taxon.Index] = w;
         }
       }
     }
@@ -991,6 +983,7 @@ class DataSetClass {
       "Words containing \"{0}\""(segment.Ipa);
     };
     Paragraph {
+      PaperStyle.IPAFamily;
       Separator: Space;
       foreach (var cognate in UsedCognates) {
         foreach (var word in cognate.Words) {
@@ -1043,14 +1036,14 @@ abstract class CountBaseClass {
     MaxDigits      = 3;
   }
 
-  PartitionBox(ContentStyleClass style, SizeClass extentsize) = Paragraph {
+  PartitionBox(ContentStyleClass style, Size extentsize) = Paragraph {
     style.SansSerif;
 
     var grid   = 0.125 pts;
     var gcolor = 65%;
     var border = 0.5 pts;
     var mx     = Math.Min(extentsize.Width, extentsize.Height) - border*2;
-    var size   = new SizeClass(mx, mx);
+    var size   = new Size(mx, mx);
     var length = LegendSegments.Length;
     var d      = size / (length+1);
 
@@ -1072,7 +1065,7 @@ abstract class CountBaseClass {
       foreach (var s in LegendSegments) {
         Canvas(d.Width, d.Height) {
           Y: y;
-          Background: s.Partition.Color;
+          Background: s.Partition.BackColor;
           TextColor: s.Partition.TextColor;
           HAlign: Center;
           VAlign: Center;
@@ -1094,7 +1087,7 @@ abstract class CountBaseClass {
         foreach (var s in LegendSegments) {
           Canvas(d.Width, d.Height) {
             X : x;
-            Background: s.Partition.Color;
+            Background: s.Partition.BackColor;
             TextColor: s.Partition.TextColor;
             HAlign: Center;
             VAlign: Center;
@@ -1113,7 +1106,7 @@ abstract class CountBaseClass {
     };
   };
 
-  abstract AddEntry(SegPartClass si, SegPartClass sj, x, y, SizeClass size);
+  abstract AddEntry(SegPartClass si, SegPartClass sj, x, y, Size size);
 }
 
 //======================================================================
@@ -1123,7 +1116,7 @@ class TranActionClass: DocumentClass {
   var                 Percent;
 
   Constructor(SegPartClass s1, SegPartClass s2, WordPairClass[] list, percent) {
-    super.Constructor(guid.FromHash(s1.Ipa + s2.Ipa), Actions.ToDocument);
+    super.Constructor(Guid.FromHash(s1.Ipa + s2.Ipa), Actions.ToDocument);
     List    = list;
     Percent = percent;
   }
@@ -1146,7 +1139,7 @@ class TranActionClass: DocumentClass {
 
     Paragraph {
       Separator: Space;
-      foreach (var p in List[0..count])
+      foreach (var p in List[0..<count])
         p.ShowDescription(10 pts);
     };
 
@@ -1169,10 +1162,10 @@ class TranActionClass: DocumentClass {
 //======================================================================
 
 class PriorCountClass: CountBaseClass {
-  typedef WordPairList ListClass<WordPairClass>;
+  typedef WordPairList List<WordPairClass>;
 
-  var MatrixClass<WordPairList> TMatrix;
-  var                           Factor;
+  var Matrix<WordPairList> TMatrix;
+  var                      Factor;
 
   Constructor(DataSetClass data) {
     super.Constructor(data);
@@ -1199,7 +1192,7 @@ class PriorCountClass: CountBaseClass {
                 var p    = new WordPairClass(index, cognate.Words[i], cognate.Words[j]);
                 if (list is null) {
                   list = new WordPairList(128);
-                  TMatrix.SetValue(si.Index, sj.Index, list);
+                  TMatrix[si.Index, sj.Index] = list;
                 }
                 list.Add(p);
                 if (list.Length > tmax)
@@ -1213,7 +1206,7 @@ class PriorCountClass: CountBaseClass {
     Factor = 1.0 / tmax;
   }
 
-  override AddEntry(SegPartClass si, SegPartClass sj, x, y, SizeClass size) {
+  override AddEntry(SegPartClass si, SegPartClass sj, x, y, Size size) {
     var value = TMatrix[si.Index, sj.Index];
     if (value is null)
       return null;
@@ -1261,7 +1254,7 @@ class FrequencyClass {
 
 class RateDataClass {
   var TaxonClass       Taxon;
-  var VectorClass      Count;
+  var Vector      Count;
   var FrequencyClass[] Frequency;
   var                  TotalCount,
                        MaxFrequency,
@@ -1271,7 +1264,7 @@ class RateDataClass {
     Taxon        = taxon;
     TotalCount   = 0;
     MaxFrequency = 0;
-    Count        = new VectorClass(count, 0);
+    Count        = new Vector(count, 0);
   }
 }
 
@@ -1323,7 +1316,7 @@ abstract class FrequencyChartClass {
   var PartitionClass[] Partitions;
   var RuleClass        Rule;
   var TaxonClass[]     Taxa;
-  var VectorClass      UsedCount,
+  var Vector      UsedCount,
                        UsedFrequency;
   var FrequencyClass[] FirstRate;
   var RateDataClass[]  Rates,
@@ -1354,12 +1347,12 @@ abstract class FrequencyChartClass {
   void ComputeDistance(sortfunction) {
     // Compute the Euclidean distance between each language and the first language
 
-    var fr = new VectorClass(RateCount, 0.0);
+    var fr = new Vector(RateCount, 0.0);
     foreach (var rate in Rates) {
       var mult = 100.0 / rate.TotalCount;
       for (var i = 0; i < RateCount; ++i) {
         var f = mult * rate.Count[i];
-        fr.SetValue(i, f);
+        fr[i] = f;
         if (f > rate.MaxFrequency)
           rate.MaxFrequency = f;
       }
@@ -1391,7 +1384,7 @@ abstract class FrequencyChartClass {
   }
 
   abstract SegmentBar(RateDataClass rate, index, width, height);
-  abstract OccurranceChart(SizeClass size);
+  abstract OccurranceChart(Size size);
 
   LangCanvas(RateDataClass rate, width, height) = HBox(null, null, BorderB(0.25 pts)) {
     VAlign: Bottom;
@@ -1410,7 +1403,7 @@ abstract class FrequencyChartClass {
 //======================================================================
 
 class SegmentFrequencyClass: FrequencyChartClass {
-  var VectorClass    PartitionMax;
+  var Vector    PartitionMax;
   var SegPartClass[] Segments;
 
   Constructor(DataSetClass data, bool group) {
@@ -1424,8 +1417,8 @@ class SegmentFrequencyClass: FrequencyChartClass {
         var rate = Rates[word.Taxon.Index];
         foreach (var segment in word.Segments) {
           ++rate.TotalCount;
-          rate.Count.AddValue(segment.Index, 1);
-          PartitionMax.AddValue(segment.PartitionIndex, 1);
+          ++rate.Count[segment.Index];
+          PartitionMax[segment.PartitionIndex] += 1;
         }
       }
     }
@@ -1451,7 +1444,7 @@ class SegmentFrequencyClass: FrequencyChartClass {
       Margin: PadR(1);
       var s = Segments[index];
       if (f > 0)
-        Background: s.Partition.Color;
+        Background: s.Partition.BackColor;
       TipAction: new SegmentActionClass(rate, s, rate.Count[index], f);
     };
     return null;
@@ -1462,7 +1455,7 @@ class SegmentFrequencyClass: FrequencyChartClass {
     segments[index].ShowSegment;
   };
 
-  override OccurranceChart(SizeClass size) = MatrixBox {
+  override OccurranceChart(Size size) = MatrixBox {
     var lw     = 70 pts;
     var cw     = size.Width - lw;
     var bw     = cw / Segments.Length;
@@ -1567,7 +1560,7 @@ class PartitionFrequencyClass: FrequencyChartClass {
         var rate = Rates[word.Taxon.Index];
         foreach (var segment in word.Segments) {
           ++rate.TotalCount;
-          rate.Count.AddValue(segment.PartitionIndex, 1);
+          ++rate.Count[segment.PartitionIndex];
         }
       }
     }
@@ -1580,7 +1573,7 @@ class PartitionFrequencyClass: FrequencyChartClass {
     return Canvas(width-1, height * f) {
       Margin: PadR(1);
       var partition = Partitions[index];
-      Background: partition.Color;
+      Background: partition.BackColor;
       TipAction: new PartitionRateActionClass(rate, partition, rate.Count[index], f);
     };
   }
@@ -1590,7 +1583,7 @@ class PartitionFrequencyClass: FrequencyChartClass {
     Partitions[index].Name;
   };
 
-  override OccurranceChart(SizeClass size) = MatrixBox {
+  override OccurranceChart(Size size) = MatrixBox {
     var lw = 60 pts;
     var cw = size.Width - lw;
     var bw = cw / Partitions.Length;

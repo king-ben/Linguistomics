@@ -40,7 +40,7 @@ class SignificanceClass: ContentClass {
       "In this study, we introduce a model of linguistic evolution that characterizes segmental change through three core processes: ";
       "the transition from one segment to another, the addition of a single segment, or the deletion of a single segment. ";
       "We adopt a Bayesian framework and employ Markov chain Monte Carlo methods to approximate the posterior probability distribution of model parameters. ";
-      "This approach heralds a new era in linguistic phylogenetics and provides the first phylogenetically based measure of segmental stability."
+      "This approach heralds a new era in linguistic phylogenetics and provides the first phylogenetically based Measure of segmental stability."
     };
    };
  }

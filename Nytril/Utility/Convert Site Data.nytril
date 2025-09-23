@@ -38,11 +38,11 @@ class WordClass {
 
 class ConceptClass {
   var                            Name;
-  var StringDictionaryClass<WordClass> Words;
+  var StringDictionary<WordClass> Words;
 
   Constructor(name) {
     Name  = name;
-    Words = new StringDictionaryClass<WordClass>(16);
+    Words = new StringDictionary<WordClass>(16);
   }
 }
 
@@ -58,11 +58,11 @@ class LogRecordClass {
 //================================================================
 
 class Convertlass {
-  var StringDictionaryClass<ConceptClass> Concepts;
+  var StringDictionary<ConceptClass> Concepts;
 
   Constructor {
     Concepts = new(1024);
-    var view = new ListClass<LogRecordClass>(1024);
+    var view = new List<LogRecordClass>(1024);
     view.ReadTextFile(res "SoundComparisons Export.txt");
 
     foreach (var row in view) {

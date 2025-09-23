@@ -44,13 +44,13 @@ class LogSchemaClass: SchemaClass {
   GetAlphaChart(view) = Chart(6 inches, 4 inches) {
     ChartType: ChartTypes.Column;
 
-    var alist = new ListClass(view.Length);
+    var alist = new List(view.Length);
     foreach (var row in view)
       alist.Add(row.FindValue(Alpha.Name));
     var list = alist.ToArray();
     var bins = Min([3, list.Length, Max([20, list.Length / 20])]);
-    var bx   = new ListClass(bins);
-    var by   = new ListClass(bins);
+    var bx   = new List(bins);
+    var by   = new List(bins);
     var min  = Min(list);
     var max  = Max(list);
     var d    = (max - min) / bins;

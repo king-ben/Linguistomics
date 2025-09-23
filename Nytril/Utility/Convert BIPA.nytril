@@ -87,14 +87,14 @@ class LogRecordClass {
 
 class LogSchemaClass {
   var SegmentClass[]                      Segments;
-  var StringDictionaryClass<FeatureClass> Features;
+  var StringDictionary<FeatureClass> Features;
   var                                     From,
                                           Via,
                                           To;
 
   Constructor {
-    var list = new ListClass<SegmentClass>(2048);
-    var view = new ListClass<LogRecordClass>(2048);
+    var list = new List<SegmentClass>(2048);
+    var view = new List<LogRecordClass>(2048);
     view.ReadTextFile(res "BIPA.txt");
     foreach (var row in view)
       list.Add(new SegmentClass(row.Description, row.Text, row.Code));

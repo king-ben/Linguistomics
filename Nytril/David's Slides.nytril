@@ -124,7 +124,7 @@ namespace DavidSlides.Introduction {
     Title = "Roadmap";
 
     GetItems(SlideShowClass show) {
-      var list = new ListClass(32);
+      var list = new List(32);
       foreach (var slide in DavidSlides.ToArray[1..]) {
         if (show.CanInclude(slide))
           list.Add({Numbered: list.Length+1; Text: slide.Title});

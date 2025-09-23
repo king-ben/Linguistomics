@@ -11,9 +11,9 @@ readonly namespace PaperStyle {
   const TableEdgeSize     = 0.25 pts;
   const TableBorder       = TableEdgeSize;
 
-  SizeClass BorderSize    = new(2, 2);
-  SizeClass BoxSize       = new(18 pts, 20 pts);
-  SizeClass CellSize      = new(BoxSize.Width * 2, BoxSize.Height);
+  Size BorderSize    = new(2, 2);
+  Size BoxSize       = new(18 pts, 20 pts);
+  Size CellSize      = new(BoxSize.Width * 2, BoxSize.Height);
 
   IPAFamily            = TextFamily: TextFamilies.LibertinusSerif;
   BoldSymbol           = {TextFamily: TextFamilies.CMUSerif; Bold};
@@ -23,8 +23,8 @@ readonly namespace PaperStyle {
   Used                 = TextColor: Colors.Red;
   ImpossibleBackground = Background: 80%;
   TitleBackground      = Background: 90%;
-  CommentColor         = new ColorClass(0, 0x64, 0);
-  StringColor          = new ColorClass(168, 21, 53);
+  CommentColor         = new Color(0, 0x64, 0);
+  StringColor          = new Color(168, 21, 53);
   VariableColor        = Colors.DarkBlue;
   AlignBackColor       = 95%;
   ColumnEdge           = BorderR(TableEdgeSize);
@@ -34,7 +34,7 @@ readonly namespace PaperStyle {
   SlideHeader          = Colors.SlateGray;
   textit               = Span {TextLiteral: true; Italic};
   TextIpa              = Span {TextLiteral: true; IPAFamily; Begin:"/"; End:"/"};
-  HeatMap              = LinearGradientClass.FromColorArray([Colors.Blue, Colors.Cyan, Colors.Yellow, Colors.Pink, Colors.Red]);
+  HeatMap              = LinearGradient.FromColorArray([Colors.Blue, Colors.Cyan, Colors.Yellow, Colors.Pink, Colors.Red]);
 
   LanguageTable(ColumnClass[] columns) = Table(new(new(0, 2), new(2 pts, 2), new(0, 2), new(2 pts, 2)), PadLR(2 pts), columns);
 
@@ -48,7 +48,7 @@ readonly namespace PaperStyle {
   ReadOnly = Keyword("readonly ");
 
   Variable(text) = Span {
-    TextColor: new ColorClass(43, 145, 175);
+    TextColor: new Color(43, 145, 175);
     text;
   };
 
@@ -247,7 +247,7 @@ readonly namespace PaperStyle {
   };
 
   ValueLabel = HBox(null, null, PadB(6)) {
-    Transform: TransformClass.Rotate(-90 degrees);
+    Transform: Transform.Rotate(-90 degrees);
     TransformFit: true;
   };
 }
@@ -298,25 +298,25 @@ readonly namespace Graphics {
   Ninety    = Half * OneEighty;
   FortyFive = 0.25 * OneEighty;
 
-  PointClass ExtendPoint(PointClass center, r, angle) {
+  Point ExtendPoint(Point center, r, angle) {
     return new(center.X + r * Cos(angle), center.Y + r * Sin(angle));
   }
 
-  Adjust(PointClass center, r, angle) {
+  Adjust(Point center, r, angle) {
     return center - ExtendPoint(new(0), r, angle);
   }
 
-  GetAngle(PointClass p1, PointClass p2) {
+  GetAngle(Point p1, Point p2) {
     return Atan2(p2.Y - p1.Y, p2.X - p1.X);
   }
 
-  Line(LineStyleClass line, PointClass p1, PointClass p2) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
+  Line(LineStyleClass line, Point p1, Point p2) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
     OpenPath(p1) {
       LineTo(p2);
     };
   };
 
-  TwoArrowLine(LineStyleClass line, PointClass p1, PointClass p2) = Shape(line.LineColor) {
+  TwoArrowLine(LineStyleClass line, Point p1, Point p2) = Shape(line.LineColor) {
     var angle = GetAngle(p1, p2);
     var opp   = angle - Ninety;
     var a1    = ExtendPoint(p1, line.Edge, angle + OneEighty - line.Angle);
@@ -339,7 +339,7 @@ readonly namespace Graphics {
     }
   };
 
-  CircleLine(LineStyleClass line, PointClass center, radius, angle, anglegap) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
+  CircleLine(LineStyleClass line, Point center, radius, angle, anglegap) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
     var angle1 = angle + anglegap;
     var angle2 = angle - anglegap;
     var p1     = ExtendPoint(center, radius, angle1);
@@ -350,7 +350,7 @@ readonly namespace Graphics {
     }
   };
 
-  CircleArrow(LineStyleClass line, PointClass center, radius, angle, anglegap) = Shape(line.LineColor) {
+  CircleArrow(LineStyleClass line, Point center, radius, angle, anglegap) = Shape(line.LineColor) {
     var angle1 = angle + anglegap;
     var angle2 = angle - anglegap;
     var an1    = angle1 - Ninety;

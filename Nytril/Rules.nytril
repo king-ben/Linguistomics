@@ -5,8 +5,8 @@ class PartitionClass: FactClass {
   field string       Name;
   var string         PluralName;
   var SegPartClass[] Segments;
-  var PointClass     Center;
-  var ColorClass     Color,
+  var Point          Center;
+  var Color          BackColor,
                      TextColor;
   var                Marker,
                      Index,
@@ -15,11 +15,11 @@ class PartitionClass: FactClass {
                      Outer;
 
   Constructor(index, name, plural, SegPartClass[] segments) {
-    super.Constructor(guid.FromHash(name));
+    super.Constructor(Guid.FromHash(name));
     Name       = name;
     PluralName = plural;
-    Color      = ColorClass.ChartColor(index);
-    Marker     = Markers.Dot(Color);
+    BackColor  = Color.ChartColor(index);
+    Marker     = Markers.Dot(BackColor);
     TextColor  = Color.TextCompliment;
     Index      = index;
     Segments   = segments;
@@ -97,13 +97,12 @@ class FilterClass {
 //======================================================================
 
 abstract class RuleClass {
-  var ListClass<FilterClass> FilterList;
+  var List<FilterClass> FilterList;
   var FilterClass[]          Filters,
                              FiltersPlus;
   var PartitionClass[]       Partitions;
   var SegPartClass[]         Segments;
   var                        Name,
-                             Matrix,
                              Numbers;
 
   Constructor(name) {
@@ -117,7 +116,7 @@ abstract class RuleClass {
     FilterList.Add(new FilterClass(this, "Residue", "Residues"));
     FiltersPlus = FilterList.ToArray;
 
-    var list = new ListClass<PartitionClass>(segments.Length);
+    var list = new List<PartitionClass>(segments.Length);
     var i    = 0;
     foreach (var filter in FiltersPlus) {
       var find = GetMatching(segments, filter);
@@ -172,7 +171,7 @@ abstract class RuleClass {
           Enumerators.NumberParen(each1);
         };
         Span {
-          TextColor: partition.Color;
+          TextColor: partition.BackColor;
           Tex.blackcirc;
           Space;
         };
@@ -188,7 +187,7 @@ abstract class RuleClass {
     foreach (var partition in Partitions) {
       HBox {
         Span {
-          TextColor: partition.Color;
+          TextColor: partition.BackColor;
           Tex.blackcirc;
           Space;
         };
@@ -208,7 +207,7 @@ abstract class RuleClass {
           Separation: 3 pts;
           Canvas (textheight, textheight) {
             BorderRadius: PaperStyle.BorderSize;
-            Background: p.Color;
+            Background: p.BackColor;
           };
           p;
         }
