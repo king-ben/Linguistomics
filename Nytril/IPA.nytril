@@ -105,7 +105,7 @@ flags SegmentFeatures {
 typedef SegmentSetClass HashSet<SegPartClass>;
 typedef SegPartDictionary StringDictionary<SegPartClass>;
 
-class SegmentClass: FactClass {
+class SegmentClass: Fact {
   field string          Ipa;
   field SegmentFeatures Features;
   var Opens             Open;
@@ -132,7 +132,7 @@ class SegmentClass: FactClass {
     Features        = NoFeature;
   }
 
-  override IconClass GetIcon = Icons.record_voice_over;
+  override Icon GetIcon = Icons.record_voice_over;
 
   ShowFeature(SegmentFeatures feature) = feature == SegmentFeatures.NoFeature ? null : feature;
 
@@ -221,7 +221,7 @@ class SegmentClass: FactClass {
     };
   };
 
-  ShowFrame(width, size, BorderClass border=null) = Frame(width, null, border) {
+  ShowFrame(width, size, Border border=null) = Frame(width, null, border) {
     Display(null, size);
   };
 

@@ -1,7 +1,7 @@
 using Format, WorldLanguages;
 //======================================================================
 
-class Leaf: NodeClass {
+class Leaf: Node {
   var LanguageClass Language;
 
   Constructor(LanguageClass language, branch=1.0) {
@@ -11,7 +11,7 @@ class Leaf: NodeClass {
   }
 }
 
-class Branch: NodeClass {
+class Branch: Node {
   Constructor(branch=1.0) {
     super.Constructor(null, branch);
   }

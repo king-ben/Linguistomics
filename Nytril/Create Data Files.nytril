@@ -31,7 +31,7 @@ readonly namespace Main.Documents {
 
 //======================================================================
 
-class CreateExperimentClass: ActionClass {
+class CreateExperimentClass: Action {
   var DataSetClass Data;
 
   Constructor(DataSetClass data) {
@@ -43,7 +43,7 @@ class CreateExperimentClass: ActionClass {
     return "Overwrite configuration files for experiment \"{0}\"?"(DataSet.Name);
   }
 
-  override EventResponseClass Execute {
+  override EventResponse Execute {
     var data = DataSet;
     var root = Info.ExperimentRoot data.RootFolder;
 
@@ -87,7 +87,7 @@ class CreateViewClass: DocumentClass {
     Paragraph;
 
     var action = new CreateExperimentClass(Data);
-    ButtonControl(null, null, new EdgeClass(1, 10)) {
+    ButtonControl(null, null, new Edge(1, 10)) {
       Background: new RadialGradient(10%, 20%, 10%, 20%, 90%, 50%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
       BorderRadius: 4;
       TextHeight: 12 pts;

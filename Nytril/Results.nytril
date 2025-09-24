@@ -88,7 +88,7 @@ class StatClass {
 
 //======================================================================
 
-class RunResultsClass: Parallel.ThreadClass {
+class RunResultsClass: Parallel.Thread {
   var DataSetClass       Data;
   var RunExperimentClass Run;
   var StatMat            NCQRates,
@@ -183,7 +183,7 @@ class AlignmentChartClass {
     TextHeight: Math.Min(8 pts, bsize.Height - 3.2 pt);
 
     foreach (var row in rows) {
-      HBox(null, bsize.Height, BorderB(new EdgeClass(0.25 pts, 1, 90%))) {
+      HBox(null, bsize.Height, BorderB(new Edge(0.25 pts, 1, 90%))) {
         VAlign: Center;
         foreach (var a in row) {
           VBox(bsize.Width, null) {
@@ -214,7 +214,7 @@ class AlignmentChartClass {
     }
   };
 
-  ShowSet(CognateIdClass[] examples, bool label) = Table(null, null, label ? [0.75 inches, ColumnClass.Expand] : [ColumnClass.Expand]) {
+  ShowSet(CognateIdClass[] examples, bool label) = Table(null, null, label ? [0.75 inches, Column.Expand] : [Column.Expand]) {
     foreach (var e in examples) {
       var found = e.FindAlignment(Run);
       if (found is valid) {
@@ -267,7 +267,7 @@ class TransitionClass {
 
 //======================================================================
 
-class RateClass: ActionClass {
+class RateClass: Action {
   var AlignedCountClass Count;
   var DataSetClass      Data;
   var SegPartClass      S0,
@@ -595,7 +595,7 @@ class AlignedCountClass: CountBaseClass {
     ChartSeries(Colors.Green) {
       Label: Tex.rightarrow;
       foreach (var a in rates)
-        new DataPointClass(each0, a.Rate) {Reference: a};
+        new DataPoint(each0, a.Rate) {Reference: a};
     };
   };
 
@@ -640,7 +640,7 @@ class AlignedCountClass: CountBaseClass {
             if (si.Index != sj.Index) {
               var a = RateMatrix[si.Index, sj.Index];
               if (a is not null) {
-                new DataPointClass(i, a.Rate) {
+                new DataPoint(i, a.Rate) {
                   Reference: a;
                   Fill: a.S1.Partition.BackColor;
                 };
@@ -677,7 +677,7 @@ class AlignedCountClass: CountBaseClass {
           foreach (var sj in LegendSegments) {
             if (si.Index < sj.Index) {
               var a = RateMatrix[si.Index, sj.Index];
-              new DataPointClass(a.Rate, a.Direction) {
+              new DataPoint(a.Rate, a.Direction) {
                 Reference: a;
                 Marker: Canvas(4 pts, 4 pts) {
                   HAlign: Center;
@@ -718,7 +718,7 @@ class AlignedCountClass: CountBaseClass {
         TextHeight: 6 pts;
         Marker: Markers.Dot;
         foreach (var a in SortByDirection) {
-          new DataPointClass(each0, a.Direction) {
+          new DataPoint(each0, a.Direction) {
             Reference: a;
             if (a.S0.Segment.Ipa == "p")
               Marker: a.S1.Segment.Ipa == "b" or a.S1.Segment.Ipa == "f" ? special : group;
@@ -749,7 +749,7 @@ class AlignedCountClass: CountBaseClass {
       ChartSeries(Colors.Red) {
         Label: Tex.leftarrow;
         foreach (var a in subset)
-          new DataPointClass(each0, a.Reverse);
+          new DataPoint(each0, a.Reverse);
       };
     };
     Separation: 20 pts;
@@ -936,7 +936,7 @@ class DiagonalClass {
       ValueAxis: ChartAxis;
       ChartSeries {
         foreach (var d in Diagonal) {
-          new DataPointClass(each0, d.Value) {
+          new DataPoint(each0, d.Value) {
             Reference: d;
             Fill: d.Rate.S0.Partition.BackColor;
           };
@@ -950,7 +950,7 @@ class DiagonalClass {
 
 //======================================================================
 
-class PartitionActionClass: ActionClass {
+class PartitionActionClass: Action {
   var StatClass      Rate;
   var PartitionClass P1,
                      P2;

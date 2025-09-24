@@ -57,21 +57,21 @@ class RootMeaningTraitsClass: ContentClass {
   override GetBody(ContentStyleClass style, title) = Block {
     style.TitlePar(title) {
       "Linguistic phylogenies are typically inferred from abstract cognate relationships";
-          Citation {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
+          Cite {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
       "Cognates are linguistic units (e.g., segments, morphemes, words) that share a common ancestor. An example from the lexical domain is Spanish "; textit{"mano"}; " "; style.SQuoteComma{"hand"};
           "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance */manu/"; DotSpace;
       "At least four types of lexical cognacy have been identified in the literature, but studies of linguistic phylogenetics rely overwhelming on one, root-meaning traits";
-          Citation {Chang2015}; DotSpace;
+          Cite {Chang2015}; DotSpace;
     };
 
     style.AddTable(TableFigures.CognateCoding, FigureOptions.Bottom | FigureOptions.Top);
 
     style.BodyPar {
        "Root-meaning traits encode the ancestral relationships of the root of the most semantically general and stylistically neutral word for a given concept, such as "; style.SQuote{"hand"};
-          Citation {Heggarty2023}; DotSpace;
+          Cite {Heggarty2023}; DotSpace;
       "The concepts themselves are drawn from a specific subset of the lexicon commonly referred to as the "; style.DQuote{"basic vocabulary,"}; " which typically includes words for body parts, basic actions, natural elements, and other core aspects of daily life that are allegedly less likely to undergo borrowing or replacement. ";
       "Swadesh lists are compilations of basic vocabulary terms, which now exist in several versions";
-          Citation {Tadmor2010}; DotSpace;
+          Cite {Tadmor2010}; DotSpace;
             style.TableReference(TableFigures.CognateCoding);
           " presents a root-meaning trait in a sample of Indo-European languages for the concept "; style.SQuoteEnd{"hand"};
       "Lexical items that share a common ancestor are assigned to the same cognate class. ";
@@ -95,7 +95,7 @@ class RootMeaningTraitsClass: ContentClass {
 
     style.BodyPar {
       "Second, since root-meaning traits are analyzed the same way biologists analyze morphological characters";
-          Citation {Lewis2001}; ", they are subject to the same limitations: ";
+          Cite {Lewis2001}; ", they are subject to the same limitations: ";
           "(i) The state labels (0, 1, 2, etc.) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
               "As a result, studies of linguistic phylogenies are restricted to models with symmetrical rates of change, in order that the probability of the observations remain the same regardless of the state label assignment; ";
               "the probability of the data should remain the same if the state labels are swapped, with the 0s coded as 1s and the 1s coded as 0s. ";
@@ -139,13 +139,13 @@ class TKF91ApproachClass: ContentClass {
 
     style.TitlePar(title) {
            "On account of these challenges, we introduce an approach to linguistic phylogenetics in which the observations are cognate word-forms";
-     Citation {BouchardCote2013}; DotSpace;
+     Cite {BouchardCote2013}; DotSpace;
      "The segmental history of the word-forms is modeled with a continuous-time Markov model that allows one of three events to occur in an instant of time ";
-         Citation {Thorne1991}; ": ";
+         Cite {Thorne1991}; ": ";
          "(i) a transition from one segment to another; (ii) the insertion of a single segment; or (iii) the deletion of a segment. ";
       "Our treatment allows us to analyze data in a manner akin to molecular phylogenetic analyses in biology. ";
       "The model we use was first introduced by Thorne et al.";
-          Citation {Thorne1991}; ", and is known as the TKF91 model in the molecular evolution literature. ";
+          Cite {Thorne1991}; ", and is known as the TKF91 model in the molecular evolution literature. ";
       "Just as nucleotides are considered equivalent states regardless of their position in the genome, our method treats segments as equivalent across words. ";
       "We can therefore learn about the rates of individual events by pooling information across different words (or across different segments of a word). ";
       "This approach circumvents the four problems of root-meaning traits described above. ";
@@ -154,7 +154,7 @@ class TKF91ApproachClass: ContentClass {
        style.BodyPar {
      "Although the TKF91 model can be used to infer phylogenies, we focus in this study on its ability to estimate rates of changes among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
      "There are a variety of methods for estimating the diachronic stability of segments ";
-     Citation {Wichmann2009; Moran2018; Moran2021};
+     Cite {Wichmann2009; Moran2018; Moran2021};
      ", but none is phylogenetically based or uses models of segmental transitions. ";
      "Indeed, one of the strengths of our approach is that it can take advantage of a rich set of segment-transition models, which are not limited by considerations of the labeling assigned to the states. ";
      "We illustrate the power of the TKF91 model with a sample of ";
@@ -189,12 +189,12 @@ class CognateWordFormsClass: ContentClass {
       "The use of cognate words introduces several challenges, such as the alignment of homologous segments of cognate word-forms. ";
       "In a molecular phylogenetic analysis, the fine-scale homology of nucleotides sampled from different species is established using sequence alignment programs. ";
       "However, even for molecular data in which long nucleotide sequences are the norm, there can be substantial uncertainty in the alignment";
-         Citation {Wong2008};  DotSpace;
+         Cite {Wong2008};  DotSpace;
       "Alignment uncertainty is exacerbated for cognates because the word-forms typically have only a handful of segments. ";
       "We address this problem by marginalizing over segmental alignments. ";
       "That is, we consider all possible word alignments, weighting each by its probability under the model. ";
       "We do this by performing parameter estimation in a Bayesian framework, using Markov chain Monte Carlo, or MCMC ";
-         Citation {Metropolis1953; Hastings1970};
+         Cite {Metropolis1953; Hastings1970};
          ", to sample model parameters, including segmental alignments, in proportion to their posterior probabilities.";
     };
   };
@@ -214,10 +214,10 @@ class IntroductionClass: ContentClass {
   override GetBody(ContentStyleClass style, title) = Block {
     style.TitlePar(title) {
       "Natural language exhibits the property of descent with modification, which allows their histories to be represented by a tree structure and estimated using phylogenetic methods developed in evolutionary biology";
-        Citation {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
+        Cite {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
       "Over the past twenty years, these methods have come to play a prominent role in historical and evolutionary linguistics. ";
       "Bayesian phylogenetic methods in particular are increasingly used to infer tree topologies, ancestral states, and divergence times";
-        Citation {Bouckaert2012; Bowern2012; Chang2015; Dunn2017; Sagart2019; Carling2021; Auderset2023; Heggarty2023}; DotSpace;
+        Cite {Bouckaert2012; Bowern2012; Chang2015; Dunn2017; Sagart2019; Carling2021; Auderset2023; Heggarty2023}; DotSpace;
       "Despite the undeniable advances of these methods, a fundamental problem remains unaddressed: the nature of the observations. ";
     };
   };
@@ -259,7 +259,7 @@ class DataSectionClass: ContentClass {
             string.ToLower(n);
             break;
         }
-        Action: new ActionClass(Actions.ToSource, concept.Attribute.Value);
+        Action: new Action(Actions.ToSource, concept.Attribute.Value);
       };
     }
   };
@@ -275,7 +275,7 @@ class DataSectionClass: ContentClass {
       " Romance languages and Latin, whose geographic distribution is presented in ";
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
 
-      "The word-forms are cognate in the traditional sense in that they refer to word-forms that descend from a common ancestor"; Citation {Chang2015.OnPage(201)}; DotSpace;
+      "The word-forms are cognate in the traditional sense in that they refer to word-forms that descend from a common ancestor"; Cite {Chang2015.OnPage(201)}; DotSpace;
 
       "In contrast to root-meaning traits (such as the one illustrated in ";
          style.TableReference(TableFigures.CognateCoding); "), meaning is irrelevant"; DotSpace;
@@ -326,7 +326,7 @@ class DataSectionClass: ContentClass {
 
       "Suprasegemental features such as stress and syllable structure are not represented"; DotSpace;
 
-      "All segments are coded in standard Unicode IPA"; Citation {IPA1999}; DotSpace;
+      "All segments are coded in standard Unicode IPA"; Cite {IPA1999}; DotSpace;
 
     };
 
@@ -364,7 +364,7 @@ class DataSectionClass: ContentClass {
     };
 
     style.BodyPar{
-      "The lexical histories of the Romance languages are notoriously complex"; Citation {Stefenelli1992; Dworkin2016b};
+      "The lexical histories of the Romance languages are notoriously complex"; Cite {Stefenelli1992; Dworkin2016b};
 
       ", as they have been shaped not only by inheritance but also by borrowings from both other Romance languages and Latin itself. ";
 
@@ -374,7 +374,7 @@ class DataSectionClass: ContentClass {
 
       "Two reasons are responsible for this reduced risk. ";
 
-      "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Citation {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
+      "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Cite {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
 
       "Second, the phonological developments of the Romance languages are sufficiently well understood that borrowings and Latinisms can often be detected. ";
 
@@ -382,7 +382,7 @@ class DataSectionClass: ContentClass {
 
       "Romance cognates are therefore appropriate for our analysis for the same reason that scholars have been able to reconstruct Proto-Romance lexemes using the traditional comparative method. ";
 
-      "For instance, the "; textit{"Dictionnaire Étymologique Roman"}; Citation{Derom}; " reconstructs a subset of the Proto-Romance lexicon from a dataset similar in spirit to ours. ";
+      "For instance, the "; textit{"Dictionnaire Étymologique Roman"}; Cite{Derom}; " reconstructs a subset of the Proto-Romance lexicon from a dataset similar in spirit to ours. ";
     };
   };
 }
@@ -400,7 +400,7 @@ class DataCurationClass: ContentClass {
     var data = MainResults.Data;
 
     style.TitlePar(title) {
-      "Our analysis is coordinated using a program written in the Nytril programming language"; Citation {Nytrilprogram}; DotSpace;
+      "Our analysis is coordinated using a program written in the Nytril programming language"; Cite {Nytrilprogram}; DotSpace;
       "We created an automated framework for the experiment that comprises a reusable IPA library, word data, ";
       "data quality checks, typeset output and input files for the MCMC software (written in C++). ";
     };
@@ -463,7 +463,7 @@ class CognateCodingClass: ContentClass {
       code;
   };
 
-  override GetBody(ContentStyleClass style, title) = LanguageTable([ColumnClass.Fit(2 inches)]*3) {
+  override GetBody(ContentStyleClass style, title) = LanguageTable([Column.Fit(2 inches)]*3) {
     ParAlignment: Center;
     LanguageTitleRow {
       Lang.Language;
@@ -491,7 +491,7 @@ class MultiStateCharacterClass: ContentClass {
     super.Constructor("Multistate cognate classes");
   }
 
-  static FatherTable(ContentStyleClass style, binary) = LanguageTable([2 inches, 1 inch] + (binary ? [new ColumnClass(0.9 inches, null, null, HAligns.Center)] * 3 : [new ColumnClass(1.5 inches, null, null, HAligns.Center)])) {
+  static FatherTable(ContentStyleClass style, binary) = LanguageTable([2 inches, 1 inch] + (binary ? [new Column(0.9 inches, null, null, HAligns.Center)] * 3 : [new Column(1.5 inches, null, null, HAligns.Center)])) {
     ParAlignment: Center;
     LanguageTitleRow {
       Lang.Language;

@@ -1,7 +1,7 @@
 include "English";
 include "Spanish";
 
-ConfigurationClass Main.Configurations.English = new(#6bdcd55c-ca02-403a-abc6-199166ade49b#, "English",
+Configuration Main.Configurations.English = new(#6bdcd55c-ca02-403a-abc6-199166ade49b#, "English",
   Languages.English,
   PaperSystems.US,
   UnitSystems.Imperial

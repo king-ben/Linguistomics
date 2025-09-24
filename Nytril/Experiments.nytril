@@ -2,7 +2,7 @@ using Format, IO, Units, Languages;
 
 //======================================================================
 
-class LangNodeClass: NodeClass {
+class LangNodeClass: Node {
   var Probability;
 
   Constructor {
@@ -95,7 +95,7 @@ class RunExperimentClass {
     Write(GetParameters, path Info.ParametersFile);
   }
 
-  void InitFolders(DataSetClass data, NodeClass tree) {
+  void InitFolders(DataSetClass data, Node tree) {
     var path = Info.ExperimentRoot RootFolder;
 
     CreateFolder(path);
@@ -132,12 +132,12 @@ class ModelClass {
 //======================================================================
 
 class TreeSetClass {
-  var NodeClass    Tree;
+  var Node    Tree;
   var ModelClass[] Models;
   var              Name,
                    RootFolder;
 
-  Constructor(config, name, root, NodeClass tree) {
+  Constructor(config, name, root, Node tree) {
     Name       = name;
     Tree       = tree;
     RootFolder = Folder(root) Folder(name);
@@ -157,7 +157,7 @@ class TreeSetClass {
 
 //======================================================================
 
-class IndexNode: NodeClass {
+class IndexNode: Node {
   var Index;
 
   Constructor(name, index) {

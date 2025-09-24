@@ -19,12 +19,12 @@ Main.Documents.MainDocument = new MyDocClass;
 
 //================================================================
 
-class FileActionClass: ActionClass {
+class FileActionClass: Action {
   Constructor {
     super.Constructor(Actions.Execute, null);
   }
 
-  override EventResponseClass Execute {
+  override EventResponse Execute {
     if (IO.Write(Schema.ShowDoc, Folders.Source Folders.Up FileName("BIPA.nytril")))
       return EventResponses.MessageTip("Files created");
     else

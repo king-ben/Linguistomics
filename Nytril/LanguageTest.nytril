@@ -36,7 +36,7 @@ class TestExperimentClass: DataSetClass {
     super.Constructor(info, "Test", "Test", 0);
   }
 
-  override NodeClass PriorTree = new Branch {
+  override Node PriorTree = new Branch {
     new Leaf(LanguageA);
     new Branch {
       new Leaf(LanguageB);
@@ -47,7 +47,7 @@ class TestExperimentClass: DataSetClass {
     }
   };
 
-  override NodeClass NumberedTree = new NBranch(1) {
+  override Node NumberedTree = new NBranch(1) {
     new NLeaf(this, LanguageA, 1);
     new NBranch(2) {
       new NLeaf(this, LanguageB, 3);

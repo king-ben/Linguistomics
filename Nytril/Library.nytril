@@ -70,7 +70,7 @@ class AlignPairClass: DocumentClass {
     }
   };
 
-  ShowBlock(prob, cumulative, wordset, boxheight) = VBox(null, null, new EdgeClass(0.125, 0, 50%)) {
+  ShowBlock(prob, cumulative, wordset, boxheight) = VBox(null, null, new Edge(0.125, 0, 50%)) {
     Margin: PadB(6 pts);
     HAlign: Center;
 
@@ -132,7 +132,7 @@ class AlignPairClass: DocumentClass {
     ChartSeries {
       ChartType: ChartTypes.Column;
       foreach (var a in Alignments) {
-        new DataPointClass(each0, a.Prob) {Reference: a.Prob};
+        new DataPoint(each0, a.Prob) {Reference: a.Prob};
         if (each1 >= max)
           break;
       }
@@ -256,9 +256,9 @@ class AlignPairClass: DocumentClass {
 
 //======================================================================
 
-class LanguageClass: FactClass {
+class LanguageClass: Fact {
   field string   Name;
-  var ImageClass Image;
+  var Image Image;
   var int        Cases;
   var string     ShortName;
   var int        LangIndex;
@@ -273,7 +273,7 @@ class LanguageClass: FactClass {
     ImagePath = imagepath;
   }
 
-  override IconClass GetIcon = Icons.language;
+  override Icon GetIcon = Icons.language;
 
   virtual Description = null;
 
@@ -286,7 +286,7 @@ class LanguageClass: FactClass {
     if (ImagePath is null)
       return null;
 
-    Image ??= new ImageClass(ImagePath);
+    Image ??= new Image(ImagePath);
     return FitBox(Image, width, height);
   }
 
@@ -309,7 +309,7 @@ class LanguageClass: FactClass {
 
 //======================================================================
 
-class WordClass: FactClass {
+class WordClass: Fact {
   field string       Text;
   var LanguageClass  Language;
   var TaxonClass     Taxon;
@@ -371,7 +371,7 @@ class WordClass: FactClass {
     Link.Connect(Language, Cognate);
   }
 
-  override IconClass GetIcon = Icons.text_snippet;
+  override Icon GetIcon = Icons.text_snippet;
 
   override GetLayoutSpan = Span {
     foreach (var s in Segments) {
@@ -384,7 +384,7 @@ class WordClass: FactClass {
     PaperStyle.IPAFamily;
     TextLiteral: true;  // No spell checking
 
-    Action: new ActionClass(Actions.ToSource, Variable);
+    Action: new Action(Actions.ToSource, Variable);
     // Strip out gaps and stress characters
     Text.FindSlice(c => c != IPASegments.GapSegment.Ipa and c != IPASegments.PrimaryStress.Ipa) as string;
   };
@@ -443,15 +443,15 @@ class WordClass: FactClass {
 
 //======================================================================
 
-class ConceptClass: FactClass {
+class ConceptClass: Fact {
   field string       Name;
   field double       Confidence;
-  var AttributeClass Attribute;
+  var Attribute Attribute;
   var                Variable;
   var WordTypes      WordType;
   var WordGroups     WordGroup;
 
-  Constructor(AttributeClass a) {
+  Constructor(Attribute a) {
     super.Constructor(Guid.FromHash(a.FullName));
     Attribute = a;
     Variable  = a.Value;
@@ -471,10 +471,10 @@ class ConceptClass: FactClass {
 
   GetTitle = Span {
     Name;
-    Action: new ActionClass(Actions.ToSource, Attribute.Value);
+    Action: new Action(Actions.ToSource, Attribute.Value);
   };
 
-  override IconClass GetIcon = Icons.category;
+  override Icon GetIcon = Icons.category;
 
   override GetLayoutTip = Span {Name; "-"; Confidence};
 
@@ -485,14 +485,14 @@ class ConceptClass: FactClass {
 
 //======================================================================
 
-class CognateClass: FactClass {
+class CognateClass: Fact {
   field string       Name;
   var ConceptClass   Concept;
   var WordClass[]    Words;
   var                MaxLength;
-  var AttributeClass Attribute;
+  var Attribute Attribute;
 
-  Constructor(ConceptClass concept, AttributeClass cognate) {
+  Constructor(ConceptClass concept, Attribute cognate) {
     super.Constructor(Guid.FromHash(cognate.FullName));
 
     Name      = cognate.Name;
@@ -503,7 +503,7 @@ class CognateClass: FactClass {
     Link.Connect(this, concept);
   }
 
-  override IconClass GetIcon = Icons.format_list_bulleted;
+  override Icon GetIcon = Icons.format_list_bulleted;
 
   GetSource = Span {
     Concept.Name;
@@ -514,7 +514,7 @@ class CognateClass: FactClass {
   };
 
   GetTitle = GetSource {
-    Action: new ActionClass(Actions.ToSource, Attribute.Value);
+    Action: new Action(Actions.ToSource, Attribute.Value);
   };
 
   override int Compare(c) {
@@ -569,7 +569,7 @@ class WordPairClass {
       Bold;
       Span {
         Word1.Cognate.Attribute.FullName[9..];
-        Action: new ActionClass(Actions.ToSource, Word1.Cognate.Attribute);
+        Action: new Action(Actions.ToSource, Word1.Cognate.Attribute);
       }
     };
 
@@ -670,7 +670,7 @@ class DataSetClass {
   var TreeSetClass[]               TreeSets;
   var List                         PlainBuffer,
                                    TextBuffer;
-  var AttributeClass               ExampleConcept,
+  var Attribute               ExampleConcept,
                                    FigureConcept,
                                    DataConcept;
   var                              WordCutoff,
@@ -698,9 +698,9 @@ class DataSetClass {
       ReadExperiment;
   }
 
-  TreeSetClass AddTree(config, NodeClass root) = new(config, "Tree"+each1, RootFolder, root);
+  TreeSetClass AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root);
 
-  void ReadRawWords(AttributeClass concepts, includewords, LanguageClass[] languageset, cutoff=-1) {
+  void ReadRawWords(Attribute concepts, includewords, LanguageClass[] languageset, cutoff=-1) {
     RawData = true;
 
     if (cutoff < 0)
@@ -833,7 +833,7 @@ class DataSetClass {
     DefWord.Init;
   }
 
-  virtual void GetConceptExamples(AttributeClass concepts) {
+  virtual void GetConceptExamples(Attribute concepts) {
     ExampleConcept = concepts.FindChild("Stone");
     FigureConcept  = concepts.FindChild("What");
     DataConcept    = concepts.FindChild("Mountain");
@@ -868,7 +868,7 @@ class DataSetClass {
     return SortedCognates;
   }
 
-  CognateClass GetCognate(AttributeClass concept) = UsedCognates.FindFirst(c => c.Concept.Name == concept.Name);
+  CognateClass GetCognate(Attribute concept) = UsedCognates.FindFirst(c => c.Concept.Name == concept.Name);
 
   void ComputeRawCognate(SegPartDictionary lookup, CognateClass cognate) {
     WordList.Initialize(DefWord);
@@ -923,7 +923,7 @@ class DataSetClass {
     }
   }
 
-  void ComputeExperimentCognate(CognateClass cognate, AttributeClass cognatevar) {
+  void ComputeExperimentCognate(CognateClass cognate, Attribute cognatevar) {
     WordList.Initialize(DefWord);
 
     var maxlength = 0;
@@ -994,7 +994,7 @@ class DataSetClass {
     };
   };
 
-  NodeClass NumberedTree = new NBranch(17) {
+  Node NumberedTree = new NBranch(17) {
     new NLeaf(Latin, 1, 6);
     new NBranch(16) {
       new NLeaf(Romanian, 2, 5);
@@ -1020,7 +1020,7 @@ class DataSetClass {
     }
   };
 
-  override IconClass GetIcon = Icons.science;
+  override Icon GetIcon = Icons.science;
 }
 
 //======================================================================
@@ -1270,7 +1270,7 @@ class RateDataClass {
 
 //======================================================================
 
-class SegmentActionClass: ActionClass {
+class SegmentActionClass: Action {
   var RateDataClass Rate;
   var SegPartClass  Segment;
   var TaxonClass    Taxon;
@@ -1477,7 +1477,7 @@ class SegmentFrequencyClass: FrequencyChartClass {
             var frac = factor * rate.Distance;
             Canvas(lw * frac, 2) {
               Background: Colors.Red;
-              Tip: new TipClass("{0}% different from {1}"(frac*100.0 {TextDigits: 1}, r0.Taxon.Language));
+              Tip: new Tip("{0}% different from {1}"(frac*100.0 {TextDigits: 1}, r0.Taxon.Language));
             };
           }
         };
@@ -1510,7 +1510,7 @@ class FrequencyFigureClass: ContentClass {
 
 //======================================================================
 
-class PartitionRateActionClass: ActionClass {
+class PartitionRateActionClass: Action {
   var RateDataClass  Rate;
   var PartitionClass Partition;
   var TaxonClass     Taxon;
@@ -1605,7 +1605,7 @@ class PartitionFrequencyClass: FrequencyChartClass {
           var frac = factor * rate.Distance;
           Canvas(lw * frac, 2) {
             Background: Colors.Red;
-            Tip: new TipClass("{0}% different from {1}"(frac*100.0 {TextDigits: 1}, r0.Taxon.Language));
+            Tip: new Tip("{0}% different from {1}"(frac*100.0 {TextDigits: 1}, r0.Taxon.Language));
           };
         };
         LangCanvas(rate, bw, h);

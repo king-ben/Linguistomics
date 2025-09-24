@@ -59,7 +59,7 @@ namespace Rev {
 }
 //======================================================================
 
-class RevProcessClass: ProcessClass {
+class RevProcessClass: Process {
   var Generations;
 
   Constructor(exe, args, generations) {
@@ -140,7 +140,7 @@ class LogSchemaClass: SchemaClass {
       };
       ChartSeries {
         foreach (var d in data)
-          new DataPointClass(each0, d.Value) {Reference: d.Variable};
+          new DataPoint(each0, d.Value) {Reference: d.Variable};
       };
     };
   };
@@ -159,10 +159,10 @@ class LogSchemaClass: SchemaClass {
         };
         ChartSeries {
 //          Marker: Tex.bullet {TextHeight: 3 pts; TextColor: Colors.Red};
-          Stroke: new StrokeClass(0.5 pts) {MiterLimit: 2 pts};
+          Stroke: new Stroke(0.5 pts) {MiterLimit: 2 pts};
           foreach (var l in list) {
             if (exists l)
-              new DataPointClass(null, l);
+              new DataPoint(null, l);
           }
         };
       };

@@ -2,7 +2,7 @@ using Format, Units, IO;
 
 //======================================================================
 
-class SearchDataClass: FactClass {
+class SearchDataClass: Fact {
   field string WordsContaining;
 
   Constructor {
@@ -13,7 +13,7 @@ class SearchDataClass: FactClass {
 
 //======================================================================
 
-class WordsContainingClass: ActionClass {
+class WordsContainingClass: Action {
   var SearchDataClass Data;
 
   Constructor(SearchDataClass data) {
@@ -66,7 +66,7 @@ class DiagnosticsViewClass: DocumentClass {
 
     Paragraph {
       HBox {
-        TextControl(new(ref SearchData.WordsContaining), 1 inches, null, new EdgeClass(1, 2)) {
+        TextControl(new(ref SearchData.WordsContaining), 1 inches, null, new Edge(1, 2)) {
           "Find Words Containing";
           Action: Actions.Refresh;
         };
@@ -134,7 +134,7 @@ class DiagnosticsViewClass: DocumentClass {
       "Chang A3";
     };
     Tree(100%, null) {
-      Default: new NodeClass(null) {
+      Default: new Node(null) {
         Curvature: 10%;
         Bevel: 10%;
       };
@@ -154,7 +154,7 @@ class ConceptGroupsClass: DataContentClass {
   override GetBody(ContentStyleClass style, title) = Block {
     var concepts = Data.UsedConcepts.ToSortedArray();
     WordGroups[] groups = WordGroups.ValueArray[1..];
-    Table(PaperStyle.TableBorder, PadLR(3 pts), [ColumnClass.Fit(2 inches)]) {
+    Table(PaperStyle.TableBorder, PadLR(3 pts), [Column.Fit(2 inches)]) {
       Row {
         PaperStyle.HeaderCell(style);
         PaperStyle.HeaderCell(style) {

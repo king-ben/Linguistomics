@@ -145,7 +145,7 @@ readonly namespace DisplayWords {
 
   ShowLanguage(ContentStyleClass style, DataSetClass data, TaxonClass taxon) = Block {
     PaperStyle.TitleBar {taxon.Language};
-    Table(0.5, null, [new(ColumnClass.Fit(2.1 inches), null, PadLR(10)), new(ColumnClass.Fit(1.5 inches), null, PadR(10)), ColumnClass.Expand]) {
+    Table(0.5, null, [new(Column.Fit(2.1 inches), null, PadLR(10)), new(Column.Fit(1.5 inches), null, PadR(10)), Column.Expand]) {
       style.SansSerif;
       Row {
         HeaderCell(Lang.Cognate);
@@ -337,7 +337,7 @@ class TabOptionsClass {
       var first  = 75 pts;
       var cw     = Math.Min((ExtentWidth - first) / places.Length, 75 pts);
 
-      Table(PaperStyle.TableBorder, null, [new ColumnClass(first, BorderR(0.5 pts))] + [new ColumnClass(cw, null, null, HAligns.Center)]) {
+      Table(PaperStyle.TableBorder, null, [new Column(first, BorderR(0.5 pts))] + [new Column(cw, null, null, HAligns.Center)]) {
         Row {
           TextHeight: 6 pts;
           PaperStyle.HeaderCell(style) {
@@ -449,7 +449,7 @@ readonly namespace MatchingVowels {
     };
 
     var border = BorderR(0.5 pts);
-    Table(PaperStyle.TableBorder, null, [new ColumnClass(1 inch, border)] + [new ColumnClass(PaperStyle.BoxSize.Width*4, border)]) {
+    Table(PaperStyle.TableBorder, null, [new Column(1 inch, border)] + [new Column(PaperStyle.BoxSize.Width*4, border)]) {
       HAlign: Center;
       Row {
         TextHeight: 10 pts;
@@ -581,11 +581,11 @@ class SegmentDisplayClass {
       TextDigits: 3;
       Label: Lang.Experiment;
       foreach (var s in sorted)
-        new DataPointClass(each0, s.UsedFrequency * 100.0) {Reference: s};
+        new DataPoint(each0, s.UsedFrequency * 100.0) {Reference: s};
     };
   };
 
-  SegmentCell(SegPartClass segment) = Cell(new EdgeClass(0.25 pts, 2 pts, Colors.LightGray)) {
+  SegmentCell(SegPartClass segment) = Cell(new Edge(0.25 pts, 2 pts, Colors.LightGray)) {
     segment.Segment.Display(segment.FactId, 16 pts);
   };
 
@@ -681,7 +681,7 @@ class SegmentAssignmentsClass: DataContentClass {
       TextHeight: textheight;
 
       foreach (var segment in Data.UniqueSegments) {
-        HBox(textheight * 3.25, null, new EdgeClass(0.25 pts, 1, 85%)) {
+        HBox(textheight * 3.25, null, new Edge(0.25 pts, 1, 85%)) {
           VAlign: Center;
           Margin: 5;
           Span {

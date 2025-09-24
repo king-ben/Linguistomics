@@ -3,7 +3,7 @@ using Format, IO, Units, Languages, LinkTypes;
 
 DefaultCognate = "Primary";
 
-LanguageParent = new LinkTypeClass(LanguageClass, LanguageClass, "Parent", true);
+LanguageParent = new LinkType(LanguageClass, LanguageClass, "Parent", true);
 
 readonly namespace<LanguageClass> WorldLanguages {
   Old_Irish          = new(#78e0808d-fef7-4220-ab40-31a2fb4caa6d#, "Old Irish", 5);

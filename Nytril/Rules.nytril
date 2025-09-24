@@ -1,7 +1,7 @@
 using Format, Units, SegmentFeatures, LinkTypes;
 //======================================================================
 
-class PartitionClass: FactClass {
+class PartitionClass: Fact {
   field string       Name;
   var string         PluralName;
   var SegPartClass[] Segments;
@@ -30,7 +30,7 @@ class PartitionClass: FactClass {
     }
   }
 
-  override IconClass GetIcon = Icons.sort;
+  override Icon GetIcon = Icons.sort;
 
   ShowFilterSegments(ParAlignments align) = Frame(PaperStyle.SegmentWidth) {
     Paragraph {
@@ -223,7 +223,7 @@ abstract class RuleClass {
 
   ShowPartitions {
     var textheight = Math.Min(ExtentWidth * 0.04, 10 pts);
-    return Table(BorderB(1), PadR(5), [ColumnClass.Fit(textheight * 9), ColumnClass.Fit(3 inches)]) {
+    return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3 inches)]) {
       ParAlignment: Center;
       TextHeight: textheight;
 
@@ -253,7 +253,7 @@ abstract class RuleClass {
       foreach (var filter in FiltersPlus) {
         var matching = GetMatching(segments, filter);
         if (matching is valid) {
-          HBox(null, null, new EdgeClass(0.25 pts, 1, 80%)) {
+          HBox(null, null, new Edge(0.25 pts, 1, 80%)) {
             VAlign: Center;
             Margin: 2;
             Span {

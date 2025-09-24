@@ -4,7 +4,7 @@ include "Basic Facts";
 
 //======================================================================
 
-readonly PersonClass[] Authors = [
+readonly Person[] Authors = [
   People.Goldstein_David,
   People.McCreight_Shawn,
   People.Buchi_Éva,
@@ -14,7 +14,7 @@ readonly PersonClass[] Authors = [
 //=========================================================================
 
 // People referred to in the project are instantiated here, in alphabetical order
-readonly namespace<PersonClass> People {
+readonly namespace<Person> People {
   Abete_Giovanni         = new(#97985e5d-e4b2-4956-a513-5b72f039e175#, "Giovanni", null, "Abete");
   Abrego_Carissa         = new(#4105d878-bc23-4e23-a0b4-d1da9fb232dc#, "Carissa", null, "Abrego-Collier");
   Alekseyenko_Alexander  = new(#536d85c5-a534-43ef-bfe3-a310cb1a1cec#, "Alexander", "V.", "Alekseyenko");
@@ -46,7 +46,7 @@ readonly namespace<PersonClass> People {
   Brown_Cecil            = new(#4f69e1ac-5d0c-4945-94e4-0c0ad91c8a42#, "Cecil", "H", "Brown");
   Bruno_William          = new(#d88c0664-2adf-491a-9006-c87e2621f1b9#, "William", null, "Bruno");
   Buchi_Éva              = new(#c87906ff-2ef9-4f06-8f1c-684f12dca06a#, "Éva", null, "Buchi") {
-    WorkEmailLink to new EmailClass("eva.buchi@cnrs.fr");
+    WorkEmailLink to new Email("eva.buchi@cnrs.fr");
     DepartmentLink to Organizations.CNRS;
     DepartmentLink to Organizations.UniversityOfLorraine;
   };
@@ -98,8 +98,8 @@ readonly namespace<PersonClass> People {
   Goldstein_David        = new(#a3f46f7d-97db-4ca7-bdca-3846f26c33cf#, "David", "M.", "Goldstein") {
     StreetAddress(null, Cities.LosAngeles, "90095-1543");
     DepartmentLink to Organizations.UCLALinguistics;
-    WebsiteLink to new URLClass("linguistics.ucla.edu/person/david-goldstein");
-    WorkEmailLink to new EmailClass("dgoldstein@humnet.ucla.edu");
+    WebsiteLink to new URL("linguistics.ucla.edu/person/david-goldstein");
+    WorkEmailLink to new Email("dgoldstein@humnet.ucla.edu");
   };
   Granville_Daniel      = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
   Gray_Russell           = new(#d85e29f9-d606-47cc-ad09-4769a12ff1ab#, "Russell", "D.", "Gray");
@@ -132,8 +132,8 @@ readonly namespace<PersonClass> People {
   Huelsenbeck_John       = new(#1b652f86-a923-477c-b19c-db6b3333ffa9#, "John", "P.", "Huelsenbeck") {
     StreetAddress("3040 VLSB #3140", Cities.Berkeley, "94720-3140");
     DepartmentLink to Organizations.UCBIntegrativeBiology;
-    WebsiteLink to new URLClass("vcresearch.berkeley.edu/faculty/john-huelsenbeck");
-    WorkEmailLink to new EmailClass("johnh@berkeley.edu");
+    WebsiteLink to new URL("vcresearch.berkeley.edu/faculty/john-huelsenbeck");
+    WorkEmailLink to new Email("johnh@berkeley.edu");
   };
   Hunter_Allice          = new(#d63e7e3a-f5d9-4eb4-b1f7-6af045d99c34#, "Allice", null, "Hunter");
 
@@ -192,13 +192,13 @@ readonly namespace<PersonClass> People {
   MacklinCordes_Jayden   = new(#9802dfae-6fa3-4790-a736-316dc58ad30f#, "Jayden", "L.", "Macklin-Cordes");
   Maguire_Warren         = new(#ae9d10ca-f241-4517-9be6-c114e2b7b355#, "Warren", null, "Maguire");
   Maiden_Martin          = new(#39a22193-be27-45f0-95e6-1a221fa5a80e#, "Martin", null, "Maiden");
-  Malkiel_Yakov          = new PersonClass(#0d760837-62fc-4aa7-ba0b-988faf0fffb7#, "Yakov", null, "Malkiel");
+  Malkiel_Yakov          = new Person(#0d760837-62fc-4aa7-ba0b-988faf0fffb7#, "Yakov", null, "Malkiel");
   Marsico_Egidio         = new(#18903af5-0e16-40d7-8127-90f03971d7d2#, "Egidio", null, "Marsico");
   McCloy_Daniel          = new(#89bd017c-0507-8b46-92f4-d2459bc3c228#, "Daniel", null, "McCloy");
   McCreight_Shawn        = new(#1c36c96b-43e5-426f-8c67-e9e05edf6326#, "Shawn", "H.", "McCreight") {
     DepartmentLink to Organizations.NytrilLLC;
-    WebsiteLink to new URLClass("www.nytril.com");
-    WorkEmailLink to new EmailClass("shawn.mccreight@gmail.com");
+    WebsiteLink to new URL("www.nytril.com");
+    WorkEmailLink to new Email("shawn.mccreight@gmail.com");
   };
   Meade_Andrew           = new(#5f74f65c-12fa-4a8a-b9ed-888ecd3714d6#, "Andrew", null, "Meade");
   Mertens_Bianca         = new(#9210c389-b7c6-473e-a8e3-fbba1ccd8fbb#, "Bianca", null, "Mertens");
@@ -300,7 +300,7 @@ readonly namespace<PersonClass> People {
 
 //======================================================================
 
-readonly namespace<OrganizationClass> Organizations {
+readonly namespace<Organization> Organizations {
   AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press");
 
   InternationalPhoneticAlphabet = new(#b825acb6-e103-49b7-96b8-d7183d0223ff#, "InternationalPhoneticAlphabet.org");
@@ -322,7 +322,7 @@ readonly namespace<OrganizationClass> Organizations {
   };
 
   CNRS = new(#25dd2aeb-f627-48e0-9c7d-10c3e8decea1#, "Centre national de la recherche scientifique") {
-    new CityClass(#05b9afc0-cb17-4027-8ec9-5885e9a7f888#, "Nancy") {Link to Countries.France};
+    new City(#05b9afc0-cb17-4027-8ec9-5885e9a7f888#, "Nancy") {Link to Countries.France};
   };
 
   UniversityOfLorraine = new(#704910ed-65ef-4453-bad3-72e00f7bfa1f#, "Université de Lorraine") {
@@ -372,11 +372,11 @@ readonly namespace<OrganizationClass> Organizations {
   };
 
   PennState = new(#cdce8591-0f96-443b-a3be-6959e0b811d0#, "The Pennsylvania State University Press") {
-        Link to new CityClass(#362c8524-bcca-4088-ac63-fbfc3befb796#, "University Park");
+        Link to new City(#362c8524-bcca-4088-ac63-fbfc3befb796#, "University Park");
   };
 
   PrenticeHall = new(#e8e6822e-63d8-4f70-9172-ac0866627ad7#, "Prentice-Hall") {
-        Link to new CityClass(#b62a56e8-315c-4f11-9945-f8d07035992c#, "Englewood Cliffs");
+        Link to new City(#b62a56e8-315c-4f11-9945-f8d07035992c#, "Englewood Cliffs");
   };
 
   Routledge = new(#3dd59ea1-c539-4c4b-b4ae-6b914cdab837#, "Routledge") {
@@ -437,7 +437,7 @@ readonly namespace<OrganizationClass> Organizations {
   };
 
   ACL = new(#96c184a3-9799-452d-9d15-e9d2855de310#, "Association for Computational Linguistics") {
-    Link to new CityClass(#a4335259-e592-4f3c-96ba-5571d05a3646#, "Stroudsburg") {Link to USStates.Pennsylvania};
+    Link to new City(#a4335259-e592-4f3c-96ba-5571d05a3646#, "Stroudsburg") {Link to USStates.Pennsylvania};
   };
 
   WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika");
@@ -448,14 +448,14 @@ readonly namespace<OrganizationClass> Organizations {
 
 //======================================================================
 
-WikipediaLink(name) = Link to new URLClass("en.wikipedia.org/wiki/"+name);
-WikiCommons(int id) = Link to new URLClass("commons.wikimedia.org/w/index.php?curid={0}"(id));
+WikipediaLink(name) = Link to new URL("en.wikipedia.org/wiki/"+name);
+WikiCommons(int id) = Link to new URL("commons.wikimedia.org/w/index.php?curid={0}"(id));
 
-readonly namespace<ReferenceClass> References {
+readonly namespace<DocReference> References {
   ASJP = new(#6d43ac22-f9a7-4b00-b1df-274856712e0d#, Misc) {
     Title: "The ASJP Database (version 18)";
     Date : #2018#;
-    Link to new URLClass("asjp.clld.org", #2020#);
+    Link to new URL("asjp.clld.org", #2020#);
     PublisherLink to Organizations.ASJP;
     AuthorLink to [People.Wichmann_Søren, People.Holman_Eric, People.Brown_Cecil];
   };
@@ -654,8 +654,8 @@ readonly namespace<ReferenceClass> References {
    JournalLink to Organizations.Language;
   };
 
-  CatalanMap = new ReferenceClass(#b5024258-670f-422a-9072-61fd891a1525#, Art) {
-    ArtistLink to new PersonClass(#ada55b9b-3668-4c2c-8957-f165b7c61ed1#, "Martí8888", null, null);
+  CatalanMap = new DocReference(#b5024258-670f-422a-9072-61fd891a1525#, Art) {
+    ArtistLink to new Person(#ada55b9b-3668-4c2c-8957-f165b7c61ed1#, "Martí8888", null, null);
     Note: "Own work, CC BY-SA 4.0";
     WikiCommons(55002590);
     Link to WorldLanguages.Catalan;
@@ -689,7 +689,7 @@ readonly namespace<ReferenceClass> References {
     Date : #1954#;
     AuthorLink to People.Coseriu_Eugenio;
     PublisherLink to Organizations.Udlr;
-    Link to new CityClass(#0a88e55e-624f-421a-a7d6-c381bce836e3#, "Montevideo") {Link to Countries.Uruguay};
+    Link to new City(#0a88e55e-624f-421a-a7d6-c381bce836e3#, "Montevideo") {Link to Countries.Uruguay};
   };
 
   Croft2008 = new(#935c60d2-d680-42db-9df5-e383b6cf3bf4#, Article) {
@@ -732,7 +732,7 @@ readonly namespace<ReferenceClass> References {
     Title: "Dictionnaire Étymologique Roman";
     Subtitle: "Les mots d’origine latine dans les langues romanes";
     Date: #2023#;
-    Link to new URLClass("http://stella.atilf.fr/DERom/", #2025-07-04#);
+    Link to new URL("http://stella.atilf.fr/DERom/", #2025-07-04#);
     PublisherLink to Organizations.ATILF;
   };
 
@@ -743,7 +743,7 @@ readonly namespace<ReferenceClass> References {
     Date : #2019-08#;
     Volume: 16;
     ISSN : "2756-1224";
-    Link to new URLClass("www.lddjournal.org/article/id/1204/");
+    Link to new URL("www.lddjournal.org/article/id/1204/");
     AuthorLink to [People.Dockum_Rikker, People.Bowern_Claire];
     JournalLink to Organizations.LanguageDocumentationAndDescription;
     EditorLink to People.Austin_Peter;
@@ -801,8 +801,8 @@ readonly namespace<ReferenceClass> References {
     Link to WorldLanguages.French;
   };
 
-  FriulianMap = new ReferenceClass(#bb4e3b70-ad61-44cc-9acb-262115ac9385#, Art) {
-    ArtistLink to new PersonClass(#8b7d0579-6afb-4b86-a84d-e3350f65e639#, "El Bux", null, "Del Cu");
+  FriulianMap = new DocReference(#bb4e3b70-ad61-44cc-9acb-262115ac9385#, Art) {
+    ArtistLink to new Person(#8b7d0579-6afb-4b86-a84d-e3350f65e639#, "El Bux", null, "Del Cu");
     Note: "CC BY-SA 4.0";
     WikiCommons(100544430);
     Link to WorldLanguages.Friulian;
@@ -966,7 +966,7 @@ readonly namespace<ReferenceClass> References {
     Title: "IPA Symbols Chart Complete";
     Date : #2019#;
 
-    Link to new URLClass("www.internationalphoneticalphabet.org/ipa-charts/ipa-symbols-chart-complete");
+    Link to new URL("www.internationalphoneticalphabet.org/ipa-charts/ipa-symbols-chart-complete");
     PublisherLink to Organizations.InternationalPhoneticAlphabet;
   };
 
@@ -977,7 +977,7 @@ readonly namespace<ReferenceClass> References {
     PublisherLink to Organizations.Wikipedia;
   };
 
-  ItalianMap = new ReferenceClass(#f04dc920-1768-49a5-931a-193dd6944809#, Art) {
+  ItalianMap = new DocReference(#f04dc920-1768-49a5-931a-193dd6944809#, Art) {
     Note: "This file is licensed under the Creative Commons Attribution-Share Alike 4.0 International license";
     Link to WorldLanguages.Italian;
   };
@@ -1153,7 +1153,7 @@ readonly namespace<ReferenceClass> References {
     BookTitle  : "Proceedings of the XIVth International Congress of Phonetic Sciences";
     Date       : #1999#;
     Pages      : 353..356;
-    Link to new CityClass(#f33d2b62-5d01-4779-b193-aa051b833881#, "Berkeley");
+    Link to new City(#f33d2b62-5d01-4779-b193-aa051b833881#, "Berkeley");
     PublisherLink to Organizations.UCBLinguistics;
     AuthorLink to People.Marsico_Egidio;
     EditorLink to [People.Ohala_John,People.Hasegawa_Yoko, People.Ohala_Manjari, People.Granville_Daniel, People.Bailey_Ashlee];
@@ -1202,7 +1202,7 @@ readonly namespace<ReferenceClass> References {
     Date : #2024#;
     AuthorLink to [People.McCreight_Shawn,People.Colbert_John];
     PublisherLink to Organizations.NytrilLLC;
-    Link to new URLClass("www.nytril.com/fda46c87-c829-4c9d-9d64-c89b07aa6643");
+    Link to new URL("www.nytril.com/fda46c87-c829-4c9d-9d64-c89b07aa6643");
   };
 
   Ohala2003 = new(#d631e6bc-0382-4012-a384-d1f03c5ccd72#, InCollection) {
@@ -1214,7 +1214,7 @@ readonly namespace<ReferenceClass> References {
     Chapter  : 22;
     ISBN     : "9780470756393";
 
-    Link to new URLClass("onlinelibrary.wiley.com/doi/abs/10.1002/9780470756393.ch22");
+    Link to new URL("onlinelibrary.wiley.com/doi/abs/10.1002/9780470756393.ch22");
     AuthorLink to People.Ohala_John;
     EditorLink to [People.Joseph_Brian, People.Janda_Richard];
     PublisherLink to Organizations.WileyBlackwell;
@@ -1269,19 +1269,19 @@ readonly namespace<ReferenceClass> References {
     Date : #2019#;
     EditorLink to [People.Moran_Steven, People.McCloy_Daniel];
     PublisherLink to Organizations.PlanckInstitute;
-    Link to new URLClass("www.phoible.org", #2021-8-19#);
-    Link to new CityClass(#648fecca-7089-4ebb-8f6c-2c4b2ccb79ee#, "Jena");
+    Link to new URL("www.phoible.org", #2021-8-19#);
+    Link to new City(#648fecca-7089-4ebb-8f6c-2c4b2ccb79ee#, "Jena");
   };
 
-  PortugueseMap = new ReferenceClass(#09f9af61-47d7-40cc-81fc-f15c9a649e62#, Art) {
-    ArtistLink to new PersonClass(#4bf41485-5272-48be-b93e-3203660f9e39#, "Saftorangen", null, null);
+  PortugueseMap = new DocReference(#09f9af61-47d7-40cc-81fc-f15c9a649e62#, Art) {
+    ArtistLink to new Person(#4bf41485-5272-48be-b93e-3203660f9e39#, "Saftorangen", null, null);
     Note: "Own work, CC BY-SA 3.0";
     WikiCommons(10427939);
     Link to WorldLanguages.Portuguese;
   };
 
-  PortugueseBMap = new ReferenceClass(#d834e468-791b-4372-b169-a6dbb507012c#, Art) {
-    ArtistLink to new PersonClass(#aa4c59c4-dc47-4865-b5c9-038288d24895#, "Addicted04", null, null);
+  PortugueseBMap = new DocReference(#d834e468-791b-4372-b169-a6dbb507012c#, Art) {
+    ArtistLink to new Person(#aa4c59c4-dc47-4865-b5c9-038288d24895#, "Addicted04", null, null);
     Link to WorldLanguages.PortugueseB;
   };
 
@@ -1309,7 +1309,7 @@ readonly namespace<ReferenceClass> References {
     Title: "RevBayes: Bayesian phylogenetic inference using graphical models and an interactive model-specification language";
     Date : #2016#;
     Pages: "65:726-736";
-    Link to new URLClass("www.revbayes.com", #2021#);
+    Link to new URL("www.revbayes.com", #2021#);
     PublisherLink to Organizations.SystematicBiology;
     AuthorLink to [People.Höhna_Sebastian, People.Landis_Michael, People.Heath_Tracy, People.Boussau_Bastien, People.Lartillot_Nicolas, People.Moore_Brian, People.Huelsenbeck_John, People.Ronquist_Fredrik];
   };
@@ -1325,8 +1325,8 @@ readonly namespace<ReferenceClass> References {
     JournalLink to Organizations.TransactionsPhilologicalSociety;
   };
 
-  RomanianMap = new ReferenceClass(#3c22d917-a089-4aff-b550-d0a41d54fe53#, Art) {
-    ArtistLink to new PersonClass(#72a5e5ed-00e2-4f0a-8e32-dc2ba0e2d46e#, "Fobos92", null, null);
+  RomanianMap = new DocReference(#3c22d917-a089-4aff-b550-d0a41d54fe53#, Art) {
+    ArtistLink to new Person(#72a5e5ed-00e2-4f0a-8e32-dc2ba0e2d46e#, "Fobos92", null, null);
     Note: "Own work, CC BY-SA 4.0";
     WikiCommons(17155403);
     Link to WorldLanguages.Romanian;
@@ -1345,7 +1345,7 @@ readonly namespace<ReferenceClass> References {
 
   SoundComparisons = new(#187b7119-5e3e-42e7-a7a4-d05113d27c43#, Misc) {
     Title: "Sound Comparisons: Romance";
-    Link to new URLClass("soundcomparisons.com/Romance", #2022-3-7#);
+    Link to new URL("soundcomparisons.com/Romance", #2022-3-7#);
     AuthorLink to [People.Heggarty_Paul, People.Abete_Giovanni];
     Date: #2019#;
     DOI: "heggarty_sound_2019-1";
@@ -1363,7 +1363,7 @@ readonly namespace<ReferenceClass> References {
     Date : #1992#;
     AuthorLink to People.Stefenelli_Arnulf;
     PublisherLink to Organizations.Rothe;
-    Link to new CityClass(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
+    Link to new City(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
   };
 
   Straka1956 = new(#bc41b6c5-1f4f-4383-93b6-20969cb20c2e#, Article) {
@@ -1433,8 +1433,8 @@ readonly namespace<ReferenceClass> References {
     JournalLink to Organizations.RomancePhilology;
   };
 
-  Walloon = new ReferenceClass(#f520c1c4-7676-49a1-8d6d-c6545c746690#, Art) {
-    ArtistLink to new PersonClass(#72a5e5ed-00e2-4f0a-8e32-dc2ba0e2d46e#, "Fobos92", null, null);
+  Walloon = new DocReference(#f520c1c4-7676-49a1-8d6d-c6545c746690#, Art) {
+    ArtistLink to new Person(#72a5e5ed-00e2-4f0a-8e32-dc2ba0e2d46e#, "Fobos92", null, null);
     Note: "Own work, CC BY-SA 4.0";
     WikiCommons(35302145);
     Link to WorldLanguages.Walloon;
@@ -1470,7 +1470,7 @@ readonly namespace<ReferenceClass> References {
   Wiktionary = new(#207d20cb-8e74-4a74-8bb9-b4ba7c561fab#, InternetSite) {
     Title: "Download";
     Date : #2021#;
-    Link to new URLClass("en.wiktionary.org/wiki/Wiktionary", #2021#);
+    Link to new URL("en.wiktionary.org/wiki/Wiktionary", #2021#);
     AuthorLink to People.Wiktionary;
   };
 

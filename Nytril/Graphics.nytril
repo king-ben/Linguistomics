@@ -36,7 +36,7 @@ readonly namespace PaperStyle {
   TextIpa              = Span {TextLiteral: true; IPAFamily; Begin:"/"; End:"/"};
   HeatMap              = LinearGradient.FromColorArray([Colors.Blue, Colors.Cyan, Colors.Yellow, Colors.Pink, Colors.Red]);
 
-  LanguageTable(ColumnClass[] columns) = Table(new(new(0, 2), new(2 pts, 2), new(0, 2), new(2 pts, 2)), PadLR(2 pts), columns);
+  LanguageTable(Column[] columns) = Table(new(new(0, 2), new(2 pts, 2), new(0, 2), new(2 pts, 2)), PadLR(2 pts), columns);
 
   LanguageTitleRow = Row(BorderB(1 pts));
 
@@ -75,12 +75,12 @@ readonly namespace PaperStyle {
 
   BranchMarker = HBox {
     Margin: PadR(2 pts);
-    Shape(Colors.Black, new StrokeClass(1 pt, Colors.Gray)) {
+    Shape(Colors.Black, new Stroke(1 pt, Colors.Gray)) {
       EllipsePath(new(0, 1 pts))
     };
   };
 
-  ShowTree(ContentStyleClass style, NodeClass root, width, title=null, axis=null, reorder=true) = VBox {
+  ShowTree(ContentStyleClass style, Node root, width, title=null, axis=null, reorder=true) = VBox {
     if (title is valid) {
       Margin: PadAll(5 pts);
       style.Heading1 {
@@ -93,7 +93,7 @@ readonly namespace PaperStyle {
       TextHeight: 11 pts;
       Reorder: reorder;
       Root: root;
-      Default: new NodeClass(null) {
+      Default: new Node(null) {
         NodeGap: 2 pts;
         Curvature: 20%;
         Bevel: 20%;
@@ -106,7 +106,7 @@ readonly namespace PaperStyle {
     };
   };
 
-  ShowTreeHorizontal(ContentStyleClass style, NodeClass root, width, title=null, axis=null) = HBox {
+  ShowTreeHorizontal(ContentStyleClass style, Node root, width, title=null, axis=null) = HBox {
     style.SansSerif;
 
     VAlign: Top;
@@ -124,7 +124,7 @@ readonly namespace PaperStyle {
       TextHeight: 8 pts;
       Reorder: true;
       Root: root;
-      Default: new NodeClass(null) {
+      Default: new Node(null) {
 //        NodeGap: 5 pts;
         Curvature: 20%;
         Bevel: 20%;
@@ -144,7 +144,7 @@ readonly namespace PaperStyle {
     ".";
     Tab;
     Span {
-      Action: new ActionClass(Actions.ToAnchor, Lang.Appendix + each0);
+      Action: new Action(Actions.ToAnchor, Lang.Appendix + each0);
       appendix.Title
     };
   };
@@ -227,7 +227,7 @@ readonly namespace PaperStyle {
 //    SourceSelection(concept, SourceSelectOptions.Line SourceSelectOptions.Children);
   };
 
-  BodyTable(ColumnClass[] columns) = Table(null, null, columns) {
+  BodyTable(Column[] columns) = Table(null, null, columns) {
     SpaceBefore: 10 pts;
     SpaceAfter: 10 pts;
     LeftIndent: 0.5 inches;
@@ -255,10 +255,10 @@ readonly namespace PaperStyle {
 //======================================================================
 
 class TreeContentClass: ContentClass {
-  var NodeClass Root;
+  var Node Root;
   var           Axis;
 
-  Constructor(title, NodeClass root, axis=null) {
+  Constructor(title, Node root, axis=null) {
     super.Constructor(title);
     Root = root;
     Axis = axis;

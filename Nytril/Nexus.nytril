@@ -75,7 +75,7 @@ readonly namespace Nexus {
     Keyword("#NEXUS");
   };
 
-  Newick(NodeClass node) = Span {
+  Newick(Node node) = Span {
     if (node.HasChildren) {
       "(";
       Span {

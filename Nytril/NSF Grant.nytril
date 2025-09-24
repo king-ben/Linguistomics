@@ -26,7 +26,7 @@ class NSFGrantIntroClass: ContentClass {
   override GetBody(ContentStyleClass style, title) = Block {
     style.TitlePar(title) {
       "Much like biological species, languages exhibit the essential trait of descent with modification, which allows their histories to be represented by a tree structure and estimated using phylogenetic methods developed in evolutionary biology";
-        Citation {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
+        Cite {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
       "Over the past twenty years, these methods have come to play a prominent role in the investigation of linguistic history. ";
     };
   };

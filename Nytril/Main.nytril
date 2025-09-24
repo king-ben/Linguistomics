@@ -34,7 +34,7 @@ readonly OtherStyleClass OtherStyle = new;
 readonly ContentStyleClass MainContentStyle  = JOLEStyle;
 readonly ContentStyleClass SlideContentStyle = OtherStyle;
 readonly PaperContentClass PaperContent      = new;
-readonly SiteClass         Main.Site         = new LinguistomicsSiteClass;
+readonly RealmSite         Main.Site         = new LinguistomicsSiteClass;
 readonly                   Main.Facts        = WorldLanguages;
 
 readonly namespace Main.Documents {
@@ -110,7 +110,7 @@ class HomePageClass: SitePageClass {
 
 //===============================================================
 
-class LinguistomicsSiteClass: SiteClass {
+class LinguistomicsSiteClass: RealmSite {
   Constructor {
     super.Constructor("Linguistomics");
   }

@@ -43,9 +43,9 @@ ShowString(text) = Span {
 class ConfigFileClass {
   var DataSetClass       Data;
   var RunExperimentClass Run;
-  var NodeClass          Prior;
+  var Node          Prior;
 
-  Constructor(DataSetClass data, RunExperimentClass run, NodeClass prior) {
+  Constructor(DataSetClass data, RunExperimentClass run, Node prior) {
     Data  = data;
     Run   = run;
     Prior = prior;
