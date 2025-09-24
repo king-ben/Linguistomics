@@ -125,7 +125,7 @@ class ConfigFileClass {
 
   Show = AddScope {
     TextFace: Mono;
-    TextHeight: 9 pts;
+    TextHeight: 9pt;
 
     Span {
       Variable("Tree");

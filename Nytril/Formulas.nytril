@@ -161,7 +161,7 @@ AncestorNode(i) = Equation {
 //======================================================================
 
 Condition(SymbolClass x, y) = Span {
-  Tip: Span {TextHeight: 16 pts; "Conditional observation of {0} ({1}) given the parameter {2}"(x.Name, x, y)};
+  Tip: Span {TextHeight: 16pt; "Conditional observation of {0} ({1}) given the parameter {2}"(x.Name, x, y)};
   x;
   vert;
   y;
@@ -517,7 +517,7 @@ readonly namespace<EquationClass> Equations {
 
       var states = ["A", "C", "G", "T"];
       MatrixBox {
-        ColumnGap: 16 pts;
+        ColumnGap: 16pt;
         HAlign: Center;
         Bracket: Brackets.FlatRound;
 

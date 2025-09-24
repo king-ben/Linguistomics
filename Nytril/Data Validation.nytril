@@ -24,7 +24,7 @@ class WordsContainingClass: Action {
   override GetQuery {
     if (Data.WordsContaining is valid) {
       return MatchAny(WordClass) {
-        MatchAny(SegmentClass) {
+        MatchAny(Segment) {
           Ipa: Data.WordsContaining;
         };
       };
@@ -38,11 +38,11 @@ class WordsContainingClass: Action {
 
 class DiagnosticsViewClass: DocumentClass {
   var DataSetClass        Data;
-  var ContentStyleClass   Style;
+  var ContentStyle   Style;
   var SegmentDisplayClass Display;
   var SearchDataClass     SearchData;
 
-  Constructor(ContentStyleClass style, DataSetClass data) {
+  Constructor(ContentStyle style, DataSetClass data) {
     super.Constructor(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, "Diagnostics");
     Description = "Summary of the data used in the experiment with diagnostic views";
     Data        = data;
@@ -62,7 +62,7 @@ class DiagnosticsViewClass: DocumentClass {
   };
 
   ShowQuery = Block {
-    TextHeight: 14 pts;
+    TextHeight: 14pt;
 
     Paragraph {
       HBox {
@@ -85,9 +85,9 @@ class DiagnosticsViewClass: DocumentClass {
 //    if (not System.IsPublishing)
 //      ShowQuery;
 
-    TextHeight: 9 pts;
+    TextHeight: 9pt;
 
-    ContentClass[] content = [
+    Content[] content = [
       new PriorTreeClass(Data),
       new AppendixClass(Lang.UniqueSegments, Display.IPASegmentTable),
       new SegmentAssignmentsClass(Data),
@@ -95,7 +95,7 @@ class DiagnosticsViewClass: DocumentClass {
       new AppendixClass("Words containing each segment", Display.ShowWordsForEachSegment),
       new AppendixClass("Word Lists by Language", DisplayWords.ShowWordsByLanguage(Style, Data)),
       new AppendixClass("Segment Groups", ShowSegmentTables),
-      new AppendixClass(Lang.ConceptsUsed, AllWords.ShowTable(Style, Data, 10 pts)),
+      new AppendixClass(Lang.ConceptsUsed, AllWords.ShowTable(Style, Data, 10pt)),
       new AppendixClass(Lang.Languages, Display.ShowLanguageDetails(Style)),
 //      new("Euler Feature Diagram", new EulerDiagramClass().FeatureChart(Data)),
     ];
@@ -138,7 +138,7 @@ class DiagnosticsViewClass: DocumentClass {
         Curvature: 10%;
         Bevel: 10%;
       };
-      TextHeight: 5.5 pts;
+      TextHeight: 5.5pt;
       Root: LanguageBranches.ChangA3;
     }
   };
@@ -151,10 +151,10 @@ class ConceptGroupsClass: DataContentClass {
     super.Constructor(data, "Concept Groups");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var concepts = Data.UsedConcepts.ToSortedArray();
     WordGroups[] groups = WordGroups.ValueArray[1..];
-    Table(PaperStyle.TableBorder, PadLR(3 pts), [Column.Fit(2 inches)]) {
+    Table(PaperStyle.TableBorder, PadLR(3pt), [Column.Fit(2 inches)]) {
       Row {
         PaperStyle.HeaderCell(style);
         PaperStyle.HeaderCell(style) {
@@ -194,7 +194,7 @@ class PriorTreeClass: DataContentClass {
     super.Constructor(data, "Prior Trees");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     Paragraph {
       foreach (var tree in TreeExamples.PriorTrees)
         PaperStyle.ShowTree(style, tree, 30%, Lang.Tree+each1);
@@ -209,14 +209,14 @@ class CognateCoverageClass: DataContentClass {
     super.Constructor(data, "Cognate Coverage");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.Heading1 {
       "By Language";
     };
 
     Chart(100%, 3") {
       ChartType: ChartTypes.Column;
-      TextHeight: 10 pts;
+      TextHeight: 10pt;
       ValueLabel: "%";
 
       XAxis: ChartAxis {
@@ -248,7 +248,7 @@ class CognateCoverageClass: DataContentClass {
 
     Chart(100%, 3") {
       ChartType: ChartTypes.Column;
-      TextHeight: 10 pts;
+      TextHeight: 10pt;
 
       ValueLabel: PaperStyle.ValueLabel {
         Lang.Cognates;
@@ -269,7 +269,7 @@ class CognateCoverageClass: DataContentClass {
 
 //======================================================================
 
-class AppendixClass: ContentClass {
+class AppendixClass: Content {
   var Body;
 
   Constructor(title, body) {
@@ -277,7 +277,7 @@ class AppendixClass: ContentClass {
     Body = body;
   }
 
-  override GetBody(ContentStyleClass style, title) = Body;
+  override GetBody(ContentStyle style, title) = Body;
 }
 
 //======================================================================
@@ -336,7 +336,7 @@ class WordViewClass: DocumentClass {
     "];";
   };
 
-  ShowSegmentIndices(SegPartClass[] segments) = Span {
+  ShowSegmentIndices(SegmentPart[] segments) = Span {
     "[";
     Span {
       Separator: CommaSpace;
@@ -378,7 +378,7 @@ class WordViewClass: DocumentClass {
   };
 
   override GetDocument = Document {
-    TextHeight: 9 pts;
+    TextHeight: 9pt;
 
     TextBlock {
       Span {
@@ -439,7 +439,7 @@ class WordViewClass: DocumentClass {
 
 //======================================================================
 
-class SegmentTransitionClass: ContentClass {
+class SegmentTransitionClass: Content {
   var DataSetClass Data;
 
   Constructor(DataSetClass data) {
@@ -447,11 +447,11 @@ class SegmentTransitionClass: ContentClass {
     Data = data;
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The number of times that a segment on the left vertical bar differs from any other other segment at the same position. The rates of transitions to and from gaps are ignored. Partitions are ordered by frequency of occurrance. Transition counts are shown in a scaled color box. The chart has diagonal symmetry.";
   };
 
-  override GetBody(ContentStyleClass style, title) = new PriorCountClass(Data).PartitionBox(style, new (ExtentWidth, ExtentHeight - 1.6 inch));
+  override GetBody(ContentStyle style, title) = new PriorCountClass(Data).PartitionBox(style, new (ExtentWidth, ExtentHeight - 1.6 inch));
 }
 
 //======================================================================

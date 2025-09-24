@@ -124,7 +124,7 @@ class LogSchemaClass: SchemaClass {
 
   TitleBox(name) = Paragraph {
     HAlignment: HAligns.Center;
-    TextHeight: 14 pts;
+    TextHeight: 14pt;
     name;
   };
 
@@ -146,7 +146,7 @@ class LogSchemaClass: SchemaClass {
   };
 
   LineChart(view, name, f=null) = Paragraph {
-    SpaceBefore: 20 pts;
+    SpaceBefore: 20pt;
     VBox {
       TitleBox(name ?? f);
       Chart(DocMetrics.TreeWidth, 2.5 inches) {
@@ -158,8 +158,8 @@ class LogSchemaClass: SchemaClass {
           each 0..<list.Length;
         };
         ChartSeries {
-//          Marker: Tex.bullet {TextHeight: 3 pts; TextColor: Colors.Red};
-          Stroke: new Stroke(0.5 pts) {MiterLimit: 2 pts};
+//          Marker: Tex.bullet {TextHeight: 3pt; TextColor: Colors.Red};
+          Stroke: new Stroke(0.5pt) {MiterLimit: 2pt};
           foreach (var l in list) {
             if (exists l)
               new DataPoint(null, l);

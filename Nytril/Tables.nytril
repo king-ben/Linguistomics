@@ -11,7 +11,7 @@ class EulerDiagramClass {
   EY(y)      = ChartSize * y * 0.01;
 
   Enclosure(x, y, w, h, Color color) = Canvas(EX(w), EY(h), 1 pt) {
-    BorderRadius: 6 pts;
+    BorderRadius: 6pt;
     Background: color;
     X: EX(x);
     Y: EY(y);
@@ -35,9 +35,9 @@ class EulerDiagramClass {
 
   FeatureMask = Vowel Nasal Vocoid Approximant Vibrant Lateral Affricate Occlusive Strident Sibilant Obstruent Continuant Fricative Rhotic Liquid Trill TapFlap;
 
-  FeatureSegments(SegmentClass[] segments, features) = segments.FindSlice(s => s.Features.HasFlagMask(FeatureMask, features));
+  FeatureSegments(Segment[] segments, features) = segments.FindSlice(s => s.Features.HasFlagMask(FeatureMask, features));
 
-  FeatureFrame(SegmentClass[] segments, x, y, width, name, features) = Canvas {
+  FeatureFrame(Segment[] segments, x, y, width, name, features) = Canvas {
     X: EX(x);
     Y: EY(y);
     Frame(EX(width)) {
@@ -51,8 +51,8 @@ class EulerDiagramClass {
     }
   };
 
-  FeatureChart(SegmentClass[] segments) = Canvas {
-    TextHeight: 16 pts;
+  FeatureChart(Segment[] segments) = Canvas {
+    TextHeight: 16pt;
 
     VNameFrame(Lang.Occlusive, 10, 0, 90, 34, new(255, 238, 238)) {
       HAlign: HAligns.Right;
@@ -138,12 +138,12 @@ class EulerDiagramClass {
 //======================================================================
 
 readonly namespace DisplayWords {
-  HeaderCell(d) = Cell(new(new(0, 2 pts), new(0, 2 pts), new(0, 2 pts), new(1, 2 pts))) {
+  HeaderCell(d) = Cell(new(new(0, 2pt), new(0, 2pt), new(0, 2pt), new(1, 2pt))) {
     PaperStyle.TitleBackground;
     d
   };
 
-  ShowLanguage(ContentStyleClass style, DataSetClass data, TaxonClass taxon) = Block {
+  ShowLanguage(ContentStyle style, DataSetClass data, TaxonClass taxon) = Block {
     PaperStyle.TitleBar {taxon.Language};
     Table(0.5, null, [new(Column.Fit(2.1 inches), null, PadLR(10)), new(Column.Fit(1.5 inches), null, PadR(10)), Column.Expand]) {
       style.SansSerif;
@@ -171,7 +171,7 @@ readonly namespace DisplayWords {
     Paragraph;
   };
 
-  ShowWordsByLanguage(ContentStyleClass style, DataSetClass data) = Block {
+  ShowWordsByLanguage(ContentStyle style, DataSetClass data) = Block {
     ShowLanguage(style, data, each data.Taxa);
   };
 }
@@ -183,7 +183,7 @@ readonly namespace AllWords {
     cognate.Words[taxon.Index].ShowPaddedBlocks(textheight);
   };
 
-  AddRow(ContentStyleClass style, TaxonClass taxon, CognateClass[] cognates, textheight) = Row {
+  AddRow(ContentStyle style, TaxonClass taxon, CognateClass[] cognates, textheight) = Row {
     Cell(PadL(1 pt)) {
       style.SansSerif;
       TextColor: Colors.DarkGray;
@@ -192,8 +192,8 @@ readonly namespace AllWords {
     AddCell(taxon, each cognates, textheight)
   };
 
-  ConceptTable(ContentStyleClass style, DataSetClass data, textheight, wordsperline, CognateClass[] cognates) = HBox {
-    var first = 84 pts;
+  ConceptTable(ContentStyle style, DataSetClass data, textheight, wordsperline, CognateClass[] cognates) = HBox {
+    var first = 84pt;
     var w     = (ExtentWidth - first) / wordsperline;
     Table(0.5, null, [first] + [w] * wordsperline) {
       PaperStyle.IPAFamily;
@@ -209,9 +209,9 @@ readonly namespace AllWords {
     Paragraph;
   };
 
-  ShowConceptTable(ContentStyleClass style, DataSetClass data, CognateClass cognate) = ConceptTable(style, data, 10 pts, 7, [cognate]);
+  ShowConceptTable(ContentStyle style, DataSetClass data, CognateClass cognate) = ConceptTable(style, data, 10pt, 7, [cognate]);
 
-  ShowTable(ContentStyleClass style, DataSetClass data, textheight, int max=1000000) = Block {
+  ShowTable(ContentStyle style, DataSetClass data, textheight, int max=1000000) = Block {
     TextHeight: textheight;
     var wordsperline = (ExtentWidth / (14 * (textheight toscale pixels))) as int;
 
@@ -224,7 +224,7 @@ readonly namespace AllWords {
 }
 
 readonly namespace MatchCell {
-  SegmentText(SegmentSetClass set, SegPartClass segment) {
+  SegmentText(SegmentSetClass set, SegmentPart segment) {
     if (not segment.Segment.Impossible) {
       set.Add(segment);
       return segment.ShowSegment;
@@ -232,10 +232,10 @@ readonly namespace MatchCell {
     return null;
   }
 
-  SegmentBox(SegmentSetClass set, SegPartClass segment, color) = Canvas(PaperStyle.BoxSize.Width, PaperStyle.BoxSize.Height) {
+  SegmentBox(SegmentSetClass set, SegmentPart segment, color) = Canvas(PaperStyle.BoxSize.Width, PaperStyle.BoxSize.Height) {
     HAlign: Center;
     if (segment.?Ipa is valid) {
-      TextHeight: PaperStyle.BoxSize.Height - 6 pts;
+      TextHeight: PaperStyle.BoxSize.Height - 6pt;
       TextColor: color;
       SegmentText(set, segment)
     }
@@ -243,12 +243,12 @@ readonly namespace MatchCell {
       PaperStyle.ImpossibleBackground;
   };
 
-  ShowBox(SegmentSetClass set, SegPartClass segment, color) = SegmentBox(set, segment, color) {
+  ShowBox(SegmentSetClass set, SegmentPart segment, color) = SegmentBox(set, segment, color) {
     if (segment.Features.HasFlag(Voiced))
       X: PaperStyle.BoxSize.Width;
   };
 
-  ErrorMatches(SegmentSetClass set, SegPartClass[] matches) = Span {
+  ErrorMatches(SegmentSetClass set, SegmentPart[] matches) = Span {
     Separator: CommaSpace;
     TextColor: Colors.Red;
     MatchCell.SegmentText(set, each matches);
@@ -278,7 +278,7 @@ class TabOptionsClass {
 
   MatchError(matches) = matches.Length > 2 or (matches.Length == 2 and matches[0].Features.HasFlag(Voiced) == matches[1].Features.HasFlag(Voiced));
 
-  SegmentBlock(SegmentSetClass set, SegPartClass[] matches) = Cell {
+  SegmentBlock(SegmentSetClass set, SegmentPart[] matches) = Cell {
     if (matches is valid) {
       if (matches.Length == 1 and matches[0].Segment.Impossible)
         PaperStyle.ImpossibleBackground;
@@ -300,7 +300,7 @@ class TabOptionsClass {
     Cell {
       VAlign: Center;
       PaperStyle.TitleBackground;
-      TextHeight: 7 pts;
+      TextHeight: 7pt;
 
       if (RowLabels is valid)
         RowLabels[each0];
@@ -309,12 +309,12 @@ class TabOptionsClass {
     };
 
     var features = manner | All;
-    var all      = data.UniqueSegments + new SegPartClass(each ImpossibleSegments);
+    var all      = data.UniqueSegments + new SegmentPart(each ImpossibleSegments);
     foreach (var place in places)
       SegmentBlock(set, all.FindSlice(s => s.Segment.?Place == place and CheckFlags(s.Features, features)));
   };
 
-  bool MatchInclude(SegPartClass segment, Places place) {
+  bool MatchInclude(SegmentPart segment, Places place) {
     return segment.Segment.?Place == place and
            segment.Features.NotFlag(Exclude) and
            segment.Features.HasFlag(Include) and
@@ -325,7 +325,7 @@ class TabOptionsClass {
     return data.UniqueSegments.FindFirstIndex(segment => MatchInclude(segment, place));
   }
 
-  ShowTable(ContentStyleClass style, DataSetClass data, SegmentSetClass set) = Block {
+  ShowTable(ContentStyle style, DataSetClass data, SegmentSetClass set) = Block {
     PaperStyle.TitleBar {
       Title
     };
@@ -334,12 +334,12 @@ class TabOptionsClass {
     if (places.Length == 0)
       Lang.None;
     else {
-      var first  = 75 pts;
-      var cw     = Math.Min((ExtentWidth - first) / places.Length, 75 pts);
+      var first  = 75pt;
+      var cw     = Math.Min((ExtentWidth - first) / places.Length, 75pt);
 
-      Table(PaperStyle.TableBorder, null, [new Column(first, BorderR(0.5 pts))] + [new Column(cw, null, null, HAligns.Center)]) {
+      Table(PaperStyle.TableBorder, null, [new Column(first, BorderR(0.5pt))] + [new Column(cw, null, null, HAligns.Center)]) {
         Row {
-          TextHeight: 6 pts;
+          TextHeight: 6pt;
           PaperStyle.HeaderCell(style) {
             Bold;
             Lang.Manner;
@@ -405,7 +405,7 @@ readonly namespace MatchingConsonants {
 readonly namespace MatchingVowels {
   FeatureMask = Vowel LongVowel Nasal Diphthong NonSylabic;
 
-  AddCell(SegPartClass[] segments, SegmentSetClass set, open, backness, features) = Cell(PaperStyle.SegmentBottom) {
+  AddCell(SegmentPart[] segments, SegmentSetClass set, open, backness, features) = Cell(PaperStyle.SegmentBottom) {
     HAlign: Center;
     TextHeight: PaperStyle.BoxSize.Height;
 
@@ -433,7 +433,7 @@ readonly namespace MatchingVowels {
     }
   };
 
-  AddRow(SegPartClass[] segments, SegmentSetClass set, open, features) = Row {
+  AddRow(SegmentPart[] segments, SegmentSetClass set, open, features) = Row {
     Cell {
       VAlign: Center;
       PaperStyle.TitleBackground;
@@ -442,17 +442,17 @@ readonly namespace MatchingVowels {
     AddCell(segments, set, open, each Backnesses.ValueArray, features)
   };
 
-  ShowVowelTable(ContentStyleClass style, SegPartClass[] segments, SegmentSetClass set, SegmentFeatures features) = Block {
+  ShowVowelTable(ContentStyle style, SegmentPart[] segments, SegmentSetClass set, SegmentFeatures features) = Block {
     PaperStyle.TitleBar {
       Separator: "-";
       each features;
     };
 
-    var border = BorderR(0.5 pts);
+    var border = BorderR(0.5pt);
     Table(PaperStyle.TableBorder, null, [new Column(1 inch, border)] + [new Column(PaperStyle.BoxSize.Width*4, border)]) {
       HAlign: Center;
       Row {
-        TextHeight: 10 pts;
+        TextHeight: 10pt;
         PaperStyle.HeaderCell(style);
         foreach (var b in Backnesses.ValueArray) {
           PaperStyle.HeaderCell(style) {
@@ -464,7 +464,7 @@ readonly namespace MatchingVowels {
     };
   };
 
-  ShowTable(ContentStyleClass style, SegPartClass[] segments, SegmentSetClass set) = Block {
+  ShowTable(ContentStyle style, SegmentPart[] segments, SegmentSetClass set) = Block {
     Lang.SymbolPairRounded;
     ShowVowelTable(style, segments, set, Vowel);
     ShowVowelTable(style, segments, set, Vowel LongVowel);
@@ -483,20 +483,20 @@ readonly namespace MatchingVowels {
 readonly namespace MatchingDiacritics {
   ColumnDiv = 3;
 
-  AddCell(SegmentClass segment) = Cell {
+  AddCell(Segment segment) = Cell {
     Paragraph {
-      LeftIndent: 30 pts;
-      FirstIndent: -30 pts;
+      LeftIndent: 30pt;
+      FirstIndent: -30pt;
       DocFields.Anchor(segment.FactId);
       segment.ShowSegment {
-        TextHeight: 18 pts;
+        TextHeight: 18pt;
       };
       Tab;
       segment.Description
     }
   };
 
-  AddRow(SegmentClass[] segments) = Row {
+  AddRow(Segment[] segments) = Row {
     AddCell(each segments)
   };
 
@@ -515,14 +515,14 @@ readonly namespace MatchingDiacritics {
 readonly namespace MatchingOther {
   ColumnDiv = 2;
 
-  AddRow(SegPartClass[] segments) = Row {
+  AddRow(SegmentPart[] segments) = Row {
     VAlign: Center;
     foreach (var segment in segments) {
       var s = segment.Segment;
       Cell {
         HAlign: Center;
         Paragraph {
-          TextHeight: 18 pts;
+          TextHeight: 18pt;
           s.ShowSegment;
         };
       };
@@ -530,7 +530,7 @@ readonly namespace MatchingOther {
     }
   };
 
-  ShowTable(SegPartClass[] segments, SegmentSetClass set) = Block {
+  ShowTable(SegmentPart[] segments, SegmentSetClass set) = Block {
     PaperStyle.TitleBar {Lang.OtherSegments};
     Table(PaperStyle.TableBorder, null, [PaperStyle.CellSize.Width, ExtentWidth * 0.5 - PaperStyle.CellSize.Width] * ColumnDiv) {
       var slice = segments.FindSlice(segment => not set.Contains(segment));
@@ -543,9 +543,9 @@ readonly namespace MatchingOther {
 //======================================================================
 
 class SegmentDisplayClass {
-  var DataSetClass   Data;
-  var SegPartClass[] SortedSegments,
-                     DisplaySegments;
+  var DataSetClass  Data;
+  var SegmentPart[] SortedSegments,
+                    DisplaySegments;
 
   Constructor(DataSetClass data) {
     Data            = data;
@@ -553,17 +553,17 @@ class SegmentDisplayClass {
     SortedSegments  = data.UniqueSegments.ToSortedArray(true, @CompareAlpha);
   }
 
-  static int CompareSegments(SegPartClass s0, SegPartClass s1) = s0.UsedCount - s1.UsedCount;
+  static int CompareSegments(SegmentPart s0, SegmentPart s1) = s0.UsedCount - s1.UsedCount;
 
-  static int CompareAlpha(SegPartClass s0, SegPartClass s1) {
+  static int CompareAlpha(SegmentPart s0, SegmentPart s1) {
     var i = s0.Ipa.Length.Compare(s1.Ipa.Length);
     if (i == 0)
       i = -s0.Ipa.Compare(s1.Ipa);
     return i;
   }
 
-  FrequencyChart(ContentStyleClass style, Size size) = Chart(size.Width, size.Height) {
-    TextHeight: 11 pts;
+  FrequencyChart(ContentStyle style, Size size) = Chart(size.Width, size.Height) {
+    TextHeight: 11pt;
     style.SansSerif;
     ChartType: ChartTypes.Column;
     Legend: ChartLegend {Placement: Placements.Bottom};
@@ -571,7 +571,7 @@ class SegmentDisplayClass {
       Lang.FrequencyPercent;
     };
 
-    SegPartClass[] sorted = DisplaySegments.ToSortedArray(true, @CompareSegments);
+    SegmentPart[] sorted = DisplaySegments.ToSortedArray(true, @CompareSegments);
     XAxis: ChartAxis {
       TextHeight: PaperStyle.SegmentTextFactor * size.Width / sorted.Length;
       (each sorted).ShowSegment;
@@ -585,8 +585,8 @@ class SegmentDisplayClass {
     };
   };
 
-  SegmentCell(SegPartClass segment) = Cell(new Edge(0.25 pts, 2 pts, Colors.LightGray)) {
-    segment.Segment.Display(segment.FactId, 16 pts);
+  SegmentCell(SegmentPart segment) = Cell(new Edge(0.25pt, 2pt, Colors.LightGray)) {
+    segment.Segment.Display(segment.FactId, 16pt);
   };
 
   IPASegmentTable = Block {
@@ -602,12 +602,12 @@ class SegmentDisplayClass {
     PaperStyle.TableNotes;
   };
 
-  ShowLanguageDetails(ContentStyleClass style) = Block {
+  ShowLanguageDetails(ContentStyle style) = Block {
     foreach (var taxon in Data.Taxa) {
       var language = taxon.Language;
       Paragraph {
-        SpaceAfter: 10 pts;
-        HBox(100%, null, BorderT(1 pt) + PadT(16 pts)) {
+        SpaceAfter: 10pt;
+        HBox(100%, null, BorderT(1 pt) + PadT(16pt)) {
           VAlign: Center;
           Frame(40%) {
             style.Heading2 {
@@ -631,14 +631,14 @@ class SegmentDisplayClass {
     foreach (var segment in SortedSegments) {
       Paragraph(null, [0.5 inches]) {
         KeepWithNext: true;
-        TextHeight: 16 pts;
+        TextHeight: 16pt;
         ParBackground: 90%;
         segment.ShowSegment;
        };
 
       Paragraph {
         PaperStyle.IPAFamily;
-        SpaceAfter: 10 pts;
+        SpaceAfter: 10pt;
         Span {
           Separator: Space*2;
           foreach (var cognate in Data.GetSortedCognates) {
@@ -659,7 +659,7 @@ class SegmentDisplayClass {
 
 //======================================================================
 
-abstract class DataContentClass: ContentClass {
+abstract class DataContentClass: Content {
   var DataSetClass Data;
 
   Constructor(DataSetClass data, title) {
@@ -675,13 +675,13 @@ class SegmentAssignmentsClass: DataContentClass {
     super.Constructor(data, "Segment Assignments");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     Paragraph {
-      var textheight = 18 pts;
+      var textheight = 18pt;
       TextHeight: textheight;
 
       foreach (var segment in Data.UniqueSegments) {
-        HBox(textheight * 3.25, null, new Edge(0.25 pts, 1, 85%)) {
+        HBox(textheight * 3.25, null, new Edge(0.25pt, 1, 85%)) {
           VAlign: Center;
           Margin: 5;
           Span {

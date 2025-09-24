@@ -2,9 +2,9 @@ using Format, Units, Defs, Equations, WorldLanguages, References, PaperStyle;
 
 //======================================================================
 
-readonly PartitionAssignmentsClass Figures.PartitionAssignments = new(MainResults.Data.Rule);
+readonly PartitionAssignments Figures.PartitionAssignments = new(MainResults.Data.Rule);
 
-class PartitionAssignmentsClass: ContentClass {
+class PartitionAssignments: Content {
   var RuleClass Rule;
 
   Constructor(RuleClass rule) {
@@ -12,21 +12,21 @@ class PartitionAssignmentsClass: ContentClass {
     Rule = rule;
   }
 
-  override GetCaption(ContentStyleClass style) = Rule.GetCaption(style);
+  override GetCaption(ContentStyle style) = Rule.GetCaption(style);
 
-  override GetBody(ContentStyleClass style, title) = Rule.ShowPartitions;
+  override GetBody(ContentStyle style, title) = Rule.ShowPartitions;
 }
 
 //======================================================================
 
-readonly ExperimentalRunsClass Figures.ExperimentalRuns = new;
+readonly ExperimentalRunFigure Figures.ExperimentalRuns = new;
 
-class ExperimentalRunsClass: ContentClass {
+class ExperimentalRunFigure: Content {
   Constructor {
     super.Constructor("Experimental Runs");
   }
 
-  ShowTrees(ContentStyleClass style, ModelClass model) = Block {
+  ShowTrees(ContentStyle style, ModelClass model) = Block {
     var anytree = false;
     foreach (var r in model.Run) {
       if (r.ResultTree is not null) {
@@ -49,7 +49,7 @@ class ExperimentalRunsClass: ContentClass {
     }
   };
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     Lang.Experiment;
     Space;
     each1;
@@ -57,7 +57,7 @@ class ExperimentalRunsClass: ContentClass {
     style.DQuote {MainResults.Data.Name};
   };
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data = MainResults.Data;
 
     Span {
@@ -79,16 +79,16 @@ class ExperimentalRunsClass: ContentClass {
 
 readonly ModelTrees Figures.ModelTreesUsed = new;
 
-class ModelTrees: ContentClass {
+class ModelTrees: Content {
   Constructor {
     super.Constructor("Model trees");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Model trees used in all analyses";
   };
 
-  override GetBody(ContentStyleClass style, title) = VBox {
+  override GetBody(ContentStyle style, title) = VBox {
     foreach (var tree in TreeExamples.PriorTrees)
       ShowTreeHorizontal(style, tree, 80%, Lang.Tree + Space + each1);
   };
@@ -96,62 +96,62 @@ class ModelTrees: ContentClass {
 
 //======================================================================
 
-readonly TransitionRatesClass Figures.TransitionRates = new;
+readonly ExperimentalRuns Figures.TransitionRates = new;
 
-class TransitionRatesClass: ContentClass {
+class ExperimentalRuns: Content {
   Constructor {
     super.Constructor("Transition Rates between Partitions");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The area of the circles is proportional to the estimated equilibrium frequencies. ";
     "The width of the lines is proportional to the estimated rates. ";
   };
 
-  override GetBody(ContentStyleClass style, title) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
+  override GetBody(ContentStyle style, title) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
 }
 
 //======================================================================
 
-readonly AlignmentChartClass AlignmentResults = new(MainResults.Data, MainResults.MainRun);
+readonly AlignmentChart AlignmentResults = new(MainResults.Data, MainResults.MainRun);
 
-readonly AlignmentsClass Figures.Alignments = new;
+readonly AlignmentsFigure Figures.Alignments = new;
 
-class AlignmentsClass: ContentClass {
+class AlignmentsFigure: Content {
   Constructor {
     super.Constructor("Alignments");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     ResultsClass.CutoffPercent;
     " credible set of alignments";
   };
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     AlignmentResults.ShowChart(style, new(ExtentWidth, ExtentHeight - 1 inch));
   };
 }
 
 //======================================================================
 
-readonly AllAlignmentsClass Figures.AllAlignments = new;
+readonly AllAlignments Figures.AllAlignments = new;
 
-class AllAlignmentsClass: ContentClass {
+class AllAlignments: Content {
   Constructor {
     super.Constructor("All Alignments");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     ResultsClass.CutoffPercent;
     " credible set of alignments";
   };
 
-  override GetBody(ContentStyleClass style, title) = AlignmentResults.ShowAll;
+  override GetBody(ContentStyle style, title) = AlignmentResults.ShowAll;
 }
 
 //======================================================================
 
-class AlignmentExamplesClass: ContentClass {
+class AlignmentExamples: Content {
   var CognateIdClass[] Examples;
 
   Constructor(name, CognateIdClass[] examples) {
@@ -159,36 +159,36 @@ class AlignmentExamplesClass: ContentClass {
     Examples = examples;
   }
 
-  override GetCaption(ContentStyleClass style) = "Credible sets for cognate alignments";
+  override GetCaption(ContentStyle style) = "Credible sets for cognate alignments";
 
-  override GetBody(ContentStyleClass style, title) = AlignmentResults.ShowSet(Examples, true);
+  override GetBody(ContentStyle style, title) = AlignmentResults.ShowSet(Examples, true);
 }
 
-readonly AlignmentExamplesClass Figures.AlignmentExamples = new(
+readonly AlignmentExamples Figures.AlignmentExamples = new(
   "Alignment Examples",
   [new("Moon", null, 5, 5), new("One", null, 8, 8), new("Tooth", null, 3, 5)]
 );
 
 //======================================================================
 
-class SingleAlignmentClass: AlignmentExamplesClass {
+class SingleAlignment: AlignmentExamples {
   Constructor(count, row, name) {
     super.Constructor("Highest probability alignments for '{0}'"(name), [new(name, null, count, row)]);
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Segments are colored according to the "; NaturalModelName; ". Dashes denote gaps where there is no homologous segment for the alignment position. ";
     "The alignments are ordered from the highest posterior probability (top-left alignment) to the lowest posterior probability (bottom-right alignment) in row order. ";
   };
 
-  override GetBody(ContentStyleClass style, title) = AlignmentResults.ShowSet(Examples, false);
+  override GetBody(ContentStyle style, title) = AlignmentResults.ShowSet(Examples, false);
 }
 
-readonly SingleAlignmentClass Figures.AlignmentExample1 = new(16, 4, "Flower");
+readonly SingleAlignment Figures.AlignmentExample1 = new(16, 4, "Flower");
 
 //======================================================================
 
-class ModelCompareClass {
+class ModelComparer {
   var SymbolClass     Symbol;
   var double          Posterior;
   var int             TotalCount;
@@ -225,7 +225,7 @@ class ModelCompareClass {
 
 //======================================================================
 
-class GappinessSignificanceClass {
+class GappinessSignificance {
   var double TestStatistic;
 
   Constructor(RunResultsClass run) {
@@ -258,14 +258,14 @@ class GappinessSignificanceClass {
 
 //======================================================================
 
-class AlignmentCompareClass: ContentClass {
+class AlignmentCompare: Content {
   const string Concept  = "Sky";
 
-  var ModelCompareClass   Poisson,
-                          NaturalClass;
-  var ModelCompareClass[] Models;
-  var CognateIdClass      Example;
-  var int                 MaxCount;
+  var ModelComparer   Poisson,
+                      NaturalClass;
+  var ModelComparer[] Models;
+  var CognateIdClass  Example;
+  var int             MaxCount;
 
   Constructor(maxcount, row) {
     super.Constructor("Alignment comparison");
@@ -276,7 +276,7 @@ class AlignmentCompareClass: ContentClass {
     Models       = [Poisson, NaturalClass];
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Alignments of highest posterior probability of the cognate for the concept ";
     Span {
       TextCase: TextCases.AllLower;
@@ -296,33 +296,33 @@ class AlignmentCompareClass: ContentClass {
     }
   };
 
-  override GetBody(ContentStyleClass style, title) = VBox {
+  override GetBody(ContentStyle style, title) = VBox {
     var data = MainResults.Data;
     foreach (var m in Models) {
       Paragraph {
-        TextHeight: 20 pts;
+        TextHeight: 20pt;
         m.Symbol;
         " — ";
         m.Name;
       };
-      var chart = new AlignmentChartClass(data, m.Run);
+      var chart = new AlignmentChart(data, m.Run);
       chart.ShowSet([Example], false);
     }
   };
 }
 
-readonly AlignmentCompareClass Figures.AlignmentExample2 = new(8, 4);
+readonly AlignmentCompare Figures.AlignmentExample2 = new(8, 4);
 
 //======================================================================
 
-readonly ExchangeabilityTableClass Figures.ExchangeabilityTable = new;
+readonly ExchangeabilityTable Figures.ExchangeabilityTable = new;
 
-class ExchangeabilityTableClass: ContentClass {
+class ExchangeabilityTable: Content {
   Constructor {
     super.Constructor(Lang.Exchangeability);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var th = ExtentWidth * 0.015;
     style.SansSerif;
     TextHeight: th;
@@ -331,11 +331,11 @@ class ExchangeabilityTableClass: ContentClass {
     var stats      = results.MainRun.TransitionStats;
     var count      = stats.Length;
     var partitions = results.Data.Rule.Partitions;
-    var dy         = 2 pts;
+    var dy         = 2pt;
     var left       = 1 inch;
     var w          = (ExtentWidth - 1 inch) / count;
 
-    Table(PadR(4 pts), null, [left] + [w] * count) {
+    Table(PadR(4pt), null, [left] + [w] * count) {
       HAlign: Center;
       TextDigits: 3;
 
@@ -377,9 +377,9 @@ class ExchangeabilityTableClass: ContentClass {
 
 //======================================================================
 
-readonly NaturalClassRateChartClass Figures.RateChart = new;
+readonly NaturalClassRateChart Figures.RateChart = new;
 
-class NaturalClassRateChartClass: ContentClass {
+class NaturalClassRateChart: Content {
   Constructor {
     super.Constructor(NaturalClassName + " Rates");
   }
@@ -391,20 +391,20 @@ class NaturalClassRateChartClass: ContentClass {
     number;
   };
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The average rates of change between and within the ten segment groups of the "; NaturalModelName; DotSpace;
     "Circle area is proportional to the rate of change between groups ("; Defs.qij; "). ";
     "Shaded area represents the 95% credible interval. ";
   };
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.SansSerif;
     TextHeight: ExtentWidth * 0.015;
 
     var partitions = MainResults.Data.Rule.Partitions;
     var stats      = MainResults.MainRun.NCQRates;
-    var bx         = 20 pts;
-    var tx         = 60 pts + bx;
+    var bx         = 20pt;
+    var tx         = 60pt + bx;
     var size       = Math.Min(ExtentWidth, ExtentHeight);
     var dy         = size / (partitions.Length + 1);
     var d          = Math.Min(dy, (size  - tx) / partitions.Length);
@@ -419,7 +419,7 @@ class NaturalClassRateChartClass: ContentClass {
     }
 
     HBox {
-     TextHeight: 10 pts;
+     TextHeight: 10pt;
       VBox {
         HAlign: Right;
         VAlignment: VAligns.Bottom;
@@ -439,7 +439,7 @@ class NaturalClassRateChartClass: ContentClass {
           HAlignment: HAligns.Right;
           VAlign: Bottom;
           foreach (var p in partitions) {
-            HBox(null, d, PadR(0 pts)) {
+            HBox(null, d, PadR(0)) {
               X: d * (each0 + 0.3);
               TextColor: p.BackColor;
               Transform: Transform.Rotate(-90 degrees);
@@ -485,24 +485,24 @@ class NaturalClassRateChartClass: ContentClass {
 
 //======================================================================
 
-readonly EquilibriumFrequencyChartClass Figures.EquilibriumCharts = new;
+readonly EquilibriumFrequencyChart Figures.EquilibriumCharts = new;
 
-class EquilibriumFrequencyChartClass: ContentClass {
+class EquilibriumFrequencyChart: Content {
   Constructor {
     super.Constructor("Equilibrium frequency chart");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The equilibrium frequencies "; Defs.EquilibriumDistribution; " of each natural class";
   };
 
-  override GetBody(ContentStyleClass style, title) = Chart(100%, 3 inches) {
+  override GetBody(ContentStyle style, title) = Chart(100%, 3 inches) {
     ChartType: ChartTypes.Bar;
     style.SansSerif;
-    TextHeight: 11 pts;
+    TextHeight: 11pt;
 
     ValueLabel: Span {
-      TextHeight: 20 pts;
+      TextHeight: 20pt;
       Defs.EquilibriumDistribution;
     };
 
@@ -535,16 +535,16 @@ class EquilibriumFrequencyChartClass: ContentClass {
 
 //======================================================================
 
-readonly GappinessChartClass Figures.GappinessChart = new;
+readonly GapFrequencyChart Figures.GappinessChart = new;
 
-readonly GappinessSignificanceClass GapInfo = new(MainResults.MainRun);
+readonly GappinessSignificance GapInfo = new(MainResults.MainRun);
 
-class GappinessChartClass: ContentClass {
+class GapFrequencyChart: Content {
   Constructor {
     super.Constructor("Gap frequency comparison chart");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The number of gaps observed across the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study at the word-initial segment (top), word-internal segment(s) (middle), and word-final segment (bottom). ";
     "Nine languages were analyzed in this study, so it is not possible for there to be nine gaps. Deletion events that led to a gap for all the languages would not be included in an alignment, and is explicitly conditioned on in Lunter et al."; Cite{Lunter2003}; DotSpace;
     "There is a clear, and statistically significant, pattern of an increasing number of gaps as one moves from the initial to the final segment of the word. ";
@@ -560,28 +560,28 @@ class GappinessChartClass: ContentClass {
      ".)";
   };
 
-  override GetBody(ContentStyleClass style, title) = HBox {
+  override GetBody(ContentStyle style, title) = HBox {
     style.SansSerif;
     VAlign: Center;
     PaperStyle.ValueLabel {
-      TextHeight: 12 pts;
+      TextHeight: 12pt;
       "Proportion of Alignments"
     };
     var gaps        = MainResults.MainRun.GapSpectrum;
-    var chartheight = (ExtentHeight - 40 pts) / gaps.Length;
+    var chartheight = (ExtentHeight - 40pt) / gaps.Length;
     VBox {
       HAlign: Center;
       foreach (var gap in gaps) {
-        Chart(ExtentWidth - 20 pts, Math.Min(chartheight, 1.5 inches)) {
+        Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.5 inches)) {
           ChartType: ChartTypes.Column;
 
           ValueLabel: PaperStyle.ValueLabel {
-            TextHeight: 8 pts;
+            TextHeight: 8pt;
             ["Word-initial segment", "Word-internal Segment(s)", "Word-final Segment"][each0]
           };
 
           ValueAxis: ChartAxis {
-            TextHeight: 7 pts;
+            TextHeight: 7pt;
             Start: 0;
             Stop: 1.0;
           };
@@ -598,7 +598,7 @@ class GappinessChartClass: ContentClass {
         }
       }
       Span {
-        TextHeight: 12 pts;
+        TextHeight: 12pt;
         "Number of Gaps"
       };
     };
@@ -613,65 +613,65 @@ const int TopCount = 15;
 
 readonly QRatesMatrixClass Figures.QRatesMatrix = new;
 
-class QRatesMatrixClass: ContentClass {
+class QRatesMatrixClass: Content {
   Constructor {
     super.Constructor("Rate Matrix " Defs.RateMatrix);
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
 }
 
 //======================================================================
 
 readonly QRatesDiagonalClass Figures.QRatesDiagonal = new;
 
-class QRatesDiagonalClass: ContentClass {
+class QRatesDiagonalClass: Content {
   Constructor {
     super.Constructor("Rate of segmental change");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The rate of change when in a particular segmental state (or "; -Defs.qii; ")"
   };
 
-  override GetBody(ContentStyleClass style, title) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
+  override GetBody(ContentStyle style, title) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
 }
 
 //======================================================================
 
-readonly TreeContentClass Figures.PriorTree = new("Tree topology", TreeExamples.PriorTrees.FirstElement);
+readonly TreeContent Figures.PriorTree = new("Tree topology", TreeExamples.PriorTrees.FirstElement);
 
 //======================================================================
 
 readonly LanguageDistributionClass  Figures.LanguageDistribution = new;
 
-class LanguageDistributionClass: ContentClass {
+class LanguageDistributionClass: Content {
   Constructor {
     super.Constructor("Ggeographic distribution of languages");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Approximate geographic distribution of the Romance languages examined in this study.";
   };
 
-  override GetBody(ContentStyleClass style, title) = Paragraph {
+  override GetBody(ContentStyle style, title) = Paragraph {
     ParAlignment: Center;
     HBox {
       VAlign: Center;
       style.SansSerif;
-      Separation: 10 pts;
+      Separation: 10pt;
       FitBox(IO.Read(res "Images/areas.png"), 80%, null, 0.5 pt) {
-        BorderRadius: 1 pts;
+        BorderRadius: 1pt;
       };
       VBox {
-        Separation: 4 pts;
+        Separation: 4pt;
         foreach (var l in MainResults.Data.LanguageSet) {
           if (l != WorldLanguages.Latin) {
             HBox {
-              Separation: 2 pts;
-              Canvas(8 pts, 8 pts, 0.5 pts) {
+              Separation: 2pt;
+              Canvas(8pt, 8pt, 0.5pt) {
                 Baseline: 85%;
-                BorderRadius: 2 pts;
+                BorderRadius: 2pt;
                 Background: l.MapColor;
               };
               l;
@@ -687,50 +687,50 @@ class LanguageDistributionClass: ContentClass {
 
 readonly AverageAllClass Figures.AverageAll = new;
 
-class AverageAllClass: ContentClass {
+class AverageAllClass: Content {
   Constructor {
     super.Constructor("All Rates");
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.ShowAllRates;
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowAllRates;
 }
 
 //======================================================================
 
 readonly AverageSortedClass Figures.AverageSorted = new;
 
-class AverageSortedClass: ContentClass {
+class AverageSortedClass: Content {
   Constructor {
     super.Constructor("Rate vs. Direction");
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.ShowRateDirected;
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowRateDirected;
 }
 
 //======================================================================
 
 readonly RateDirectionClass Figures.RateDirection = new;
 
-class RateDirectionClass: ContentClass {
+class RateDirectionClass: Content {
   Constructor {
     super.Constructor("Directionality");
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.ShowDirection;
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowDirection;
 }
 
 //======================================================================
 
 readonly SpecificRatesClass Figures.SpecificRates = new;
 
-class SpecificRatesClass: ContentClass {
+class SpecificRatesClass: Content {
   Constructor {
     super.Constructor("Specific Rates");
   }
 
-  static bool Predicate(RateClass a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
+  static bool Predicate(SegmentRate a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
 }
 
 TransitionTitle(type) = "The top {0} {1} transitions"(TopCount, type);
@@ -739,46 +739,46 @@ TransitionTitle(type) = "The top {0} {1} transitions"(TopCount, type);
 
 readonly QRatesTopClass Figures.QRatesTop = new;
 
-class QRatesTopClass: ContentClass {
+class QRatesTopClass: Content {
   Constructor {
     super.Constructor(TransitionTitle("segmental"));
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.Extrema(TopCount, true);
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Extrema(TopCount, true);
 }
 
 //======================================================================
 
 readonly QRatesConsonantConsonantClass Figures.QRatesConsonantConsonant = new;
 
-class QRatesConsonantConsonantClass: ContentClass {
+class QRatesConsonantConsonantClass: Content {
   Constructor {
-    super.Constructor(TransitionTitle("Consonant-Consonant"));
+    super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"));
   }
 
-  static bool Predicate(RateClass a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
+  static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
                                        a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.Pairs(TopCount, @Predicate);
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Pairs(TopCount, @Predicate);
 }
 
 //======================================================================
 
 readonly QRatesOneWayClass Figures.QRatesOneWay = new;
 
-class QRatesOneWayClass: ContentClass {
+class QRatesOneWayClass: Content {
   Constructor {
     super.Constructor(TransitionTitle("highly directed"));
   }
 
-  override GetBody(ContentStyleClass style, title) = MainResults.MainRun.QRates.ShowChartPairs(TopCount, MainResults.MainRun.QRates.SortByDirection);
+  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowChartPairs(TopCount, MainResults.MainRun.QRates.SortByDirection);
 }
 
 //======================================================================
 
 readonly AllSegmentFrequenciesClass Figures.AllSegmentFrequencies = new;
 
-class AllSegmentFrequenciesClass: ContentClass {
+class AllSegmentFrequenciesClass: Content {
   var SegmentDisplayClass Display;
 
   Constructor {
@@ -786,9 +786,9 @@ class AllSegmentFrequenciesClass: ContentClass {
     Display = new SegmentDisplayClass(MainResults.Data);
   }
 
-  override GetCaption(ContentStyleClass style) = "The frequency of occurrance of each segment for all languages";
+  override GetCaption(ContentStyle style) = "The frequency of occurrance of each segment for all languages";
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     Display.FrequencyChart(style, new(ExtentWidth, Math.Min(ExtentHeight, 5 inches)));
   };
 }
@@ -797,12 +797,12 @@ class AllSegmentFrequenciesClass: ContentClass {
 
 readonly ConsensusTreeClass Figures.ConsensusTree = new;
 
-class ConsensusTreeClass: ContentClass {
+class ConsensusTreeClass: Content {
   Constructor {
     super.Constructor(Lang.ConsensusTree);
   }
 
-  override GetBody(ContentStyleClass style, title) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
+  override GetBody(ContentStyle style, title) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
 }
 
 //======================================================================
@@ -824,9 +824,9 @@ class SegmentOccuranceRatesClass: DataContentClass {
     Data = data;
   }
 
-  override GetCaption(ContentStyleClass style) = SegmentOccuranceCaption(Data);
+  override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
 
-  override GetBody(ContentStyleClass style, title) = new SegmentFrequencyClass(Data, false).ShowChart(style);
+  override GetBody(ContentStyle style, title) = new SegmentFrequencyClass(Data, false).ShowChart(style);
 }
 
 //======================================================================
@@ -838,7 +838,7 @@ class SegmentOccuranceGroupedClass: DataContentClass {
     super.Constructor(data, "Segment Occurance Rates (by partition)");
   }
 
-  override GetBody(ContentStyleClass style, title) = new SegmentFrequencyClass(Data, true).ShowChart(style);
+  override GetBody(ContentStyle style, title) = new SegmentFrequencyClass(Data, true).ShowChart(style);
 }
 
 //======================================================================
@@ -850,9 +850,9 @@ class PartitionFrequenciesClass: DataContentClass {
     super.Constructor(data, "Partition Occurance Rates");
   }
 
-  override GetCaption(ContentStyleClass style) = SegmentOccuranceCaption(Data);
+  override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
 
-  override GetBody(ContentStyleClass style, title) = new PartitionFrequencyClass(Data).ShowChart(style);
+  override GetBody(ContentStyle style, title) = new PartitionFrequencyClass(Data).ShowChart(style);
 }
 
 //======================================================================
@@ -900,47 +900,47 @@ class ExampleConceptClass {
 
 readonly ExampleTreeClass Figures.ExampleTree = new;
 
-class ExampleTreeClass: ContentClass {
+class ExampleTreeClass: Content {
   Constructor {
     super.Constructor("Example Tree");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "An example tree showing the relationships of {0} languages."(SampledLanguages(MainResults.Data.LanguageSet.Length));
   };
 
-  override GetBody(ContentStyleClass style, title) = PaperStyle.ShowTree(style, MainResults.Data.NumberedTree, 5 inches, null, null, false);
+  override GetBody(ContentStyle style, title) = PaperStyle.ShowTree(style, MainResults.Data.NumberedTree, 5 inches, null, null, false);
 }
 
 //======================================================================
 
 readonly ExampleConceptsClass Figures.ExampleConcepts = new;
 
-class ExampleConceptsClass: ContentClass {
+class ExampleConceptsClass: Content {
   Constructor {
     super.Constructor(Lang.ConceptsExamples);
   }
 
-  override GetBody(ContentStyleClass style, title) = AllWords.ShowTable(style, MainResults.Data, 11 pts, 2);
+  override GetBody(ContentStyle style, title) = AllWords.ShowTable(style, MainResults.Data, 11pt, 2);
 }
 
 //======================================================================
 
 readonly LanguagesUsedClass Figures.LanguagesUsed = new;
 
-class LanguagesUsedClass: ContentClass {
+class LanguagesUsedClass: Content {
   Constructor {
     super.Constructor(Lang.Languages);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var rows      = 2;
     var data      = MainResults.Data;
     var cols      = (data.Taxa.Length + 1) div rows;
     var taxagroup = data.Taxa / cols;
-    var h         = 14 pts;
-    var space     = 5 pts;
-    var border    = 1 pts;
+    var h         = 14pt;
+    var space     = 5pt;
+    var border    = 1pt;
     var width     = ExtentWidth / cols - space;
     var height    = ExtentHeight / rows - space*(rows-1) - (border*2*rows);
 
@@ -968,7 +968,7 @@ class LanguagesUsedClass: ContentClass {
               var mh = height - h;
               HBox(width, mh, new Edge(1, 0, 90%)) {
                 VAlign: Center;
-                BorderRadius: 20 pts;
+                BorderRadius: 20pt;
                 BorderClip: true;
 
                 Span {
@@ -992,9 +992,9 @@ readonly SegmentAssignmentsClass Figures.UniqueSegments = new(MainResults.Data);
 
 readonly AlignmentClass Figures.Alignment = new;
 
-class AlignmentClass: ContentClass {
+class AlignmentClass: Content {
   const ArrowWidth  = 40;
-  const Arrowhead   = 8 pts;
+  const Arrowhead   = 8pt;
   const ArrowColor  = 80%;
 
   const HMap1 = [
@@ -1027,12 +1027,12 @@ class AlignmentClass: ContentClass {
     super.Constructor(Lang.Alignment);
   }
 
-  TName(ContentStyleClass style, TaxonClass taxon) = Span {
+  TName(ContentStyle style, TaxonClass taxon) = Span {
     style.SansSerif;
     taxon.Language;
   };
 
-  SegmentTable(ContentStyleClass style, DataSetClass data, ExampleConceptClass example, aligned) = MatrixBox {
+  SegmentTable(ContentStyle style, DataSetClass data, ExampleConceptClass example, aligned) = MatrixBox {
     VAlign: Center;
     foreach (var taxon in data.Taxa) {
       Row {
@@ -1049,10 +1049,10 @@ class AlignmentClass: ContentClass {
     }
   };
 
-  MapTable(ContentStyleClass style, DataSetClass data, ExampleConceptClass example, map, text) = Block {
+  MapTable(ContentStyle style, DataSetClass data, ExampleConceptClass example, map, text) = Block {
     IPAFamily;
     foreach (var taxon in data.Taxa) {
-      Paragraph(null, 60 pts) {
+      Paragraph(null, [60pt]) {
         TName(style, taxon);
         Tab;
         var t        = map[each0];
@@ -1071,7 +1071,7 @@ class AlignmentClass: ContentClass {
           foreach (var c in t) {
             if (c == '1')
               ++ones;
-            HBox(10 pts) {HAlign: Center; c}
+            HBox(10pt) {HAlign: Center; c}
           }
           System.Assert(ones == segments.Length, taxon.ShortName);
         }
@@ -1081,7 +1081,7 @@ class AlignmentClass: ContentClass {
 
   LabelBox(label) = HBox {
     Margin: PadR(5);
-    TextHeight: 18 pts;
+    TextHeight: 18pt;
     Bold;
     Equation {label};
   };
@@ -1101,15 +1101,15 @@ class AlignmentClass: ContentClass {
     Canvas {
       Background: Colors.White;
       X: size.Width * 0.3;
-      Y: (size.Height - 25 pts) * 0.5;
-      TextHeight: 20 pts;
+      Y: (size.Height - 25pt) * 0.5;
+      TextHeight: 20pt;
       TextColor: ArrowColor;
       Bold;
       Tex.Plus;
     };
   };
 
-  HomBox(ContentStyleClass style, DataSetClass data, ExampleConceptClass example, num, Edge edge, map) = VBox {
+  HomBox(ContentStyle style, DataSetClass data, ExampleConceptClass example, num, Edge edge, map) = VBox {
     HAlign: Center;
     HBox {
       VAlign: Top;
@@ -1123,11 +1123,11 @@ class AlignmentClass: ContentClass {
     Canvas {
 
       TextColor: ArrowColor;
-      TextHeight: 20 pts;
+      TextHeight: 20pt;
       HAlign: Center;
       Span {
         Tex.downarrow;
-        X: 1 pts;
+        X: 1pt;
       };
       "=";
     };
@@ -1142,7 +1142,7 @@ class AlignmentClass: ContentClass {
     };
   };
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Alignments (";
     SegmentalAlignment;
     ") are formed from the observed segments (";
@@ -1152,20 +1152,20 @@ class AlignmentClass: ContentClass {
     "). ";
   };
 
-  override GetBody(ContentStyleClass style, title)= VBox {
-    TextHeight: 10 pts;
-    Separation: 4 pts;
-    Margin: PadB(5 pts);
+  override GetBody(ContentStyle style, title)= VBox {
+    TextHeight: 10pt;
+    Separation: 4pt;
+    Margin: PadB(5pt);
     HAlign: Center;
 
     var data    = MainResults.Data;
     var example = new ExampleConceptClass(data, data.ExampleConcept);
-    var edge    = new Edge(0.5 pts, 2 pts, ArrowColor);
+    var edge    = new Edge(0.5pt, 2pt, ArrowColor);
 
 
     HBox {
       VAlign: Bottom;
-      var fsize = new Size(ArrowWidth, data.Taxa.Length * 8 pts);
+      var fsize = new Size(ArrowWidth, data.Taxa.Length * 8pt);
 
       ArrowFigure(fsize) {
         Transform: new Transform(-1, 0, 0, 1, fsize.Width, 0);
@@ -1181,7 +1181,7 @@ class AlignmentClass: ContentClass {
     };
     HBox {
       HomBox(style, data, example, 1, edge, HMap1);
-      Separation: 24 pts;
+      Separation: 24pt;
       HomBox(style, data, example, 2, edge, HMap2);
     }
   };
@@ -1199,7 +1199,7 @@ namespace StateSection {
   };
 
   StateRow(states, state) = Row {
-    Cell(PadR(3 pts)) {
+    Cell(PadR(3pt)) {
       HAlign: Right;
       Span {
         each0 == states.Length div 2 ? "From   " : Empty;
@@ -1211,7 +1211,7 @@ namespace StateSection {
 
   GetStates(count) = 'A'..('A' + (count - 1)) step 1;
 
-  StateTable(count) = Table(new Thickness(1 pts, 1 pts, 3 pts, null), null, [new(56 pts, BorderR(PaperStyle.TableEdgeSize)), 32 pts]) {
+  StateTable(count) = Table(new Thickness(1pt, 1pt, 3pt, null), null, [new(56pt, BorderR(PaperStyle.TableEdgeSize)), 32pt]) {
     ParAlignment: Center;
     VAlign: Center;
     HAlign: Center;
@@ -1246,7 +1246,7 @@ namespace StateSection {
 
 readonly ResultsSectionClass PaperSections.Results = new;
 
-class ResultsSectionClass: ContentClass {
+class ResultsSectionClass: Content {
   Constructor {
     super.Constructor("Results");
     AddContent(PaperSections.PhylogenyResults);
@@ -1256,7 +1256,7 @@ class ResultsSectionClass: ContentClass {
  }
 
 /*
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
 
     };
@@ -1268,12 +1268,12 @@ class ResultsSectionClass: ContentClass {
 
 readonly PhylogenyResultsClass PaperSections.PhylogenyResults = new;
 
-class PhylogenyResultsClass: ContentClass {
+class PhylogenyResultsClass: Content {
   Constructor {
     super.Constructor("Phylogeny");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Our statistical analysis treats all model parameters as random variables with prior probability distributions. ";
       "The tree topology describing the relationships of the languages is also considered a random variable with a uniform prior probability in which all possible tree topologies are assigned equal prior probability. ";
@@ -1387,12 +1387,12 @@ class PartitionValueClass {
 
 readonly SegmentModelsClass PaperSections.SegmentModels = new;
 
-class SegmentModelsClass: ContentClass {
+class SegmentModelsClass: Content {
   Constructor {
     super.Constructor("Models of segmental change");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data     = MainResults.Data;
     var rule     = data.Rule;
     var segments = data.UniqueSegments.Length - 1;
@@ -1420,14 +1420,14 @@ class SegmentModelsClass: ContentClass {
 
 //======================================================================
 
-readonly ModelComparisonClass PaperSections.ModelComparison = new;
+readonly ModelComparisonSection PaperSections.ModelComparison = new;
 
-class ModelComparisonClass: ContentClass {
+class ModelComparisonSection: Content {
   Constructor {
     super.Constructor("Model Comparison");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.BodyPar {
       "We compared the fit of the three models described above in section 3 to the data using the Bayes factor. ";
       "The Bayes factor is the ratio of the marginal likelihoods, ";
@@ -1460,14 +1460,14 @@ class ModelComparisonClass: ContentClass {
 
 readonly WordTransformationClass PaperSections.WordTransformation = new;
 
-class WordTransformationClass: ContentClass {
+class WordTransformationClass: Content {
   Constructor {
     super.Constructor("Segmental Change");
   }
 
   SelfArrow(text) = Span {text; Tex.rightarrow; text};
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data        = MainResults.Data;
     var rule        = data.Rule;
     var rp          = rule.Filters.Length;
@@ -1591,12 +1591,12 @@ class WordTransformationClass: ContentClass {
 
 readonly WordSegmentRelationshipsClass PaperSections.WordSegmentRelationships = new;
 
-class WordSegmentRelationshipsClass: ContentClass {
+class WordSegmentRelationshipsClass: Content {
   Constructor {
     super.Constructor("Segmental Alignments");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       var align1 = Figures.AlignmentExample1;
       var index1 = align1.Examples[0].FindAlignment(MainResults.MainRun);
@@ -1660,7 +1660,7 @@ class WordSegmentRelationshipsClass: ContentClass {
 
 readonly DiscussionSectionClass PaperSections.DiscussionSection = new;
 
-class DiscussionSectionClass: ContentClass {
+class DiscussionSectionClass: Content {
   Constructor {
     super.Constructor("Discussion");
     AddContent(PaperSections.OtherApproaches);
@@ -1675,12 +1675,12 @@ class DiscussionSectionClass: ContentClass {
 
 readonly OtherApproachesClass PaperSections.OtherApproaches = new;
 
-class OtherApproachesClass: ContentClass {
+class OtherApproachesClass: Content {
   Constructor {
     super.Constructor("The TKF91 Framework Compared to Other Approaches");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Approaches to sound change in the linguistics literature vary. ";
       "One prominent view identifies phonemes as the basic units of change"; Cite {Bloomfield1933}; ", ";
@@ -1730,12 +1730,12 @@ class OtherApproachesClass: ContentClass {
 
 readonly InsightsSoundChangeClass PaperSections.InsightsSoundChange = new;
 
-class InsightsSoundChangeClass: ContentClass {
+class InsightsSoundChangeClass: Content {
   Constructor {
     super.Constructor("Insights into Sound Change");
   }
 
-   override GetBody(ContentStyleClass style, title) = Block {
+   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "In contrast to traditional historical phonology, which focuses on identifying sound changes and their relative chronologies, the TKF91 approach delivers insights into overarching trends in the evolution of sounds and segmental inventories" DotSpace;
      "We focus here on three measures that provide insights into both, specifically, the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies"; DotSpace;
@@ -1839,12 +1839,12 @@ class InsightsSoundChangeClass: ContentClass {
 
 readonly SegmentalSamplingClass PaperSections.SegmentalSampling = new;
 
-class SegmentalSamplingClass: ContentClass {
+class SegmentalSamplingClass: Content {
   Constructor {
     super.Constructor("Segmental Sampling");
   }
 
-   override GetBody(ContentStyleClass style, title) = Block {
+   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Cite {References.Dockum2019}; DotSpace;
 
@@ -1880,12 +1880,12 @@ class SegmentalSamplingClass: ContentClass {
 
 readonly LimitationsClass PaperSections.Limitations = new;
 
-class LimitationsClass: ContentClass {
+class LimitationsClass: Content {
   Constructor {
     super.Constructor("Limitations of the event-based model");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Our results are based on a unigram model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
       "Certain patterns of sound change cannot therefore be captured under such a model. ";
@@ -1904,12 +1904,12 @@ class LimitationsClass: ContentClass {
 
 readonly AdvantagesClass PaperSections.Advantages = new;
 
-class AdvantagesClass: ContentClass {
+class AdvantagesClass: Content {
   Constructor {
     super.Constructor("Advantages of the event-based approach");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
      };
@@ -1929,7 +1929,7 @@ class AdvantagesClass: ContentClass {
 
 readonly MethodsSummaryClass PaperSections.MethodsSection = new;
 
-class MethodsSummaryClass: ContentClass {
+class MethodsSummaryClass: Content {
   Constructor {
     super.Constructor(Lang.Methods);
     AddContent(PaperSections.ModelInference);
@@ -1938,7 +1938,7 @@ class MethodsSummaryClass: ContentClass {
     AddContent(PaperSections.DataCuration);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "A detailed description of the model and analysis can be found in the Supplemental Material. ";
       "What follows is an outline, sufficient in detail to provide an understanding of the model and experiments performed in this study.";
@@ -1950,7 +1950,7 @@ class MethodsSummaryClass: ContentClass {
 
 readonly ManualAlignmentClass TableFigures.ManualAlignment = new(MainResults.Data);
 
-class ManualAlignmentClass: ContentClass {
+class ManualAlignmentClass: Content {
   var DataSetClass Data;
 
   Constructor(DataSetClass data) {
@@ -1958,19 +1958,19 @@ class ManualAlignmentClass: ContentClass {
     Data = data;
   }
 
-  WordDisplay(ContentStyleClass style) = style.SQuoteEnd {
+  WordDisplay(ContentStyle style) = style.SQuoteEnd {
     TextCase: AllLower;
     Data.FigureConcept.Name;
   };
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Manual alignment of the words for the concept ";
     WordDisplay(style);
   };
 
-  override GetBody(ContentStyleClass style, title) = LanguageTable([Column.Fit(2 inch), Column.Fit(2 inch), Column.Fit(1 inch)]) {
+  override GetBody(ContentStyle style, title) = LanguageTable([Column.Fit(2 inch), Column.Fit(2 inch), Column.Fit(1 inch)]) {
     ParAlignment: Center;
-    TextHeight: Math.Max(ExtentWidth * 0.02, 9 pts);
+    TextHeight: Math.Max(ExtentWidth * 0.02, 9pt);
 
     var cognate = Data.GetCognate(Data.FigureConcept);
     LanguageTitleRow {
@@ -1993,7 +1993,7 @@ class ManualAlignmentClass: ContentClass {
 
 readonly WordCountTableClass TableFigures.WordCountTable = new(MainResults.Data);
 
-class WordCountTableClass: ContentClass {
+class WordCountTableClass: Content {
   var DataSetClass Data;
 
   Constructor(DataSetClass data) {
@@ -2001,7 +2001,7 @@ class WordCountTableClass: ContentClass {
     Data = data;
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "Manual alignment of the words for the concept ";
     style.SQuote {
       TextCase: AllLower;
@@ -2010,7 +2010,7 @@ class WordCountTableClass: ContentClass {
     };
   };
 
-  override GetBody(ContentStyleClass style, title) = LanguageTable([1.5 inches]) {
+  override GetBody(ContentStyle style, title) = LanguageTable([1.5 inches]) {
     LanguageTitleRow {
       Lang.Language; Lang.WordForms; Lang.SegmentCount;
     };
@@ -2032,14 +2032,14 @@ class WordCountTableClass: ContentClass {
 
 readonly ModelInferenceClass PaperSections.ModelInference = new;
 
-class ModelInferenceClass: ContentClass {
+class ModelInferenceClass: Content {
   Constructor {
     super.Constructor("Model and Statistical Inference");
   }
 
   InsertionLessThanDeletion = PaperStyle.Equation {InsertionRate; Tex.lt; DeletionRate};
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var rule = MainResults.Data.Rule;
 
     style.TitlePar(title) {
@@ -2093,7 +2093,7 @@ class ModelInferenceClass: ContentClass {
 
 readonly ConceptEncodingClass Figures.ConceptEncoding = new(MainResults.Data, MainResults.Data.DataConcept);
 
-class ConceptEncodingClass: ContentClass {
+class ConceptEncodingClass: Content {
   var DataSetClass        Data;
   var ExampleConceptClass Concept;
 
@@ -2103,11 +2103,11 @@ class ConceptEncodingClass: ContentClass {
     Concept = new(data, concept);
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The concept "; style.SQuote{TextCase: TextCases.AllLower; Concept.Name}; " as coded in the data file.";
   };
 
-  override GetBody(ContentStyleClass style, title) = Paragraph {
+  override GetBody(ContentStyle style, title) = Paragraph {
     ParAlignment: Center;
     Frame(2.5 inches) {
       SourcePar(Data, Concept.Concept)
@@ -2119,19 +2119,19 @@ class ConceptEncodingClass: ContentClass {
 
 readonly SegmentEncodingClass Figures.SegmentEncoding = new;
 
-class SegmentEncodingClass: ContentClass {
+class SegmentEncodingClass: Content {
   Constructor {
     super.Constructor("Segment Encoding");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "The IPA-Unicode encoding of a segment.";
   };
 
-  override GetBody(ContentStyleClass style, title) = Paragraph {
+  override GetBody(ContentStyle style, title) = Paragraph {
     ParAlignment: Center;
     Frame {
-      IPASegments.VlAlveolarNSAffricate.Display(null, 20 pts);
+      IPASegments.VlAlveolarNSAffricate.Display(null, 20pt);
     }
   };
 }
@@ -2140,12 +2140,12 @@ class SegmentEncodingClass: ContentClass {
 
 readonly ConclusionClass PaperSections.Conclusion = new;
 
-class ConclusionClass: ContentClass {
+class ConclusionClass: Content {
   Constructor {
     super.Constructor("Conclusion");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices"; DotSpace;
 
@@ -2170,12 +2170,12 @@ class ConclusionClass: ContentClass {
 
 readonly AcknowledgementsClass PaperSections.Acknowledgements = new;
 
-class AcknowledgementsClass: ContentClass {
+class AcknowledgementsClass: Content {
   Constructor {
     super.Constructor("Acknowledgements");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       if (style.IsAnonymous)
         DocLang.Anonymous;
@@ -2192,12 +2192,12 @@ class AcknowledgementsClass: ContentClass {
 
 readonly ContributionsClass PaperSections.Contributions = new;
 
-class ContributionsClass: ContentClass {
+class ContributionsClass: Content {
   Constructor {
     super.Constructor("Author contributions statement");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       if (style.IsAnonymous)
         DocLang.Anonymous;
@@ -2218,7 +2218,7 @@ class ContributionsClass: ContentClass {
 
 readonly MethodsClass PaperSections.Methods = new;
 
-class MethodsClass: ContentClass {
+class MethodsClass: Content {
   const StateCount = 5;
 
   Constructor {
@@ -2226,7 +2226,7 @@ class MethodsClass: ContentClass {
 //    AddTable(Figures.PartitionAssignments);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data = MainResults.Data;
     var ec   = new ExampleConceptClass(data, data.ExampleConcept);
 
@@ -2361,7 +2361,7 @@ class MethodsClass: ContentClass {
     BodyTable([1 inch, 5 inches]) {
       foreach (var a in attribute(ExampleAnimals).Children) {
         Row {
-          TextHeight: 10 pts;
+          TextHeight: 10pt;
           a.Name;
           Cell {
             Span {
@@ -2636,7 +2636,7 @@ class MethodsClass: ContentClass {
       "In this study, parameters include:";
     };
 
-    BodyTable([new(1 inch, null, null, HAligns.Right), 20 pts, 4 inches]) {
+    BodyTable([new(1 inch, null, null, HAligns.Right), 20pt, 4 inches]) {
       ParamRow {
         ParamList(Topology);
         "Tree Topologies";
@@ -2801,7 +2801,7 @@ class MethodsClass: ContentClass {
     };
 
     BodyTable([1 inches, 1 inches, 3 inches]) {
-      Row(BorderB(0.5 pts)) {
+      Row(BorderB(0.5pt)) {
         BayesFactor;
         Span {"log" sub 10; BayesFactor};
         "Interpretation";
@@ -2854,7 +2854,7 @@ class MethodsClass: ContentClass {
 
 //======================================================================
 
-SegmentTable(ExampleConceptClass example, DataSetClass data, aligned) = BodyTable([1 inches, 14 pts]) {
+SegmentTable(ExampleConceptClass example, DataSetClass data, aligned) = BodyTable([1 inches, 14pt]) {
   var words = example.Cognate.Words;
   foreach (var taxon in data.Taxa) {
     Row {
@@ -2871,12 +2871,12 @@ SegmentTable(ExampleConceptClass example, DataSetClass data, aligned) = BodyTabl
 
 readonly RateMatrixDiscussionClass PaperSections.RateMatrixDiscussion = new;
 
-class RateMatrixDiscussionClass: ContentClass {
+class RateMatrixDiscussionClass: Content {
   Constructor {
     super.Constructor("Rate Matrix Discussion");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Our model describes how the segments evolve along the branches of the tree. We have three events that can occur to change a word: an insertion of a single segment, a deletion of a single segment, and a substitution of a segment.";
     };

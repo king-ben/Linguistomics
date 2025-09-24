@@ -2,7 +2,7 @@ using Format, References;
 
 //======================================================================
 
-class NSFGrantContentClass: AuthoredContentClass {
+class NSFGrantContentClass: AuthoredContent {
   Constructor {
     super.Constructor("NSF Grant");
 
@@ -18,12 +18,12 @@ class NSFGrantContentClass: AuthoredContentClass {
 
 readonly NSFGrantIntroClass PaperSections.NSFGrantIntro = new;
 
-class NSFGrantIntroClass: ContentClass {
+class NSFGrantIntroClass: Content {
   Constructor {
     super.Constructor("Introduction");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Much like biological species, languages exhibit the essential trait of descent with modification, which allows their histories to be represented by a tree structure and estimated using phylogenetic methods developed in evolutionary biology";
         Cite {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;

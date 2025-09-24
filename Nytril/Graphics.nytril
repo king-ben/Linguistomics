@@ -3,16 +3,16 @@ using Format, Math, Units, LinkTypes;
 //======================================================================
 
 readonly namespace PaperStyle {
-  const TableSpace        = 24 pts;
+  const TableSpace        = 24pt;
   const SegmentColumns    = 4;
-  const SegmentSize       = 40 pts;
+  const SegmentSize       = 40pt;
   const SegmentWidth      = 2 inches;
   const SegmentTextFactor = 0.58;
-  const TableEdgeSize     = 0.25 pts;
+  const TableEdgeSize     = 0.25pt;
   const TableBorder       = TableEdgeSize;
 
   Size BorderSize    = new(2, 2);
-  Size BoxSize       = new(18 pts, 20 pts);
+  Size BoxSize       = new(18pt, 20pt);
   Size CellSize      = new(BoxSize.Width * 2, BoxSize.Height);
 
   IPAFamily            = TextFamily: TextFamilies.LibertinusSerif;
@@ -36,9 +36,9 @@ readonly namespace PaperStyle {
   TextIpa              = Span {TextLiteral: true; IPAFamily; Begin:"/"; End:"/"};
   HeatMap              = LinearGradient.FromColorArray([Colors.Blue, Colors.Cyan, Colors.Yellow, Colors.Pink, Colors.Red]);
 
-  LanguageTable(Column[] columns) = Table(new(new(0, 2), new(2 pts, 2), new(0, 2), new(2 pts, 2)), PadLR(2 pts), columns);
+  LanguageTable(Column[] columns) = Table(new(new(0, 2), new(2pt, 2), new(0, 2), new(2pt, 2)), PadLR(2pt), columns);
 
-  LanguageTitleRow = Row(BorderB(1 pts));
+  LanguageTitleRow = Row(BorderB(1pt));
 
   Keyword(text) = Span {
     KeywordFormat;
@@ -74,15 +74,15 @@ readonly namespace PaperStyle {
   };
 
   BranchMarker = HBox {
-    Margin: PadR(2 pts);
+    Margin: PadR(2pt);
     Shape(Colors.Black, new Stroke(1 pt, Colors.Gray)) {
-      EllipsePath(new(0, 1 pts))
+      EllipsePath(new(0, 1pt))
     };
   };
 
-  ShowTree(ContentStyleClass style, Node root, width, title=null, axis=null, reorder=true) = VBox {
+  ShowTree(ContentStyle style, Node root, width, title=null, axis=null, reorder=true) = VBox {
     if (title is valid) {
-      Margin: PadAll(5 pts);
+      Margin: PadAll(5pt);
       style.Heading1 {
         title;
       };
@@ -90,11 +90,11 @@ readonly namespace PaperStyle {
 
     Tree(width, null) {
       style.SansSerif;
-      TextHeight: 11 pts;
+      TextHeight: 11pt;
       Reorder: reorder;
       Root: root;
       Default: new Node(null) {
-        NodeGap: 2 pts;
+        NodeGap: 2pt;
         Curvature: 20%;
         Bevel: 20%;
       };
@@ -106,12 +106,12 @@ readonly namespace PaperStyle {
     };
   };
 
-  ShowTreeHorizontal(ContentStyleClass style, Node root, width, title=null, axis=null) = HBox {
+  ShowTreeHorizontal(ContentStyle style, Node root, width, title=null, axis=null) = HBox {
     style.SansSerif;
 
     VAlign: Top;
     if (title is valid) {
-      HBox(null, null, PadR(6 pts)) {
+      HBox(null, null, PadR(6pt)) {
         VAlign: Center;
         Paragraph {
           Bold;
@@ -121,11 +121,11 @@ readonly namespace PaperStyle {
     }
 
     Tree(width, null) {
-      TextHeight: 8 pts;
+      TextHeight: 8pt;
       Reorder: true;
       Root: root;
       Default: new Node(null) {
-//        NodeGap: 5 pts;
+//        NodeGap: 5pt;
         Curvature: 20%;
         Bevel: 20%;
 //        Marker: BranchMarker;
@@ -138,8 +138,8 @@ readonly namespace PaperStyle {
   };
 
   AppendixRow(appendix) = Paragraph {
-    LeftIndent: 20 pts;
-    FirstIndent: -20 pts;
+    LeftIndent: 20pt;
+    FirstIndent: -20pt;
     each1;
     ".";
     Tab;
@@ -149,7 +149,7 @@ readonly namespace PaperStyle {
     };
   };
 
-  HeaderCell(ContentStyleClass style) = Cell(new(new(0, 2 pts), new(0, 2 pts), new(0, 2 pts), new(1 pts, 2 pts))) {
+  HeaderCell(ContentStyle style) = Cell(new(new(0, 2pt), new(0, 2pt), new(0, 2pt), new(1pt, 2pt))) {
     HAlign: Center;
     VAlign: Center;
     style.SansSerif;
@@ -157,30 +157,30 @@ readonly namespace PaperStyle {
   };
 
   TitleBar = Paragraph {
-    SpaceBefore: 6 pts;
+    SpaceBefore: 6pt;
     ParBackground: 40%;
     TextColor: Colors.White;
-    TextHeight: 16 pts;
+    TextHeight: 16pt;
   };
 
   BulletList = ListBlock {
-    LeftIndent: 24 pts;
-    FirstIndent: -16 pts;
+    LeftIndent: 24pt;
+    FirstIndent: -16pt;
   };
 
   NumberList = ListBlock(i => i + ".") {
-    LeftIndent: 24 pts;
-    FirstIndent: -16 pts;
+    LeftIndent: 24pt;
+    FirstIndent: -16pt;
   };
 
   SourcePar(DataSetClass data, ConceptClass concept) = Block {
     ParAlignment: Left;
-    SpaceBefore: 6 pts;
+    SpaceBefore: 6pt;
     LeftIndent: 0.25 inches;
-    TextHeight: 8 pts;
+    TextHeight: 8pt;
 
     TextBlock {
-      SpaceAfter: 10 pts;
+      SpaceAfter: 10pt;
       Span {
         Nexus.Keyword("namespace ");
         concept.Name;
@@ -228,8 +228,8 @@ readonly namespace PaperStyle {
   };
 
   BodyTable(Column[] columns) = Table(null, null, columns) {
-    SpaceBefore: 10 pts;
-    SpaceAfter: 10 pts;
+    SpaceBefore: 10pt;
+    SpaceAfter: 10pt;
     LeftIndent: 0.5 inches;
   };
 
@@ -254,9 +254,9 @@ readonly namespace PaperStyle {
 
 //======================================================================
 
-class TreeContentClass: ContentClass {
+class TreeContent: Content {
   var Node Root;
-  var           Axis;
+  var      Axis;
 
   Constructor(title, Node root, axis=null) {
     super.Constructor(title);
@@ -264,7 +264,7 @@ class TreeContentClass: ContentClass {
     Axis = axis;
   }
 
-  override GetBody(ContentStyleClass style, title) = Paragraph {
+  override GetBody(ContentStyle style, title) = Paragraph {
     PaperStyle.ShowTree(style, Root, 100%, null, Axis);
   };
 }

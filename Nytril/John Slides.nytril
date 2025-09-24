@@ -2,7 +2,7 @@ using Format, Units;
 
 //======================================================================
 
-class JohnDesignClass: FancyDesignClass {
+class JohnDesign: FancyDesign {
   Constructor {
     super.Constructor;
 
@@ -12,16 +12,16 @@ class JohnDesignClass: FancyDesignClass {
   }
 }
 
-class JohnPresentationClass: SlideShowClass {
+class JohnPresentationClass: SlideShow {
   Constructor {
-    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesignClass, SlideContentStyle, [People.Huelsenbeck_John]);
+    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesign, SlideContentStyle, [People.Huelsenbeck_John]);
     Title       = Info.Title;
     Description = "Presentation for Biologists";
   }
 
   override InitDocument = {
     Style.SansSerif;
-    TextHeight: 16 pts;
+    TextHeight: 16pt;
     LinkTypes.AuthorLink to Authors;
     LinkTypes.Link to References;
   };
@@ -39,13 +39,13 @@ class JohnPresentationClass: SlideShowClass {
     AddFigureSlide(Figures.ExchangeabilityTable);
     AddFigureSlide(Figures.RateChart);
     AddFigureSlide(Figures.TransitionRates);
-    AddFigureSlide(new SingleAlignmentClass(34, 6, "Flower"));
-    AddFigureSlide(new AlignmentCompareClass(12, 6));
+    AddFigureSlide(new SingleAlignment(34, 6, "Flower"));
+    AddFigureSlide(new AlignmentCompare(12, 6));
     AddFigureSlide(Figures.GappinessChart);
     AddFigureSlide(Figures.ConsensusTree);
     AddFigureSlide(Figures.Alignments);
-    AddSlide(new EndSlideClass(Lang.Questions));
-    AddSlide(new ReferenceSlideClass);
+    AddSlide(new EndSlide(Lang.Questions));
+    AddSlide(new ReferenceSlide);
   }
 }
 

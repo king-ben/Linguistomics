@@ -126,7 +126,7 @@ class RunResultsClass: Parallel.Thread {
     var align    = IO.ReadScript(AlignmentFile).Root;
     var treefile = Info.ExperimentRoot Run.RootFolder Info.TreeFile;
     if (IO.FileExists(treefile)) {
-      Run.ResultTree = IO.ReadTree(treefile, attribute LangNodeClass);
+      Run.ResultTree = IO.ReadTree(treefile, attribute LanguageNode);
 
       if (Run.ResultTree is valid) {
         QRates                 = new(Data, align.QRates, false);
@@ -163,7 +163,7 @@ class RunResultsClass: Parallel.Thread {
 
 //======================================================================
 
-class AlignmentChartClass {
+class AlignmentChart {
   var DataSetClass    Data;
   var RunResultsClass Run;
 
@@ -172,7 +172,7 @@ class AlignmentChartClass {
     Run  = run;
   }
 
-  ShowChart(ContentStyleClass style, Size size) = VBox(size.Width, size.Height, 0.5) {
+  ShowChart(ContentStyle style, Size size) = VBox(size.Width, size.Height, 0.5) {
     style.SansSerif;
     // Try to make proportional squares
     var xitems = size.Width / 130 as int;
@@ -180,10 +180,10 @@ class AlignmentChartClass {
     var bsize  = new Size(size.Width / xitems, size.Height / yitems);
     AlignIndexClass[][] rows = Run.Alignments / xitems;
 
-    TextHeight: Math.Min(8 pts, bsize.Height - 3.2 pt);
+    TextHeight: Math.Min(8pt, bsize.Height - 3.2 pt);
 
     foreach (var row in rows) {
-      HBox(null, bsize.Height, BorderB(new Edge(0.25 pts, 1, 90%))) {
+      HBox(null, bsize.Height, BorderB(new Edge(0.25pt, 1, 90%))) {
         VAlign: Center;
         foreach (var a in row) {
           VBox(bsize.Width, null) {
@@ -197,7 +197,7 @@ class AlignmentChartClass {
               };
             };
             Paragraph {
-              TextHeight: 10 pts;
+              TextHeight: 10pt;
               TextColor: Colors.LightGray;
               a.TotalCount;
             };
@@ -221,7 +221,7 @@ class AlignmentChartClass {
         var ap = new AlignPairClass(Data, found);
         Row {
           if (label) {
-            Cell(PadR(10 pts)) {
+            Cell(PadR(10pt)) {
               VAlign: Center;
               e.Concept;
               e.Cognate Italic;
@@ -267,10 +267,10 @@ class TransitionClass {
 
 //======================================================================
 
-class RateClass: Action {
+class SegmentRate: Action {
   var AlignedCountClass Count;
   var DataSetClass      Data;
-  var SegPartClass      S0,
+  var SegmentPart       S0,
                         S1;
   var SegmentFeatures   F0,
                         F1;
@@ -281,7 +281,7 @@ class RateClass: Action {
   var bool              Diagonal,
                         Symmetric;
 
-  Constructor(DataSetClass data, AlignedCountClass count, SegPartClass s0, SegPartClass s1, rate, reverse, bool symmetric, bool diagonal) {
+  Constructor(DataSetClass data, AlignedCountClass count, SegmentPart s0, SegmentPart s1, rate, reverse, bool symmetric, bool diagonal) {
     super.Constructor(Actions.ToDocument, null, Guid.FromHash("Rate"+s0.Ipa + s1.Ipa));
 
     Data      = data;
@@ -298,9 +298,9 @@ class RateClass: Action {
     Diagonal  = diagonal;
   }
 
-  static int CompareRate(RateClass a0, RateClass a1) = a0.Rate.Compare(a1.Rate);
+  static int CompareRate(SegmentRate a0, SegmentRate a1) = a0.Rate.Compare(a1.Rate);
 
-  static int CompareDirection(RateClass a0, RateClass a1) = a0.Direction.Compare(a1.Direction);
+  static int CompareDirection(SegmentRate a0, SegmentRate a1) = a0.Direction.Compare(a1.Direction);
 
   static bool SortDescending = true;
 
@@ -324,7 +324,7 @@ class RateClass: Action {
     return PaperStyle.HeatMap.InterpolateColor(1.0 - 0.5 * Direction * Count.DirFactor);
   }
 
-  ShowPartition(SegPartClass s, textheight) = Canvas(textheight * 2.5) {
+  ShowPartition(SegmentPart s, textheight) = Canvas(textheight * 2.5) {
     BorderRadius: PaperStyle.BorderSize;
     HAlign: Center;
     Background: s.Partition.BackColor;
@@ -346,7 +346,7 @@ class RateClass: Action {
     ShowPartition(S1, textheight);
   };
 
-  override GetLayoutSpan = ShowBox(11 pts);
+  override GetLayoutSpan = ShowBox(11pt);
 
   private ShowNumber(name, number) = Paragraph {
     name;
@@ -358,7 +358,7 @@ class RateClass: Action {
   };
 
   GetExamples(int max) = Block {
-    TextHeight: 14 pts;
+    TextHeight: 14pt;
     GetLayoutSpan;
     Paragraph {
       "Value: ";
@@ -382,7 +382,7 @@ class RateClass: Action {
     max = Math.Min(sorted.Length, max);
     if (sorted is valid) {
       Paragraph {
-        SpaceBefore: 6 pts;
+        SpaceBefore: 6pt;
         "Examples:";
       };
 
@@ -445,10 +445,10 @@ class RateClass: Action {
 //======================================================================
 
 class SegDataClass {
-  var RateClass Rate;
+  var SegmentRate Rate;
   var double    Value;
 
-  Constructor(RateClass rate) {
+  Constructor(SegmentRate rate) {
     Rate  = rate;
     Value = -rate.Original;
   }
@@ -479,13 +479,13 @@ class SegDataClass {
 //======================================================================
 
 class AlignedCountClass: CountBaseClass {
-  delegate bool FindRateDelegate(RateClass r);
+  delegate bool FindRateDelegate(SegmentRate r);
 
-  var List<RateClass>   RateList;
-  var Matrix<RateClass> RateMatrix;
+  var List<SegmentRate>   RateList;
+  var Matrix<SegmentRate> RateMatrix;
   var RuleClass         Rule;
   var PartitionClass[]  Partitions;
-  var RateClass[]       SortedRates,
+  var SegmentRate[]       SortedRates,
                         SortByDirection;
   var double            DiagFactor,
                         RateFactor,
@@ -516,7 +516,7 @@ class AlignedCountClass: CountBaseClass {
 
     for (var i = 0; i < length; ++i) {
       for (var j = 0; j < length; ++j) {
-        var r = new RateClass(data, this, ordered[i], ordered[j], matrix[i, j], matrix[j, i], symmetric, i == j);
+        var r = new SegmentRate(data, this, ordered[i], ordered[j], matrix[i, j], matrix[j, i], symmetric, i == j);
         RateMatrix[i, j] = r;
         if (i == j) {
           dmax = Math.Max(dmax, r.Rate);
@@ -534,11 +534,11 @@ class AlignedCountClass: CountBaseClass {
     RateFactor      = 1.0 / Math.Abs(Math.Max(min, max));
     DirFactor       = max == min ? 1.0 : 1.0 / Math.Abs(max - min);
     var rl = RateList.ToArray;
-    SortedRates     = rl.ToSortedArray(RateClass.SortDescending, @RateClass.CompareRate);
-    SortByDirection = rl.ToSortedArray(RateClass.SortDescending, @RateClass.CompareDirection);
+    SortedRates     = rl.ToSortedArray(SegmentRate.SortDescending, @SegmentRate.CompareRate);
+    SortByDirection = rl.ToSortedArray(SegmentRate.SortDescending, @SegmentRate.CompareDirection);
   }
 
-  override AddEntry(SegPartClass si, SegPartClass sj, x, y, Size size) {
+  override AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size) {
     if (si.Index == sj.Index)
       return null;
 
@@ -554,7 +554,7 @@ class AlignedCountClass: CountBaseClass {
         var c = rate.RateColor;
         Span {
           TextDigits: 0;
-          TextHeight: 4 pts;
+          TextHeight: 4pt;
           TextColor: c.TextCompliment;
           rate.Rate;
         };
@@ -564,7 +564,7 @@ class AlignedCountClass: CountBaseClass {
     return null;
   }
 
-  ShowLegend(RateClass[] rates) {
+  ShowLegend(SegmentRate[] rates) {
     // Show only partitions that are present in the chart
     var pmax = Partitions.Length;
     var set  = new HashSet<PartitionClass>(pmax);
@@ -575,18 +575,18 @@ class AlignedCountClass: CountBaseClass {
 
     return Canvas(ExtentWidth) {
       HAlign: Center;
-      Rule.ShowBlockLegend(set.ToArray, 11 pts);
+      Rule.ShowBlockLegend(set.ToArray, 11pt);
     }
   }
 
-  ShowChart(RateClass[] rates) = Chart(100%, 4 inches) {
+  ShowChart(SegmentRate[] rates) = Chart(100%, 4 inches) {
     ChartType: ChartTypes.Column;
-    TextHeight: 12 pts;
+    TextHeight: 12pt;
     ValueLabel: PaperStyle.ValueLabel {
       Lang.RateFactor;
     };
 
-    var fs = Math.Min(160.0 / rates.Length, 10 pts);
+    var fs = Math.Min(160.0 / rates.Length, 10pt);
     XAxis: ChartAxis {
       Rotation: 30 degrees;
       (each rates).ShowBox(fs);
@@ -602,14 +602,14 @@ class AlignedCountClass: CountBaseClass {
   Extrema(number, top) = VBox {
     var actions = SortedRates.Slice(top ? 0..<number : (SortedRates.Length - number)..<SortedRates.Length);
     ShowChart(actions);
-    Separation: 20 pts;
+    Separation: 20pt;
     ShowLegend(actions);
   };
 
   ShowAllRates = VBox {
-    Chart(100%, ExtentHeight - 48 pts) {
+    Chart(100%, ExtentHeight - 48pt) {
       ChartType: ChartTypes.Scatter;
-      TextHeight: 12 pts;
+      TextHeight: 12pt;
       TipNoPublish: true;
 
       ValueLabel: PaperStyle.ValueLabel {
@@ -618,10 +618,10 @@ class AlignedCountClass: CountBaseClass {
 
       XAxis: ChartAxis {
         Rotation: 90 degrees;
-        TextHeight: 7 pts;
+        TextHeight: 7pt;
         foreach (var sa in LegendSegments) {
           var p = Partitions[sa.PartitionIndex];
-          HBox(15 pts) {
+          HBox(15pt) {
             HAlign: Center;
             Background: p.BackColor;
             TextColor: p.TextColor;
@@ -651,18 +651,18 @@ class AlignedCountClass: CountBaseClass {
       };
     };
 
-    Separation: 20 pts;
+    Separation: 20pt;
     Canvas(ExtentWidth) {
       HAlign: Center;
-      Rule.ShowBlockLegend(Partitions, 10 pts);
+      Rule.ShowBlockLegend(Partitions, 10pt);
     }
   };
 
   ShowRateDirected = VBox {
-    Chart(100%, ExtentHeight - 48 pts) {
+    Chart(100%, ExtentHeight - 48pt) {
       TipNoPublish: true;
       ChartType: ChartTypes.Scatter;
-      TextHeight: 12 pts;
+      TextHeight: 12pt;
 
       XLabel: RateDescriptor(Lang.RateFactor);
 
@@ -671,7 +671,7 @@ class AlignedCountClass: CountBaseClass {
       };
 
       ChartSeries {
-        TextHeight: 6 pts;
+        TextHeight: 6pt;
         Marker: Markers.Dot;
         foreach (var si in LegendSegments) {
           foreach (var sj in LegendSegments) {
@@ -679,11 +679,11 @@ class AlignedCountClass: CountBaseClass {
               var a = RateMatrix[si.Index, sj.Index];
               new DataPoint(a.Rate, a.Direction) {
                 Reference: a;
-                Marker: Canvas(4 pts, 4 pts) {
+                Marker: Canvas(4pt, 4pt) {
                   HAlign: Center;
                   VAlign: Center;
                   Background: a.S0.Partition.BackColor;
-                  BorderRadius: 2 pts;
+                  BorderRadius: 2pt;
                   a.S1.Partition.Marker;
                 };
               };
@@ -693,18 +693,18 @@ class AlignedCountClass: CountBaseClass {
       };
     };
 
-    Separation: 20 pts;
+    Separation: 20pt;
     Canvas(ExtentWidth) {
       HAlign: Center;
-      Rule.ShowBlockLegend(Partitions, 10 pts);
+      Rule.ShowBlockLegend(Partitions, 10pt);
     }
   };
 
   ShowDirection = VBox {
-    Chart(100%, ExtentHeight - 48 pts) {
+    Chart(100%, ExtentHeight - 48pt) {
       TipNoPublish: true;
       ChartType: ChartTypes.Scatter;
-      TextHeight: 12 pts;
+      TextHeight: 12pt;
 
       XLabel: "Transitions";
 
@@ -712,10 +712,10 @@ class AlignedCountClass: CountBaseClass {
         RateDescriptor("Direction");
       };
 
-      var group   = Markers.TriangleUp(Colors.Green) {TextHeight: 8 pts};
-      var special = Markers.Square(Colors.Red) {TextHeight: 10 pts};
+      var group   = Markers.TriangleUp(Colors.Green) {TextHeight: 8pt};
+      var special = Markers.Square(Colors.Red) {TextHeight: 10pt};
       ChartSeries {
-        TextHeight: 6 pts;
+        TextHeight: 6pt;
         Marker: Markers.Dot;
         foreach (var a in SortByDirection) {
           new DataPoint(each0, a.Direction) {
@@ -729,14 +729,14 @@ class AlignedCountClass: CountBaseClass {
       };
     };
 
-    Separation: 20 pts;
+    Separation: 20pt;
     Canvas(ExtentWidth) {
       HAlign: Center;
-      Rule.ShowBlockLegend(Partitions, 10 pts);
+      Rule.ShowBlockLegend(Partitions, 10pt);
     }
   };
 
-  ShowChartPairs(top, RateClass[] rates) = VBox {
+  ShowChartPairs(top, SegmentRate[] rates) = VBox {
     var subset = top < 0 ? rates : rates.Slice(0..<top);
 
     ShowChart(subset) {
@@ -752,7 +752,7 @@ class AlignedCountClass: CountBaseClass {
           new DataPoint(each0, a.Reverse);
       };
     };
-    Separation: 20 pts;
+    Separation: 20pt;
     ShowLegend(subset);
   };
 
@@ -779,7 +779,7 @@ class CalcRatesClass {
     Run        = run;
     Data       = data;
     Rule       = Data.Rule;
-    ArrowGap   = 8 pts;
+    ArrowGap   = 8pt;
     GapAngle   = 80.0 degrees;
     Transition = new TransitionClass(run, Rule);
   }
@@ -815,7 +815,7 @@ class CalcRatesClass {
       partition.Center = Graphics.ExtendPoint(middle, maxradius, partition.Angle);
   }
 
-  private MainDiagram(ContentStyleClass style, min) = Canvas(min, min) {
+  private MainDiagram(ContentStyle style, min) = Canvas(min, min) {
     TransformFit: true;
     style.SansSerif;
 
@@ -852,7 +852,7 @@ class CalcRatesClass {
     foreach (var p1 in Rule.Partitions) {
       var pos        = p1.Center - p1.Radius;
       var fsize      = p1.Radius*2;
-      var textheight = Math.Min(14 pts, fsize * 0.5);
+      var textheight = Math.Min(14pt, fsize * 0.5);
 
       Shape(p1.BackColor, 0.5 pt) {
         EllipsePath(new(pos, new(fsize)));
@@ -874,10 +874,10 @@ class CalcRatesClass {
   };
 
 
-  PartitionDiagram(ContentStyleClass style) = HBox {
+  PartitionDiagram(ContentStyle style) = HBox {
     VAlign: Center;
 
-    var legend = Rule.ShowLegend(style, 10 pts, 0);
+    var legend = Rule.ShowLegend(style, 10pt, 0);
     var ls     = GetLayoutSize(legend);
     legend;
     MainDiagram(style, Math.Min(ExtentWidth - ls.Width, ExtentHeight));
@@ -915,12 +915,12 @@ class DiagonalClass {
     return partitions.ToArray;
   }
 
-  Display(ContentStyleClass style) = VBox {
+  Display(ContentStyle style) = VBox {
     HAlign: Center;
     style.SansSerif;
 
     Chart(100%, 2 inches) {
-      TextHeight: 11 pts;
+      TextHeight: 11pt;
       ChartType: ChartTypes.Column;
 
       ValueLabel: PaperStyle.ValueLabel {
@@ -944,7 +944,7 @@ class DiagonalClass {
       };
     };
 
-    Rule.ShowBlockLegend(OrderPartitions, 7 pts);
+    Rule.ShowBlockLegend(OrderPartitions, 7pt);
   };
 }
 

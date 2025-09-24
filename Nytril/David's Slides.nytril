@@ -2,13 +2,13 @@ using Format, Units, Defs, Equations, PaperStyle;
 
 //======================================================================
 
-class DavidDesignClass: TexDesignClass {
+class DavidDesignClass: TexDesign {
   Constructor {
     super.Constructor;
   }
 
   override ShowTopicTitle(title) = Paragraph {
-    SpaceAfter: 24 pts;
+    SpaceAfter: 24pt;
     TextHeight: TopicHeight;
     title;
   };
@@ -17,7 +17,7 @@ class DavidDesignClass: TexDesignClass {
 
 //======================================================================
 
-class DavidPresentationClass: SlideShowClass {
+class DavidPresentationClass: SlideShow {
   Constructor {
     super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, SlideContentStyle, Authors);
     Title       = "From phonology to phylogeny\nA new framework for phylogenetic inference";
@@ -26,13 +26,13 @@ class DavidPresentationClass: SlideShowClass {
 
   override void CreateSlides {
     AddSlideGroup(DavidSlides);
-    AddSlide(new EndSlideClass(Lang.Questions));
-    AddSlide(new ReferenceSlideClass);
+    AddSlide(new EndSlide(Lang.Questions));
+    AddSlide(new ReferenceSlide);
   }
 
   override InitDocument = {
     TextFamily: TextFamilies.LibertinusSerif;
-    TextHeight: 9 pts;
+    TextHeight: 9pt;
     LinkTypes.AuthorLink to Authors;
     LinkTypes.Link to References;
   };
@@ -114,16 +114,16 @@ namespace DavidSlides.Introduction {
     Title = "My Colaborators";
 
     Text = Block {
-      TextHeight: 18 pts;
+      TextHeight: 18pt;
       Separator: Paragraph;
-      ContentStyleClass.GetFullName(each Authors.FindSlice(p => p != People.Goldstein_David));
+      ContentStyle.GetFullName(each Authors.FindSlice(p => p != People.Goldstein_David));
     };
   }
 
   namespace Slide.Slide9 {
     Title = "Roadmap";
 
-    GetItems(SlideShowClass show) {
+    GetItems(SlideShow show) {
       var list = new List(32);
       foreach (var slide in DavidSlides.ToArray[1..]) {
         if (show.CanInclude(slide))
@@ -224,9 +224,9 @@ namespace DavidSlides.PreviousResearch {
       "There’s much more uncertainty after that";
     };
 
-    Items.Item3.GetBody(ContentStyleClass style) = ShowTree(style, LanguageBranches.Romance, ExtentWidth - 30 pts, "Romance phylogeny", Lang.Years);
+    Items.Item3.GetBody(ContentStyle style) = ShowTree(style, LanguageBranches.Romance, ExtentWidth - 30pt, "Romance phylogeny", Lang.Years);
 
-    Items.Item4.GetBody(ContentStyleClass style) = Block {
+    Items.Item4.GetBody(ContentStyle style) = Block {
       HBox {
         foreach (var tree in TreeExamples.PriorTrees)
           ShowTree(style, tree, 30%, Lang.Tree+each1);
@@ -466,7 +466,7 @@ namespace DavidSlides.Methods {
       };
       Paragraph;
       Equations.BayesTheorem.GetLayoutBlock {
-        TextHeight: 18 pts;
+        TextHeight: 18pt;
       };
     };
 
@@ -476,7 +476,7 @@ namespace DavidSlides.Methods {
       };
       Paragraph;
       Equations.PosteriorProbabilityDistribution.GetLayoutBlock {
-        TextHeight: 24 pts;
+        TextHeight: 24pt;
       }
     };
   }
@@ -485,7 +485,7 @@ namespace DavidSlides.Methods {
     Title = "The general-time reversible (GTR) model";
 
     Text = Equations.GTR4.GetLayoutBlock {
-      TextHeight: 24 pts;
+      TextHeight: 24pt;
     };
   }
 
@@ -620,7 +620,7 @@ namespace DavidSlides.Results {
 
   namespace Slide.Slide2 {
     path   = Info.ExperimentRoot IO.Folder("Europe") IO.Folder("Custom") IO.Folder("Posterior") IO.Folder("Run1") Info.TreeFile;
-    Figure = new TreeContentClass("Majority-rule consensus tree (Old Method)", IO.ReadTree(path, attribute LangNodeClass), Lang.Branches);
+    Figure = new TreeContent("Majority-rule consensus tree (Old Method)", IO.ReadTree(path, attribute LanguageNode), Lang.Branches);
   }
 
   namespace Slide.Slide3 {

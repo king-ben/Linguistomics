@@ -4,7 +4,7 @@ using Format, Units, SegmentFeatures, LinkTypes;
 class PartitionClass: Fact {
   field string       Name;
   var string         PluralName;
-  var SegPartClass[] Segments;
+  var SegmentPart[] Segments;
   var Point          Center;
   var Color          BackColor,
                      TextColor;
@@ -14,7 +14,7 @@ class PartitionClass: Fact {
                      Angle,
                      Outer;
 
-  Constructor(index, name, plural, SegPartClass[] segments) {
+  Constructor(index, name, plural, SegmentPart[] segments) {
     super.Constructor(Guid.FromHash(name));
     Name       = name;
     PluralName = plural;
@@ -35,7 +35,7 @@ class PartitionClass: Fact {
   ShowFilterSegments(ParAlignments align) = Frame(PaperStyle.SegmentWidth) {
     Paragraph {
       ParAlignment: align;
-      TextHeight: 18 pts;
+      TextHeight: 18pt;
       Separator: Space;
       (each Segments).ShowSegment;
     }
@@ -44,7 +44,7 @@ class PartitionClass: Fact {
   override GetLayoutTip = Frame(PaperStyle.SegmentWidth) {
     Paragraph(BorderB(1)) {
       ParAlignment: ParAlignments.Center;
-      TextHeight: 16 pts;
+      TextHeight: 16pt;
       PluralName;
     };
     ShowFilterSegments(Left);
@@ -86,7 +86,7 @@ class FilterClass {
     PluralName = plural ?? name;
   }
 
-  virtual bool Matches(SegmentClass segment) = true;
+  virtual bool Matches(Segment segment) = true;
 
   override GetLayoutSpan = Span {
     TipAction: this;
@@ -101,7 +101,7 @@ abstract class RuleClass {
   var FilterClass[]          Filters,
                              FiltersPlus;
   var PartitionClass[]       Partitions;
-  var SegPartClass[]         Segments;
+  var SegmentPart[]         Segments;
   var                        Name,
                              Numbers;
 
@@ -111,7 +111,7 @@ abstract class RuleClass {
     FilterList = new(128);
   }
 
-  void Init(SegPartClass[] segments) {
+  void Init(SegmentPart[] segments) {
     Filters = FilterList.ToArray;
     FilterList.Add(new FilterClass(this, "Residue", "Residues"));
     FiltersPlus = FilterList.ToArray;
@@ -130,7 +130,7 @@ abstract class RuleClass {
     Segments   = segments.ToSortedArray(true, @ComparePartSegments);
   }
 
-  bool MatchesRule(FilterClass filter, SegmentClass segment) {
+  bool MatchesRule(FilterClass filter, Segment segment) {
     foreach (var f in FiltersPlus) {
       if (f == filter)
         return f.Matches(segment);
@@ -140,7 +140,7 @@ abstract class RuleClass {
     return false;
   }
 
-  virtual int GetFilterIndex(SegmentClass segment) {
+  virtual int GetFilterIndex(Segment segment) {
     var c = 0;
     foreach (var filter in FiltersPlus) {
       if (MatchesRule(filter, segment))
@@ -150,18 +150,18 @@ abstract class RuleClass {
     return c;
   }
 
-  static int ComparePartSegments(SegPartClass s0, SegPartClass s1) {
+  static int ComparePartSegments(SegmentPart s0, SegmentPart s1) {
     var i = s1.PartitionIndex - s0.PartitionIndex;
     if (i == 0)
       i = s0.UsedCount - s1.UsedCount;
     return i;
   }
 
-  SegPartClass[] GetMatching(SegPartClass[] segments, FilterClass filter) {
+  SegmentPart[] GetMatching(SegmentPart[] segments, FilterClass filter) {
     return segments.FindSlice(part => MatchesRule(filter, part.Segment));
   }
 
-  ShowLegend(ContentStyleClass style, textheight, padding) = VBox(null, null, padding) {
+  ShowLegend(ContentStyle style, textheight, padding) = VBox(null, null, padding) {
     style.SansSerif;
     TextHeight: textheight;
 
@@ -180,7 +180,7 @@ abstract class RuleClass {
     }
   };
 
-  ShowHLegend(ContentStyleClass style, textheight, padding) = HBox(null, null, padding) {
+  ShowHLegend(ContentStyle style, textheight, padding) = HBox(null, null, padding) {
     style.SansSerif;
     TextHeight: textheight;
 
@@ -204,7 +204,7 @@ abstract class RuleClass {
       foreach (var p in partitions) {
         HBox {
           VAlign: Center;
-          Separation: 3 pts;
+          Separation: 3pt;
           Canvas (textheight, textheight) {
             BorderRadius: PaperStyle.BorderSize;
             Background: p.BackColor;
@@ -215,14 +215,14 @@ abstract class RuleClass {
     }
   };
 
-  GetCaption(ContentStyleClass style) = Span {
+  GetCaption(ContentStyle style) = Span {
     Lang.Model;
     ColonSpace;
     style.DQuote {Name};
   };
 
   ShowPartitions {
-    var textheight = Math.Min(ExtentWidth * 0.04, 10 pts);
+    var textheight = Math.Min(ExtentWidth * 0.04, 10pt);
     return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3 inches)]) {
       ParAlignment: Center;
       TextHeight: textheight;
@@ -240,9 +240,9 @@ abstract class RuleClass {
     };
   }
 
-  ShowDescription(SegPartClass[] segments) = Block {
+  ShowDescription(SegmentPart[] segments) = Block {
     Paragraph {
-      TextHeight: 14 pts;
+      TextHeight: 14pt;
       Name;
     };
 
@@ -253,7 +253,7 @@ abstract class RuleClass {
       foreach (var filter in FiltersPlus) {
         var matching = GetMatching(segments, filter);
         if (matching is valid) {
-          HBox(null, null, new Edge(0.25 pts, 1, 80%)) {
+          HBox(null, null, new Edge(0.25pt, 1, 80%)) {
             VAlign: Center;
             Margin: 2;
             Span {
@@ -269,7 +269,7 @@ abstract class RuleClass {
             };
             Space*5;
             Span {
-              TextHeight: 18 pts;
+              TextHeight: 18pt;
               Separator: Space;
               (each matching).ShowSegment;
             };
@@ -283,14 +283,14 @@ abstract class RuleClass {
 //======================================================================
 
 class SingleFilterClass: FilterClass {
-  var SegmentClass Segment;
+  var Segment Segment;
 
-  Constructor(RuleClass rule, SegmentClass segment) {
+  Constructor(RuleClass rule, Segment segment) {
     super.Constructor(rule, segment.Ipa, null);
     Segment = segment;
   }
 
-  override bool Matches(SegmentClass segment) = segment == Segment;
+  override bool Matches(Segment segment) = segment == Segment;
 }
 
 //======================================================================
@@ -306,30 +306,30 @@ class FeatureMaskClass: FilterClass {
     rule.FilterList.Add(this);
   }
 
-  override bool Matches(SegmentClass segment) = segment.Features.HasFlagMask(Mask, Flags);
+  override bool Matches(Segment segment) = segment.Features.HasFlagMask(Mask, Flags);
 }
 
 //======================================================================
 
 class SegmentListClass: FilterClass {
-  var SegmentClass[] List;
+  var Segment[] List;
 
-  Constructor(RuleClass rule, name, plural, SegmentClass[] list) {
+  Constructor(RuleClass rule, name, plural, Segment[] list) {
     super.Constructor(rule, name, plural);
     List = list;
   }
 
-  override bool Matches(SegmentClass segment) = List.FindElementIndex(segment) >= 0;
+  override bool Matches(Segment segment) = List.FindElementIndex(segment) >= 0;
 }
 
 //======================================================================
 
 class VowelListClass: SegmentListClass {
-  Constructor(RuleClass rule, SegmentClass[] list) {
+  Constructor(RuleClass rule, Segment[] list) {
     super.Constructor(rule, list.FirstElement.Ipa, null, list);
   }
 
-  override bool Matches(SegmentClass segment) = List.FindElementIndex(segment) >= 0;
+  override bool Matches(Segment segment) = List.FindElementIndex(segment) >= 0;
 }
 
 //======================================================================
@@ -346,7 +346,7 @@ class NaturalPartitionClass: RuleClass {
     new FeatureMaskClass(this, "Nasal Vowel", "Nasal Vowels", Vowel Nasal, Vowel Nasal);
     new FeatureMaskClass(this, "Diphthong", "Diphthongs", Diphthong, Diphthong);
     new FeatureMaskClass(this, "Short Vowel", "Short Vowels", Vowel, Vowel);
-    new FeatureMaskClass(this, "Nasal Consonant", "Nasal Consonants", Nasal, Nasal);
+    new FeatureMaskClass(this, "Nasal SegmentConsonant", "Nasal Consonants", Nasal, Nasal);
     new FeatureMaskClass(this, "Liquid", "Liquids", Vowel Liquid, Liquid);
     new FeatureMaskClass(this, "Approximant", "Approximants", Vowel Approximant, Approximant);
     new FeatureMaskClass(this, "Affricate", "Affricates", Vowel Affricate, Affricate);

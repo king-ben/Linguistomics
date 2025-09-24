@@ -2,7 +2,7 @@ using Format, Units, LinkTypes;
 
 //======================================================================
 
-abstract class LinguisticsContentClass: AuthoredContentClass {
+abstract class LinguisticsContent: AuthoredContent {
   Constructor(name) {
     super.Constructor(name);
 
@@ -15,7 +15,7 @@ abstract class LinguisticsContentClass: AuthoredContentClass {
 
 //======================================================================
 
-class PaperContentClass: LinguisticsContentClass {
+class LinguisticsPaper: LinguisticsContent {
   Constructor {
     super.Constructor("Paper");
     Title                 = Info.Title;
@@ -46,11 +46,11 @@ class PaperContentClass: LinguisticsContentClass {
 
 //======================================================================
 
-class SupplementalContentClass: LinguisticsContentClass {
+class SupplementalContent: LinguisticsContent {
   Constructor {
     super.Constructor("Supplemental Material");
 
-    Subtitle    = Span {"For: "; ContentStyleClass.DQuote {Info.Title}};
+    Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
     Description = "Extra derivations and charts to supplement the main paper";
 
     AddContent(PaperSections.Methods);

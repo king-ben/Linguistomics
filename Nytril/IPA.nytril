@@ -1,4 +1,4 @@
-using Format, Units, SegmentFeatures, Math;
+using Format, SegmentFeatures;
 
 //======================================================================
 
@@ -102,10 +102,10 @@ flags SegmentFeatures {
 
 //======================================================================
 
-typedef SegmentSetClass HashSet<SegPartClass>;
-typedef SegPartDictionary StringDictionary<SegPartClass>;
+typedef SegmentSetClass   HashSet<SegmentPart>;
+typedef SegPartDictionary StringDictionary<SegmentPart>;
 
-class SegmentClass: Fact {
+class Segment: Fact {
   field string          Ipa;
   field SegmentFeatures Features;
   var Opens             Open;
@@ -155,7 +155,7 @@ class SegmentClass: Fact {
     }
   };
 
-  ShowBlock = Canvas(10 pts, 8 pts) {
+  ShowBlock = Canvas(10pt, 8pt) {
     ShowSegment;
   };
 
@@ -187,7 +187,7 @@ class SegmentClass: Fact {
   };
 
   ShowCodePoint = Paragraph {
-    TextHeight: 8 pts;
+    TextHeight: 8pt;
     ParBackground: 95%;
     Span {
       TextFace: Mono;
@@ -203,8 +203,8 @@ class SegmentClass: Fact {
     Paragraph {
       if (location is valid)
         DocFields.Anchor(location);
-      SpaceBefore: 8 pts;
-      SpaceAfter: 8 pts;
+      SpaceBefore: 8pt;
+      SpaceAfter: 8pt;
       PaperStyle.IPAFamily;
       TextLiteral: true;
       TextHeight: size;
@@ -213,7 +213,7 @@ class SegmentClass: Fact {
     };
     ShowCodePoint;
     Paragraph {
-      TextHeight: 10 pts;
+      TextHeight: 10pt;
       if (Gap)
         Lang.Gap;
       else
@@ -228,7 +228,7 @@ class SegmentClass: Fact {
   override GetLayoutTip = ShowFrame(PaperStyle.SegmentWidth, PaperStyle.SegmentSize);
 
   override GetLayoutFact = Block {
-    ShowFrame(PaperStyle.SegmentWidth, 14 pts, 0.5);
+    ShowFrame(PaperStyle.SegmentWidth, 14pt, 0.5);
 //    Paragraph {
 //      super.GetLayoutFact;
 //    };
@@ -237,10 +237,10 @@ class SegmentClass: Fact {
 
 //======================================================================
 
-class SegPartClass {
+class SegmentPart {
   field string          Ipa;
   field SegmentFeatures Features;
-  var SegmentClass      Segment;
+  var Segment           Segment;
   var PartitionClass    Partition;
   var int               PartitionIndex,
                         Index,
@@ -248,7 +248,7 @@ class SegPartClass {
   var double            UsedFrequency;
   var bool              Punctuation;
 
-  Constructor(SegmentClass s) {
+  Constructor(Segment s) {
     Segment        = s;
     PartitionIndex = 0;
     Index          = -1;
@@ -284,12 +284,12 @@ class SegPartClass {
   override GetLayoutFact = Segment.GetLayoutFact;
 }
 
-SegPartClass IPAParts.Gap     = new(IPASegments.GapSegment);
-SegPartClass IPAParts.Missing = new(IPASegments.MissingSegment);
+SegmentPart IPAParts.Gap     = new(IPASegments.GapSegment);
+SegmentPart IPAParts.Missing = new(IPASegments.MissingSegment);
 
 //======================================================================
 
-class PunctuationClass: SegmentClass {
+class SegmentPunctuation: Segment {
   Constructor(ipa, sampa=null) {
     super.Constructor(ipa, sampa);
     Punctuation = true;
@@ -298,7 +298,7 @@ class PunctuationClass: SegmentClass {
 
 //======================================================================
 
-class ImpossibleClass: SegmentClass {
+class SegmentImpossible: Segment {
   Constructor(features, place) {
     super.Constructor(Empty, null);
     Features   = features;
@@ -309,7 +309,7 @@ class ImpossibleClass: SegmentClass {
 
 //======================================================================
 
-class DiacriticClass: SegmentClass {
+class Diacritic: Segment {
   Constructor(description, ipa, sampa=null) {
     super.Constructor(ipa, sampa);
     Diacritic   = true;
@@ -319,7 +319,7 @@ class DiacriticClass: SegmentClass {
 
 //======================================================================
 
-class ConsonantClass: SegmentClass {
+class SegmentConsonant: Segment {
   Constructor(ipa, features, place, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features;
@@ -329,7 +329,7 @@ class ConsonantClass: SegmentClass {
 
 //======================================================================
 
-class VowelClass: SegmentClass {
+class SegmentVowel: Segment {
   Constructor(ipa, features, open, backness, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features | Vowel;
@@ -340,7 +340,7 @@ class VowelClass: SegmentClass {
 
 //======================================================================
 
-readonly ImpossibleClass[] ImpossibleSegments = [
+readonly SegmentImpossible[] ImpossibleSegments = [
   new(Pulmonic Nasal, Places.Pharyngeal),
   new(Pulmonic Nasal, Places.Glottal),
   new(Pulmonic Stop Voiced, Places.Pharyngeal),
@@ -401,7 +401,7 @@ readonly ImpossibleClass[] ImpossibleSegments = [
 
 //======================================================================
 
-readonly namespace<DiacriticClass> DiacriticModifiers {
+readonly namespace<Diacritic> DiacriticModifiers {
   UndefinedEscapeCharacter     = new("Undefined escape character", null, "*");
   Nasalized                    = new("Nasalized", "\u0303", "_~");
   Centralized                  = new("Centralized", "\u0308", "_\"");
@@ -477,7 +477,7 @@ readonly namespace<DiacriticClass> DiacriticModifiers {
 
 //======================================================================
 
-readonly SegmentClass IPA.NullSegment = new(Tex.bigotimes, "!?", true);
+readonly Segment IPA.NullSegment = new(Tex.bigotimes, "!?", true);
 
 //======================================================================
 

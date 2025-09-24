@@ -53,7 +53,7 @@ class AlignPairClass: DocumentClass {
 
     Data       = data;
     Alignments = cognate.Alignments;
-    BoxSize    = new Size(14 pts, 14 pts);
+    BoxSize    = new Size(14pt, 14pt);
     if (cognate.CognateName != DefaultCognate)
       Name += "-" + cognate.CognateName;
   }
@@ -71,7 +71,7 @@ class AlignPairClass: DocumentClass {
   };
 
   ShowBlock(prob, cumulative, wordset, boxheight) = VBox(null, null, new Edge(0.125, 0, 50%)) {
-    Margin: PadB(6 pts);
+    Margin: PadB(6pt);
     HAlign: Center;
 
     HBox(null, boxheight) {
@@ -95,7 +95,7 @@ class AlignPairClass: DocumentClass {
             foreach (var c in word) {
               Canvas(BoxSize.Width, BoxSize.Height) {
                 HAlign: Center;
-                SegPartClass part;
+                SegmentPart part;
                 if (c == -1)
                   part = IPAParts.Gap;
                 else if (c >= 0 and c < Data.UniqueSegments.Length) {
@@ -114,12 +114,12 @@ class AlignPairClass: DocumentClass {
     };
   };
 
-  override GetLayoutTip = ShowDetails(9, true, 10 pts);
+  override GetLayoutTip = ShowDetails(9, true, 10pt);
 
-  override GetDocument = ShowDetails(50, true, 10 pts);
+  override GetDocument = ShowDetails(50, true, 10pt);
 
   GetChart(Size size, int max) = Chart(size.Width, size.Height) {
-    TextHeight: 6 pts;
+    TextHeight: 6pt;
     ValueLabel: PaperStyle.ValueLabel {
       "Probability";
     };
@@ -144,8 +144,8 @@ class AlignPairClass: DocumentClass {
 
     Paragraph(null, [3 inches]) {
       KeepWithNext: true;
-      TextHeight: textheight + 4 pts;
-      SpaceAfter: 10 pts;
+      TextHeight: textheight + 4pt;
+      SpaceAfter: 10pt;
       Name;
     };
 
@@ -172,8 +172,8 @@ class AlignPairClass: DocumentClass {
   };
 
   ShowAll = Block {
-    var textheight = 8 pts;
-    var height     = 10 pts;
+    var textheight = 8pt;
+    var height     = 10pt;
     var max        = 20;
     BoxSize = new(BoxSize.Width, height);
 
@@ -181,8 +181,8 @@ class AlignPairClass: DocumentClass {
 
     Paragraph(null, [3 inches]) {
       KeepWithNext: true;
-      TextHeight: textheight + 4 pts;
-      SpaceAfter: 10 pts;
+      TextHeight: textheight + 4pt;
+      SpaceAfter: 10pt;
       HBox(100%) {
         Justify: Justifiers.SpaceBetween;
         Name;
@@ -214,11 +214,11 @@ class AlignPairClass: DocumentClass {
 
   ShowFigureDetails(DataSetClass data, int max, int blocks) = Block {
     var chart = 1.25 inch;
-    var h     = 7 pts;
+    var h     = 7pt;
     BoxSize = new(BoxSize.Width, h);
     TextHeight: h * 0.80;
     HBox(ExtentWidth) {
-      Separation: 10 pts;
+      Separation: 10pt;
       GetChart(new(chart, data.Taxa.Length * (h + 1)), max);
 
       double cumulative = 0.0;
@@ -236,16 +236,16 @@ class AlignPairClass: DocumentClass {
   };
 
   ShowFigureData(AlignIndexClass index, AlignDataClass align) = Frame {
-    var h = 8 pts;
+    var h = 8pt;
     BoxSize = new(BoxSize.Width, h);
     Paragraph {
-      SpaceBefore: 6 pts;
-      TextHeight: 12 pts;
+      SpaceBefore: 6pt;
+      TextHeight: 12pt;
       index.Cognate.GetTitle;
     };
 
     Paragraph {
-      TextHeight: 7 pts;
+      TextHeight: 7pt;
       Span {
         Languages(Data, h);
         ShowBlock(align.Prob, align.Prob, align.WordSet, h);
@@ -293,7 +293,7 @@ class LanguageClass: Fact {
   override GetLayoutTip = Frame(4 inches) {
     Paragraph {
       Bold;
-      TextHeight: 14 pts;
+      TextHeight: 14pt;
       Name;
     };
     Paragraph {
@@ -314,7 +314,7 @@ class WordClass: Fact {
   var LanguageClass  Language;
   var TaxonClass     Taxon;
   var CognateClass   Cognate;
-  var SegPartClass[] Segments,
+  var SegmentPart[]  Segments,
                      Aligned,
                      Padded;
   var                Variable;
@@ -355,7 +355,7 @@ class WordClass: Fact {
       Init;
   }
 
-  void InitExperiment(variable, SegPartClass[] segments) {
+  void InitExperiment(variable, SegmentPart[] segments) {
     Variable  = variable;
     Aligned   = segments;
     Padded    = segments;
@@ -398,7 +398,7 @@ class WordClass: Fact {
     TextHeight: textheight;
 
     foreach (var segment in Padded) {
-      HBox(textheight*1.125, null, BorderL(new(0.125 pts, 0, 80%))) {
+      HBox(textheight*1.125, null, BorderL(new(0.125pt, 0, 80%))) {
         HAlign: Center;
         if (index == each0)
           Background: Colors.LightYellow;
@@ -421,7 +421,7 @@ class WordClass: Fact {
     };
     FieldPar(Lang.Segments) {
       Frame(null, null, 0.5) {
-        ShowPaddedBlocks(16 pts);
+        ShowPaddedBlocks(16pt);
       }
     }
   };
@@ -562,7 +562,7 @@ class WordPairClass {
     Word2 = w2;
   }
 
-  ShowDescription(textheight) = Frame(null, null, 0.25 pts) {
+  ShowDescription(textheight) = Frame(null, null, 0.25pt) {
     TextHeight: textheight;
     Paragraph {
       ParBackground: 90%;
@@ -577,7 +577,7 @@ class WordPairClass {
     Word2.ShowPaddedBlocks(textheight, Index);
   };
 
-  override GetLayoutTip = ShowDescription(12 pts);
+  override GetLayoutTip = ShowDescription(12pt);
 }
 
 //======================================================================
@@ -657,12 +657,12 @@ readonly namespace TreeExamples {
 
 class DataSetClass {
   var LanguageClass[]              LanguageSet;
-  var SegPartClass[]               UniqueSegments;
+  var SegmentPart[]               UniqueSegments;
   var CognateClass[]               SortedCognates;
   var List<ConceptClass>           UsedConcepts;
   var List<CognateClass>           UsedCognates;
   var Vector<WordClass>            WordList;
-  var List<SegPartClass>           SegmentBuffer;
+  var List<SegmentPart>           SegmentBuffer;
   var TaxonClass[]                 Taxa;
   var StringDictionary<TaxonClass> TaxonSet;
   var RuleClass                    Rule;
@@ -748,7 +748,7 @@ class DataSetClass {
     var lookup = new SegPartDictionary(IPASegments.Length);
     foreach (var segment in IPASegments) {
       if (segment.Ipa is valid)
-        lookup.Add(new SegPartClass(segment), segment.Ipa);
+        lookup.Add(new SegmentPart(segment), segment.Ipa);
     }
 
     foreach (var cognate in UsedCognates)
@@ -775,8 +775,8 @@ class DataSetClass {
     WordCutoff  = run.Info.WordCutoff;
     AddLanguageSet(run.LanguageSet);
 
-    var slist  = new List<SegPartClass>(run.Segments.Length);
-    var lookup = new StringDictionary<SegmentClass>(IPASegments.Length);
+    var slist  = new List<SegmentPart>(run.Segments.Length);
+    var lookup = new StringDictionary<Segment>(IPASegments.Length);
     foreach (var segment in IPASegments) {
       if (segment.Ipa is valid)
         lookup.Add(segment, segment.Ipa);
@@ -785,7 +785,7 @@ class DataSetClass {
     foreach (var text in run.Segments) {
       var s = lookup.GetValue(text);
       if (s is valid)
-        slist.Add(new SegPartClass(s));
+        slist.Add(new SegmentPart(s));
       else
         System.Assert(false, "Missing Segment " + text);
     }
@@ -976,9 +976,9 @@ class DataSetClass {
     cognate.MaxLength = maxlength;
   }
 
-  ShowWord(SegPartClass segment) = Block {
+  ShowWord(SegmentPart segment) = Block {
     Paragraph(BorderB(1)) {
-      SpaceBefore: 10 pts;
+      SpaceBefore: 10pt;
       TextHeight: 14;
       "Words containing \"{0}\""(segment.Ipa);
     };
@@ -1028,7 +1028,7 @@ class DataSetClass {
 abstract class CountBaseClass {
   var                VFlags,
                      MaxDigits;
-  var SegPartClass[] LegendSegments;
+  var SegmentPart[] LegendSegments;
 
   Constructor(DataSetClass data) {
     VFlags         = SegmentFeatures.Vowel | SegmentFeatures.Semivowel;
@@ -1036,12 +1036,12 @@ abstract class CountBaseClass {
     MaxDigits      = 3;
   }
 
-  PartitionBox(ContentStyleClass style, Size extentsize) = Paragraph {
+  PartitionBox(ContentStyle style, Size extentsize) = Paragraph {
     style.SansSerif;
 
-    var grid   = 0.125 pts;
+    var grid   = 0.125pt;
     var gcolor = 65%;
-    var border = 0.5 pts;
+    var border = 0.5pt;
     var mx     = Math.Min(extentsize.Width, extentsize.Height) - border*2;
     var size   = new Size(mx, mx);
     var length = LegendSegments.Length;
@@ -1106,7 +1106,7 @@ abstract class CountBaseClass {
     };
   };
 
-  abstract AddEntry(SegPartClass si, SegPartClass sj, x, y, Size size);
+  abstract AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size);
 }
 
 //======================================================================
@@ -1115,7 +1115,7 @@ class TranActionClass: DocumentClass {
   var WordPairClass[] List;
   var                 Percent;
 
-  Constructor(SegPartClass s1, SegPartClass s2, WordPairClass[] list, percent) {
+  Constructor(SegmentPart s1, SegmentPart s2, WordPairClass[] list, percent) {
     super.Constructor(Guid.FromHash(s1.Ipa + s2.Ipa), Actions.ToDocument);
     List    = list;
     Percent = percent;
@@ -1140,7 +1140,7 @@ class TranActionClass: DocumentClass {
     Paragraph {
       Separator: Space;
       foreach (var p in List[0..<count])
-        p.ShowDescription(10 pts);
+        p.ShowDescription(10pt);
     };
 
     if (count < List.Length)
@@ -1206,7 +1206,7 @@ class PriorCountClass: CountBaseClass {
     Factor = 1.0 / tmax;
   }
 
-  override AddEntry(SegPartClass si, SegPartClass sj, x, y, Size size) {
+  override AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size) {
     var value = TMatrix[si.Index, sj.Index];
     if (value is null)
       return null;
@@ -1272,12 +1272,12 @@ class RateDataClass {
 
 class SegmentActionClass: Action {
   var RateDataClass Rate;
-  var SegPartClass  Segment;
+  var SegmentPart  Segment;
   var TaxonClass    Taxon;
   var               Count,
                     Percent;
 
-  Constructor(RateDataClass rate, SegPartClass segment, count, percent) {
+  Constructor(RateDataClass rate, SegmentPart segment, count, percent) {
     super.Constructor(Actions.RunQuery, null);
     Segment = segment;
     Taxon   = rate.Taxon;
@@ -1289,7 +1289,7 @@ class SegmentActionClass: Action {
     MatchAny(LanguageClass) {
       Taxon.Language;
     };
-    MatchAny(SegPartClass) {
+    MatchAny(SegmentPart) {
       Segment;
     };
   };
@@ -1386,16 +1386,16 @@ abstract class FrequencyChartClass {
   abstract SegmentBar(RateDataClass rate, index, width, height);
   abstract OccurranceChart(Size size);
 
-  LangCanvas(RateDataClass rate, width, height) = HBox(null, null, BorderB(0.25 pts)) {
+  LangCanvas(RateDataClass rate, width, height) = HBox(null, null, BorderB(0.25pt)) {
     VAlign: Bottom;
-    SegmentBar(rate, each SortedIndexes, width, height - 0.25 pts);
+    SegmentBar(rate, each SortedIndexes, width, height - 0.25pt);
   };
 
-  ShowChart(ContentStyleClass style) = VBox {
+  ShowChart(ContentStyle style) = VBox {
     HAlign: Center;
     OccurranceChart(new(ExtentWidth, Math.Min(5 inches, ExtentHeight)));
-    Rule.ShowHLegend(style, 8 pts, null) {
-      Margin: PadTB(8 pts);
+    Rule.ShowHLegend(style, 8pt, null) {
+      Margin: PadTB(8pt);
     };
   };
 }
@@ -1404,7 +1404,7 @@ abstract class FrequencyChartClass {
 
 class SegmentFrequencyClass: FrequencyChartClass {
   var Vector    PartitionMax;
-  var SegPartClass[] Segments;
+  var SegmentPart[] Segments;
 
   Constructor(DataSetClass data, bool group) {
     super.Constructor(data, data.UniqueSegments.Length);
@@ -1450,13 +1450,13 @@ class SegmentFrequencyClass: FrequencyChartClass {
     return null;
   }
 
-  SegmentLabel(SegPartClass[] segments, index, width, height) = HBox(width, height) {
+  SegmentLabel(SegmentPart[] segments, index, width, height) = HBox(width, height) {
     HAlign: Center;
     segments[index].ShowSegment;
   };
 
   override OccurranceChart(Size size) = MatrixBox {
-    var lw     = 70 pts;
+    var lw     = 70pt;
     var cw     = size.Width - lw;
     var bw     = cw / Segments.Length;
     var bh     = bw * 1.5;
@@ -1465,11 +1465,11 @@ class SegmentFrequencyClass: FrequencyChartClass {
     var r0     = SortedRates[0];
     var factor = 1.0 / MaxDistance;
 
-    TextHeight: 12 pts;
+    TextHeight: 12pt;
     VAlign: Bottom;
     foreach (var rate in SortedRates) {
       Row(PadB(sep)) {
-        Cell(PadR(3 pts)) {
+        Cell(PadR(3pt)) {
           Frame(lw) {
             rate.Taxon.Language;
           };
@@ -1497,7 +1497,7 @@ class SegmentFrequencyClass: FrequencyChartClass {
 
 //======================================================================
 
-class FrequencyFigureClass: ContentClass {
+class FrequencyFigureClass: Content {
   var FrequencyChartClass Chart;
 
   Constructor(FrequencyChartClass chart, title) {
@@ -1505,7 +1505,7 @@ class FrequencyFigureClass: ContentClass {
     Chart = chart;
   }
 
-  override GetBody(ContentStyleClass style, title) = Chart.ShowChart(style);
+  override GetBody(ContentStyle style, title) = Chart.ShowChart(style);
 }
 
 //======================================================================
@@ -1529,7 +1529,7 @@ class PartitionRateActionClass: Action {
     MatchAny(LanguageClass) {
       Taxon.Language;
     };
-    MatchAny(SegPartClass) {
+    MatchAny(SegmentPart) {
       Partition.Segments;
     };
   };
@@ -1584,20 +1584,20 @@ class PartitionFrequencyClass: FrequencyChartClass {
   };
 
   override OccurranceChart(Size size) = MatrixBox {
-    var lw = 60 pts;
+    var lw = 60pt;
     var cw = size.Width - lw;
     var bw = cw / Partitions.Length;
-    var bh = 16 pts;
+    var bh = 16pt;
     var h  = (size.Height - bh) / Taxa.Length;
     var r0 = SortedRates[0];
 
-    TextHeight: 11 pts;
+    TextHeight: 11pt;
     VAlign: Bottom;
 
     var factor = 1.0 / MaxDistance;
     foreach (var rate in SortedRates) {
       Row {
-        Cell(PadR(3 pts)) {
+        Cell(PadR(3pt)) {
           Frame(lw) {
             rate.Taxon.Language;
           };
@@ -1614,7 +1614,7 @@ class PartitionFrequencyClass: FrequencyChartClass {
 
     Row {
       Empty;
-      TextHeight: 9 pts;
+      TextHeight: 9pt;
       HBox {
         VAlign: Top;
         PartitionLabel(each SortedIndexes, bw, bh);

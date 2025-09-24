@@ -2,7 +2,7 @@ using Format, IO, Units, Languages;
 
 //======================================================================
 
-class LangNodeClass: Node {
+class LanguageNode: Node {
   var Probability;
 
   Constructor {
@@ -13,7 +13,7 @@ class LangNodeClass: Node {
     if (Probability is valid and HasChildren) {
       Label = Span {
         TextColor: Colors.LightGray;
-        TextHeight: 8 pts;
+        TextHeight: 8pt;
         TextDigits: 0;
         Probability * 100.0;
       };

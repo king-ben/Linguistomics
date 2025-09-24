@@ -90,7 +90,7 @@ class CreateViewClass: DocumentClass {
     ButtonControl(null, null, new Edge(1, 10)) {
       Background: new RadialGradient(10%, 20%, 10%, 20%, 90%, 50%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
       BorderRadius: 4;
-      TextHeight: 12 pts;
+      TextHeight: 12pt;
       Bold;
       "Create experiment files";
       Action: action;

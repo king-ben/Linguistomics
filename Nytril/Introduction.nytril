@@ -4,12 +4,12 @@ using Format, Units, References, PaperStyle, WorldLanguages;
 
 readonly AbstractClass PaperSections.Abstract = new;
 
-class AbstractClass: ContentClass {
+class AbstractClass: Content {
   Constructor {
     super.Constructor(Lang.Abstract);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Linguistic phylogenies are standardly inferred from abstract cognate relationships among lexemes. ";
       "Despite the prevalence of this practice, it suffers from well-known drawbacks: ";
@@ -28,12 +28,12 @@ class AbstractClass: ContentClass {
 
 readonly SignificanceClass PaperSections.Significance = new;
 
-class SignificanceClass: ContentClass {
+class SignificanceClass: Content {
   Constructor {
     super.Constructor("Significance Statement");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Linguistic phylogenies conventionally rely on abstract cognate relationships, which are akin to morphological characters used in biology. ";
       "While this approach has proven serviceable, it constrains the range of inquiries that can be pursued. ";
@@ -49,12 +49,12 @@ class SignificanceClass: ContentClass {
 
 readonly RootMeaningTraitsClass PaperSections.RootMeaningTraits = new;
 
-class RootMeaningTraitsClass: ContentClass {
+class RootMeaningTraitsClass: Content {
   Constructor {
     super.Constructor("Root-meaning traits");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Linguistic phylogenies are typically inferred from abstract cognate relationships";
           Cite {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
@@ -129,12 +129,12 @@ class RootMeaningTraitsClass: ContentClass {
 
 readonly TKF91ApproachClass PaperSections.TKF91Approach = new;
 
-class TKF91ApproachClass: ContentClass {
+class TKF91ApproachClass: Content {
   Constructor {
     super.Constructor("The TKF91 approach");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data = MainResults.Data;
 
     style.TitlePar(title) {
@@ -179,12 +179,12 @@ class TKF91ApproachClass: ContentClass {
 
 readonly CognateWordFormsClass PaperSections.CognateWordForms = new;
 
-class CognateWordFormsClass: ContentClass {
+class CognateWordFormsClass: Content {
   Constructor {
     super.Constructor("Modeling linguistic history with cognate word-forms");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "The use of cognate words introduces several challenges, such as the alignment of homologous segments of cognate word-forms. ";
       "In a molecular phylogenetic analysis, the fine-scale homology of nucleotides sampled from different species is established using sequence alignment programs. ";
@@ -204,14 +204,14 @@ class CognateWordFormsClass: ContentClass {
 
 readonly IntroductionClass PaperSections.Introduction = new;
 
-class IntroductionClass: ContentClass {
+class IntroductionClass: Content {
   Constructor {
     super.Constructor(Lang.Introduction);
     AddContent(PaperSections.RootMeaningTraits);
     AddContent(PaperSections.TKF91Approach);
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Natural language exhibits the property of descent with modification, which allows their histories to be represented by a tree structure and estimated using phylogenetic methods developed in evolutionary biology";
         Cite {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
@@ -227,12 +227,12 @@ class IntroductionClass: ContentClass {
 
 readonly DataSectionClass PaperSections.Data = new;
 
-class DataSectionClass: ContentClass {
+class DataSectionClass: Content {
   Constructor {
     super.Constructor("Data");
   }
 
-  ConceptList(DataSetClass data, ContentStyleClass style) = style.TextList {
+  ConceptList(DataSetClass data, ContentStyle style) = style.TextList {
     foreach (var concept in data.UsedConcepts.ToSortedArray()) {
       Span {
         string n = concept.Name;
@@ -264,7 +264,7 @@ class DataSectionClass: ContentClass {
     }
   };
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data      = MainResults.Data;
     var langcount = Enumerators.Cardinal(data.Taxa.Length-1);
 
@@ -391,12 +391,12 @@ class DataSectionClass: ContentClass {
 
 readonly DataCurationClass PaperSections.DataCuration = new;
 
-class DataCurationClass: ContentClass {
+class DataCurationClass: Content {
   Constructor {
     super.Constructor("Data Curation and Analysis");
   }
 
-  override GetBody(ContentStyleClass style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     var data = MainResults.Data;
 
     style.TitlePar(title) {
@@ -438,12 +438,12 @@ readonly DataSectionClass PaperSections.DataSection = new;
 
 readonly CognateCodingClass TableFigures.CognateCoding = new;
 
-class CognateCodingClass: ContentClass {
+class CognateCodingClass: Content {
   Constructor {
     super.Constructor("Root-meaning trait");
   }
 
-  override GetCaption(ContentStyleClass style) = Span {
+  override GetCaption(ContentStyle style) = Span {
     "A root-meaning trait for the concept "; style.SQuoteEnd{"hand"};
   };
 
@@ -463,7 +463,7 @@ class CognateCodingClass: ContentClass {
       code;
   };
 
-  override GetBody(ContentStyleClass style, title) = LanguageTable([Column.Fit(2 inches)]*3) {
+  override GetBody(ContentStyle style, title) = LanguageTable([Column.Fit(2 inches)]*3) {
     ParAlignment: Center;
     LanguageTitleRow {
       Lang.Language;
@@ -486,12 +486,12 @@ class CognateCodingClass: ContentClass {
 
 readonly MultiStateCharacterClass TableFigures.MultiStateCharacter = new;
 
-class MultiStateCharacterClass: ContentClass {
+class MultiStateCharacterClass: Content {
   Constructor {
     super.Constructor("Multistate cognate classes");
   }
 
-  static FatherTable(ContentStyleClass style, binary) = LanguageTable([2 inches, 1 inch] + (binary ? [new Column(0.9 inches, null, null, HAligns.Center)] * 3 : [new Column(1.5 inches, null, null, HAligns.Center)])) {
+  static FatherTable(ContentStyle style, binary) = LanguageTable([2 inches, 1 inch] + (binary ? [new Column(0.9 inches, null, null, HAligns.Center)] * 3 : [new Column(1.5 inches, null, null, HAligns.Center)])) {
     ParAlignment: Center;
     LanguageTitleRow {
       Lang.Language;
@@ -514,19 +514,19 @@ class MultiStateCharacterClass: ContentClass {
     CognateCodingClass.LanguageLine(Russian, "отец", binary, 3);
   };
 
-  override GetBody(ContentStyleClass style, title) = FatherTable(style, false);
+  override GetBody(ContentStyle style, title) = FatherTable(style, false);
 }
 
 //======================================================================
 
 readonly BinaryRepresentationClass TableFigures.BinaryRepresentation = new;
 
-class BinaryRepresentationClass: ContentClass {
+class BinaryRepresentationClass: Content {
   Constructor {
     super.Constructor("Binary cognate classes");
   }
 
-  override GetBody(ContentStyleClass style, title) = MultiStateCharacterClass.FatherTable(style, true);
+  override GetBody(ContentStyle style, title) = MultiStateCharacterClass.FatherTable(style, true);
 }
 
 //======================================================================
