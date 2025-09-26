@@ -123,7 +123,7 @@ class AlignmentsFigure: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    ResultsClass.CutoffPercent;
+    ExperimentResults.CutoffPercent;
     " credible set of alignments";
   };
 
@@ -142,7 +142,7 @@ class AllAlignmentsFigure: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    ResultsClass.CutoffPercent;
+    ExperimentResults.CutoffPercent;
     " credible set of alignments";
   };
 
@@ -152,9 +152,9 @@ class AllAlignmentsFigure: Content {
 //======================================================================
 
 class AlignmentExamplesFigure: Content {
-  var CognateIdClass[] Examples;
+  var CognateId[] Examples;
 
-  Constructor(name, CognateIdClass[] examples) {
+  Constructor(name, CognateId[] examples) {
     super.Constructor(name);
     Examples = examples;
   }
@@ -189,13 +189,13 @@ readonly SingleAlignmentFigure Figures.AlignmentExample1 = new(16, 4, "Flower");
 //======================================================================
 
 class ModelComparer {
-  var SymbolClass     Symbol;
-  var double          Posterior;
-  var int             TotalCount;
+  var SymbolClass      Symbol;
+  var double           Posterior;
+  var int              TotalCount;
   var RunResultsThread Run;
-  var                 Name;
+  var                  Name;
 
-  Constructor(RunResultsThread run, SymbolClass s, CognateIdClass e, int maxcount) {
+  Constructor(RunResultsThread run, SymbolClass s, CognateId e, int maxcount) {
     Symbol = s;
     Name   = s.Name;
     Run    = run;
@@ -264,7 +264,7 @@ class AlignmentCompareFigure: Content {
   var ModelComparer   Poisson,
                       NaturalClass;
   var ModelComparer[] Models;
-  var CognateIdClass  Example;
+  var CognateId  Example;
   var int             MaxCount;
 
   Constructor(maxcount, row) {
@@ -1298,7 +1298,7 @@ class PhylogenyResultsClass: Content {
       Equation {InsertionRate; Tex.Equals; run.InsertionRate}; " ("; run.InsertionRateLow; ", "; run.InsertionRateHigh; ") and ";
       Equation {DeletionRate; Tex.Equals; run.DeletionRate}; " ("; run.DeletionRateLow; ", "; run.DeletionRateHigh; ") ";
         "for the insertion and deletion rates, respectively. ";
-      "(The credible intervals in the parentheses contain the true value of the parameter with probability {0}.) "(ResultsClass.CutoffProbability);
+      "(The credible intervals in the parentheses contain the true value of the parameter with probability {0}.) "(ExperimentResults.CutoffProbability);
       "Roughly speaking, this means that for every two segmental transitions there was one insertion or deletion event. ";
       "Just like substitution events, insertion and deletion events can be informative about phylogeny. ";
       "Unlike the earlier analysis of amino acid sequence data, the insertion and deletion events were strongly informative about ";
@@ -1603,7 +1603,7 @@ class PaperWordSegmentRelationships: Content {
 
       "Our method treats the homology relationships of segments between languages as a random variable. ";
       "We summarize the posterior distribution by constructing a credible set of alignments, where a credible set of alignments is constructed by ordering the alignments for a cognate from the highest to lowest posterior probability. ";
-      "The alignments are then included in a credible set, starting with the alignment with the highest posterior probability, until the cumulative posterior probability is {0}. "(ResultsClass.CutoffProbability);
+      "The alignments are then included in a credible set, starting with the alignment with the highest posterior probability, until the cumulative posterior probability is {0}. "(ExperimentResults.CutoffProbability);
       style.FigureReference(align1); " shows alignments for the concept ";
       style.SQuote {
         TextCase: TextCases.AllLower;
@@ -1628,7 +1628,7 @@ class PaperWordSegmentRelationships: Content {
       var align2 = Figures.AlignmentExample2;
 
       "Interestingly, the distribution of alignments depends on the model of segmental change. ";
-      style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ResultsClass.CutoffPercent);
+      style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
         TextCase: TextCases.AllLower;
         align2.Concept

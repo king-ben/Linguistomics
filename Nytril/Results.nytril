@@ -1,6 +1,6 @@
 using Format;
 
-readonly ResultsClass MainResults = new;
+readonly ExperimentResults MainResults = new;
 
 //======================================================================
 
@@ -9,14 +9,14 @@ typedef StatMat   StatClass[][];
 
 //======================================================================
 
-class ResultsClass {
+class ExperimentResults {
   const double CutoffProbability = 0.95;
   const        CutoffPercent     = (CutoffProbability * 100.0) %;
 
-  var ExperimentData  Data;
+  var ExperimentData   Data;
   var RunResultsThread Poisson,
-                      NaturalClass,
-                      MainRun;
+                       NaturalClass,
+                       MainRun;
 
   Constructor {
     Data = new(null, "Europe3", "Europe3");
@@ -32,7 +32,7 @@ class ResultsClass {
 
 //======================================================================
 
-class CognateIdClass {
+class CognateId {
   var Concept,
       Cognate,
       Count,
@@ -214,7 +214,7 @@ class AlignmentChart {
     }
   };
 
-  ShowSet(CognateIdClass[] examples, bool label) = Table(null, null, label ? [0.75", Column.Expand] : [Column.Expand]) {
+  ShowSet(CognateId[] examples, bool label) = Table(null, null, label ? [0.75", Column.Expand] : [Column.Expand]) {
     foreach (var e in examples) {
       var found = e.FindAlignment(Run);
       if (found is valid) {
