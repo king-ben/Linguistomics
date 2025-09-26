@@ -1,4 +1,4 @@
-using Format, Units;
+using Format;
 
 readonly ResultsClass MainResults = new;
 
@@ -13,8 +13,8 @@ class ResultsClass {
   const double CutoffProbability = 0.95;
   const        CutoffPercent     = (CutoffProbability * 100.0) %;
 
-  var DataSetClass    Data;
-  var RunResultsClass Poisson,
+  var ExperimentData  Data;
+  var RunResultsThread Poisson,
                       NaturalClass,
                       MainRun;
 
@@ -45,7 +45,7 @@ class CognateIdClass {
     Blocks  = blocks;
   }
 
-  AlignIndexClass FindAlignment(RunResultsClass run) {
+  AlignIndexClass FindAlignment(RunResultsThread run) {
     foreach (var a in run.Alignments) {
       if (a.ConceptName == Concept and a.CognateName == Cognate)
         return a;
@@ -88,27 +88,27 @@ class StatClass {
 
 //======================================================================
 
-class RunResultsClass: Parallel.Thread {
-  var DataSetClass       Data;
-  var RunExperimentClass Run;
-  var StatMat            NCQRates,
-                         TransitionStats;
-  var StatArray          NCQFreqs;
-  var AlignedCountClass  QRates,
-                         AverageRates;
-  var AlignIndexClass[]  Alignments;
-  var double             InsertionRate,
-                         InsertionRateLow,
-                         InsertionRateHigh,
-                         DeletionRate,
-                         DeletionRateLow,
-                         DeletionRateHigh;
-  var bool               Complete;
-  var                    GapSpectrum,
-                         EquilibriumFrequencies,
-                         AlignmentFile;
+class RunResultsThread: Parallel.Thread {
+  var ExperimentData    Data;
+  var ExperimentRun     Run;
+  var StatMat           NCQRates,
+                        TransitionStats;
+  var StatArray         NCQFreqs;
+  var AlignedCountClass QRates,
+                        AverageRates;
+  var AlignIndexClass[]      Alignments;
+  var double            InsertionRate,
+                        InsertionRateLow,
+                        InsertionRateHigh,
+                        DeletionRate,
+                        DeletionRateLow,
+                        DeletionRateHigh;
+  var bool              Complete;
+  var                   GapSpectrum,
+                        EquilibriumFrequencies,
+                        AlignmentFile;
 
-  Constructor(DataSetClass data, RunExperimentClass run) {
+  Constructor(ExperimentData data, ExperimentRun run) {
     super.Constructor;
     Run           = run;
     Data          = data;
@@ -164,10 +164,10 @@ class RunResultsClass: Parallel.Thread {
 //======================================================================
 
 class AlignmentChart {
-  var DataSetClass    Data;
-  var RunResultsClass Run;
+  var ExperimentData   Data;
+  var RunResultsThread Run;
 
- Constructor(DataSetClass data, RunResultsClass run) {
+ Constructor(ExperimentData data, RunResultsThread run) {
     Data = data;
     Run  = run;
   }
@@ -180,7 +180,7 @@ class AlignmentChart {
     var bsize  = new Size(size.Width / xitems, size.Height / yitems);
     AlignIndexClass[][] rows = Run.Alignments / xitems;
 
-    TextHeight: Math.Min(8pt, bsize.Height - 3.2 pt);
+    TextHeight: Math.Min(8pt, bsize.Height - 3.2pt);
 
     foreach (var row in rows) {
       HBox(null, bsize.Height, BorderB(new Edge(0.25pt, 1, 90%))) {
@@ -214,7 +214,7 @@ class AlignmentChart {
     }
   };
 
-  ShowSet(CognateIdClass[] examples, bool label) = Table(null, null, label ? [0.75 inches, Column.Expand] : [Column.Expand]) {
+  ShowSet(CognateIdClass[] examples, bool label) = Table(null, null, label ? [0.75", Column.Expand] : [Column.Expand]) {
     foreach (var e in examples) {
       var found = e.FindAlignment(Run);
       if (found is valid) {
@@ -238,13 +238,13 @@ class AlignmentChart {
 
 //======================================================================
 
-class TransitionClass {
-  var           MaxRate,
-                MaxFrequency;
-  var Matrix    Rates;
-  var RuleClass Rule;
+class RateTransition {
+  var               MaxRate,
+                    MaxFrequency;
+  var Matrix        Rates;
+  var PartitionRule Rule;
 
-  Constructor(RunResultsClass run, RuleClass rule) {
+  Constructor(RunResultsThread run, PartitionRule rule) {
     Rule = rule;
     var stats = run.TransitionStats;
     var count = stats.Length;
@@ -269,7 +269,7 @@ class TransitionClass {
 
 class SegmentRate: Action {
   var AlignedCountClass Count;
-  var DataSetClass      Data;
+  var ExperimentData    Data;
   var SegmentPart       S0,
                         S1;
   var SegmentFeatures   F0,
@@ -281,7 +281,7 @@ class SegmentRate: Action {
   var bool              Diagonal,
                         Symmetric;
 
-  Constructor(DataSetClass data, AlignedCountClass count, SegmentPart s0, SegmentPart s1, rate, reverse, bool symmetric, bool diagonal) {
+  Constructor(ExperimentData data, AlignedCountClass count, SegmentPart s0, SegmentPart s1, rate, reverse, bool symmetric, bool diagonal) {
     super.Constructor(Actions.ToDocument, null, Guid.FromHash("Rate"+s0.Ipa + s1.Ipa));
 
     Data      = data;
@@ -400,17 +400,17 @@ class SegmentRate: Action {
 
   override GetDocument = GetExamples(100);
 
-  static int CompareProb(AlignSortClass s1, AlignSortClass s2) = s1.Data.Prob.Compare(s2.Data.Prob);
+  static int CompareProb(AlignSort s1, AlignSort s2) = s1.Data.Prob.Compare(s2.Data.Prob);
 
-  List<AlignSortClass> GetList(RunResultsClass run) {
+  List<AlignSort> GetList(RunResultsThread run) {
     // Find cognate sets that have the first segment in one language and the second in another language
 
     var i0   = S0.Index;
     var i1   = S1.Index;
-    var list = new List<AlignSortClass>(1024);
+    var list = new List<AlignSort>(1024);
 
     foreach (var cognate in run.Alignments) {
-      AlignDataClass found = null;
+      AlignData found = null;
 
       foreach (var alignment in cognate.Alignments) {
         foreach (var w1 in alignment.WordSet) {
@@ -478,21 +478,21 @@ class SegDataClass {
 
 //======================================================================
 
-class AlignedCountClass: CountBaseClass {
+class AlignedCountClass: CountBase {
   delegate bool FindRateDelegate(SegmentRate r);
 
   var List<SegmentRate>   RateList;
   var Matrix<SegmentRate> RateMatrix;
-  var RuleClass         Rule;
-  var PartitionClass[]  Partitions;
+  var PartitionRule       Rule;
+  var SegmentPartition[]  Partitions;
   var SegmentRate[]       SortedRates,
-                        SortByDirection;
-  var double            DiagFactor,
-                        RateFactor,
-                        DirFactor;
-  var bool              Symmetric;
+                          SortByDirection;
+  var double              DiagFactor,
+                          RateFactor,
+                          DirFactor;
+  var bool                Symmetric;
 
-  Constructor(DataSetClass data, rates, bool symmetric) {
+  Constructor(ExperimentData data, rates, bool symmetric) {
     super.Constructor(data);
     Symmetric  = symmetric;
     Rule       = data.Rule;
@@ -567,7 +567,7 @@ class AlignedCountClass: CountBaseClass {
   ShowLegend(SegmentRate[] rates) {
     // Show only partitions that are present in the chart
     var pmax = Partitions.Length;
-    var set  = new HashSet<PartitionClass>(pmax);
+    var set  = new HashSet<SegmentPartition>(pmax);
     foreach (var s in rates) {
       set.Add(s.S0.Partition);
       set.Add(s.S1.Partition);
@@ -579,7 +579,7 @@ class AlignedCountClass: CountBaseClass {
     }
   }
 
-  ShowChart(SegmentRate[] rates) = Chart(100%, 4 inches) {
+  ShowChart(SegmentRate[] rates) = Chart(100%, 4") {
     ChartType: ChartTypes.Column;
     TextHeight: 12pt;
     ValueLabel: PaperStyle.ValueLabel {
@@ -762,10 +762,10 @@ class AlignedCountClass: CountBaseClass {
 //======================================================================
 
 class CalcRatesClass {
-  var DataSetClass    Data;
-  var TransitionClass Transition;
-  var RuleClass       Rule;
-  var RunResultsClass Run;
+  var ExperimentData  Data;
+  var RateTransition Transition;
+  var PartitionRule   Rule;
+  var RunResultsThread Run;
   var                 MaxLine,
                       ArrowGap,
                       GapAngle,
@@ -775,13 +775,13 @@ class CalcRatesClass {
                       MaxRadius,
                       RateScale;
 
-  Constructor(DataSetClass data, RunResultsClass run) {
+  Constructor(ExperimentData data, RunResultsThread run) {
     Run        = run;
     Data       = data;
     Rule       = Data.Rule;
     ArrowGap   = 8pt;
     GapAngle   = 80.0 degrees;
-    Transition = new TransitionClass(run, Rule);
+    Transition = new RateTransition(run, Rule);
   }
 
   void Calibrate(Size size) {
@@ -827,7 +827,7 @@ class CalcRatesClass {
       foreach (var p2 in Rule.Partitions) {
         var rate = Transition.Rates[each0, i];
         if (rate is valid) {
-          var  hover = new PartitionActionClass(Rule, rate, p1, p2);
+          var  hover = new PartitionAction(Rule, rate, p1, p2);
 
           if (p1 == p2) {
             var line2 = new LineStyleClass(rate.Mean * RateScale, 0.25, 1);
@@ -854,7 +854,7 @@ class CalcRatesClass {
       var fsize      = p1.Radius*2;
       var textheight = Math.Min(14pt, fsize * 0.5);
 
-      Shape(p1.BackColor, 0.5 pt) {
+      Shape(p1.BackColor, 0.5pt) {
         EllipsePath(new(pos, new(fsize)));
         TipAction: p1;
       };
@@ -890,9 +890,9 @@ class CalcRatesClass {
 
 class DiagonalClass {
   var List<SegDataClass> Diagonal;
-  var RuleClass               Rule;
+  var PartitionRule      Rule;
 
-  Constructor(RuleClass rule, AlignedCountClass rates) {
+  Constructor(PartitionRule rule, AlignedCountClass rates) {
     Rule = rule;
     var m      = rates.RateMatrix;
     var length = m.Cols;
@@ -908,8 +908,8 @@ class DiagonalClass {
 
   static int CompareData(SegDataClass d0, SegDataClass d1) = d0.Value.Compare(d1.Value);
 
-  PartitionClass[] OrderPartitions {
-    var partitions = new HashSet<PartitionClass>(Rule.Partitions.Length);
+  SegmentPartition[] OrderPartitions {
+    var partitions = new HashSet<SegmentPartition>(Rule.Partitions.Length);
     foreach (var d in Diagonal)
       partitions.Add(d.Rate.S0.Partition);
     return partitions.ToArray;
@@ -919,7 +919,7 @@ class DiagonalClass {
     HAlign: Center;
     style.SansSerif;
 
-    Chart(100%, 2 inches) {
+    Chart(100%, 2") {
       TextHeight: 11pt;
       ChartType: ChartTypes.Column;
 
@@ -950,19 +950,19 @@ class DiagonalClass {
 
 //======================================================================
 
-class PartitionActionClass: Action {
-  var StatClass      Rate;
-  var PartitionClass P1,
-                     P2;
+class PartitionAction: Action {
+  var StatClass        Rate;
+  var SegmentPartition P1,
+                       P2;
 
-  Constructor(RuleClass rule, StatClass rate, PartitionClass p1, PartitionClass p2) {
+  Constructor(PartitionRule rule, StatClass rate, SegmentPartition p1, SegmentPartition p2) {
     super.Constructor(Actions.ToSource, rule);
     Rate = rate;
     P1   = p1;
     P2   = p2;
   }
 
-  AddGroup(PartitionClass p) = VBox {
+  AddGroup(SegmentPartition p) = VBox {
     HAlign: Center;
     HBox {
       TextBackground: 90%;
@@ -993,11 +993,11 @@ class PartitionActionClass: Action {
 
 //======================================================================
 
-class AlignSortClass {
-  var AlignDataClass  Data;
+class AlignSort {
+  var AlignData  Data;
   var AlignIndexClass Congate;
 
-  Constructor(AlignDataClass data, AlignIndexClass cognate) {
+  Constructor(AlignData data, AlignIndexClass cognate) {
     Data    = data;
     Congate = cognate;
   }

@@ -241,7 +241,7 @@ class SegmentPart {
   field string          Ipa;
   field SegmentFeatures Features;
   var Segment           Segment;
-  var PartitionClass    Partition;
+  var SegmentPartition  Partition;
   var int               PartitionIndex,
                         Index,
                         UsedCount;
@@ -259,7 +259,7 @@ class SegmentPart {
     Features       = s.Features;
   }
 
-  void SetPartition(PartitionClass p, index) {
+  void SetPartition(SegmentPartition p, index) {
     Partition      = p;
     PartitionIndex = index;
   }

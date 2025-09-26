@@ -10,10 +10,10 @@ include "Romance";
 
 //======================================================================
 
-readonly LanguageClass[] EuroRomance = [Latin, Romanian, Portuguese, Spanish, Catalan, French, Walloon, Friulian, Italian];
-readonly LanguageClass[] Romance     = EuroRomance + [PortugueseB];
+readonly WorldLanguage[] EuroRomance = [Latin, Romanian, Portuguese, Spanish, Catalan, French, Walloon, Friulian, Italian];
+readonly WorldLanguage[] Romance     = EuroRomance + [PortugueseB];
 
-readonly DataSetClass DataSet {
+readonly ExperimentData DataSet {
   var data = new EuropeExperimentClass(Info);
   data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, EuroRomance, Info.CognateMin);
   return data;

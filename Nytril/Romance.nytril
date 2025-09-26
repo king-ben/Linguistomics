@@ -1,5 +1,5 @@
 
-class EuropeExperimentClass: DataSetClass {
+class EuropeExperimentClass: ExperimentData {
   Constructor(config) {
     super.Constructor(config, "Europe 3 Trees", "Europe3");
   }

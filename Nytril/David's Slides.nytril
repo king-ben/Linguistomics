@@ -1,4 +1,4 @@
-using Format, Units, Defs, Equations, PaperStyle;
+using Format, Defs, Equations, PaperStyle;
 
 //======================================================================
 
@@ -17,7 +17,7 @@ class DavidDesignClass: TexDesign {
 
 //======================================================================
 
-class DavidPresentationClass: SlideShow {
+class DavidSlideShow: SlideShow {
   Constructor {
     super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, SlideContentStyle, Authors);
     Title       = "From phonology to phylogeny\nA new framework for phylogenetic inference";
@@ -270,7 +270,7 @@ namespace DavidSlides.TheData {
       "How many word forms from each language";
     };
 
-    Items.Item5.Figure = TableFigures.WordCountTable;
+    Items.Item5.Figure = TableFigures.WordCount;
   }
 
   namespace Slide.Slide2 {

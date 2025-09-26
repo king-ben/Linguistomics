@@ -6,7 +6,7 @@ readonly namespace PaperStyle {
   const TableSpace        = 24pt;
   const SegmentColumns    = 4;
   const SegmentSize       = 40pt;
-  const SegmentWidth      = 2 inches;
+  const SegmentWidth      = 2";
   const SegmentTextFactor = 0.58;
   const TableEdgeSize     = 0.25pt;
   const TableBorder       = TableEdgeSize;
@@ -173,10 +173,10 @@ readonly namespace PaperStyle {
     FirstIndent: -16pt;
   };
 
-  SourcePar(DataSetClass data, ConceptClass concept) = Block {
+  SourcePar(ExperimentData data, Concept concept) = Block {
     ParAlignment: Left;
     SpaceBefore: 6pt;
-    LeftIndent: 0.25 inches;
+    LeftIndent: 0.25";
     TextHeight: 8pt;
 
     TextBlock {
@@ -230,7 +230,7 @@ readonly namespace PaperStyle {
   BodyTable(Column[] columns) = Table(null, null, columns) {
     SpaceBefore: 10pt;
     SpaceAfter: 10pt;
-    LeftIndent: 0.5 inches;
+    LeftIndent: 0.5";
   };
 
   BodyTitle = Span {

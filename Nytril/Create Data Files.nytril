@@ -1,4 +1,4 @@
-using Format, Units, IO;
+using Format, IO;
 
 include "Lang";
 include "Languages";
@@ -23,18 +23,18 @@ include "LanguageSet";
 //======================================================================
 
 readonly namespace Main.Documents {
-  DiagnosticsViewClass   Diagnostic    = new(new IEEEStyleClass(), DataSet);
-  ConfigurationViewClass Configuration = new(DataSet, DataSet.TreeSets[0]);
-  WordViewClass          Words         = new(DataSet, DataSet.Rule.Partitions);
-  CreateViewClass        CreateFiles   = new(DataSet);
+  DiagnosticsDocument   Diagnostic    = new(new IEEEStyle, DataSet);
+  ConfigurationDocument Configuration = new(DataSet, DataSet.TreeSets[0]);
+  WordDocument          Words         = new(DataSet, DataSet.Rule.Partitions);
+  CreateViewClass       CreateFiles   = new(DataSet);
 }
 
 //======================================================================
 
 class CreateExperimentClass: Action {
-  var DataSetClass Data;
+  var ExperimentData Data;
 
-  Constructor(DataSetClass data) {
+  Constructor(ExperimentData data) {
     super.Constructor(Actions.Execute, null);
     Data = data;
   }
@@ -52,7 +52,7 @@ class CreateExperimentClass: Action {
     foreach (var set in data.TreeSets)
       set.InitFolders(data);
 
-    if (Write(new WordViewClass(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.WordFile))
+    if (Write(new WordDocument(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.WordFile))
       return EventResponses.MessageTip("Files Written");
     return EventResponses.MessageTip("Error creating files");
   }
@@ -61,9 +61,9 @@ class CreateExperimentClass: Action {
 //======================================================================
 
 class CreateViewClass: DocumentClass {
-  var DataSetClass Data;
+  var ExperimentData Data;
 
-  Constructor(DataSetClass data) {
+  Constructor(ExperimentData data) {
     super.Constructor(#609a7aaf-af34-4de5-8406-bc0e054dde89#, "Create Experiment Files");
     Data = data;
   }
@@ -97,7 +97,7 @@ class CreateViewClass: DocumentClass {
     };
   };
 
-  ShowField(name, value) = Paragraph(null, [1.5 inch]) {
+  ShowField(name, value) = Paragraph(null, [1.5"]) {
     Span {
       Bold
       name;

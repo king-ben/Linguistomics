@@ -2,9 +2,9 @@ using Format, WorldLanguages;
 //======================================================================
 
 class Leaf: Node {
-  var LanguageClass Language;
+  var WorldLanguage Language;
 
-  Constructor(LanguageClass language, branch=1.0) {
+  Constructor(WorldLanguage language, branch=1.0) {
     super.Constructor(language?.ShortName, branch);
     Label    = language;
     Language = language;

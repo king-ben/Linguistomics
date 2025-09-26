@@ -25,8 +25,8 @@ class LanguageNode: Node {
 
 //======================================================================
 
-class RunExperimentClass {
-  var ModelClass Model;
+class ExperimentRun {
+  var ModelConfig Model;
   var            Name,
                  RootFolder,
                  Config,
@@ -35,7 +35,7 @@ class RunExperimentClass {
                  Marginal,
                  ResultTree;
 
-  Constructor(config, ModelClass model, index, print, marginal) {
+  Constructor(config, ModelConfig model, index, print, marginal) {
     Name       = "Run" + index;
     Model      = model;
     Print      = print;
@@ -95,7 +95,7 @@ class RunExperimentClass {
     Write(GetParameters, path Info.ParametersFile);
   }
 
-  void InitFolders(DataSetClass data, Node tree) {
+  void InitFolders(ExperimentData data, Node tree) {
     var path = Info.ExperimentRoot RootFolder;
 
     CreateFolder(path);
@@ -109,20 +109,20 @@ class RunExperimentClass {
 
 //======================================================================
 
-class ModelClass {
+class ModelConfig {
   var string               Name;
   var                      RootFolder;
-  var TreeSetClass         TreeSet;
-  var RunExperimentClass[] Run;
+  var TreeSet              TreeSet;
+  var ExperimentRun[] Run;
 
-  Constructor(config, TreeSetClass treeset, string name) {
+  Constructor(config, TreeSet treeset, string name) {
     Name       = name;
     TreeSet    = treeset;
     RootFolder = treeset.RootFolder Folder(name);
-    Run        = new RunExperimentClass(config, this, each Info.Runs, 1000, false);
+    Run        = new ExperimentRun(config, this, each Info.Runs, 1000, false);
   }
 
-  void InitFolders(DataSetClass data) {
+  void InitFolders(ExperimentData data) {
     CreateFolder(Info.ExperimentRoot RootFolder);
     foreach (var r in Run)
       r.InitFolders(data, TreeSet.Tree);
@@ -131,9 +131,9 @@ class ModelClass {
 
 //======================================================================
 
-class TreeSetClass {
-  var Node    Tree;
-  var ModelClass[] Models;
+class TreeSet {
+  var Node         Tree;
+  var ModelConfig[] Models;
   var              Name,
                    RootFolder;
 
@@ -149,7 +149,7 @@ class TreeSetClass {
    ];
   }
 
-  void InitFolders(DataSetClass data) {
+  void InitFolders(ExperimentData data) {
     foreach (var m in Models)
       m.InitFolders(data);
   }
@@ -167,7 +167,7 @@ class IndexNode: Node {
 }
 
 class NLeaf: IndexNode {
-  Constructor(LanguageClass language, index, branchlength) {
+  Constructor(WorldLanguage language, index, branchlength) {
     super.Constructor("{0} ({1})"(language, index), index);
     BranchLength = branchlength;
   }

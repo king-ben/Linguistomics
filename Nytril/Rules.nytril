@@ -1,7 +1,7 @@
-using Format, Units, SegmentFeatures, LinkTypes;
+using Format, SegmentFeatures, LinkTypes;
 //======================================================================
 
-class PartitionClass: Fact {
+class SegmentPartition: Fact {
   field string       Name;
   var string         PluralName;
   var SegmentPart[] Segments;
@@ -63,7 +63,7 @@ class PartitionClass: Fact {
 
 //======================================================================
 
-class PartitionInfoClass {
+class PartitionInfo {
   var Name,
       SegmentIndices;
 
@@ -75,12 +75,12 @@ class PartitionInfoClass {
 
 //======================================================================
 
-class FilterClass {
-  field string  Name;
-  var string    PluralName;
-  var RuleClass Rule;
+class PartitionFilter {
+  field string      Name;
+  var string        PluralName;
+  var PartitionRule Rule;
 
-  Constructor(RuleClass rule, name, plural) {
+  Constructor(PartitionRule rule, name, plural) {
     Rule       = rule;
     Name       = name;
     PluralName = plural ?? name;
@@ -96,14 +96,14 @@ class FilterClass {
 
 //======================================================================
 
-abstract class RuleClass {
-  var List<FilterClass> FilterList;
-  var FilterClass[]          Filters,
-                             FiltersPlus;
-  var PartitionClass[]       Partitions;
+abstract class PartitionRule {
+  var List<PartitionFilter> FilterList;
+  var PartitionFilter[]     Filters,
+                            FiltersPlus;
+  var SegmentPartition[]    Partitions;
   var SegmentPart[]         Segments;
-  var                        Name,
-                             Numbers;
+  var                       Name,
+                            Numbers;
 
   Constructor(name) {
     Name       = name;
@@ -113,16 +113,15 @@ abstract class RuleClass {
 
   void Init(SegmentPart[] segments) {
     Filters = FilterList.ToArray;
-    FilterList.Add(new FilterClass(this, "Residue", "Residues"));
+    FilterList.Add(new PartitionFilter(this, "Residue", "Residues"));
     FiltersPlus = FilterList.ToArray;
 
-    var list = new List<PartitionClass>(segments.Length);
+    var list = new List<SegmentPartition>(segments.Length);
     var i    = 0;
     foreach (var filter in FiltersPlus) {
       var find = GetMatching(segments, filter);
       if (find is valid) {
-        var part = new PartitionClass(i, filter.Name, filter.PluralName, find);
-        list.Add(part);
+        list.Add(new(i, filter.Name, filter.PluralName, find));
         ++i;
       }
     }
@@ -130,7 +129,7 @@ abstract class RuleClass {
     Segments   = segments.ToSortedArray(true, @ComparePartSegments);
   }
 
-  bool MatchesRule(FilterClass filter, Segment segment) {
+  bool MatchesRule(PartitionFilter filter, Segment segment) {
     foreach (var f in FiltersPlus) {
       if (f == filter)
         return f.Matches(segment);
@@ -157,7 +156,7 @@ abstract class RuleClass {
     return i;
   }
 
-  SegmentPart[] GetMatching(SegmentPart[] segments, FilterClass filter) {
+  SegmentPart[] GetMatching(SegmentPart[] segments, PartitionFilter filter) {
     return segments.FindSlice(part => MatchesRule(filter, part.Segment));
   }
 
@@ -197,7 +196,7 @@ abstract class RuleClass {
     }
   };
 
-  ShowBlockLegend(PartitionClass[] partitions, textheight) = Frame {
+  ShowBlockLegend(SegmentPartition[] partitions, textheight) = Frame {
     Paragraph {
       Separator: Space*3;
       TextHeight: textheight;
@@ -223,7 +222,7 @@ abstract class RuleClass {
 
   ShowPartitions {
     var textheight = Math.Min(ExtentWidth * 0.04, 10pt);
-    return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3 inches)]) {
+    return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3")]) {
       ParAlignment: Center;
       TextHeight: textheight;
 
@@ -282,10 +281,10 @@ abstract class RuleClass {
 
 //======================================================================
 
-class SingleFilterClass: FilterClass {
+class SingleFilter: PartitionFilter {
   var Segment Segment;
 
-  Constructor(RuleClass rule, Segment segment) {
+  Constructor(PartitionRule rule, Segment segment) {
     super.Constructor(rule, segment.Ipa, null);
     Segment = segment;
   }
@@ -295,11 +294,11 @@ class SingleFilterClass: FilterClass {
 
 //======================================================================
 
-class FeatureMaskClass: FilterClass {
+class FeatureMask: PartitionFilter {
   var Mask,
       Flags;
 
-  Constructor(RuleClass rule, name, plural, mask, flag) {
+  Constructor(PartitionRule rule, name, plural, mask, flag) {
     super.Constructor(rule, name, plural);
     Mask  = mask;
     Flags = flag;
@@ -311,10 +310,10 @@ class FeatureMaskClass: FilterClass {
 
 //======================================================================
 
-class SegmentListClass: FilterClass {
+class SegmentList: PartitionFilter {
   var Segment[] List;
 
-  Constructor(RuleClass rule, name, plural, Segment[] list) {
+  Constructor(PartitionRule rule, name, plural, Segment[] list) {
     super.Constructor(rule, name, plural);
     List = list;
   }
@@ -324,8 +323,8 @@ class SegmentListClass: FilterClass {
 
 //======================================================================
 
-class VowelListClass: SegmentListClass {
-  Constructor(RuleClass rule, Segment[] list) {
+class VowelList: SegmentList {
+  Constructor(PartitionRule rule, Segment[] list) {
     super.Constructor(rule, list.FirstElement.Ipa, null, list);
   }
 
@@ -337,21 +336,21 @@ class VowelListClass: SegmentListClass {
 const NaturalClassName = "Natural Class";
 const NaturalModelName = NaturalClassName + " model";
 
-class NaturalPartitionClass: RuleClass {
+class NaturalPartition: PartitionRule {
   Constructor {
     super.Constructor(NaturalClassName);
     Numbers = true;
 
-    new FeatureMaskClass(this, "Long Vowel", "Long Vowels", Vowel LongVowel, Vowel LongVowel);
-    new FeatureMaskClass(this, "Nasal Vowel", "Nasal Vowels", Vowel Nasal, Vowel Nasal);
-    new FeatureMaskClass(this, "Diphthong", "Diphthongs", Diphthong, Diphthong);
-    new FeatureMaskClass(this, "Short Vowel", "Short Vowels", Vowel, Vowel);
-    new FeatureMaskClass(this, "Nasal SegmentConsonant", "Nasal Consonants", Nasal, Nasal);
-    new FeatureMaskClass(this, "Liquid", "Liquids", Vowel Liquid, Liquid);
-    new FeatureMaskClass(this, "Approximant", "Approximants", Vowel Approximant, Approximant);
-    new FeatureMaskClass(this, "Affricate", "Affricates", Vowel Affricate, Affricate);
-    new FeatureMaskClass(this, "Fricative", "Fricatives", Vowel Fricative, Fricative);
-    new FeatureMaskClass(this, "Stop", "Stops", Vowel, NoFeature);
+    new FeatureMask(this, "Long Vowel", "Long Vowels", Vowel LongVowel, Vowel LongVowel);
+    new FeatureMask(this, "Nasal Vowel", "Nasal Vowels", Vowel Nasal, Vowel Nasal);
+    new FeatureMask(this, "Diphthong", "Diphthongs", Diphthong, Diphthong);
+    new FeatureMask(this, "Short Vowel", "Short Vowels", Vowel, Vowel);
+    new FeatureMask(this, "Nasal SegmentConsonant", "Nasal Consonants", Nasal, Nasal);
+    new FeatureMask(this, "Liquid", "Liquids", Vowel Liquid, Liquid);
+    new FeatureMask(this, "Approximant", "Approximants", Vowel Approximant, Approximant);
+    new FeatureMask(this, "Affricate", "Affricates", Vowel Affricate, Affricate);
+    new FeatureMask(this, "Fricative", "Fricatives", Vowel Fricative, Fricative);
+    new FeatureMask(this, "Stop", "Stops", Vowel, NoFeature);
   }
 }
 

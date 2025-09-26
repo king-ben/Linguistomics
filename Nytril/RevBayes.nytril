@@ -1,4 +1,4 @@
-using Format, Units, Math, IO, DB;
+using Format, Math, IO, DB;
 //======================================================================
 
 namespace Rev {
@@ -130,7 +130,7 @@ class LogSchemaClass: SchemaClass {
 
   GetHistogram(view, f) = VBox {
     TitleBox(f + " Histogram");
-    Chart(DocMetrics.TreeWidth, 3.5 inches) {
+    Chart(DocMetrics.TreeWidth, 3.5") {
       ChartType: ChartTypes.Column;
 
       var data = ReadHistogramData(view, f);
@@ -149,7 +149,7 @@ class LogSchemaClass: SchemaClass {
     SpaceBefore: 20pt;
     VBox {
       TitleBox(name ?? f);
-      Chart(DocMetrics.TreeWidth, 2.5 inches) {
+      Chart(DocMetrics.TreeWidth, 2.5") {
         ChartType: ChartTypes.Line;
 
         var list = GetFieldList(view, f ?? name);

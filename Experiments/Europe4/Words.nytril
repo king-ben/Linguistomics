@@ -7,18 +7,18 @@ readonly namespace Info {
 readonly Segments = ["f", "eː", "m", "i", "n", "a", "e", "ɐ", "b", "ɾ", "œ", "ɛ", "u", "l", "r", "j", "ʎ", "x", "iː", "o", "d", "o̯a", "ə", "ɲ", "ɔ", "t", "ĩ", "ɐ̃", "ɨ", "ɑ̃", "ɐ̃j", "s", "p", "ʃ", "z", "ʁ", "oː", "aː", "aj", "k", "ɐj", "θ", "w", "v", "au̯", "h", "ʧ", "ɨj", "ɐ̃w", "ɛ̃", "c", "ẽ", "ɑ", "uː", "ɥ", "y", "ʦ", "ɡ", "ɨw", "ɔj", "õ", "ʣ", "ʝ", "oj", "ɡʷ", "ʤ", "ɔ̃", "ø", "e̯a", "ej", "ʀ", "ɛj", "kʲ", "ʒ", "ɟ", "kʷ", "ũ", "yː", "ɫ", "ũj", "œ̃", "ŋ", "øː", "ɣ"];
 
 readonly LanguageSet = [
-  Languages.Latin, 
-  Languages.Romanian, 
-  Languages.Portuguese, 
-  Languages.Spanish, 
-  Languages.Catalan, 
-  Languages.French, 
-  Languages.Walloon, 
-  Languages.Friulian, 
+  Languages.Latin,
+  Languages.Romanian,
+  Languages.Portuguese,
+  Languages.Spanish,
+  Languages.Catalan,
+  Languages.French,
+  Languages.Walloon,
+  Languages.Friulian,
   Languages.Italian
 ];
 
-readonly PartitionInfoClass[] Partitions = [
+readonly PartitionInfo[] Partitions = [
   new("Long Vowel", [1, 18, 36, 37, 53, 77, 82]),
   new("Nasal Vowel", [26, 27, 29, 30, 48, 49, 51, 60, 66, 76, 79, 80]),
   new("Diphthong", [21, 38, 40, 44, 47, 58, 59, 63, 68, 69, 71]),

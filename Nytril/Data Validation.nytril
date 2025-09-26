@@ -1,8 +1,8 @@
-using Format, Units, IO;
+using Format, IO;
 
 //======================================================================
 
-class SearchDataClass: Fact {
+class SearchWordInfo: Fact {
   field string WordsContaining;
 
   Constructor {
@@ -13,17 +13,17 @@ class SearchDataClass: Fact {
 
 //======================================================================
 
-class WordsContainingClass: Action {
-  var SearchDataClass Data;
+class WordsSearchAction: Action {
+  var SearchWordInfo Data;
 
-  Constructor(SearchDataClass data) {
+  Constructor(SearchWordInfo data) {
     super.Constructor(Actions.RunQuery);
     Data = data;
   }
 
   override GetQuery {
     if (Data.WordsContaining is valid) {
-      return MatchAny(WordClass) {
+      return MatchAny(CognateWord) {
         MatchAny(Segment) {
           Ipa: Data.WordsContaining;
         };
@@ -36,18 +36,18 @@ class WordsContainingClass: Action {
 
 //======================================================================
 
-class DiagnosticsViewClass: DocumentClass {
-  var DataSetClass        Data;
+class DiagnosticsDocument: DocumentClass {
+  var ExperimentData Data;
   var ContentStyle   Style;
-  var SegmentDisplayClass Display;
-  var SearchDataClass     SearchData;
+  var SegmentDisplay Display;
+  var SearchWordInfo Search;
 
-  Constructor(ContentStyle style, DataSetClass data) {
+  Constructor(ContentStyle style, ExperimentData data) {
     super.Constructor(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, "Diagnostics");
     Description = "Summary of the data used in the experiment with diagnostic views";
     Data        = data;
     Display     = new(data);
-    SearchData  = new;
+    Search      = new;
     Style       = style;
   }
 
@@ -66,14 +66,14 @@ class DiagnosticsViewClass: DocumentClass {
 
     Paragraph {
       HBox {
-        TextControl(new(ref SearchData.WordsContaining), 1 inches, null, new Edge(1, 2)) {
+        TextControl(new(ref Search.WordsContaining), 1", null, new Edge(1, 2)) {
           "Find Words Containing";
           Action: Actions.Refresh;
         };
 
         ButtonControl(null, null, PadAll(2)) {
           BorderRadius: 3;
-          Action: new WordsContainingClass(SearchData);
+          Action: new WordsSearchAction(Search);
           TextColor: Colors.Green;
           Icons.search;
         };
@@ -81,33 +81,33 @@ class DiagnosticsViewClass: DocumentClass {
     };
   };
 
-  override GetDocument = Document(new(0.5 inches, 0.75 inches, 0.5 inches, 0.5 inches)) {
+  override GetDocument = Document(new(0.5", 0.75", 0.5", 0.5")) {
 //    if (not System.IsPublishing)
 //      ShowQuery;
 
     TextHeight: 9pt;
 
     Content[] content = [
-      new PriorTreeClass(Data),
-      new AppendixClass(Lang.UniqueSegments, Display.IPASegmentTable),
-      new SegmentAssignmentsClass(Data),
-      new SegmentTransitionClass(Data),
-      new AppendixClass("Words containing each segment", Display.ShowWordsForEachSegment),
-      new AppendixClass("Word Lists by Language", DisplayWords.ShowWordsByLanguage(Style, Data)),
-      new AppendixClass("Segment Groups", ShowSegmentTables),
-      new AppendixClass(Lang.ConceptsUsed, AllWords.ShowTable(Style, Data, 10pt)),
-      new AppendixClass(Lang.Languages, Display.ShowLanguageDetails(Style)),
+      new PriorTreeFigure(Data),
+      new AppendixContent(Lang.UniqueSegments, Display.IPASegmentTable),
+      new SegmentAssignmentsFigure(Data),
+      new SegmentTransitionFigure(Data),
+      new AppendixContent("Words containing each segment", Display.ShowWordsForEachSegment),
+      new AppendixContent("Word Lists by Language", DisplayWords.ShowWordsByLanguage(Style, Data)),
+      new AppendixContent("Segment Groups", ShowSegmentTables),
+      new AppendixContent(Lang.ConceptsUsed, AllWords.ShowTable(Style, Data, 10pt)),
+      new AppendixContent(Lang.Languages, Display.ShowLanguageDetails(Style)),
 //      new("Euler Feature Diagram", new EulerDiagramClass().FeatureChart(Data)),
     ];
 
     if (Data.RawData) {
       content += [
-        new FrequencyFigureClass(new SegmentFrequencyClass(Data, false), "Segment Frequency"),
-        new FrequencyFigureClass(new SegmentFrequencyClass(Data, true), "Segment Frequency by Partition"),
-        new FrequencyFigureClass(new PartitionFrequencyClass(Data), "Partition Frequency"),
-        new AppendixClass(Lang.Diacritics, MatchingDiacritics.ShowTable),
-        new CognateCoverageClass(Data),
-        new ConceptGroupsClass(Data)
+        new FrequencyFigure(new SegmentFrequencyChart(Data, false), "Segment Frequency"),
+        new FrequencyFigure(new SegmentFrequencyChart(Data, true), "Segment Frequency by Partition"),
+        new FrequencyFigure(new PartitionFrequencyChart(Data), "Partition Frequency"),
+        new AppendixContent(Lang.Diacritics, MatchingDiacritics.ShowTable),
+        new CognateCoverage(Data),
+        new ConceptGroupsFigure(Data)
       ];
     }
 
@@ -146,15 +146,15 @@ class DiagnosticsViewClass: DocumentClass {
 
 //======================================================================
 
-class ConceptGroupsClass: DataContentClass {
-  Constructor(DataSetClass data) {
+class ConceptGroupsFigure: ExperimentContent {
+  Constructor(ExperimentData data) {
     super.Constructor(data, "Concept Groups");
   }
 
   override GetBody(ContentStyle style, title) = Block {
     var concepts = Data.UsedConcepts.ToSortedArray();
     WordGroups[] groups = WordGroups.ValueArray[1..];
-    Table(PaperStyle.TableBorder, PadLR(3pt), [Column.Fit(2 inches)]) {
+    Table(PaperStyle.TableBorder, PadLR(3pt), [Column.Fit(2")]) {
       Row {
         PaperStyle.HeaderCell(style);
         PaperStyle.HeaderCell(style) {
@@ -189,8 +189,8 @@ class ConceptGroupsClass: DataContentClass {
 
 //======================================================================
 
-class PriorTreeClass: DataContentClass {
-  Constructor(DataSetClass data) {
+class PriorTreeFigure: ExperimentContent {
+  Constructor(ExperimentData data) {
     super.Constructor(data, "Prior Trees");
   }
 
@@ -204,8 +204,8 @@ class PriorTreeClass: DataContentClass {
 
 //======================================================================
 
-class CognateCoverageClass: DataContentClass {
-  Constructor(DataSetClass data) {
+class CognateCoverage: ExperimentContent {
+  Constructor(ExperimentData data) {
     super.Constructor(data, "Cognate Coverage");
   }
 
@@ -269,7 +269,7 @@ class CognateCoverageClass: DataContentClass {
 
 //======================================================================
 
-class AppendixClass: Content {
+class AppendixContent: Content {
   var Body;
 
   Constructor(title, body) {
@@ -282,11 +282,11 @@ class AppendixClass: Content {
 
 //======================================================================
 
-class ConfigurationViewClass: DocumentClass {
-  var DataSetClass Data;
-  var TreeSetClass TreeSet;
+class ConfigurationDocument: DocumentClass {
+  var ExperimentData Data;
+  var TreeSet        TreeSet;
 
-  Constructor(DataSetClass data, TreeSetClass treeset) {
+  Constructor(ExperimentData data, TreeSet treeset) {
     super.Constructor(#7fc3842e-41d2-4b65-bcd0-be2fd9ede5b2#, "Configuration File");
     Data    = data;
     TreeSet = treeset;
@@ -299,11 +299,11 @@ class ConfigurationViewClass: DocumentClass {
 
 //======================================================================
 
-class WordViewClass: DocumentClass {
-  var DataSetClass     Data;
-  var PartitionClass[] Partitions;
+class WordDocument: DocumentClass {
+  var ExperimentData     Data;
+  var SegmentPartition[] Partitions;
 
-  Constructor(DataSetClass data, PartitionClass[] partitions) {
+  Constructor(ExperimentData data, SegmentPartition[] partitions) {
     super.Constructor(#a12b9731-b78e-49e1-986f-a72af5d1ec25#, "Word File");
     Data       = data;
     Partitions = partitions;
@@ -347,7 +347,7 @@ class WordViewClass: DocumentClass {
 
   ShowPartitions = TextBlock {
     Span {
-      PaperStyle.ReadOnly; PaperStyle.Variable("PartitionInfoClass"); "[] "; PaperStyle.Variable("Partitions"); " = [";
+      PaperStyle.ReadOnly; PaperStyle.Variable(nameof(PartitionInfo)); "[] "; PaperStyle.Variable("Partitions"); " = [";
     };
 
     foreach (var p in Partitions) {
@@ -439,10 +439,10 @@ class WordViewClass: DocumentClass {
 
 //======================================================================
 
-class SegmentTransitionClass: Content {
-  var DataSetClass Data;
+class SegmentTransitionFigure: Content {
+  var ExperimentData Data;
 
-  Constructor(DataSetClass data) {
+  Constructor(ExperimentData data) {
     super.Constructor("Prior Segment Transition Counts");
     Data = data;
   }
@@ -451,7 +451,7 @@ class SegmentTransitionClass: Content {
     "The number of times that a segment on the left vertical bar differs from any other other segment at the same position. The rates of transitions to and from gaps are ignored. Partitions are ordered by frequency of occurrance. Transition counts are shown in a scaled color box. The chart has diagonal symmetry.";
   };
 
-  override GetBody(ContentStyle style, title) = new PriorCountClass(Data).PartitionBox(style, new (ExtentWidth, ExtentHeight - 1.6 inch));
+  override GetBody(ContentStyle style, title) = new PriorCount(Data).PartitionBox(style, new (ExtentWidth, ExtentHeight - 1.6"));
 }
 
 //======================================================================

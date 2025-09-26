@@ -3,9 +3,9 @@ using Format, IO, Units, Languages, LinkTypes;
 
 DefaultCognate = "Primary";
 
-LanguageParent = new LinkType(LanguageClass, LanguageClass, "Parent", true);
+LanguageParent = new LinkType(WorldLanguage, WorldLanguage, "Parent", true);
 
-readonly namespace<LanguageClass> WorldLanguages {
+readonly namespace<WorldLanguage> WorldLanguages {
   Old_Irish          = new(#78e0808d-fef7-4220-ab40-31a2fb4caa6d#, "Old Irish", 5);
   Irish              = new(#ecab3be4-8d79-496b-a8ef-8d160d687ad9#, "Irish", 4);
   Scots_Gaelic       = new(#eed7fad0-d873-4869-a8fa-1b15a2b162bd#, "Scots Gaelic", 4);
@@ -107,7 +107,7 @@ readonly namespace<LanguageClass> WorldLanguages {
 }
 //======================================================================
 
-class TestLanguageClass: LanguageClass {
+class TestLanguageClass: WorldLanguage {
   Constructor(id, name) {
     super.Constructor(id, name, 0, res "Images/test.png");
   }
@@ -119,7 +119,7 @@ class TestLanguageClass: LanguageClass {
 
 //======================================================================
 
-class LatinClass: LanguageClass {
+class LatinClass: WorldLanguage {
   Constructor {
     super.Constructor(#463a584a-82e2-4588-96af-f2c3758d6989#, "Latin", 6, res "Images/latin.png");
   }
@@ -135,7 +135,7 @@ class LatinClass: LanguageClass {
 
 //======================================================================
 
-class FrenchClass: LanguageClass {
+class FrenchClass: WorldLanguage {
   Constructor {
     super.Constructor(#1a1694ec-c82a-4238-9488-f9708b2a117d#, "French", 0, res "Images/French.png");
     MapColor = #F79521#;
@@ -151,7 +151,7 @@ class FrenchClass: LanguageClass {
 
 //======================================================================
 
-class SpanishClass: LanguageClass {
+class SpanishClass: WorldLanguage {
   Constructor {
     super.Constructor(#bacdcef6-de04-4c59-b763-7c12a0e67a27#, "Spanish", 0, res "Images/Spanish.png");
     MapColor = #EA232A#;
@@ -166,7 +166,7 @@ class SpanishClass: LanguageClass {
 
 //======================================================================
 
-class ItalianClass: LanguageClass {
+class ItalianClass: WorldLanguage {
   Constructor {
     super.Constructor(#d3164836-aefe-41c2-8c1b-5f8b5934dc99#, "Italian", 0, res "Images/Italian.png");
     MapColor = #0E8040#;
@@ -183,7 +183,7 @@ class ItalianClass: LanguageClass {
 
 //======================================================================
 
-class PortugueseClass: LanguageClass {
+class PortugueseClass: WorldLanguage {
   Constructor {
     super.Constructor(#e023e110-c0f6-47f8-a1fc-c9b82df75bb2#, "Portuguese", 0, res "Images/Portuguese.png");
     MapColor = #F8EF24#;
@@ -200,7 +200,7 @@ class PortugueseClass: LanguageClass {
 
 //======================================================================
 
-class PortugueseBrazilClass: LanguageClass {
+class PortugueseBrazilClass: WorldLanguage {
   Constructor {
     super.Constructor(#6f84a967-a79e-4ada-bb64-e658a521c85b#, "Brazilian Portuguese", 0, res "Images/Brazilian Portuguese.png");
     MapColor  = #F8EF24#;
@@ -216,7 +216,7 @@ class PortugueseBrazilClass: LanguageClass {
 
 //======================================================================
 
-class CatalanClass: LanguageClass {
+class CatalanClass: WorldLanguage {
   Constructor {
     super.Constructor(#bbf6898d-eef2-442a-b4ec-aa15d18a4b55#, "Catalan", 0, res "Images/Catalan.png");
     MapColor = #2B3892#;
@@ -233,7 +233,7 @@ class CatalanClass: LanguageClass {
 
 //======================================================================
 
-class WalloonClass: LanguageClass {
+class WalloonClass: WorldLanguage {
   Constructor {
     super.Constructor(#a13142a6-e509-48a2-9d73-b1260049667b#, "Walloon", 0, res "Images/Walloon.png");
     MapColor = #6BBD46#;
@@ -250,7 +250,7 @@ class WalloonClass: LanguageClass {
 
 //======================================================================
 
-class FriulianClass: LanguageClass {
+class FriulianClass: WorldLanguage {
   Constructor {
     super.Constructor(#7a88dee7-b741-4fb1-819d-38fb9ff962ed#, "Friulian", 0, res "Images/Friulian.png");
     MapColor = #F27F80#;
@@ -264,7 +264,7 @@ class FriulianClass: LanguageClass {
 
 //======================================================================
 
-class RomanianClass: LanguageClass {
+class RomanianClass: WorldLanguage {
   Constructor {
     super.Constructor(#2236f89e-0c59-46ae-88c3-c03d68c0d472#, "Romanian", 3, res "Images/Romanian.png");
     MapColor = #B9529F#;

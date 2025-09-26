@@ -1,16 +1,16 @@
-using Format, Units, IPA, SegmentFeatures, Math;
+using Format, IPA, SegmentFeatures, Math;
 //======================================================================
 
-class EulerDiagramClass {
+class EulerDiagram {
   Constructor {
   }
 
   TitleStyle = {TextColor: 70%};
-  ChartSize  = 6 inches;
+  ChartSize  = 6";
   EX(x)      = ChartSize * x * 0.01;
   EY(y)      = ChartSize * y * 0.01;
 
-  Enclosure(x, y, w, h, Color color) = Canvas(EX(w), EY(h), 1 pt) {
+  Enclosure(x, y, w, h, Color color) = Canvas(EX(w), EY(h), 1pt) {
     BorderRadius: 6pt;
     Background: color;
     X: EX(x);
@@ -143,9 +143,9 @@ readonly namespace DisplayWords {
     d
   };
 
-  ShowLanguage(ContentStyle style, DataSetClass data, TaxonClass taxon) = Block {
+  ShowLanguage(ContentStyle style, ExperimentData data, Taxon taxon) = Block {
     PaperStyle.TitleBar {taxon.Language};
-    Table(0.5, null, [new(Column.Fit(2.1 inches), null, PadLR(10)), new(Column.Fit(1.5 inches), null, PadR(10)), Column.Expand]) {
+    Table(0.5, null, [new(Column.Fit(2.1"), null, PadLR(10)), new(Column.Fit(1.5"), null, PadR(10)), Column.Expand]) {
       style.SansSerif;
       Row {
         HeaderCell(Lang.Cognate);
@@ -171,20 +171,20 @@ readonly namespace DisplayWords {
     Paragraph;
   };
 
-  ShowWordsByLanguage(ContentStyle style, DataSetClass data) = Block {
+  ShowWordsByLanguage(ContentStyle style, ExperimentData data) = Block {
     ShowLanguage(style, data, each data.Taxa);
   };
 }
 //======================================================================
 
 readonly namespace AllWords {
-  AddCell(TaxonClass taxon, CognateClass cognate, textheight) = Cell {
+  AddCell(Taxon taxon, Cognate cognate, textheight) = Cell {
     Background: each0 mod 2 == 0 ? 97% : null;
     cognate.Words[taxon.Index].ShowPaddedBlocks(textheight);
   };
 
-  AddRow(ContentStyle style, TaxonClass taxon, CognateClass[] cognates, textheight) = Row {
-    Cell(PadL(1 pt)) {
+  AddRow(ContentStyle style, Taxon taxon, Cognate[] cognates, textheight) = Row {
+    Cell(PadL(1pt)) {
       style.SansSerif;
       TextColor: Colors.DarkGray;
       taxon.Language;
@@ -192,7 +192,7 @@ readonly namespace AllWords {
     AddCell(taxon, each cognates, textheight)
   };
 
-  ConceptTable(ContentStyle style, DataSetClass data, textheight, wordsperline, CognateClass[] cognates) = HBox {
+  ConceptTable(ContentStyle style, ExperimentData data, textheight, wordsperline, Cognate[] cognates) = HBox {
     var first = 84pt;
     var w     = (ExtentWidth - first) / wordsperline;
     Table(0.5, null, [first] + [w] * wordsperline) {
@@ -209,11 +209,11 @@ readonly namespace AllWords {
     Paragraph;
   };
 
-  ShowConceptTable(ContentStyle style, DataSetClass data, CognateClass cognate) = ConceptTable(style, data, 10pt, 7, [cognate]);
+  ShowConceptTable(ContentStyle style, ExperimentData data, Cognate cognate) = ConceptTable(style, data, 10pt, 7, [cognate]);
 
-  ShowTable(ContentStyle style, DataSetClass data, textheight, int max=1000000) = Block {
+  ShowTable(ContentStyle style, ExperimentData data, textheight, int max=1000000) = Block {
     TextHeight: textheight;
-    var wordsperline = (ExtentWidth / (14 * (textheight toscale pixels))) as int;
+    var wordsperline = (ExtentWidth / (14 * (textheight toscale Units.pixels))) as int;
 
     foreach (var cognates in (data.GetSortedCognates / wordsperline)) {
       if (each0 >= max)
@@ -296,7 +296,7 @@ class TabOptionsClass {
     }
   };
 
-  AddRow(DataSetClass data, SegmentSetClass set, Places[] places, manner) = Row(PaperStyle.SegmentBottom) {
+  AddRow(ExperimentData data, SegmentSetClass set, Places[] places, manner) = Row(PaperStyle.SegmentBottom) {
     Cell {
       VAlign: Center;
       PaperStyle.TitleBackground;
@@ -321,11 +321,11 @@ class TabOptionsClass {
            Manners.FindFirstIndex(manner => CheckFlags(segment.Features, manner | All)) >= 0;
   }
 
-  MatchPlace(DataSetClass data, place) {
+  MatchPlace(ExperimentData data, place) {
     return data.UniqueSegments.FindFirstIndex(segment => MatchInclude(segment, place));
   }
 
-  ShowTable(ContentStyle style, DataSetClass data, SegmentSetClass set) = Block {
+  ShowTable(ContentStyle style, ExperimentData data, SegmentSetClass set) = Block {
     PaperStyle.TitleBar {
       Title
     };
@@ -449,7 +449,7 @@ readonly namespace MatchingVowels {
     };
 
     var border = BorderR(0.5pt);
-    Table(PaperStyle.TableBorder, null, [new Column(1 inch, border)] + [new Column(PaperStyle.BoxSize.Width*4, border)]) {
+    Table(PaperStyle.TableBorder, null, [new Column(1", border)] + [new Column(PaperStyle.BoxSize.Width*4, border)]) {
       HAlign: Center;
       Row {
         TextHeight: 10pt;
@@ -542,12 +542,12 @@ readonly namespace MatchingOther {
 
 //======================================================================
 
-class SegmentDisplayClass {
-  var DataSetClass  Data;
-  var SegmentPart[] SortedSegments,
-                    DisplaySegments;
+class SegmentDisplay {
+  var ExperimentData Data;
+  var SegmentPart[]  SortedSegments,
+                     DisplaySegments;
 
-  Constructor(DataSetClass data) {
+  Constructor(ExperimentData data) {
     Data            = data;
     DisplaySegments = data.UniqueSegments;  // Could be IPA.Segments if you want to see all possible segments in the debug tables
     SortedSegments  = data.UniqueSegments.ToSortedArray(true, @CompareAlpha);
@@ -607,7 +607,7 @@ class SegmentDisplayClass {
       var language = taxon.Language;
       Paragraph {
         SpaceAfter: 10pt;
-        HBox(100%, null, BorderT(1 pt) + PadT(16pt)) {
+        HBox(100%, null, BorderT(1pt) + PadT(16pt)) {
           VAlign: Center;
           Frame(40%) {
             style.Heading2 {
@@ -620,7 +620,7 @@ class SegmentDisplayClass {
           };
           HBox(60%) {
             HAlign: Center;
-            language.ShowMap(3.5 inches, 2 inches);
+            language.ShowMap(3.5", 2");
           }
         };
       }
@@ -629,7 +629,7 @@ class SegmentDisplayClass {
 
   ShowWordsForEachSegment = Block {
     foreach (var segment in SortedSegments) {
-      Paragraph(null, [0.5 inches]) {
+      Paragraph(null, [0.5"]) {
         KeepWithNext: true;
         TextHeight: 16pt;
         ParBackground: 90%;
@@ -659,10 +659,10 @@ class SegmentDisplayClass {
 
 //======================================================================
 
-abstract class DataContentClass: Content {
-  var DataSetClass Data;
+abstract class ExperimentContent: Content {
+  var ExperimentData Data;
 
-  Constructor(DataSetClass data, title) {
+  Constructor(ExperimentData data, title) {
     super.Constructor(title);
     Data = data;
   }
@@ -670,8 +670,8 @@ abstract class DataContentClass: Content {
 
 //======================================================================
 
-class SegmentAssignmentsClass: DataContentClass {
-  Constructor(DataSetClass data) {
+class SegmentAssignmentsFigure: ExperimentContent {
+  Constructor(ExperimentData data) {
     super.Constructor(data, "Segment Assignments");
   }
 
