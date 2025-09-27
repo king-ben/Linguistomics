@@ -754,7 +754,7 @@ class ExperimentData {
     foreach (var cognate in UsedCognates)
       ComputeRawCognate(lookup, cognate);
 
-    var set = new SegmentSetClass(512);
+    var set = new SegmentSet(512);
     foreach (var cognate in UsedCognates) {
       foreach (var word in cognate.Words) {
         foreach (var segment in word.Segments) {

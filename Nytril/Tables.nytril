@@ -224,7 +224,7 @@ readonly namespace AllWords {
 }
 
 readonly namespace MatchCell {
-  SegmentText(SegmentSetClass set, SegmentPart segment) {
+  SegmentText(SegmentSet set, SegmentPart segment) {
     if (not segment.Segment.Impossible) {
       set.Add(segment);
       return segment.ShowSegment;
@@ -232,7 +232,7 @@ readonly namespace MatchCell {
     return null;
   }
 
-  SegmentBox(SegmentSetClass set, SegmentPart segment, color) = Canvas(PaperStyle.BoxSize.Width, PaperStyle.BoxSize.Height) {
+  SegmentBox(SegmentSet set, SegmentPart segment, color) = Canvas(PaperStyle.BoxSize.Width, PaperStyle.BoxSize.Height) {
     HAlign: Center;
     if (segment.?Ipa is valid) {
       TextHeight: PaperStyle.BoxSize.Height - 6pt;
@@ -243,12 +243,12 @@ readonly namespace MatchCell {
       PaperStyle.ImpossibleBackground;
   };
 
-  ShowBox(SegmentSetClass set, SegmentPart segment, color) = SegmentBox(set, segment, color) {
+  ShowBox(SegmentSet set, SegmentPart segment, color) = SegmentBox(set, segment, color) {
     if (segment.Features.HasFlag(Voiced))
       X: PaperStyle.BoxSize.Width;
   };
 
-  ErrorMatches(SegmentSetClass set, SegmentPart[] matches) = Span {
+  ErrorMatches(SegmentSet set, SegmentPart[] matches) = Span {
     Separator: CommaSpace;
     TextColor: Colors.Red;
     MatchCell.SegmentText(set, each matches);
@@ -278,7 +278,7 @@ class TabOptionsClass {
 
   MatchError(matches) = matches.Length > 2 or (matches.Length == 2 and matches[0].Features.HasFlag(Voiced) == matches[1].Features.HasFlag(Voiced));
 
-  SegmentBlock(SegmentSetClass set, SegmentPart[] matches) = Cell {
+  SegmentBlock(SegmentSet set, SegmentPart[] matches) = Cell {
     if (matches is valid) {
       if (matches.Length == 1 and matches[0].Segment.Impossible)
         PaperStyle.ImpossibleBackground;
@@ -296,7 +296,7 @@ class TabOptionsClass {
     }
   };
 
-  AddRow(ExperimentData data, SegmentSetClass set, Places[] places, manner) = Row(PaperStyle.SegmentBottom) {
+  AddRow(ExperimentData data, SegmentSet set, Places[] places, manner) = Row(PaperStyle.SegmentBottom) {
     Cell {
       VAlign: Center;
       PaperStyle.TitleBackground;
@@ -325,7 +325,7 @@ class TabOptionsClass {
     return data.UniqueSegments.FindFirstIndex(segment => MatchInclude(segment, place));
   }
 
-  ShowTable(ContentStyle style, ExperimentData data, SegmentSetClass set) = Block {
+  ShowTable(ContentStyle style, ExperimentData data, SegmentSet set) = Block {
     PaperStyle.TitleBar {
       Title
     };
@@ -405,7 +405,7 @@ readonly namespace MatchingConsonants {
 readonly namespace MatchingVowels {
   FeatureMask = Vowel LongVowel Nasal Diphthong NonSylabic;
 
-  AddCell(SegmentPart[] segments, SegmentSetClass set, open, backness, features) = Cell(PaperStyle.SegmentBottom) {
+  AddCell(SegmentPart[] segments, SegmentSet set, open, backness, features) = Cell(PaperStyle.SegmentBottom) {
     HAlign: Center;
     TextHeight: PaperStyle.BoxSize.Height;
 
@@ -433,7 +433,7 @@ readonly namespace MatchingVowels {
     }
   };
 
-  AddRow(SegmentPart[] segments, SegmentSetClass set, open, features) = Row {
+  AddRow(SegmentPart[] segments, SegmentSet set, open, features) = Row {
     Cell {
       VAlign: Center;
       PaperStyle.TitleBackground;
@@ -442,7 +442,7 @@ readonly namespace MatchingVowels {
     AddCell(segments, set, open, each Backnesses.ValueArray, features)
   };
 
-  ShowVowelTable(ContentStyle style, SegmentPart[] segments, SegmentSetClass set, SegmentFeatures features) = Block {
+  ShowVowelTable(ContentStyle style, SegmentPart[] segments, SegmentSet set, SegmentFeatures features) = Block {
     PaperStyle.TitleBar {
       Separator: "-";
       each features;
@@ -464,7 +464,7 @@ readonly namespace MatchingVowels {
     };
   };
 
-  ShowTable(ContentStyle style, SegmentPart[] segments, SegmentSetClass set) = Block {
+  ShowTable(ContentStyle style, SegmentPart[] segments, SegmentSet set) = Block {
     Lang.SymbolPairRounded;
     ShowVowelTable(style, segments, set, Vowel);
     ShowVowelTable(style, segments, set, Vowel LongVowel);
@@ -530,7 +530,7 @@ readonly namespace MatchingOther {
     }
   };
 
-  ShowTable(SegmentPart[] segments, SegmentSetClass set) = Block {
+  ShowTable(SegmentPart[] segments, SegmentSet set) = Block {
     PaperStyle.TitleBar {Lang.OtherSegments};
     Table(PaperStyle.TableBorder, null, [PaperStyle.CellSize.Width, ExtentWidth * 0.5 - PaperStyle.CellSize.Width] * ColumnDiv) {
       var slice = segments.FindSlice(segment => not set.Contains(segment));

@@ -102,7 +102,7 @@ flags SegmentFeatures {
 
 //======================================================================
 
-typedef SegmentSetClass   HashSet<SegmentPart>;
+typedef SegmentSet   HashSet<SegmentPart>;
 typedef SegPartDictionary StringDictionary<SegmentPart>;
 
 class Segment: Fact {

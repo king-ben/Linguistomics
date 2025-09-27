@@ -1,4 +1,4 @@
-using Format, IO;
+using Format;
 
 //======================================================================
 
@@ -52,7 +52,7 @@ class DiagnosticsDocument: DocumentClass {
   }
 
   ShowSegmentTables = Block {
-    SegmentSetClass set = new(512);
+    SegmentSet set = new(512);
     MatchingVowels.ShowTable(Style, Display.DisplaySegments, set);
     MatchingConsonants.PulmonicTable.ShowTable(Style, Data, set);
     MatchingConsonants.NonPulmonicTable.ShowTable(Style, Data, set);
