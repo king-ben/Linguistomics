@@ -5,7 +5,7 @@ include "../data/swadesh/wordtransform";
 
 Main.Documents = new ConvertDocClass;
 
-class ConvertDocClass: DocumentClass {
+class ConvertDocClass: DocumentEntry {
   Constructor {
     super.Constructor(#90cf49d6bdc4c94aa0ea64db780293a8#, "Test"),  
   }

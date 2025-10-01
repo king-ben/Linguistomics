@@ -2,9 +2,9 @@ using Format, References, PaperStyle, WorldLanguages;
 
 //======================================================================
 
-readonly AbstractClass PaperSections.Abstract = new;
+readonly AbstractSection PaperSections.Abstract = new;
 
-class AbstractClass: Content {
+class AbstractSection: Content {
   Constructor {
     super.Constructor(Lang.Abstract);
   }
@@ -26,9 +26,9 @@ class AbstractClass: Content {
 
 //======================================================================
 
-readonly SignificanceClass PaperSections.Significance = new;
+readonly SignificanceSection PaperSections.Significance = new;
 
-class SignificanceClass: Content {
+class SignificanceSection: Content {
   Constructor {
     super.Constructor("Significance Statement");
   }
@@ -47,9 +47,9 @@ class SignificanceClass: Content {
 
 //======================================================================
 
-readonly RootMeaningTraitsClass PaperSections.RootMeaningTraits = new;
+readonly RootMeaningTraitsSection PaperSections.RootMeaningTraits = new;
 
-class RootMeaningTraitsClass: Content {
+class RootMeaningTraitsSection: Content {
   Constructor {
     super.Constructor("Root-meaning traits");
   }
@@ -127,9 +127,9 @@ class RootMeaningTraitsClass: Content {
 
 //======================================================================
 
-readonly TKF91ApproachClass PaperSections.TKF91Approach = new;
+readonly TKF91ApproachSection PaperSections.TKF91Approach = new;
 
-class TKF91ApproachClass: Content {
+class TKF91ApproachSection: Content {
   Constructor {
     super.Constructor("The TKF91 approach");
   }
@@ -177,9 +177,9 @@ class TKF91ApproachClass: Content {
 
 //======================================================================
 
-readonly CognateWordFormsClass PaperSections.CognateWordForms = new;
+readonly CognateWordFormsSection PaperSections.CognateWordForms = new;
 
-class CognateWordFormsClass: Content {
+class CognateWordFormsSection: Content {
   Constructor {
     super.Constructor("Modeling linguistic history with cognate word-forms");
   }
@@ -202,9 +202,9 @@ class CognateWordFormsClass: Content {
 
 //======================================================================
 
-readonly IntroductionClass PaperSections.Introduction = new;
+readonly IntroductionSection PaperSections.Introduction = new;
 
-class IntroductionClass: Content {
+class IntroductionSection: Content {
   Constructor {
     super.Constructor(Lang.Introduction);
     AddContent(PaperSections.RootMeaningTraits);
@@ -274,114 +274,72 @@ class PaperDataSection: Content {
       "This study is based on a dataset of cognate word-forms from a sample of "; langcount;
       " Romance languages and Latin, whose geographic distribution is presented in ";
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
-
       "The word-forms are cognate in the traditional sense in that they refer to word-forms that descend from a common ancestor"; Cite {Chang2015.OnPage(201)}; DotSpace;
-
       "In contrast to root-meaning traits (such as the one illustrated in ";
          style.TableReference(TableFigures.CognateCoding); "), meaning is irrelevant"; DotSpace;
-
       "For instance, the Latin adjective "; textit{"gravis"};  " means "; style.SQuoteComma{"heavy"}; "but French "; textit{"grave"}; " means "; style.SQuoteEnd{"serious"};
-
       "Despite this semantic difference, they are assigned to the same cognate set because they are segmentally homologous. ";
     };
 
     style.BodyPar {
       "Cognate word-forms were selected as follows. ";
-
       "We first identified basic vocabulary items in Latin on the basis of the Swadesh 207 concept list. ";
-
       "For each Latin lexeme, we then collected its cognates in our "; langcount; " Romance languages from etymological dictionaries. ";
-
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
-
       "The orientation toward Latin is purely practical. ";
-
       "We only used cognate sets in which a cognate could be identified for each language and by starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
     };
 
     style.BodyPar {
       "In total, the dataset contains "; data.UsedCognates.Length;
-
       " cognate sets, which are comprised of "; data.WordCount;
-
       " word-forms containing "; data.UniqueSegments.Length;
-
       " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
-
       ConceptList(data, style); DotSpace;
     };
 
     style.BodyPar {
       "The word-forms can be represented as either phonetic or phonemic sequences. ";
-
       "We use phonemic representations for two reasons"; DotSpace;
-
       "First, phonetic data is harder to come by, especially with a corpus language such as Latin"; DotSpace;
-
       "Second, the current implementation of the model is unable to take into account phonetic variation of word-forms"; DotSpace;
-
       "Consequently, use of phonetic word-forms would have required selecting a single representative"; DotSpace;
-
       "The representation of word-forms is strictly segmental"; DotSpace;
-
       "Suprasegemental features such as stress and syllable structure are not represented"; DotSpace;
-
       "All segments are coded in standard Unicode IPA"; Cite {IPA1999}; DotSpace;
-
     };
 
     style.AddTable(TableFigures.ManualAlignment, FigureOptions.Top | FigureOptions.Bottom);
 
-
     style.BodyPar {
       "The word-forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
-
       " for the concept "; TableFigures.ManualAlignment.WordDisplay(style);  "Dashes ("; style.SQuote {"-"} ") denote the absence of a homologous segment present in other word-forms" DotSpace;
-
       "For example, the "; TextIpa{"i"}; " of Latin "; TextIpa{"kʷ-id"}; " develops into "; TextIpa{"wa"}; " in French and Walloon. To accommodate the emergence of "; TextIpa{"w"}; ", there is an empty segmental slot before the vowel in all other languages"; DotSpace;
-
       "As described below in Section 3, the manual alignments of cognate word-forms serve as the starting point for the Markov chain Monte Carlo (MCMC) sampling procedure, ";
-
       "so our analysis does not condition on any particular alignment of segments. ";
     };
 
     style.BodyPar {
       "Latin is a highly synthetic language, with most lexical items having multiple word-forms. ";
-
       "In this study, each lexical item is represented by a single word-form, however. ";
-
       "For verbs, the present active infinitive is used. ";
-
       "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word-forms. ";
-
       "Among nouns and adjectives in our dataset, the ancestral form is far more often the accusative. ";
-
       "The selection of word-forms is not without consequences, since it can impact the estimated transition rates. For instance, most masculine singular nominative adjectives in Latin end in "; TextIpa{"-us"}; DotSpace;
-
       "By contrast, feminine singular nominative adjectives end in "; TextIpa{"-a"}; DotSpace;
-
       "Use of the feminine forms would increase the number of transitions originating in this vowel. ";
     };
 
     style.BodyPar{
       "The lexical histories of the Romance languages are notoriously complex"; Cite {Stefenelli1992; Dworkin2016b};
-
       ", as they have been shaped not only by inheritance but also by borrowings from both other Romance languages and Latin itself. ";
-
       "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
-
       "In fact, Romance data are in many ways ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
-
       "Two reasons are responsible for this reduced risk. ";
-
       "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Cite {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
-
       "Second, the phonological developments of the Romance languages are sufficiently well understood that borrowings and Latinisms can often be detected. ";
-
       "We excluded all word-forms for which evidence of borrowing could be identified. ";
-
       "Romance cognates are therefore appropriate for our analysis for the same reason that scholars have been able to reconstruct Proto-Romance lexemes using the traditional comparative method. ";
-
       "For instance, the "; textit{"Dictionnaire Étymologique Roman"}; Cite{Derom}; " reconstructs a subset of the Proto-Romance lexicon from a dataset similar in spirit to ours. ";
     };
   };

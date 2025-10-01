@@ -1,8 +1,8 @@
-using Format, IO, DB;
+using Format, IO;
 
 //================================================================
 
-class MyDocClass: DocumentClass {
+class BIPADocument: DocumentEntry {
   Constructor {
     super.Constructor(#2f91b3da-1566-4591-bcc7-1ec7b798a87f#, "Convert BIPA");
   }
@@ -15,7 +15,7 @@ class MyDocClass: DocumentClass {
 Schema = new LogSchemaClass;
 
 
-Main.Documents.MainDocument = new MyDocClass;
+BIPADocument Main.Documents.MainDocument = new;
 
 //================================================================
 

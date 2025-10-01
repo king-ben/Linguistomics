@@ -1,8 +1,8 @@
-using Format, IO, DB;
+using Format;
 
 //================================================================
 
-class MyDocClass: DocumentClass {
+class SiteDataDocument: DocumentEntry {
   Constructor {
     super.Constructor(#2f91b3da-1566-4591-bcc7-1ec7b798a87f#, "Convert Site Data");
   }
@@ -18,7 +18,7 @@ class MyDocClass: DocumentClass {
 
 //================================================================
 
-Main.Documents.MainDocument = new MyDocClass;
+SiteDataDocument Main.Documents.MainDocument = new;
 
 //================================================================
 

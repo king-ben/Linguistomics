@@ -60,7 +60,7 @@ class CreateExperimentClass: Action {
 
 //======================================================================
 
-class CreateViewClass: DocumentClass {
+class CreateViewClass: DocumentEntry {
   var ExperimentData Data;
 
   Constructor(ExperimentData data) {

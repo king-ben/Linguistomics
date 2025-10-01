@@ -290,9 +290,10 @@ SegmentPart IPAParts.Missing = new(IPASegments.MissingSegment);
 //======================================================================
 
 class SegmentPunctuation: Segment {
-  Constructor(ipa, sampa=null) {
+  Constructor(ipa, sampa=null, bool gap=false) {
     super.Constructor(ipa, sampa);
     Punctuation = true;
+    Gap         = gap;
   }
 }
 

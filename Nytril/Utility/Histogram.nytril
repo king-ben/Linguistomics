@@ -6,7 +6,7 @@ Main.Documents = new HistogramDocClass;
 
 //======================================================================
 
-class HistogramDocClass: DocumentClass {
+class HistogramDocClass: DocumentEntry {
   Constructor {
     super.Constructor(#90cf49d6bdc4c94aa0ea64db780293a8#, "Histogram"); 
   }

@@ -36,7 +36,7 @@ class WordsSearchAction: Action {
 
 //======================================================================
 
-class DiagnosticsDocument: DocumentClass {
+class DiagnosticsDocument: DocumentEntry {
   var ExperimentData Data;
   var ContentStyle   Style;
   var SegmentDisplay Display;
@@ -282,7 +282,7 @@ class AppendixContent: Content {
 
 //======================================================================
 
-class ConfigurationDocument: DocumentClass {
+class ConfigurationDocument: DocumentEntry {
   var ExperimentData Data;
   var TreeSet        TreeSet;
 
@@ -299,7 +299,7 @@ class ConfigurationDocument: DocumentClass {
 
 //======================================================================
 
-class WordDocument: DocumentClass {
+class WordDocument: DocumentEntry {
   var ExperimentData     Data;
   var SegmentPartition[] Partitions;
 

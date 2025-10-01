@@ -43,7 +43,7 @@ RateDescriptor(text) = Span {
 
 //======================================================================
 
-class AlignPairClass: DocumentClass {
+class AlignPairClass: DocumentEntry {
   var ExperimentData Data;
   var AlignData[]    Alignments;
   var Size           BoxSize;
@@ -1111,7 +1111,7 @@ abstract class CountBase {
 
 //======================================================================
 
-class TransitionAction: DocumentClass {
+class TransitionAction: DocumentEntry {
   var WordPairClass[] List;
   var                 Percent;
 

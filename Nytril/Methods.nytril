@@ -749,9 +749,9 @@ class QRatesTopFigure: Content {
 
 //======================================================================
 
-readonly QRatesConsonantConsonantFigure Figures.QRatesConsonantConsonant = new;
+readonly QRatesCCFigure Figures.QRatesConsonantConsonant = new;
 
-class QRatesConsonantConsonantFigure: Content {
+class QRatesCCFigure: Content {
   Constructor {
     super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"));
   }
@@ -776,9 +776,9 @@ class QRatesOneWayFigure: Content {
 
 //======================================================================
 
-readonly AllSegmentFrequenciesFigure Figures.AllSegmentFrequencies = new;
+readonly AllFrequenciesFigure Figures.AllSegmentFrequencies = new;
 
-class AllSegmentFrequenciesFigure: Content {
+class AllFrequenciesFigure: Content {
   var SegmentDisplay Display;
 
   Constructor {
@@ -831,9 +831,9 @@ class SegmentOccuranceFigure: ExperimentContent {
 
 //======================================================================
 
-readonly SegmentOccuranceGroupedFigure Figures.SegmentOccuranceGrouped = new(MainResults.Data);
+readonly SegmentGroupedFigure Figures.SegmentOccuranceGrouped = new(MainResults.Data);
 
-class SegmentOccuranceGroupedFigure: ExperimentContent {
+class SegmentGroupedFigure: ExperimentContent {
   Constructor(ExperimentData data) {
     super.Constructor(data, "Segment Occurance Rates (by partition)");
   }
@@ -865,7 +865,7 @@ namespace ExampleAnimals {
 
 //=====================================================================
 
-class ExampleConceptClass {
+class ExampleConcept {
   var Concept         Concept;
   var Cognate         Cognate;
   var WorldLanguage[] ExLanguages,
@@ -1032,7 +1032,7 @@ class AlignmentFigure: Content {
     taxon.Language;
   };
 
-  SegmentTable(ContentStyle style, ExperimentData data, ExampleConceptClass example, aligned) = MatrixBox {
+  SegmentTable(ContentStyle style, ExperimentData data, ExampleConcept example, aligned) = MatrixBox {
     VAlign: Center;
     foreach (var taxon in data.Taxa) {
       Row {
@@ -1049,7 +1049,7 @@ class AlignmentFigure: Content {
     }
   };
 
-  MapTable(ContentStyle style, ExperimentData data, ExampleConceptClass example, map, text) = Block {
+  MapTable(ContentStyle style, ExperimentData data, ExampleConcept example, map, text) = Block {
     IPAFamily;
     foreach (var taxon in data.Taxa) {
       Paragraph(null, [60pt]) {
@@ -1109,7 +1109,7 @@ class AlignmentFigure: Content {
     };
   };
 
-  HomBox(ContentStyle style, ExperimentData data, ExampleConceptClass example, num, Edge edge, map) = VBox {
+  HomBox(ContentStyle style, ExperimentData data, ExampleConcept example, num, Edge edge, map) = VBox {
     HAlign: Center;
     HBox {
       VAlign: Top;
@@ -1159,7 +1159,7 @@ class AlignmentFigure: Content {
     HAlign: Center;
 
     var data    = MainResults.Data;
-    var example = new ExampleConceptClass(data, data.ExampleConcept);
+    var example = new ExampleConcept(data, data.ExampleConcept);
     var edge    = new Edge(0.5pt, 2pt, ArrowColor);
 
 
@@ -1244,9 +1244,9 @@ namespace StateSection {
 
 //======================================================================
 
-readonly ResultsSectionClass PaperSections.Results = new;
+readonly ResultsSection PaperSections.Results = new;
 
-class ResultsSectionClass: Content {
+class ResultsSection: Content {
   Constructor {
     super.Constructor("Results");
     AddContent(PaperSections.PhylogenyResults);
@@ -1266,9 +1266,9 @@ class ResultsSectionClass: Content {
 
 //======================================================================
 
-readonly PhylogenyResultsClass PaperSections.PhylogenyResults = new;
+readonly PhylogenyResultsSection PaperSections.PhylogenyResults = new;
 
-class PhylogenyResultsClass: Content {
+class PhylogenyResultsSection: Content {
   Constructor {
     super.Constructor("Phylogeny");
   }
@@ -1302,7 +1302,7 @@ class PhylogenyResultsClass: Content {
       "Roughly speaking, this means that for every two segmental transitions there was one insertion or deletion event. ";
       "Just like substitution events, insertion and deletion events can be informative about phylogeny. ";
       "Unlike the earlier analysis of amino acid sequence data, the insertion and deletion events were strongly informative about ";
-         "specific tree topologies, and this tree support could change depending on the homology assignments for the alignment.";
+       "specific tree topologies, and this tree support could change depending on the homology assignments for the alignment.";
     };
 
     style.BodyPar {
@@ -1318,23 +1318,19 @@ class PhylogenyResultsClass: Content {
 
     style.BodyPar {
       "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin, and the Romance languages"; Cite {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
-
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
-
       "In this study, we assume the latter as Latin is an outgroup to the Romance languages. ";
-
       "This decision was motivated by practical considerations and not linguistic ones, as a tree model allowing sampled ancestry is more complicated than the one used in this paper"; DotSpace;
       "That said, our treatment of Latin allows for the possibility that it is ancestral to the other Romance languages; an estimated zero branch length leading to Latin would place it at the root of the Romance language tree"; DotSpace;
     };
 
     style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Top | FigureOptions.Bottom, 70%);
-
   };
 }
 
 //======================================================================
 
-class RatioClass {
+class IntRatio {
   var int    Numerator,
              Denominator;
   var double Ratio;
@@ -1398,7 +1394,6 @@ class SegmentModelsFigure: Content {
     var segments = data.UniqueSegments.Length - 1;
     var rp       = rule.Filters.Length;
 
-
     style.TitlePar(title) {
       "We consider three models of segmental change in this study: ";
       PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
@@ -1411,7 +1406,6 @@ class SegmentModelsFigure: Content {
       "The number of estimated parameters varies across models. ";
       "The first model, "; PoissonModel; ", has no free parameters. ";
       "The second model, "; UnequalModel; ", has "; segments; " free parameters (one less than the number of segments). ";
-
       "The "; NaturalModelName; ", "; NaturalClassModel; ", has "; rp*(rp-1)/2 + rp; " additional segmental class rate parameters: ";
       Equation {segments; Tex.Plus; (rp*(rp-1)/2 + rp); Tex.Equals; segments + rp*(rp-1)/2 + rp}; " free parameters.";
     };
@@ -1451,16 +1445,14 @@ class ModelComparisonSection: Content {
       "This indicates overwhelming support for the more parameter-rich "; NaturalModelName;
       Cite {Jeffreys1939}; DotSpace;
     };
-
-
  };
 }
 
 //======================================================================
 
-readonly PaperWordTransformation PaperSections.WordTransformation = new;
+readonly WordTransformationSection PaperSections.WordTransformation = new;
 
-class PaperWordTransformation: Content {
+class WordTransformationSection: Content {
   Constructor {
     super.Constructor("Segmental Change");
   }
@@ -1567,8 +1559,8 @@ class PaperWordTransformation: Content {
       "Long vowels and diphthongs counter the general pattern as they transition more often to short vowels than to long vowels or diphthongs, a change ";
         "we discuss further below" DotSpace;
 
-      var same = new RatioClass(cntSame, numClasses);
-      var diff = new RatioClass(cntDiff, numClasses*(numClasses-1));
+      var same = new IntRatio(cntSame, numClasses);
+      var diff = new IntRatio(cntDiff, numClasses*(numClasses-1));
 
       if (same.Ratio > diff.Ratio) {
         "Note that "; same; " of the changes within a class are higher than expected under an equal rates model, whereas ";
@@ -1589,9 +1581,9 @@ class PaperWordTransformation: Content {
 
 //======================================================================
 
-readonly PaperWordSegmentRelationships PaperSections.WordSegmentRelationships = new;
+readonly WordSegmentRelSection PaperSections.WordSegmentRelationships = new;
 
-class PaperWordSegmentRelationships: Content {
+class WordSegmentRelSection: Content {
   Constructor {
     super.Constructor("Segmental Alignments");
   }
@@ -1658,9 +1650,9 @@ class PaperWordSegmentRelationships: Content {
 
 //======================================================================
 
-readonly PaperDiscussionSection PaperSections.DiscussionSection = new;
+readonly DiscussionSection PaperSections.DiscussionSection = new;
 
-class PaperDiscussionSection: Content {
+class DiscussionSection: Content {
   Constructor {
     super.Constructor("Discussion");
     AddContent(PaperSections.OtherApproaches);
@@ -1673,9 +1665,9 @@ class PaperDiscussionSection: Content {
 
 //======================================================================
 
-readonly PaperOtherApproaches PaperSections.OtherApproaches = new;
+readonly OtherApproachesSection PaperSections.OtherApproaches = new;
 
-class PaperOtherApproaches: Content {
+class OtherApproachesSection: Content {
   Constructor {
     super.Constructor("The TKF91 Framework Compared to Other Approaches");
   }
@@ -1728,9 +1720,9 @@ class PaperOtherApproaches: Content {
 
 //======================================================================
 
-readonly PaperSoundChange PaperSections.InsightsSoundChange = new;
+readonly SoundChangeSection PaperSections.InsightsSoundChange = new;
 
-class PaperSoundChange: Content {
+class SoundChangeSection: Content {
   Constructor {
     super.Constructor("Insights into Sound Change");
   }
@@ -1738,108 +1730,68 @@ class PaperSoundChange: Content {
    override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "In contrast to traditional historical phonology, which focuses on identifying sound changes and their relative chronologies, the TKF91 approach delivers insights into overarching trends in the evolution of sounds and segmental inventories" DotSpace;
-     "We focus here on three measures that provide insights into both, specifically, the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies"; DotSpace;
-     "Although other quantitative measures of sound change have beeen developed in recent years, these measures are a new addition to the field" DotSpace;
+      "We focus here on three measures that provide insights into both, specifically, the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies"; DotSpace;
+      "Although other quantitative measures of sound change have beeen developed in recent years, these measures are a new addition to the field" DotSpace;
     };
 
     style.BodyPar {
       "As noted above in section 3, the diagonal of the Q matrix is the rate at which a particular segment transitions to any other and thus measures its diachronic stability"; DotSpace;
-
       "The prominent division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with previous studies of Romance historical phonology"; DotSpace;
-
       "One of the major sound changes that distinguishes Latin from Romance is the loss of phonemic vowel length"; Cite{Janson1979; Loporcaro2015}; DotSpace;
-
       "In a similar vein, the diphthongs of Classical Latin start to undergo monophthongization within Latin itself"; Cite {Posner1996.OnPage(106)};  DotSpace;
-
       "Our results are also consistent with the study of"; Cite{Moran2021.OnPage(92..95)}; ", who find that vowels change faster than consonants in Indo-European"; DotSpace;
-
       "It is important to note that they are measuring the rate at which the size of segmental inventories changes, which is not what the diagonal of the Q matrix measures"; DotSpace;
-
       "In other words, their results suggest that in Indo-European vowel inventories are expanding at a faster rate compared to consonant inventories"; DotSpace;
-
       "By contrast, our results do not bear on the size of the vowel inventories per se"; DotSpace;
-
       "Our results also overlap to an extent with the basic consonant inventory of Nikolaev and Grossman"; Cite{Nikolaev2020}; ", /p t k n l r/, in that the most stable classes in our results are the stops and the nasals"; DotSpace;
-
       "There is more agreement with the primal consonants of Bybee and Easterday";
           Cite{Bybee2022}; ", /p t k b d g m n ŋ s l/"; DotSpace;
-
       "There are two important differences between their primal consonants and our results, however" DotSpace;
-
       "First, these consonsants are deemed primal because they are only rarely created by sound change"; DotSpace;
-
       "In other words, they are rarely the output of sound change"; DotSpace;
-
       "Under our framework, by contrast, segmental stability is associated with the input of sound change in that the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme"; DotSpace;
-
       "Second, the basic and primal consonant inventories are intended to represent core universal consonants in the world's languages"; DotSpace;
-
       "While our results are relevant for the typology of diachronic phonology in that they capture broad trends in segmental evolution, they should not be interpreted as universal patterns of sound change" DotSpace;
-
     };
 
-
-
-     style.BodyPar{
+    style.BodyPar{
       "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
-
       "In addition, the focus is not on transitions among individual segments, but rather transitions within and between natural classes" DotSpace;
-
       "For instance, the circles on the diagonal represent the average transition rate within each natural class"; DotSpace;
-
       "The liquids exhibit the highest rate and the diphthongs the lowest"; DotSpace;
-
       "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class"; DotSpace;
-
       "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong"; DotSpace;
-
       "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"arbor"}; Cite{Abrego2013; Mueller2013}; DotSpace;
-
       "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is with the short vowels"; DotSpace;
-
       "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
-
       "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
-
       "In addition to diphthongs and short vowels, the highest rates are also found among short vowels and long vowels as well as nasal vowels and nasal consonants" DotSpace;
-
       "This latter trend is driven by the emergence of nasalized vowels in French and Portuguese"; DotSpace;
-
     };
 
      style.BodyPar{
        "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insights into the phonemic contrasts that Romance languages rely on most"; DotSpace;
-
        "The combined frequency of short vowels and stop consonants is over 0.5, which means that on average half of the segments of a word will be stops or consonants"; DotSpace;
-
        "This tendency is the result of the diachronic trends discussed above"; DotSpace;
-
        "With the reduction of diphthongs and long vowels, their functional load decreases while that of short vowels consequently increases"; DotSpace;
     };
 
      style.BodyPar{
-
        "Finally, the results of model comparison support the relevance of natural classes in sound change "; Cite{King1969.OnPage(201)}; DotSpace;
-
        "It is well established that sound changes often target natural classes of segments"; DotSpace;
-
        "Grimm’s Law, for instance, systematically affects all Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
-
        "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
-
        " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
-
     };
-
   };
  }
 
 
 //======================================================================
 
-readonly PaperSegmentalSampling PaperSections.SegmentalSampling = new;
+readonly SegmentalSamplingSection PaperSections.SegmentalSampling = new;
 
-class PaperSegmentalSampling: Content {
+class SegmentalSamplingSection: Content {
   Constructor {
     super.Constructor("Segmental Sampling");
   }
@@ -1847,29 +1799,17 @@ class PaperSegmentalSampling: Content {
    override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Cite {References.Dockum2019}; DotSpace;
-
       "Certain segmental transitions can play a crucial role in topological inference, but under a sampling scheme such as ours, in which selection of concepts is guided by a Swadesh list, ";
-
       "there is no guarantee that the necessary segmental correspondences will be sampled. ";
-
       "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/ (in terms of classical Latin, it neutralizes vowel length distinctions)"; DotSpace;
-
       "By contrast, Italo-Western Proto-Romance (i.e., the common ancestor of all other languages in our sample) merges */ʊ/ and */o/ to /o/ (in terms of classical Latin, it merged short <u> and long <o>)"; DotSpace;
-
       "As a result, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; IPASegments.u; " against the " IPASegments.oh; " of, for instance, Italian "; textit{"bocca"}; DotSpace;
-
       "This correspondence is a key piece of evidence for the topological position of Romanian "; Cite {Janson1979.OnPage(25); Herman2000.OnPage(32..34)};
-
       " and if it is not sufficiently represented in the dataset it may not be possible to infer its place in the tree accurately"; DotSpace;
-
       "There is the further question of how representative the frequency distributions of segments, which are presented in " ; style.FigureReference(Figures.SegmentOccuranceRates); ", are in the languages in our sample"; DotSpace;
-
       "These distributions are based on sets of word-forms sampled according to specific criteria and it is unclear how much they diverge from the true frequency distribution of each language"; DotSpace;
-
       "This potential divergence is important because it can impact the estimates of the transition rates"; DotSpace;
-
     };
-
 
     style.AddFigure(Figures.SegmentOccuranceRates, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
   };
@@ -1878,9 +1818,9 @@ class PaperSegmentalSampling: Content {
 
 //======================================================================
 
-readonly PaperLimitations PaperSections.Limitations = new;
+readonly LimitationsSection PaperSections.Limitations = new;
 
-class PaperLimitations: Content {
+class LimitationsSection: Content {
   Constructor {
     super.Constructor("Limitations of the event-based model");
   }
@@ -1902,9 +1842,9 @@ class PaperLimitations: Content {
 
 //======================================================================
 
-readonly PaperAdvantages PaperSections.Advantages = new;
+readonly AdvantagesSection PaperSections.Advantages = new;
 
-class PaperAdvantages: Content {
+class AdvantagesSection: Content {
   Constructor {
     super.Constructor("Advantages of the event-based approach");
   }
@@ -1921,7 +1861,6 @@ class PaperAdvantages: Content {
     };
 
     style.AddFigure(Figures.AlignmentExample1, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
-
   };
 }
 
@@ -2030,9 +1969,9 @@ class WordCountTable: Content {
 
 //======================================================================
 
-readonly ModelInferenceClass PaperSections.ModelInference = new;
+readonly ModelInferenceSection PaperSections.ModelInference = new;
 
-class ModelInferenceClass: Content {
+class ModelInferenceSection: Content {
   Constructor {
     super.Constructor("Model and Statistical Inference");
   }
@@ -2091,11 +2030,11 @@ class ModelInferenceClass: Content {
 
 //======================================================================
 
-readonly ConceptEncodingClass Figures.ConceptEncoding = new(MainResults.Data, MainResults.Data.DataConcept);
+readonly ConceptEncodingFigure Figures.ConceptEncoding = new(MainResults.Data, MainResults.Data.DataConcept);
 
-class ConceptEncodingClass: Content {
+class ConceptEncodingFigure: Content {
   var ExperimentData      Data;
-  var ExampleConceptClass Concept;
+  var ExampleConcept Concept;
 
   Constructor(ExperimentData data, Attribute concept) {
     super.Constructor("Concept Encoding");
@@ -2117,9 +2056,9 @@ class ConceptEncodingClass: Content {
 
 //======================================================================
 
-readonly SegmentEncodingClass Figures.SegmentEncoding = new;
+readonly SegmentEncodingFigure Figures.SegmentEncoding = new;
 
-class SegmentEncodingClass: Content {
+class SegmentEncodingFigure: Content {
   Constructor {
     super.Constructor("Segment Encoding");
   }
@@ -2138,9 +2077,9 @@ class SegmentEncodingClass: Content {
 
 //======================================================================
 
-readonly ConclusionClass PaperSections.Conclusion = new;
+readonly ConclusionSection PaperSections.Conclusion = new;
 
-class ConclusionClass: Content {
+class ConclusionSection: Content {
   Constructor {
     super.Constructor("Conclusion");
   }
@@ -2168,9 +2107,9 @@ class ConclusionClass: Content {
 
 //======================================================================
 
-readonly AcknowledgementsClass PaperSections.Acknowledgements = new;
+readonly AcknowledgementsSection PaperSections.Acknowledgements = new;
 
-class AcknowledgementsClass: Content {
+class AcknowledgementsSection: Content {
   Constructor {
     super.Constructor("Acknowledgements");
   }
@@ -2190,9 +2129,9 @@ class AcknowledgementsClass: Content {
 
 //======================================================================
 
-readonly ContributionsClass PaperSections.Contributions = new;
+readonly ContributionsSection PaperSections.Contributions = new;
 
-class ContributionsClass: Content {
+class ContributionsSection: Content {
   Constructor {
     super.Constructor("Author contributions statement");
   }
@@ -2216,9 +2155,9 @@ class ContributionsClass: Content {
 
 //======================================================================
 
-readonly MethodsClass PaperSections.Methods = new;
+readonly MethodsSection PaperSections.Methods = new;
 
-class MethodsClass: Content {
+class MethodsSection: Content {
   const StateCount = 5;
 
   Constructor {
@@ -2228,7 +2167,7 @@ class MethodsClass: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     var data = MainResults.Data;
-    var ec   = new ExampleConceptClass(data, data.ExampleConcept);
+    var ec   = new ExampleConcept(data, data.ExampleConcept);
 
     style.TitlePar(title) {
       "We describe the assumptions of the models, how their parameters are estimated, and how different models of segmental evolution can be compared in a statistical framework.";
@@ -2854,7 +2793,7 @@ class MethodsClass: Content {
 
 //======================================================================
 
-SegmentTable(ExampleConceptClass example, ExperimentData data, aligned) = BodyTable([1", 14pt]) {
+SegmentTable(ExampleConcept example, ExperimentData data, aligned) = BodyTable([1", 14pt]) {
   var words = example.Cognate.Words;
   foreach (var taxon in data.Taxa) {
     Row {
@@ -2869,9 +2808,9 @@ SegmentTable(ExampleConceptClass example, ExperimentData data, aligned) = BodyTa
 
 //======================================================================
 
-readonly RateMatrixDiscussionClass PaperSections.RateMatrixDiscussion = new;
+readonly RateMatrixSection PaperSections.RateMatrixDiscussion = new;
 
-class RateMatrixDiscussionClass: Content {
+class RateMatrixSection: Content {
   Constructor {
     super.Constructor("Rate Matrix Discussion");
   }
