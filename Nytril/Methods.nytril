@@ -189,13 +189,13 @@ readonly SingleAlignmentFigure Figures.AlignmentExample1 = new(16, 4, "Flower");
 //======================================================================
 
 class ModelComparer {
-  var SymbolClass      Symbol;
+  var EquationSymbol   Symbol;
   var double           Posterior;
   var int              TotalCount;
   var RunResultsThread Run;
   var                  Name;
 
-  Constructor(RunResultsThread run, SymbolClass s, CognateId e, int maxcount) {
+  Constructor(RunResultsThread run, EquationSymbol s, CognateId e, int maxcount) {
     Symbol = s;
     Name   = s.Name;
     Run    = run;
@@ -2070,7 +2070,7 @@ class SegmentEncodingFigure: Content {
   override GetBody(ContentStyle style, title) = Paragraph {
     ParAlignment: Center;
     Frame {
-      IPASegments.VlAlveolarNSAffricate.Display(null, 20pt);
+      IPASegments.VlAlveolarNSAffricate.Display(20pt);
     }
   };
 }
@@ -2141,7 +2141,7 @@ class ContributionsSection: Content {
       if (style.IsAnonymous)
         DocLang.Anonymous;
       else {
-        style.ShowInitials(People.Goldstein_David) " collected data, ";
+        style.ShowInitials(People.Goldstein_David); " collected data, ";
         style.ShowInitials(People.Buchi_Éva); " reviewed it, ";
         style.ShowInitials(People.McCreight_Shawn); " developed the control software, and ";
         style.ShowInitials(People.Huelsenbeck_John); " developed the MCMC software. ";

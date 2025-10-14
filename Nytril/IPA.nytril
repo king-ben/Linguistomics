@@ -198,11 +198,9 @@ class Segment: Fact {
     }
   };
 
-  Display(location, size) = Block {
+  Display(size) = Block {
     ParAlignment: Center;
     Paragraph {
-      if (location is valid)
-        DocFields.Anchor(location);
       SpaceBefore: 8pt;
       SpaceAfter: 8pt;
       PaperStyle.IPAFamily;
@@ -222,7 +220,7 @@ class Segment: Fact {
   };
 
   ShowFrame(width, size, Border border=null) = Frame(width, null, border) {
-    Display(null, size);
+    Display(size);
   };
 
   override GetLayoutTip = ShowFrame(PaperStyle.SegmentWidth, PaperStyle.SegmentSize);
@@ -237,7 +235,7 @@ class Segment: Fact {
 
 //======================================================================
 
-class SegmentPart: Fact {
+class SegmentPart {
   field string          Ipa;
   field SegmentFeatures Features;
   var Segment           Segment;
@@ -249,7 +247,6 @@ class SegmentPart: Fact {
   var bool              Punctuation;
 
   Constructor(Segment s) {
-    super.Constructor(s.FactId);
     Segment        = s;
     PartitionIndex = 0;
     Index          = -1;
@@ -258,6 +255,7 @@ class SegmentPart: Fact {
     Punctuation    = s.Punctuation;
     Ipa            = s.Ipa;
     Features       = s.Features;
+//    Link.Connect(
   }
 
   void SetPartition(SegmentPartition p, index) {
@@ -281,8 +279,6 @@ class SegmentPart: Fact {
     };
     Segment.GetLayoutTip;
   };
-
-  override GetLayoutFact = Segment.GetLayoutFact;
 }
 
 SegmentPart IPAParts.Gap     = new(IPASegments.GapSegment);

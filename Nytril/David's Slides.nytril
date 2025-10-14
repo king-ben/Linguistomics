@@ -34,7 +34,6 @@ class DavidSlideShow: SlideShow {
     TextFamily: TextFamilies.LibertinusSerif;
     TextHeight: 9pt;
     LinkTypes.AuthorLink to Authors;
-    LinkTypes.Link to References;
   };
 }
 

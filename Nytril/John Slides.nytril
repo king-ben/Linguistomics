@@ -19,7 +19,6 @@ class JohnSlideShow: SlideShow {
     Style.SansSerif;
     TextHeight: 16pt;
     LinkTypes.AuthorLink to Authors;
-    LinkTypes.Link to References;
   };
 
   override void CreateSlides {

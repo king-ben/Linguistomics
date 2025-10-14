@@ -319,8 +319,8 @@ class CognateWord: Fact {
                      Padded;
   var                Variable;
 
-  Constructor(id, text, Taxon taxon, Cognate cognate) {
-    super.Constructor(Guid.FromHash(id));
+  Constructor(Guid id, text, Taxon taxon, Cognate cognate) {
+    super.Constructor(id);
     Text     = text;
     Taxon    = taxon;
     Language = taxon.Language;
@@ -364,7 +364,6 @@ class CognateWord: Fact {
   }
 
   void Connect {
-    Link.Connect(this, Segments);
     Link.Connect(this, (each Segments).Segment);
     Link.Connect(this, Cognate);
     Link.Connect(this, Language);
@@ -829,7 +828,7 @@ class ExperimentData {
     }
     Taxa     = tlist.ToArray;
     WordList = new(Taxa.Length, null);
-    DefWord  = new CognateWord(#71f32657-a37c-4f1d-abba-87b928e9d80b#, Empty, Taxa[0], null);
+    DefWord  = new(#71f32657-a37c-4f1d-abba-87b928e9d80b#, Empty, Taxa[0], null);
     DefWord.Init;
   }
 
@@ -877,7 +876,7 @@ class ExperimentData {
       var text  = tvar.Value;
       var taxon = TaxonSet.GetValue(tvar.Name);
       if (taxon is valid) {
-        var word = new CognateWord(text+cognate.Concept.Name+cognate.Name+taxon.ShortName, text, taxon, cognate);
+        var word = new CognateWord(Guid.FromHash(text+cognate.Concept.Name+cognate.Name+taxon.ShortName), text, taxon, cognate);
         word.InitRaw(text, lookup);
         maxlength = Math.Max(maxlength, word.Aligned.Length);
 
@@ -963,7 +962,7 @@ class ExperimentData {
 
 
           var text = Span {TextBuffer.ToArray} as string;
-          var w    = new CognateWord(text+cognate.Concept.Name+cognate.Name+taxon.ShortName, text, taxon, cognate);
+          var w    = new CognateWord(Guid.FromHash(text+cognate.Concept.Name+cognate.Name+taxon.ShortName), text, taxon, cognate);
           w.InitExperiment(word, SegmentBuffer.ToArray);
           if (w.Aligned.Length > maxlength)
             maxlength = w.Aligned.Length;

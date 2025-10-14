@@ -585,17 +585,17 @@ class SegmentDisplay {
     };
   };
 
-  SegmentCell(SegmentPart segment) = Cell(new Edge(0.25pt, 2pt, Colors.LightGray)) {
-    segment.Segment.Display(segment.FactId, 16pt);
-  };
-
   IPASegmentTable = Block {
     var c = PaperStyle.SegmentColumns;
 
     Table(null, null, [ExtentWidth / c]) {
-      foreach (var s in (SortedSegments / c)) {
+      foreach (var segments in (SortedSegments / c)) {
         Row {
-          SegmentCell(each s);
+          foreach (var s in segments) {
+            Cell(new Edge(0.25pt, 2pt, Colors.LightGray)) {
+              s.Segment.Display(16pt);
+            };
+          }
         }
       }
     };
