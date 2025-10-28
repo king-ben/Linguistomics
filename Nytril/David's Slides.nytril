@@ -1,4 +1,4 @@
-using Format, Defs, Equations, PaperStyle;
+using Format, EquationSymbols, PaperStyle;
 
 //======================================================================
 
@@ -422,23 +422,23 @@ namespace DavidSlides.Methods {
 
     Items.Item2.Text = Span {
       "Insertions occur at rate ";
-      Defs.InsertionRate;
+      InsertionRate;
     };
 
     Items.Item3.Text = Span {
       "Deletions occur at rate ";
-      Defs.DeletionRate;
+      DeletionRate;
     };
 
     Items.Item4.Text = Span {
       "If ";
-      Defs.InsertionRate; Tex.gt; Defs.DeletionRate;
+      InsertionRate; Tex.gt; DeletionRate;
       ", the sequence length would expand without bounds!";
     };
 
     Items.Item5.Text = Span {
       "Thorne et al. 1991"; Cite {References.Thorne1991}; " force ";
-      Defs.InsertionRate; Tex.lt; Defs.DeletionRate;
+      InsertionRate; Tex.lt; DeletionRate;
       ", which means that words should ultimately shrink to zero length";
     };
 
@@ -448,7 +448,7 @@ namespace DavidSlides.Methods {
 
     Items.Item7.Text = Span {
       "The sequence length is a geometrically distributed random variable with parameter "
-      Defs.InsertionRate; Tex.Divide; Defs.DeletionRate;
+      InsertionRate; Tex.Divide; DeletionRate;
     };
 
     Items.Item8.Text = Span {
@@ -492,38 +492,36 @@ namespace DavidSlides.Methods {
     Title = "Priors on model parameters";
 
     Items.Item1.Text = Span {
-      Defs.Topology; " ~ Uniform";
+      Topology; " ~ Uniform";
     };
 
     Items.Item2.Text = Span {
       EllipsisList {
-        Defs.ExpectedEvents sub 1;
-        Defs.ExpectedEvents sub 2;
-        Defs.ExpectedEvents sub "2n-3";
+        ExpectedEvents sub 1;
+        ExpectedEvents sub 2;
+        ExpectedEvents sub "2n-3";
       };
       " ~ i.i.d. Exponential(α)";
     };
 
     Items.Item3.Text = Span {
       EllipsisList {
-        Defs.EquilibriumDistribution sub 0;
-        Defs.EquilibriumDistribution sub 1;
-        Defs.EquilibriumDistribution sub "s - 1";
+        EquilibriumDistribution sub 0;
+        EquilibriumDistribution sub 1;
+        EquilibriumDistribution sub "s - 1";
       };
       " ~ Dirichlet(1, 1, … , 1)";
     };
 
     Items.Item4.Text = Span {
-      Defs.InsertionRate; CommaSpace; Defs.DeletionRate;
+      InsertionRate; CommaSpace; DeletionRate;
       " ~ i.i.d. Exponentials with ";
-      Defs.InsertionRate; Tex.lt; Defs.DeletionRate;
+      InsertionRate; Tex.lt; DeletionRate;
     };
 
     Items.Item5.Text = Span {
       EllipsisList {
-        Defs.DirichletRate sub 1;
-        Defs.DirichletRate sub 2;
-        Defs.DirichletRate sub 3;
+        DirichletRate sub (each [1, 2, 3]);
       };
       " ~ Dirichlet(1, 1, … , 1)"
     };
@@ -550,7 +548,7 @@ namespace DavidSlides.Methods {
 
     Items.Item2.Text = Span {
       "GTR ";
-      Defs.EquilibriumDistribution sub sym.i;
+      EquilibriumDistribution sub sym.i;
       " for ";
       sym.i;
       " states";
@@ -574,7 +572,7 @@ namespace DavidSlides.Methods {
       " to ";
       sym.j;
       ColonSpace;
-      Defs.EquilibriumDistribution sub sym.i;
+      EquilibriumDistribution sub sym.i;
       Tex.cdot;
       qij;
     };
@@ -585,7 +583,7 @@ namespace DavidSlides.Methods {
       Tex.Equals;
       sym.r sub sym.ij;
       Tex.cdot;
-      Defs.EquilibriumDistribution sub sym.j;
+      EquilibriumDistribution sub sym.j;
     };
 
     Items.Item8.Text = Span {

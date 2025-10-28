@@ -1,4 +1,4 @@
-using Format, Defs, Equations, WorldLanguages, References, PaperStyle;
+using Format, EquationSymbols, Equations, WorldLanguages, References, PaperStyle;
 
 //======================================================================
 
@@ -393,7 +393,7 @@ class NaturalClassRateChart: Content {
 
   override GetCaption(ContentStyle style) = Span {
     "The average rates of change between and within the ten segment groups of the "; NaturalModelName; DotSpace;
-    "Circle area is proportional to the rate of change between groups ("; Defs.qij; "). ";
+    "Circle area is proportional to the rate of change between groups ("; qij; "). ";
     "Shaded area represents the 95% credible interval. ";
   };
 
@@ -493,7 +493,7 @@ class EquilibriumFrequencyChart: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "The equilibrium frequencies "; Defs.EquilibriumDistribution; " of each natural class";
+    "The equilibrium frequencies "; EquilibriumDistribution; " of each natural class";
   };
 
   override GetBody(ContentStyle style, title) = Chart(100%, 3") {
@@ -503,7 +503,7 @@ class EquilibriumFrequencyChart: Content {
 
     ValueLabel: Span {
       TextHeight: 20pt;
-      Defs.EquilibriumDistribution;
+      EquilibriumDistribution;
     };
 
     var partitions = MainResults.Data.Rule.Partitions.Reverse;
@@ -554,9 +554,9 @@ class GapFrequencyChart: Content {
        GapInfo.TestStatistic;
      };
      "; ";
-     EqSpan {Defs.DegreesFreedom; Tex.Equals; 16};
+     EqSpan {DegreesFreedom; Tex.Equals; 16};
      CommaSpace;
-     EqSpan {Defs.PValue; Tex.lt; 0.001};
+     EqSpan {PValue; Tex.lt; 0.001};
      ".)";
   };
 
@@ -615,7 +615,7 @@ readonly QRatesMatrixFigure Figures.QRatesMatrix = new;
 
 class QRatesMatrixFigure: Content {
   Constructor {
-    super.Constructor("Rate Matrix " Defs.RateMatrix);
+    super.Constructor("Rate Matrix " RateMatrix);
   }
 
   override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
@@ -631,7 +631,7 @@ class QRatesDiagonalFigure: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "The rate of change when in a particular segmental state (or "; -Defs.qii; ")"
+    "The rate of change when in a particular segmental state (or "; -qii; ")"
   };
 
   override GetBody(ContentStyle style, title) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
@@ -1398,7 +1398,7 @@ class SegmentModelsFigure: Content {
       "We consider three models of segmental change in this study: ";
       PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
       Cite {Jukes1969};
-      " with equal rates between all pairs of states and in which the number of substitutions follows a Poisson distribution (hereafter referred to as the "; style.SQuote{Defs.PoissonModel.Name}; " model); ";
+      " with equal rates between all pairs of states and in which the number of substitutions follows a Poisson distribution (hereafter referred to as the "; style.SQuote{PoissonModel.Name}; " model); ";
       UnequalModel; ", a model isomorphic to the model of DNA sequence evolution first described by Felsenstein";
       Cite {Felsenstein1981};
       " in which the rate of change between a pair of segments is proportional to the equilibrium frequency of the destination segment; ";
@@ -2380,7 +2380,7 @@ class MethodsSection: Content {
         }
       };
       ", where ";
-      Defs.Segment sub sym.i;
+      Segment sub sym.i;
       " is the segmental string for the ";
       Ith;
       " language. ";

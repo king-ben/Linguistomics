@@ -31,7 +31,7 @@ readonly ContentStyle     MainContentStyle  = new JOLEStyle;
 readonly ContentStyle     SlideContentStyle = new OtherStyle;
 readonly LinguisticsPaper MainPaper         = new;
 readonly RealmSite        Main.Site         = new LinguistomicsSite;
-readonly                  Main.Facts        = WorldLanguages;
+readonly                  Main.Facts        = [Equations, WorldLanguages];
 
 readonly namespace Main.Documents {
   HomePage            HomePage          = new;

@@ -1,4 +1,4 @@
-using Format, Defs, PaperStyle, Tex;
+using Format, EquationSymbols, PaperStyle, Tex;
 //======================================================================
 
 double BranchFormula(n) {
@@ -77,11 +77,6 @@ readonly ProbALL = Prob(CommaList {
 readonly ParamRow = Row {
   Separator: Empty;
 };
-
-readonly PPO = Prob("Parameter(s) | Observations");
-readonly POP = Prob("Observations | Parameter(s)");
-readonly PP  = Prob("Parameter(s)");
-readonly PO  = Prob("Observations");
 
 //======================================================================
 
@@ -169,7 +164,7 @@ Condition(EquationSymbol x, y) = Span {
 
 //======================================================================
 
-readonly namespace<EquationSymbol> Defs {
+readonly namespace<EquationSymbol> EquationSymbols {
   GMLength                = new(#c10d64bd-0831-4105-aa42-2e94e3dd9316#, Italic "GM(L)", "Geomretric mean of word lengths", "The geometric mean of the length of the words in the alignment, excluding gaps");
   Phylogeny               = new(#307ce909-f048-4a73-bc64-45f876fc661a#, Psi , "Phylogeny", "The (possibly unknown) relationship between entities resulting from an evolutionary tree");
   Topology                = new(#8e8c02ac-3f24-4ae2-837d-7c807b313956#, tau, "Tree topology", "Information on the relationships of the languages");
@@ -221,6 +216,10 @@ readonly namespace<EquationSymbol> Defs {
   qii                     = new(#cb0fbe81-c587-43d8-a4fb-f355d5a5d9b5#, sym.q sub sym.ii, ("i,i" sup "th") " element of the rate matrix " RateMatrix, Empty);
   PValue                  = new(#8361fbec-7ffc-4eaf-a879-22ee8e8e250c#, Symbol("p"), "P-Value");
   DegreesFreedom          = new(#57314aa7-d5fc-49d7-9c9e-7a81875a5811#, Symbol("d.f."), "The degrees of freedom of a test statistic");
+  PPO                     = new(#bcb248d5-512f-48c9-af26-205ecf321256#, Prob("Parameter(s) | Observations"), "Conditional probability of Parameter(s) ocurring given that Observations occur");
+  POP                     = new(#e32d9d5b-ada6-4245-9913-2894cce42cfb#, Prob("Observations | Parameter(s)"), "Conditional probability of Observations ocurring given that Parameter(s) occur");
+  PP                      = new(#3163f384-448e-430d-aa72-67b2acde3a19#, Prob("Parameter(s)"), "Probability of this parameter");
+  PO                      = new(#170d3334-a3b4-4550-b327-7f476fe912cc#, Prob("Observations"), "Probability of an observation");
 }
 
 //======================================================================
@@ -233,18 +232,21 @@ readonly namespace<Equation> Equations {
         2 sup NumTreeLeaves; GMLength sup NumTreeLeaves;
       };
     };
+    EquationLink to [FunctionO, NumTreeLeaves];
   };
 
   OverallInsertionRate = new(#0a2b44d5-3187-4315-ae87-fca61377eafd#, "Insertion Rate") {
     Formula: Span {
       InsertionRate; SpanParens {WordLength; Plus; 1};
     };
+    EquationLink to [InsertionRate, WordLength];
   };
 
   TypicalWordLength = new(#84ed78e5-a235-462d-9e7c-7d6bfbfc498a#, "Typical word length") {
     Formula: Span {
       1; leq; WordLength; leq; 10;
     };
+    EquationLink to [WordLength];
   };
 
   UnknownTree = new(#c070ccfe-ee29-41be-9064-6dc6ccaa5995#, "Unknown Tree") {
@@ -256,6 +258,8 @@ readonly namespace<Equation> Equations {
          ExpectedEvents;
        }
     };
+    DefinitionLink to Phylogeny;
+    EquationLink to [Topology, ExpectedEvents];
   };
 
   LiklihoodFunction = new(#4a58876a-8295-4ea2-830a-bc1f39cd1634#, "Liklihood Function") {
@@ -268,6 +272,7 @@ readonly namespace<Equation> Equations {
         RateMatrixParams;
       };
     };
+    EquationLink to [SegmentalInfo, Phylogeny, InsertionRate, DeletionRate, RateMatrixParams];
   };
 
   MarginalLiklihood = new(#311eaf7f-7d9e-4569-868f-eda0cc0ac959#, "Marginal Liklihood") {
@@ -277,6 +282,7 @@ readonly namespace<Equation> Equations {
         SegmentalInfo;
       };
     };
+    EquationLink to [SegmentalInfo];
   };
 
   MarginalLiklihoodI = new(#56fc4857-f5a4-46cc-b06d-201d94366163#, "Marginal Liklihood for model i") {
@@ -286,6 +292,7 @@ readonly namespace<Equation> Equations {
         Condition(SegmentalInfo, ModelI);
       };
     };
+    EquationLink to [SegmentalInfo, ModelI];
   };
 
   MarginalLiklihoodJ = new(#8dd2838c-3cfa-4c04-8c74-d91f8407f0b4#, "Marginal Liklihood for model j") {
@@ -295,6 +302,7 @@ readonly namespace<Equation> Equations {
         Condition(SegmentalInfo, ModelJ);
       };
     };
+    EquationLink to [SegmentalInfo, ModelJ];
   };
 
   BayesFactorEq = new(#ae8721e4-ab4e-4dd0-922f-6cd0de12fa46#, "Bayes Factor comparing models i and j") {
@@ -306,6 +314,8 @@ readonly namespace<Equation> Equations {
         MarginalLiklihoodJ;
       };
     };
+    DefinitionLink to BayesFactor;
+    EquationLink to [SegmentalInfo, ModelI, ModelJ];
   };
 
   BayesianEstimation = new(#a6660b63-6222-4967-93f4-589f47b986ce#, "Bayesian Estimation") {
@@ -333,6 +343,7 @@ readonly namespace<Equation> Equations {
         MarginalLiklihood;
       };
     };
+    EquationLink to [Phylogeny, InsertionRate, DeletionRate, RateMatrixParams, SegmentalInfo];
   };
 
   ExpectedEventsPerBranch = new(#64e8f644-cd4b-45f6-ba4a-8c947a356458#, "Expected Events per Branch") {
@@ -347,6 +358,8 @@ readonly namespace<Equation> Equations {
       times;
       SubstitutionRate sub sym.i;
     };
+    DefinitionLink to ExpectedEvents;
+    EquationLink to [SubstitutionRate, Time];
   };
 
   PossibleTrees = new(#38134545-1719-4b8b-9af4-cb18eab9d09e#, "Possible Rooted Trees") {
@@ -360,6 +373,7 @@ readonly namespace<Equation> Equations {
         1; 3; MaxBranch;
       };
     };
+    DefinitionLink to BN;
   };
 
   OffDiagonalComponents = new(#d9a505a2-118d-4ec9-add8-0374707c9932#, "Off-diagonal Components") {
@@ -372,6 +386,8 @@ readonly namespace<Equation> Equations {
         qij;
       }
     };
+    DefinitionLink to qii;
+    EquationLink to [qij];
   };
 
   AverageRateElement = new(#30d89e17-902a-459d-b9fa-afb5d1db44b2#, "Average Rate Matrix Element") {
@@ -381,6 +397,8 @@ readonly namespace<Equation> Equations {
       Probability sub sym.i;
       qij;
     };
+    DefinitionLink to mij;
+    EquationLink to [Probability, qij];
   };
 
   InDelDistribution = new(#db4b99ec-6725-4b11-b873-f8ab6698ac16#, "Indel Distribution") {
@@ -390,7 +408,7 @@ readonly namespace<Equation> Equations {
       Negative;
       Summation {
         Lower: sym.i;
-        SpanParens {Defs.WordLengthi; qii}
+        SpanParens {WordLengthi; qii}
       };
       Plus;
       WordLength;
@@ -399,6 +417,8 @@ readonly namespace<Equation> Equations {
       SpanParens {WordLength; Minus; 1};
       SubstitutionRate;
     };
+    DefinitionLink to RateParameter;
+    EquationLink to [WordLength, InsertionRate, SubstitutionRate];
   };
 
   InDelProbability = new(#01728f12-67b4-4bd0-ab13-e4124d4ac7ae#, "In-Del Probability") {
@@ -406,11 +426,12 @@ readonly namespace<Equation> Equations {
       Negative;
       Summation {
         Lower: sym.i;
-        SpanParens {Defs.WordLengthi; qii};
+        SpanParens {WordLengthi; qii};
       };
       Divide;
       RateParameter;
     };
+    EquationLink to [RateParameter];
   };
 
   ProbOfAcceptingProposal = new(#f85ca0eb-aa0b-49ac-a97c-58f95f15b181#, "Probability of accepting the proposed value") {
@@ -443,6 +464,8 @@ readonly namespace<Equation> Equations {
         };
       };
     };
+    DefinitionLink to ProbOfAccepting;
+    EquationLink to [NewValueProposal, Unknown, RateMatrixParams];
   };
 
   ModelComparison = new(#99c4daca-c075-42c3-beb8-d89b4148d9a4#, "Model Comparison") {
@@ -454,6 +477,7 @@ readonly namespace<Equation> Equations {
         PSM(2);
       }
     };
+    EquationLink to [BayesFactor];
   };
 
   MarginalLikelihoodParameters = new(#a25bcd04-7841-4a0d-9859-acf4ea460c71#, "Marginal Likelihood") {
@@ -473,6 +497,7 @@ readonly namespace<Equation> Equations {
         FD(DeletionRate);
       };
     };
+    EquationLink to [SegmentalInfo, Topology, ExpectedEvents, RateMatrixParams, InsertionRate, DeletionRate];
   };
 
   MarginalizationOverAlignments = new(#666bdb91-49be-408a-af3e-fe7ca5c7aebb#, "Marginalization Over Alignments") {
@@ -486,6 +511,7 @@ readonly namespace<Equation> Equations {
         Prob(HomologyMap);
       };
     };
+    EquationLink to [SegmentalInfo, HomologyMap, SegmentalInfo];
   };
 
   PosteriorProbabilityDistribution = new(#5294924e-b618-4073-adf4-bf782cc45e65#, "Posterior Probability Distribution") {
@@ -507,6 +533,7 @@ readonly namespace<Equation> Equations {
         Prob(SegmentalInfo);
       }
     };
+    EquationLink to [Topology, ExpectedEvents, RateMatrixParams, DeletionRate, SegmentalInfo];
   };
 
   GTR4 = new(#c593d288-f338-484d-9fca-b7d93e3c55be#, "4-State GTR Model") {
@@ -526,14 +553,15 @@ readonly namespace<Equation> Equations {
               if (s1 == s2)
                 '–';
               else Span {
-                Defs.RateParameter sub (s1.Compare(s2) < 0 ? Span {s1; s2} : Span{s2; s1});
-                Defs.EquilibriumDistribution sub s2;
+                RateParameter sub (s1.Compare(s2) < 0 ? Span {s1; s2} : Span{s2; s1});
+                EquilibriumDistribution sub s2;
               };
             }
           }
         }
-     };
+      };
     };
+    DefinitionLink to RateMatrix;
   };
 
   BayesTheorem = new(#7a57afd3-1293-4a75-8518-9ce32bbe9fa8#, "Bayes’ Theorem") {
@@ -549,6 +577,7 @@ readonly namespace<Equation> Equations {
         PO;
       }
     };
+    EquationLink to [POP, PP, PO];
   };
 
   RateChange = new(#f7a964f6-414b-4e40-9d31-e63eadf32f8f#, "Rate change") {
@@ -563,6 +592,7 @@ readonly namespace<Equation> Equations {
         sym.j;
       }
     };
+    EquationLink to [qij];
   };
 
   RatesOfChangeBetweenStates = new(#a7b02873-4fe5-47b8-9e3f-b594aef21fc3#, "Rates of change between all pairs of states") {
@@ -575,6 +605,8 @@ readonly namespace<Equation> Equations {
       Space;
       RateMatrixScale;
     };
+    DefinitionLink to RateMatrix;
+    EquationLink to [qij, RateMatrixScale];
   };
 
   DiagonalElements = new(#49b4a095-118d-4bbe-9fe3-80a5e13ddf28#, "The diagonal elements of the rate matrix") {
@@ -587,6 +619,8 @@ readonly namespace<Equation> Equations {
         qij;
       }
     };
+    DefinitionLink to qii;
+    EquationLink to [qij];
   };
 
   ExponentiationOfRateMatrix = new(#05e99790-f121-4640-86a9-3a818e4a6b6e#, "Exponentiation of the rate matrix") {
@@ -595,7 +629,8 @@ readonly namespace<Equation> Equations {
       SpanParens {ExpectedEvents};
       Equals;
       EulerNumber sup (Span {RateMatrix; ExpectedEvents});
-    }
+    };
+    EquationLink to [StateProbability, ExpectedEvents, RateMatrix];
   };
 
   RateMatrixSolution = new(#7c820a26-5656-499b-93ea-047ad3513826#, "Rate matrix solution") {
@@ -605,6 +640,7 @@ readonly namespace<Equation> Equations {
       Equals;
       Bold 0;
     };
+    EquationLink to [EquilibriumDistribution, RateMatrix];
   };
 
   EventInsertionProbability = new(#d2cd0ffe-34e5-4fab-a160-a03131651bca#, "Event insertion probability") {
@@ -614,6 +650,7 @@ readonly namespace<Equation> Equations {
       Divide;
       RateParameter;
     };
+    EquationLink to [WordLength, InsertionRate, RateParameter];
   };
 
   EventDeletionProbability = new(#6b805317-a4b0-4f59-919c-0c2e21cc6bcd#, "Event deletion probability") {
@@ -627,6 +664,7 @@ readonly namespace<Equation> Equations {
       Divide;
       RateParameter;
     };
+    EquationLink to [WordLength, DeletionRate, RateParameter];
   };
 }
 
