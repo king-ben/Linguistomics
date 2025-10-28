@@ -89,7 +89,7 @@ readonly namespace<Person> People {
   Fan_Yu                 = new(#6a602d02-d43c-4474-89df-62b036dcf66d#, "Yu", null, "Fan");
   Farren_Robert          = new(#2ec77596-f9e7-4d7d-952f-e0c8b7d6cd94#, "Robert", null, "Farren");
   Felsenstein_Joseph     = new(#958dda15-d153-41a9-9021-0aa698ce4bdc#, "Joseph", null, "Felsenstein");
-  Finley_Greg            =new(#755b6764-4fcb-402a-ace4-ec0df0563ef5#, "Greg", null, "Finley");
+  Finley_Greg            = new(#755b6764-4fcb-402a-ace4-ec0df0563ef5#, "Greg", null, "Finley");
   Freiberg_Cassandra     = new(#cd5e9fc8-6794-4011-8ed7-37d58ae95a0f#, "Cassandra", null, "Freiberg");
 
   Garrett_Andrew         = new(#fc06716c-bf41-4623-b44d-3ee49fe81650#, "Andrew", "J.", "Garrett");
@@ -101,7 +101,7 @@ readonly namespace<Person> People {
     WebsiteLink to new URL("linguistics.ucla.edu/person/david-goldstein");
     WorkEmailLink to new Email("dgoldstein@humnet.ucla.edu");
   };
-  Granville_Daniel      = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
+  Granville_Daniel       = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
   Gray_Russell           = new(#d85e29f9-d606-47cc-ad09-4769a12ff1ab#, "Russell", "D.", "Gray");
   Greenhill_Simon        = new(#2b084456-74a8-4555-ad59-3c18c1740784#, "Simon", "J.", "Greenhill");
   Griffiths_Thomas       = new(#e7f67e70-f78b-4076-8269-7a45d624d091#, "Thomas", "L.", "Griffiths");

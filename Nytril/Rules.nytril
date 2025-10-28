@@ -2,17 +2,17 @@ using Format, SegmentFeatures, LinkTypes;
 //======================================================================
 
 class SegmentPartition: Fact {
-  field string       Name;
-  var string         PluralName;
+  field string      Name;
+  var string        PluralName;
   var SegmentPart[] Segments;
-  var Point          Center;
-  var Color          BackColor,
-                     TextColor;
-  var                Marker,
-                     Index,
-                     Radius,
-                     Angle,
-                     Outer;
+  var Point         Center;
+  var Color         BackColor,
+                    TextColor;
+  var               Marker,
+                    Index,
+                    Radius,
+                    Angle,
+                    Outer;
 
   Constructor(index, name, plural, SegmentPart[] segments) {
     super.Constructor(Guid.FromHash(name));
@@ -76,8 +76,8 @@ class PartitionInfo {
 //======================================================================
 
 class PartitionFilter {
-  field string      Name;
-  var string        PluralName;
+  var string        Name,
+                    PluralName;
   var PartitionRule Rule;
 
   Constructor(PartitionRule rule, name, plural) {
