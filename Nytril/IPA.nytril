@@ -102,10 +102,10 @@ flags SegmentFeatures {
 
 //======================================================================
 
-typedef SegmentSet   HashSet<SegmentPart>;
+typedef SegmentSet        HashSet<SegmentPart>;
 typedef SegPartDictionary StringDictionary<SegmentPart>;
 
-class Segment: Fact {
+class VocalSegment: Fact {
   field string          Ipa;
   field SegmentFeatures Features;
   var Opens             Open;
@@ -238,7 +238,7 @@ class Segment: Fact {
 class SegmentPart {
   var string           Ipa;
   var SegmentFeatures  Features;
-  var Segment          Segment;
+  var VocalSegment     Segment;
   var SegmentPartition Partition;
   var int              PartitionIndex,
                        Index,
@@ -246,7 +246,7 @@ class SegmentPart {
   var double           UsedFrequency;
   var bool             Punctuation;
 
-  Constructor(Segment s) {
+  Constructor(VocalSegment s) {
     Segment        = s;
     PartitionIndex = 0;
     Index          = -1;
@@ -255,7 +255,6 @@ class SegmentPart {
     Punctuation    = s.Punctuation;
     Ipa            = s.Ipa;
     Features       = s.Features;
-//    Link.Connect(
   }
 
   void SetPartition(SegmentPartition p, index) {
@@ -281,12 +280,12 @@ class SegmentPart {
   };
 }
 
-SegmentPart IPAParts.Gap     = new(IPASegments.GapSegment);
-SegmentPart IPAParts.Missing = new(IPASegments.MissingSegment);
+SegmentPart IPAParts.Gap     = new(VocalSegments.GapSegment);
+SegmentPart IPAParts.Missing = new(VocalSegments.MissingSegment);
 
 //======================================================================
 
-class SegmentPunctuation: Segment {
+class SegmentPunctuation: VocalSegment {
   Constructor(ipa, sampa=null, bool gap=false) {
     super.Constructor(ipa, sampa);
     Punctuation = true;
@@ -296,7 +295,7 @@ class SegmentPunctuation: Segment {
 
 //======================================================================
 
-class SegmentImpossible: Segment {
+class SegmentImpossible: VocalSegment {
   Constructor(features, place) {
     super.Constructor(Empty, null);
     Features   = features;
@@ -307,7 +306,7 @@ class SegmentImpossible: Segment {
 
 //======================================================================
 
-class Diacritic: Segment {
+class Diacritic: VocalSegment {
   Constructor(description, ipa, sampa=null) {
     super.Constructor(ipa, sampa);
     Diacritic   = true;
@@ -317,7 +316,7 @@ class Diacritic: Segment {
 
 //======================================================================
 
-class SegmentConsonant: Segment {
+class SegmentConsonant: VocalSegment {
   Constructor(ipa, features, place, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features;
@@ -327,7 +326,7 @@ class SegmentConsonant: Segment {
 
 //======================================================================
 
-class SegmentVowel: Segment {
+class SegmentVowel: VocalSegment {
   Constructor(ipa, features, open, backness, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features | Vowel;
@@ -475,7 +474,7 @@ readonly namespace<Diacritic> DiacriticModifiers {
 
 //======================================================================
 
-readonly Segment IPA.NullSegment = new(Tex.bigotimes, "!?", true);
+readonly VocalSegment IPA.NullSegment = new(Tex.bigotimes, "!?", true);
 
 //======================================================================
 

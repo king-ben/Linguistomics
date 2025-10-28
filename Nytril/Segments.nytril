@@ -1,9 +1,9 @@
 using SegmentFeatures;
 //======================================================================
 
-readonly namespace<Segment> IPASegments {}
+readonly namespace<VocalSegment> VocalSegments {}
 
-readonly namespace<SegmentPunctuation> IPASegments {
+readonly namespace<SegmentPunctuation> VocalSegments {
   GapSegment       = new("-", null, true);
   MissingSegment   = new("?", null, true);
   SylableBreak     = new(".");
@@ -16,7 +16,7 @@ readonly namespace<SegmentPunctuation> IPASegments {
 // Consonants
 //==================================
 
-readonly namespace<SegmentConsonant> IPASegments {
+readonly namespace<SegmentConsonant> VocalSegments {
   VlBilabialNasal              = new("m̥", Pulmonic Nasal, Places.Bilabial, "m_0");
   m                            = new("m", Voiced Pulmonic Nasal Occlusive, Places.Bilabial, "m");
   VdLabioDentalNasal           = new("ɱ", Voiced Pulmonic Nasal Occlusive Labial Dental, Places.LabioDental, "F");
@@ -254,7 +254,7 @@ readonly namespace<SegmentConsonant> IPASegments {
 // Vowels
 //==================================
 
-readonly namespace<SegmentVowel> IPASegments {
+readonly namespace<SegmentVowel> VocalSegments {
   NearFrontUnrounded        = new("æ", NoFeature, Opens.NearOpen, Backnesses.NearFront, "{");
   FrontOpenRounded          = new("ɶ", Rounded, Opens.NearOpen, Backnesses.NearFront, "&");
   uuh                       = new("œ", Rounded Vocoid Continuant, Opens.OpenMid, Backnesses.NearFront, "9");

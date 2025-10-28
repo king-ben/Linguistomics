@@ -24,7 +24,7 @@ class WordsSearchAction: Action {
   override GetQuery {
     if (Data.WordsContaining is valid) {
       return MatchAny(CognateWord) {
-        MatchAny(Segment) {
+        MatchAny(VocalSegment) {
           Ipa: Data.WordsContaining;
         };
       };
@@ -89,7 +89,7 @@ class DiagnosticsDocument: DocumentEntry {
 
     Content[] content = [
       new PriorTreeFigure(Data),
-      new AppendixContent(Lang.UniqueSegments, Display.IPASegmentTable),
+      new AppendixContent(Lang.UniqueSegments, Display.VocalSegmentTable),
       new SegmentAssignmentsFigure(Data),
       new SegmentTransitionFigure(Data),
       new AppendixContent("Words containing each segment", Display.ShowWordsForEachSegment),

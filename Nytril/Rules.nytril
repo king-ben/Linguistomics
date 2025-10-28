@@ -86,7 +86,7 @@ class PartitionFilter {
     PluralName = plural ?? name;
   }
 
-  virtual bool Matches(Segment segment) = true;
+  virtual bool Matches(VocalSegment segment) = true;
 
   override GetLayoutSpan = Span {
     TipAction: this;
@@ -129,7 +129,7 @@ abstract class PartitionRule {
     Segments   = segments.ToSortedArray(true, @ComparePartSegments);
   }
 
-  bool MatchesRule(PartitionFilter filter, Segment segment) {
+  bool MatchesRule(PartitionFilter filter, VocalSegment segment) {
     foreach (var f in FiltersPlus) {
       if (f == filter)
         return f.Matches(segment);
@@ -139,7 +139,7 @@ abstract class PartitionRule {
     return false;
   }
 
-  virtual int GetFilterIndex(Segment segment) {
+  virtual int GetFilterIndex(VocalSegment segment) {
     var c = 0;
     foreach (var filter in FiltersPlus) {
       if (MatchesRule(filter, segment))
@@ -282,14 +282,14 @@ abstract class PartitionRule {
 //======================================================================
 
 class SingleFilter: PartitionFilter {
-  var Segment Segment;
+  var VocalSegment Segment;
 
-  Constructor(PartitionRule rule, Segment segment) {
+  Constructor(PartitionRule rule, VocalSegment segment) {
     super.Constructor(rule, segment.Ipa, null);
     Segment = segment;
   }
 
-  override bool Matches(Segment segment) = segment == Segment;
+  override bool Matches(VocalSegment segment) = segment == Segment;
 }
 
 //======================================================================
@@ -305,30 +305,30 @@ class FeatureMask: PartitionFilter {
     rule.FilterList.Add(this);
   }
 
-  override bool Matches(Segment segment) = segment.Features.HasFlagMask(Mask, Flags);
+  override bool Matches(VocalSegment segment) = segment.Features.HasFlagMask(Mask, Flags);
 }
 
 //======================================================================
 
 class SegmentList: PartitionFilter {
-  var Segment[] List;
+  var VocalSegment[] List;
 
-  Constructor(PartitionRule rule, name, plural, Segment[] list) {
+  Constructor(PartitionRule rule, name, plural, VocalSegment[] list) {
     super.Constructor(rule, name, plural);
     List = list;
   }
 
-  override bool Matches(Segment segment) = List.FindElementIndex(segment) >= 0;
+  override bool Matches(VocalSegment segment) = List.FindElementIndex(segment) >= 0;
 }
 
 //======================================================================
 
 class VowelList: SegmentList {
-  Constructor(PartitionRule rule, Segment[] list) {
+  Constructor(PartitionRule rule, VocalSegment[] list) {
     super.Constructor(rule, list.FirstElement.Ipa, null, list);
   }
 
-  override bool Matches(Segment segment) = List.FindElementIndex(segment) >= 0;
+  override bool Matches(VocalSegment segment) = List.FindElementIndex(segment) >= 0;
 }
 
 //======================================================================

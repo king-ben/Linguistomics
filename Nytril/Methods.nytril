@@ -554,9 +554,9 @@ class GapFrequencyChart: Content {
        GapInfo.TestStatistic;
      };
      "; ";
-     Equation {Defs.DegreesFreedom; Tex.Equals; 16};
+     EqSpan {Defs.DegreesFreedom; Tex.Equals; 16};
      CommaSpace;
-     Equation {Defs.PValue; Tex.lt; 0.001};
+     EqSpan {Defs.PValue; Tex.lt; 0.001};
      ".)";
   };
 
@@ -1063,7 +1063,7 @@ class AlignmentFigure: Content {
             if (c == '1' and i < segments.Length)
               segments[i++].ShowBlock;
             else
-              IPASegments.GapSegment.ShowBlock;
+              VocalSegments.GapSegment.ShowBlock;
           }
         }
         else {
@@ -1083,7 +1083,7 @@ class AlignmentFigure: Content {
     Margin: PadR(5);
     TextHeight: 18pt;
     Bold;
-    Equation {label};
+    EqSpan {label};
   };
 
   ArrowFigure(Size size) = Canvas(size.Width, size.Height) {
@@ -1295,8 +1295,8 @@ class PhylogenyResultsSection: Content {
       "This problem was likely not encountered in the other implementations of the TKF91 model";
       Cite {Lunter2004}; ", which analyzed an alignment of amino acid sequences. ";
       "In our analysis of cognate data, the insertion and deletion rates were estimated to be quite high relative to the substitution rate: ";
-      Equation {InsertionRate; Tex.Equals; run.InsertionRate}; " ("; run.InsertionRateLow; ", "; run.InsertionRateHigh; ") and ";
-      Equation {DeletionRate; Tex.Equals; run.DeletionRate}; " ("; run.DeletionRateLow; ", "; run.DeletionRateHigh; ") ";
+      EqSpan {InsertionRate; Tex.Equals; run.InsertionRate}; " ("; run.InsertionRateLow; ", "; run.InsertionRateHigh; ") and ";
+      EqSpan {DeletionRate; Tex.Equals; run.DeletionRate}; " ("; run.DeletionRateLow; ", "; run.DeletionRateHigh; ") ";
         "for the insertion and deletion rates, respectively. ";
       "(The credible intervals in the parentheses contain the true value of the parameter with probability {0}.) "(ExperimentResults.CutoffProbability);
       "Roughly speaking, this means that for every two segmental transitions there was one insertion or deletion event. ";
@@ -1407,7 +1407,7 @@ class SegmentModelsFigure: Content {
       "The first model, "; PoissonModel; ", has no free parameters. ";
       "The second model, "; UnequalModel; ", has "; segments; " free parameters (one less than the number of segments). ";
       "The "; NaturalModelName; ", "; NaturalClassModel; ", has "; rp*(rp-1)/2 + rp; " additional segmental class rate parameters: ";
-      Equation {segments; Tex.Plus; (rp*(rp-1)/2 + rp); Tex.Equals; segments + rp*(rp-1)/2 + rp}; " free parameters.";
+      EqSpan {segments; Tex.Plus; (rp*(rp-1)/2 + rp); Tex.Equals; segments + rp*(rp-1)/2 + rp}; " free parameters.";
     };
   };
 }
@@ -1439,8 +1439,8 @@ class ModelComparisonSection: Content {
       "The "; NaturalModelName; " explains the data substantially better than the two simpler models, with log Bayes ";
       // TODO: Maybe update the log bayes factor numbers dynamically, though this will be more tricky.
       "factors of ";
-      Equation {Tex.ln; BayesFactor12; Tex.Equals; -1074.2}; " and ";
-      Equation {Tex.ln; BayesFactor23; Tex.Equals; -117.3};
+      EqSpan {Tex.ln; BayesFactor12; Tex.Equals; -1074.2}; " and ";
+      EqSpan {Tex.ln; BayesFactor23; Tex.Equals; -117.3};
       ", respectively, for a comparison of "; PoissonModel; " to "; UnequalModel; " and "; UnequalModel; " to "; NaturalClassModel; ". ";
       "This indicates overwhelming support for the more parameter-rich "; NaturalModelName;
       Cite {Jeffreys1939}; DotSpace;
@@ -1495,8 +1495,8 @@ class WordTransformationSection: Content {
       "Overall, the most stable segments are all consonants, with the stops the most stable of all. ";
       "The rates of change are also remarkably similar within each class:";
       " all the long vowels cluster together, as do the affricates, fricatives, short vowels, nasal vowels, fricatives, nasal consonants, and stops. ";
-      "The only exceptions are the liquid "; IPASegments.r;
-      ", which appears with the fricatives, and the mid-front vowel "; IPASegments.ay; ", which appears among the nasal vowels.";
+      "The only exceptions are the liquid "; VocalSegments.r;
+      ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels.";
       //"In contrast to the rates in Figure [rate figure], those in ";
       //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
       // " and measures the rate of flow away from it (to any other segment). ";
@@ -1637,9 +1637,9 @@ class WordSegmentRelSection: Content {
       " model. ";
       "This difference makes sense given the rates estimated under the "
       align2.NaturalClass; " ("; style.FigureReference(Figures.RateChart); "). ";
-      "For example, the rate of change between "; IPASegments.u; " and "; IPASegments.oh; " are estimated to be high, whereas the rate between consonants and "; IPASegments.oh; " is low. ";
+      "For example, the rate of change between "; VocalSegments.u; " and "; VocalSegments.oh; " are estimated to be high, whereas the rate between consonants and "; VocalSegments.oh; " is low. ";
       "The distribution of alignments under the ";
-      align2.Poisson; " often makes consonants homologous with "; IPASegments.oh; ". ";
+      align2.Poisson; " often makes consonants homologous with "; VocalSegments.oh; ". ";
       "Under the "; align2.NaturalClass;
       " model, however, the same alignments are improbable, as the rates of substitution between those alignments are low.";
     };
@@ -1677,7 +1677,7 @@ class OtherApproachesSection: Content {
       "Approaches to sound change in the linguistics literature vary. ";
       "One prominent view identifies phonemes as the basic units of change"; Cite {Bloomfield1933}; ", ";
       "according to which sound change is abrupt and non-independent. ";
-      "It is abrupt in that there are no intermediary stages in a transition from "; IPASegments.ah; " to "; IPASegments.oh; ", for instance. ";
+      "It is abrupt in that there are no intermediary stages in a transition from "; VocalSegments.ah; " to "; VocalSegments.oh; ", for instance. ";
       "It is non-independent since the change from one phoneme to another across all lexical items is regarded as a single event. ";
       "Other scholars have emphasized the role of acoustic and auditory phonetics in sound change";
       Cite {Blevins2004a; Ohala2003; Ohala2012};
@@ -1687,8 +1687,8 @@ class OtherApproachesSection: Content {
     style.BodyPar {
       "Our framework is not situated within any one of these traditions, but rather has affinities to the phonemic approach and lexical diffusion. Since our observations are phonemic strings, it is phonemes that undergo insertions, deletions, and transitions. ";
       "In contrast to the standard assumption of historical linguistics, however, these changes are treated as independent. ";
-      "For instance, a change from "; IPASegments.ah; " to "; IPASegments.oh; " is not modeled as a single transition across all word-forms in our study. ";
-      "Instead, a rate of change is inferred based on the homologies of "; IPASegments.ah; " and "; IPASegments.oh; " in the data and how often the former transitions to the latter. ";
+      "For instance, a change from "; VocalSegments.ah; " to "; VocalSegments.oh; " is not modeled as a single transition across all word-forms in our study. ";
+      "Instead, a rate of change is inferred based on the homologies of "; VocalSegments.ah; " and "; VocalSegments.oh; " in the data and how often the former transitions to the latter. ";
     };
 
     style.BodyPar {
@@ -1803,7 +1803,7 @@ class SegmentalSamplingSection: Content {
       "there is no guarantee that the necessary segmental correspondences will be sampled. ";
       "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/ (in terms of classical Latin, it neutralizes vowel length distinctions)"; DotSpace;
       "By contrast, Italo-Western Proto-Romance (i.e., the common ancestor of all other languages in our sample) merges */ʊ/ and */o/ to /o/ (in terms of classical Latin, it merged short <u> and long <o>)"; DotSpace;
-      "As a result, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; IPASegments.u; " against the " IPASegments.oh; " of, for instance, Italian "; textit{"bocca"}; DotSpace;
+      "As a result, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the " VocalSegments.oh; " of, for instance, Italian "; textit{"bocca"}; DotSpace;
       "This correspondence is a key piece of evidence for the topological position of Romanian "; Cite {Janson1979.OnPage(25); Herman2000.OnPage(32..34)};
       " and if it is not sufficiently represented in the dataset it may not be possible to infer its place in the tree accurately"; DotSpace;
       "There is the further question of how representative the frequency distributions of segments, which are presented in " ; style.FigureReference(Figures.SegmentOccuranceRates); ", are in the languages in our sample"; DotSpace;
@@ -1976,7 +1976,7 @@ class ModelInferenceSection: Content {
     super.Constructor("Model and Statistical Inference");
   }
 
-  InsertionLessThanDeletion = PaperStyle.Equation {InsertionRate; Tex.lt; DeletionRate};
+  InsertionLessThanDeletion = PaperStyle.EqSpan {InsertionRate; Tex.lt; DeletionRate};
 
   override GetBody(ContentStyle style, title) = Block {
     var rule = MainResults.Data.Rule;
@@ -2070,7 +2070,7 @@ class SegmentEncodingFigure: Content {
   override GetBody(ContentStyle style, title) = Paragraph {
     ParAlignment: Center;
     Frame {
-      IPASegments.VlAlveolarNSAffricate.Display(20pt);
+      VocalSegments.VlAlveolarNSAffricate.Display(20pt);
     }
   };
 }
@@ -2192,7 +2192,7 @@ class MethodsSection: Content {
       "The interior nodes are labeled "; TipLabelInterior; " in preorder sequence (i.e., ordered sequentially from the tips to the root). ";
       "The root node is always assigned the label "; TipLastLabel; DotSpace;
       "We denote the ancestor of node "; NodeIndex; " as "; AncestorNode(NodeIndex); DotSpace;
-      "In the tree of "; style.FigureReference(Figures.ExampleTree); ", the ancestor of node 3 is "; Equation {AncestorNode(3); Tex.Equals; 13}; DotSpace;
+      "In the tree of "; style.FigureReference(Figures.ExampleTree); ", the ancestor of node 3 is "; EqSpan {AncestorNode(3); Tex.Equals; 13}; DotSpace;
     };
 
     style.BodyPar {
@@ -2222,7 +2222,7 @@ class MethodsSection: Content {
       ": ";
       PossibleTrees; DotSpace;
       "Each topology is given a unique label, ";
-      Equation {
+      EqSpan {
         EllipsisList {
           Topology sub 1;
           Topology sub 2;
@@ -2246,7 +2246,7 @@ class MethodsSection: Content {
 
     style.BodyPar {
      "The interior nodes of the tree represent language divergence events that occurred at specific times in the past and are denoted ";
-     Equation {
+     EqSpan {
        Span {Bold; Time};
        Tex.Equals;
        SpanParens {
@@ -2259,7 +2259,7 @@ class MethodsSection: Content {
      }; DotSpace;
 
      "The tip nodes are all assigned the time ";
-     Equation {
+     EqSpan {
        Time; Tex.Equals; 0;
      }; DotSpace;
 
@@ -2270,7 +2270,7 @@ class MethodsSection: Content {
      "Without external information to constrain the divergence times, such as one language divergence time that is considered known, it is impossible to estimate divergence times. ";
      "The problem is that one obtains the same net divergence between two languages from a high rate of language evolution and a short divergence time separating the languages, or a low rate of language evolution and a long time separating the languages. ";
      "In fact, the expected number of evolutionary events that occurred between two languages that diverged at time "; Time; " is ";
-     Equation {
+     EqSpan {
        ExpectedEvents;
        Tex.Equals;
        2;
@@ -2284,7 +2284,7 @@ class MethodsSection: Content {
      ExpectedEventsPerBranch;
      DotSpace;
      "In this study, we do not estimate the divergence times on the tree, but rather the compound parameter representing the branch lengths ";
-     Equation {ExpectedEvents sub sym.i};
+     EqSpan {ExpectedEvents sub sym.i};
      ", which are in units of expected number of substitutions per segment (as described below). ";
     };
 
@@ -2368,7 +2368,7 @@ class MethodsSection: Content {
       "The segmental information for the ";
       NumLanguages;
       " languages of interest is denoted ";
-      Equation {
+      EqSpan {
         SegmentalInfo;
         Tex.Equals;
         SpanParens {
@@ -2394,7 +2394,7 @@ class MethodsSection: Content {
 
     style.BodyPar {
       "Here, the segments for "; ec.Taxon.Language; " would be ";
-      Equation {
+      EqSpan {
         Segment sub 1;
         Tex.Equals;
         SpanParens {
@@ -2405,7 +2405,7 @@ class MethodsSection: Content {
       HomologyMap;
       ", describing the homology of the segments. ";
       "The alignment is formed by combining the segment information with the homology map, ";
-      Equation {
+      EqSpan {
         SegmentalAlignment;
         Tex.Equals;
         Arguments {
@@ -2472,7 +2472,7 @@ class MethodsSection: Content {
       "When a change occurs, it is to state ";
       sym.j;
       " with probability ";
-      Equation {-qij; Tex.Divide; qii;}; DotSpace;
+      EqSpan {-qij; Tex.Divide; qii;}; DotSpace;
       "Several important quantities can be calculated using the information contained in the rate matrix ";
       RateMatrix; DotSpace;
       "For one, the probability of the process ending in state ";
@@ -2585,11 +2585,11 @@ class MethodsSection: Content {
         "Branch length parameters";
       };
       ParamRow {
-        Equation {RateMatrixParams};
-        Span {RateMatrixParams.Description; Space; Equation {RateMatrix}};
+        EqSpan {RateMatrixParams};
+        Span {RateMatrixParams.Description; Space; EqSpan {RateMatrix}};
       };
       ParamRow {
-        Equation {InsertDelete(", "); Space; SpanParens {InsertDelete(Tex.lt)}};
+        EqSpan {InsertDelete(", "); Space; SpanParens {InsertDelete(Tex.lt)}};
         "The insertion and deletion rates of  segments";
       };
       ParamRow {
@@ -2656,7 +2656,7 @@ class MethodsSection: Content {
         "The proposal mechanism is up to the programmer, but must involve the generation of random numbers ";
         RandomNumber;
         " such that the proposed value is a function of the current value and the random numbers, ";
-        Equation {
+        EqSpan {
           NewValueProposal;
           Tex.Equals;
           "h"; Arguments {
@@ -2680,23 +2680,23 @@ class MethodsSection: Content {
 
       Paragraph {
         "Generate a uniform(0,1) random variable, ";
-        Equation {
+        EqSpan {
           RandomNumber
         }; DotSpace;
         "If ";
-        Equation {
+        EqSpan {
           RandomNumber;
           Tex.lt;
           ProbOfAccepting;
         };
         ", accept the proposed state, setting ";
-        Equation {
+        EqSpan {
           RateMatrixParams;
           Tex.Equals;
           NewValueProposal;
         }; DotSpace;
         "Otherwise, the proposed state is said to be rejected and the chain remains in state ";
-        Equation {
+        EqSpan {
           RateMatrixParams;
         }; DotSpace;
       };

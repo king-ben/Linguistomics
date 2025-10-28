@@ -35,9 +35,9 @@ class EulerDiagram {
 
   FeatureMask = Vowel Nasal Vocoid Approximant Vibrant Lateral Affricate Occlusive Strident Sibilant Obstruent Continuant Fricative Rhotic Liquid Trill TapFlap;
 
-  FeatureSegments(Segment[] segments, features) = segments.FindSlice(s => s.Features.HasFlagMask(FeatureMask, features));
+  FeatureSegments(VocalSegment[] segments, features) = segments.FindSlice(s => s.Features.HasFlagMask(FeatureMask, features));
 
-  FeatureFrame(Segment[] segments, x, y, width, name, features) = Canvas {
+  FeatureFrame(VocalSegment[] segments, x, y, width, name, features) = Canvas {
     X: EX(x);
     Y: EY(y);
     Frame(EX(width)) {
@@ -51,7 +51,7 @@ class EulerDiagram {
     }
   };
 
-  FeatureChart(Segment[] segments) = Canvas {
+  FeatureChart(VocalSegment[] segments) = Canvas {
     TextHeight: 16pt;
 
     VNameFrame(Lang.Occlusive, 10, 0, 90, 34, new(255, 238, 238)) {
@@ -483,7 +483,7 @@ readonly namespace MatchingVowels {
 readonly namespace MatchingDiacritics {
   ColumnDiv = 3;
 
-  AddCell(Segment segment) = Cell {
+  AddCell(VocalSegment segment) = Cell {
     Paragraph {
       LeftIndent: 30pt;
       FirstIndent: -30pt;
@@ -496,7 +496,7 @@ readonly namespace MatchingDiacritics {
     }
   };
 
-  AddRow(Segment[] segments) = Row {
+  AddRow(VocalSegment[] segments) = Row {
     AddCell(each segments)
   };
 
@@ -585,7 +585,7 @@ class SegmentDisplay {
     };
   };
 
-  IPASegmentTable = Block {
+  VocalSegmentTable = Block {
     var c = PaperStyle.SegmentColumns;
 
     Table(null, null, [ExtentWidth / c]) {

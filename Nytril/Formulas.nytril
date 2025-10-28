@@ -12,21 +12,21 @@ double BranchFormula(n) {
   return t;
 }
 
-BranchMinus(n) = Equation {2; NumLanguages; Minus; n};
+BranchMinus(n) = EqSpan {2; NumLanguages; Minus; n};
 
-MaxBranches = BranchMinus(2);
-MaxBranch   = BranchMinus(3);
+readonly MaxBranches = BranchMinus(2);
+readonly MaxBranch   = BranchMinus(3);
 
 IntegrateOver(v) = Integral {
   TextStacked: false;
   Lower: v;
 };
 
-ParamList(v) = Equation {EllipsisList {v sub 1; v sub BN}};
+ParamList(v) = EqSpan {EllipsisList {v sub 1; v sub BN}};
 
 FD(x) = Span {Space; Italic "d"; x};
 
-Prob(x) = Equation {
+Prob(x) = EqSpan {
   MarginalLikelihood;
   SpanParens {x};
 };
@@ -42,7 +42,7 @@ IfValue(a, text) = Span {
 
 PSM(n) = Prob(Condition(SegmentalInfo, Model sub n));
 
-NewProposal(start, end) = Equation {
+NewProposal(start, end) = EqSpan {
   ProbProposal;
   SpanParens {
     start;
@@ -60,7 +60,13 @@ ProbVar(EquationSymbol x, extra=null) = Prob(CommaList {
   extra;
 });
 
-ProbALL = Prob(CommaList {
+InsertDelete(by) = EqSpan {
+  InsertionRate;
+  by;
+  DeletionRate;
+};
+
+readonly ProbALL = Prob(CommaList {
   Topology;
   ExpectedEvents;
   RateMatrixParams;
@@ -68,20 +74,14 @@ ProbALL = Prob(CommaList {
   DeletionRate;
 });
 
-ParamRow = Row {
+readonly ParamRow = Row {
   Separator: Empty;
 };
 
-PPO = Prob("Parameter(s) | Observations");
-POP = Prob("Observations | Parameter(s)");
-PP  = Prob("Parameter(s)");
-PO  = Prob("Observations");
-
-InsertDelete(by) = Equation {
-  InsertionRate;
-  by;
-  DeletionRate;
-};
+readonly PPO = Prob("Parameter(s) | Observations");
+readonly POP = Prob("Observations | Parameter(s)");
+readonly PP  = Prob("Parameter(s)");
+readonly PO  = Prob("Observations");
 
 //======================================================================
 
@@ -100,48 +100,48 @@ readonly namespace sym {
 
 Ith = Span {sym.i; "th"};
 
-Summation = Nary {
+readonly Summation = Nary {
   Operator: sum;
 };
 
-Integral = Nary {
+readonly Integral = Nary {
   Operator: Integral1;
 };
 
-CommaList = Span {
+readonly CommaList = Span {
   Separator: CommaSpace;
 };
 
-Arguments = SpanParens {
+readonly Arguments = SpanParens {
   Separator: CommaSpace;
 };
 
-EllipsisList = CommaList {
+readonly EllipsisList = CommaList {
   LastSeparator: Span {CommaSpace; ldots; CommaSpace};
 };
 
-ProductList = Span {
+readonly ProductList = Span {
   Separator: times;
   LastSeparator: times ldots times;
 };
 
-SampledLanguages(n) = Equation {
+SampledLanguages(n) = EqSpan {
   NumLanguages;
   Equals;
   n;
 };
 
-TipLabelNumbers = Equation {
+readonly TipLabelNumbers = EqSpan {
   EllipsisList {
     1; 2; NumLanguages;
   }
 };
 
-TipLastLabel = Equation {
+readonly TipLastLabel = EqSpan {
   2; NumLanguages; Minus; 1;
 };
 
-TipLabelInterior = Equation {
+readonly TipLabelInterior = EqSpan {
   EllipsisList {
     NumLanguages Plus 1;
     NumLanguages Plus 2;
@@ -149,11 +149,11 @@ TipLabelInterior = Equation {
   }
 };
 
-NodeIndex = Equation {
+readonly NodeIndex = EqSpan {
   sym.i;
 };
 
-AncestorNode(i) = Equation {
+AncestorNode(i) = EqSpan {
   sigma;
   "("; i; ")";
 };
@@ -211,7 +211,7 @@ readonly namespace<EquationSymbol> Defs {
   BayesFactor23           = new(#ac15c705-d52e-4b4f-88f8-d0f8dcf172c3#, sym.BF sub ("23"), "Bayes Factor", "The ratio of the Unequal Rates models and {0} models"(NaturalClassName));
   Unknown                 = new(#b201f529-2e31-4ccd-927c-3bcd5dbef524#, BoldSymbol "X", "Unknown");
   PossibleRootedTrees     = new(#7a776122-8f31-49ff-94e0-e8124fa9b5b5#, BoldSymbol "B", "Possible rooted trees");
-  BN                      = new(#c7fecde1-fcb0-4b68-9bc2-69622b63a7f6#, Equation {PossibleRootedTrees; "("; NumLanguages; ")"}, "Possible rooted trees as a function of the number of languages", "");
+  BN                      = new(#c7fecde1-fcb0-4b68-9bc2-69622b63a7f6#, EqSpan {PossibleRootedTrees; "("; NumLanguages; ")"}, "Possible rooted trees as a function of the number of languages", "");
   FunctionF               = new(#431c5ec9-7a2b-433d-8bff-b4d9bfa37704#, Symbol("f"), "Function");
   FunctionO               = new(#6d67b3c2-9d49-4c12-9683-9d6234c635b5#, Symbol("O"), "Order");
   EulerNumber             = new(#7029b313-5c55-492c-906e-ded051bb9d7c#, Symbol("e"), "Root of the natural log or Euler number");
@@ -383,9 +383,8 @@ readonly namespace<Equation> Equations {
     };
   };
 
-
   InDelDistribution = new(#db4b99ec-6725-4b11-b873-f8ab6698ac16#, "Indel Distribution") {
-    Formula: Equation {
+    Formula: EqSpan {
       RateParameter;
       Equals;
       Negative;

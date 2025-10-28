@@ -242,7 +242,7 @@ readonly namespace PaperStyle {
     text;
   };
 
-  Equation = Span {
+  EqSpan = Span {
     TextEquation: true;
   };
 

@@ -385,7 +385,7 @@ class CognateWord: Fact {
 
     Action: new Action(Actions.ToSource, Variable);
     // Strip out gaps and stress characters
-    Text.FindSlice(c => c != IPASegments.GapSegment.Ipa and c != IPASegments.PrimaryStress.Ipa) as string;
+    Text.FindSlice(c => c != VocalSegments.GapSegment.Ipa and c != VocalSegments.PrimaryStress.Ipa) as string;
   };
 
   ShowPadded = Span {
@@ -744,8 +744,8 @@ class ExperimentData {
 
     UsedConcepts.Sort(false);
 
-    var lookup = new SegPartDictionary(IPASegments.Length);
-    foreach (var segment in IPASegments) {
+    var lookup = new SegPartDictionary(VocalSegments.Length);
+    foreach (var segment in VocalSegments) {
       if (segment.Ipa is valid)
         lookup.Add(new SegmentPart(segment), segment.Ipa);
     }
@@ -775,8 +775,8 @@ class ExperimentData {
     AddLanguageSet(run.LanguageSet);
 
     var slist  = new List<SegmentPart>(run.Segments.Length);
-    var lookup = new StringDictionary<Segment>(IPASegments.Length);
-    foreach (var segment in IPASegments) {
+    var lookup = new StringDictionary<VocalSegment>(VocalSegments.Length);
+    foreach (var segment in VocalSegments) {
       if (segment.Ipa is valid)
         lookup.Add(segment, segment.Ipa);
     }
