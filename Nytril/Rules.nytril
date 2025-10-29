@@ -345,7 +345,7 @@ class NaturalPartition: PartitionRule {
     new FeatureMask(this, "Nasal Vowel", "Nasal Vowels", Vowel Nasal, Vowel Nasal);
     new FeatureMask(this, "Diphthong", "Diphthongs", Diphthong, Diphthong);
     new FeatureMask(this, "Short Vowel", "Short Vowels", Vowel, Vowel);
-    new FeatureMask(this, "Nasal SegmentConsonant", "Nasal Consonants", Nasal, Nasal);
+    new FeatureMask(this, "Nasal Consonant", "Nasal Consonants", Nasal, Nasal);
     new FeatureMask(this, "Liquid", "Liquids", Vowel Liquid, Liquid);
     new FeatureMask(this, "Approximant", "Approximants", Vowel Approximant, Approximant);
     new FeatureMask(this, "Affricate", "Affricates", Vowel Affricate, Affricate);
