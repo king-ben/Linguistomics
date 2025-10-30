@@ -439,7 +439,8 @@ readonly namespace<Equation> Equations {
       ProbOfAccepting;
       Equals;
       min;
-      InParens {
+      HBox {
+        Bracket: Brackets.Round;
         "1, ";
         Fraction {
           Span {
@@ -599,7 +600,7 @@ readonly namespace<Equation> Equations {
     Formula: Span {
       RateMatrix;
       Equals;
-      InBraces {qij};
+      "{"; qij; "}";
       Equals;
       StateSection.StateMatrix(PaperSections.Methods.StateCount);
       Space;

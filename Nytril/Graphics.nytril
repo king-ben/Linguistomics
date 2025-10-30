@@ -237,10 +237,18 @@ readonly namespace PaperStyle {
     Bold;
   };
 
+  SpanParens = Span {
+    TextEquation: true;
+    Begin:"(";
+    End:")";
+  };
+
   NeedsReview(text) = SpanParens {
     TextColor: Colors.Red;
     text;
   };
+
+  readonly InBrackets = HBox {TextEquation: true; Bracket: Brackets.Square};
 
   EqSpan = Span {
     TextEquation: true;
