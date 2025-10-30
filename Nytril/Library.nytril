@@ -1288,7 +1288,7 @@ class SegmentActionClass: Action {
     MatchAny(WorldLanguage) {
       Taxon.Language;
     };
-    MatchAny(Segment) {
+    MatchAny(VocalSegment) {
       Segment.Segment;
     };
   };
@@ -1528,7 +1528,7 @@ class PartitionRateAction: Action {
     MatchAny(WorldLanguage) {
       Taxon.Language;
     };
-    MatchAny(SegmentPart) {
+    MatchAny(VocalSegment) {
       Partition.Segments;
     };
   };
