@@ -174,7 +174,7 @@ class AlignPairClass: DocumentEntry {
   ShowAll = Block {
     var textheight = 8pt;
     var height     = 10pt;
-    var max        = 20;
+    var max        = 9;
     BoxSize = new(BoxSize.Width, height);
 
     TextHeight: textheight;

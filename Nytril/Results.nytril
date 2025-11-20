@@ -96,7 +96,7 @@ class RunResultsThread: Parallel.Thread {
   var StatArray         NCQFreqs;
   var AlignedCountClass QRates,
                         AverageRates;
-  var AlignIndexClass[]      Alignments;
+  var AlignIndexClass[] Alignments;
   var double            InsertionRate,
                         InsertionRateLow,
                         InsertionRateHigh,
