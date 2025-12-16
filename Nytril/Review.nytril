@@ -1,20 +1,12 @@
 using Format;
 
-class Reviewer: Fact {
-  field string Name;
+class Comment {
+  var        Text;
+  var Person Reviewer,
+             Handler;
 
-  Constructor(Guid id, name) {
-    super.Constructor(id);
-    Name = name;
-  }
-}
-
-class Comment: Fact {
-  field string Text;
-
-  Constructor(id, text) {
-    super.Constructor(id);
-    Text = text;
+  Constructor(Person reviewer) {
+    Reviewer = reviewer;
   }
 
   override GetLayoutTip = Paragraph {
@@ -25,17 +17,154 @@ class Comment: Fact {
   override Icon GetIcon = Icons.comment;
 }
 
-
-readonly namespace<Reviewer> Reviewers {
-  Reviewer1 = new(#2325fe8f-c15c-48b4-bfe0-6c4ca25f75b5#, "Reviewer 1");
-  Reviewer2 = new(#c8d510c2-3eda-411a-b79a-8546031ca4d9#, "Reviewer 2");
-  Reviewer3 = new(#e2ad7a76-af82-492a-b7a5-ab77d507af3f#, "Reviewer 3");
+readonly namespace<Person> Reviewers {
+  R1 = new(#c2af5714-c3da-4e59-af0e-d6b1b181db8e#, "Reviewer 1", null, null);
+  R2 = new(#8afa017a-9e98-42ef-9052-006768cbb043#, "Reviewer 2", null, null);
+  R3 = new(#e72f0c0e-25f1-4751-9d75-a722c5392850#, "Reviewer 3", null, null);
 }
 
+readonly Comment[] Comments = [
+  new(Reviewers.R2) {
+    Text: Block {
+      Paragraph {
+        "The authors introduce a framework for applying the TKF91 model of molecular evolution of DNA sequences for comparative linguistic analysis at the segment and word levels. ";
+        "Using Bayesian phylogenetic approaches, inference is drawn from cognate word-forms and their segmental compositions directly. ";
+        "They use a subset of Romance languages as a test case, compare three different models (Poisson, an isomorphic DNA sequence evolution, Natural Class model), and results show that the Natural Class model explains the data much better than the other two models.  ";
+      };
+      Paragraph {
+        "The introduction does a nice job of laying out the problems with current historical-comparative approaches, e.g., \"the transformation of word-forms into abstract cognate relationships results in pervasive information loss\", \"since root-meaning traits are analyzed the same way biologists analyze morphological characters ... ";
+        "they are subject to the same limitations\", \"transformation of multistate cognate relationships into binary characters introduces dependencies into the data\", \"continuous-time Markov chains that model the evolution of lexical items in cognate classes assume that character evolution is independent and identically distributed\".  ";
+      };
 
-readonly namespace<Comment> Comments {
-  Reviewer1 = new(#3a91fa96-c4c7-4061-b282-9bece6c614a7#, "Reviewer 1");
-}
+      Paragraph {
+        "For segmental changes, they find a clear division between vowels and consonants, as expected -- with vowels being more subject to change and diphthongs and long vowels the least stable. ";
+        "This coincides with what I know in the literature.  ";
+      };
+    };
+  },
+
+  new(Reviewers.R2) {
+    Text: Block {
+      Paragraph {
+        "I was a bit confused by the remarks regarding primal consonants:  ";
+      };
+      ListBlock {
+        "\"There are two important differences between their primal consonants and our results, however. ";
+        "First, these consonsants are deemed primal because they are only rarely created by sound change. ";
+        "In other words, they are rarely the output of sound change. ";
+        "Under our framework, by contrast, segmental stability is associated with the input of sound change in that the diagonal of the Q matrix reflects the rate of transition away from a given phoneme.\"";
+      };
+
+      Paragraph {
+        "It could also be argued that they are only rarely created by sound change because most languages have these consonants. ";
+        "If they are typologically common, then they are necessarily rare outcomes of sound change. ";
+        "When they are missing, e.g., bilabial plosives, they are typically very quick to be reintroduced into a phoneme inventory. ";
+        "In this regard, the authors might want to pay a bit of lip service to the cross-linguistic typological frequency of segments and its affects on borrowing and sound change in regards to their model, e.g.:  ";
+      };
+
+      ListBlock {
+        new URL("https://www.science.org/doi/pdf/10.1126/sciadv.adv7521");
+        new URL("https://dx.doi.org/10.1353/lan.2024.a947038");
+        new URL("https://doi.org/10.1371/journal.pone.0242709");
+      };
+
+      Paragraph {
+        "But that's not necessary in my opinion for publication, but might be nice in light of comments such as: \"While our results are relevant for the typology of diachronic phonology in that they capture broad trends in segmental evolution, they should not be interpreted as universal patterns of sound change.\" ";
+        "I think they do a nice job of outlining the limitations of the current model, without getting into too much detail, e.g.: \"current implementation of the model is unable to take into account phonetic variation of word-forms\" and in describing the limitations of what the model can do in regard to sound change patterns that aren't one-to-one (in Section 5.4). ";
+      };
+    }
+  },
+  new(Reviewers.R2) {
+    Text: "I find the referencing of figures a bit jarring, i.e., they aren't necessarily in order (e.g., 1, 2, 3...)";
+    Handler: People.McCreight_Shawn;
+  },
+
+  new(Reviewers.R2) {
+    Handler: People.McCreight_Shawn;
+    Text: "Colors in figure 1 aren't color blind friendly (I also find the two greens hard to distinguish)";
+  },
+
+  new(Reviewers.R2) {
+    Text: "\"(DÉRom, 2023)\"? ";
+    Handler: People.Goldstein_David;
+  },
+
+  new(Reviewers.R2) {
+   Text: "\"study of (Moran et al. 2021, pp. 92-95)\"";
+    Handler: People.Goldstein_David;
+  },
+
+  new(Reviewers.R2) {
+    Text: "  - \"they are measuring the rate at which the size of segmental inventories changes\"";
+    Handler: People.Goldstein_David;
+  },
+
+  new(Reviewers.R2) {
+   "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
+    Handler: People.Goldstein_David;
+  },
+
+  new(Reviewers.R2) {
+    Text: "\"not ASCII or ANSI\" -- why is ANSI mentioned here (or at all)? ";
+    Handler: People.McCreight_Shawn;
+  },
+
+  new(Reviewers.R3) {
+    Text: "Given the novelty of the TKF91 model to linguistic data, I was surprised that no simulation study was provided. The model should be validated using Simulation-Based Calibration.";
+    Handler: People.Huelsenbeck_John;
+  },
+
+  new(Reviewers.R3) {
+    Text: "The best-fitting model M3 is heavily parameterized relative to the dataset size (133 parameters for the substitution model estimated from only 102 cognate sets in 9 languages). I wonder if this is a case of overfitting to the particular historical trajectory of Romance. For example, the low equilibrium frequency estimated for diphthongs may simply mirror their monophthongization from Latin in this sample rather than reflect a general property of diphthongs in language change. The rate differences in Figure 7 are quite extreme, which made me think that perhaps very low equilibrium frequencies are being assigned to phonemes that just happen to be rare. If datasets of the same size as the empirical data were simulated under a model with less extreme values of stable frequencies and exchangeability rates, would some phonemes be rare simply due to chance? Would the analysis estimate a low equilibrium frequency for these phonemes, even when the true generating frequency is higher?";
+  },
+
+  new(Reviewers.R3) {
+    Text: "I like the argument that in a typical linguistic phylogenetic analysis, cognate classifications are used as observations even though they are hypotheses. However, I don’t see how this new approach gets away from the problem. While the method analyzes observable segmental data, the dataset still depends on traditional cognacy judgments to decide which word-forms are grouped together. Any misclassification at this stage propagates into the analysis, just as in conventional approaches.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "In Figure 5, the clustering of -qii values by natural class is striking, but doesn’t it just follow from the model structure? In the Natural Class model, all phonemes in a given class share the same exchangeability rates. Considering two phonemes in the same class, the rows of the Q matrix will be almost identical apart from the difference of 1 out of the 79 stable frequency values. In other words, figure 5 is driven by the exchangeabilities (shared within class) not the equilibrium frequencies. It seems to me the equilibrium frequencies would have to be drastically different within classes to produce a different pattern than that seen in figure 5. The authors should discuss the extent to which clustering is expected given the model structure.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "The code repository lacks any instructions or a readme file. The repo should be updated with the aim that the model can be applied by other researchers to their own data.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "There appears to be a contradiction in the parameter count for the Natural Class model. Earlier, the text states that there are “79 parameters for the equilibrium distribution and 80 parameters describing rates among natural classes,” whereas later the model is described as having 78 equilibrium parameters plus 55 class-rate parameters (total 133). The latter seems correct given the 10-class structure (45 off-diagonals + 10 within class rates), so is 80 a typo?";
+    Handler: People.Huelsenbeck_John;
+  },
+
+  new(Reviewers.R3) {
+    Text: "The authors filtered out any cognate sets without a form in one or more languages. I am unsure after reading the paper whether or not ths was a data collection decision, or if the method implementation actually requires complete data like this. Please clarify.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "The section starting around Figure 3, which presents an IPA–Unicode encoding example and raw data for the concept “mountain”, is informative but hard to follow in terms of the overall data-processing path. I recommend adding a schematic diagram of the workflow, from initial cognate identification through IPA encoding, segment parsing, alignment generation, and Bayesian inference to final rate and topology estimates. Such a figure would help readers understand the broader computational pipeline, and clarify where key modelling and data decisions occur.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "The paragraph on page 3 beginning “Second, since root-meaning traits…” seems to be a criticism of the multistate model for cognate evolution. This is confusing for two reasons. First, it has already been stated on the previous page that the data is first binarised. Second, “state 0 of one cognate is not equivalent to state 0 of another”, surely you mean state 0 of a concept? The multistate approach has been attempted a few times (Heggarty et al. 2023 SI, Rönchen et al. 2024 and references therein), but for the most part linguistic phylogenies work on binarised data.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "The authors state that the method works on cognate words regardless of meaning. However, the data is organised by meaning. I assume that this just refers to the meaning in Latin, but please clarify.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "It may help the reader if Figure 7 is labelled explicitly as showing class-pooled average rates derived from the full 79×79 Q-matrix of phoneme-to-phoneme substitutions. Currently, the relationship between the full Q and the reduced 10×10 class matrix in the figure is not stated clearly. Same for Figure 6, I guess these are pooled from the individual phonemes.";
+  },
+
+  new(Reviewers.R3) {
+    Text: "It may be worth defining “unigram” explicitly in the manuscript, as many readers from historical linguistics rather than computational linguistics may not be familiar with the term";
+  },
+
+  new(Reviewers.R3) {
+    Text: "Reference: Rönchen, Philipp, Tilo Wiklund, and Harald Hammarström. \"Likelihood calculation in a multistate model of vocabulary evolution for linguistic dating.\" Language Dynamics and Change 14.1 (2024): 1-41. ";
+  },
+];
+
+
 
 //======================================================================
 
@@ -53,6 +182,21 @@ class ReviewDocument: DocumentEntry {
     };
     Letter;
     PageBreak;
+    foreach (var comment in Comments) {
+      Style.Heading2 {
+        ParBackground: Colors.LightGray;
+        each1; ")"; Tab;
+        comment.Reviewer.First;
+      };
+      comment.Text;
+      if (comment.Handler is valid) {
+        Span {
+          TextColor: Colors.DarkGreen;
+          "Handled by: ";
+          comment.Handler.First;
+        };
+      }
+    }
   };
 
   Letter = Block {
@@ -89,11 +233,8 @@ class ReviewDocument: DocumentEntry {
       "If you use the below link you will not be required to login to ScholarOne Manuscripts.";
     };
     Style.BodyPar {
-      "*** PLEASE NOTE: This is a two-step process. ";
+      "PLEASE NOTE: This is a two-step process. ";
       "After clicking on the link, you will be directed to a webpage to confirm. ";
-      "***";
-    };
-    Style.BodyPar {
       new URL("https://mc.manuscriptcentral.com/jole?URL_MASK=4af2e17d72224547b6bf7ad6fdcaea8b");
     };
     Style.BodyPar {
@@ -102,18 +243,14 @@ class ReviewDocument: DocumentEntry {
       "Please also highlight the changes to your manuscript within the document by using the track changes mode in MS Word or by using bold or colored text.";
     };
     Style.BodyPar {
-      "Once the revised manuscript is prepared, you can upload it and submit it through your Author Centre.";
-    };
-    Style.BodyPar {
+      "Once the revised manuscript is prepared, you can upload it and submit it through your Author Centre. ";
       "When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  ";
       "You can use this space to document any changes you make to the original manuscript.  ";
       "In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).";
     };
     Style.BodyPar {
       "IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  ";
-      "Please delete any redundant files before completing the submission.";
-    };
-    Style.BodyPar {
+      "Please delete any redundant files before completing the submission. ";
       "Because we are trying to facilitate timely publication of manuscripts submitted to the Journal of Language Evolution, your revised manuscript should be uploaded as soon as possible.  ";
       "If it is not possible for you to submit your revision in a reasonable amount of time, we may have to consider your paper as a new submission.";
     };
