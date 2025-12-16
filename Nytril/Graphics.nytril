@@ -88,7 +88,7 @@ readonly namespace PaperStyle {
       };
     }
 
-    Tree(width, null) {
+    TreeBox(width, null) {
       style.SansSerif;
       TextHeight: 11pt;
       Reorder: reorder;
@@ -120,7 +120,7 @@ readonly namespace PaperStyle {
       };
     }
 
-    Tree(width, null) {
+    TreeBox(width, null) {
       TextHeight: 8pt;
       Reorder: true;
       Root: root;

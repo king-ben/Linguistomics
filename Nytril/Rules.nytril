@@ -30,7 +30,18 @@ class SegmentPartition: Fact {
     }
   }
 
-  override Icon GetIcon = Icons.sort;
+  override Icon GetIcon = Icons.hive;
+
+  override GetSourceReference = Name;
+
+  override GetLayoutNode = VBox(null, null, new Edge(0.25pt, 3, 80%)) {
+    HAlign: HAligns.Center;
+    BorderRadius: 6;
+    Background: #E2E677#;
+    Separation: 10pt;
+    GetIcon;
+    Name;
+  };
 
   ShowFilterSegments(ParAlignments align) = Frame(PaperStyle.SegmentWidth) {
     Paragraph {

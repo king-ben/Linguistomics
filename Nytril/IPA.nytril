@@ -132,8 +132,6 @@ class VocalSegment: Fact {
     Features        = NoFeature;
   }
 
-  override Icon GetIcon = Icons.record_voice_over;
-
   ShowFeature(SegmentFeatures feature) = feature == SegmentFeatures.NoFeature ? null : feature;
 
   SegmentName = Span {
@@ -181,11 +179,6 @@ class VocalSegment: Fact {
     Ipa;
   };
 
-  override GetLayoutSpan = PaperStyle.TextIpa {
-    TipAction: this;
-    Ipa;
-  };
-
   ShowCodePoint = Paragraph {
     TextHeight: 8pt;
     ParBackground: 95%;
@@ -223,13 +216,33 @@ class VocalSegment: Fact {
     Display(size);
   };
 
+  override GetLayoutSpan = PaperStyle.TextIpa {
+    TipAction: this;
+    Ipa;
+  };
+
+  override Icon GetIcon = Icons.translate;
+
+  override GetLayoutNode = HBox(null, null, new Edge(0.25pt, 1, 80%)) {
+    TextHeight: 18pt;
+    BorderRadius: 6;
+    Background: Colors.SandyBrown;
+    Span {
+      Space;
+      PaperStyle.TextIpa {
+        Ipa;
+      };
+      Space;
+    }
+  };
+
   override GetLayoutTip = ShowFrame(PaperStyle.SegmentWidth, PaperStyle.SegmentSize);
 
   override GetLayoutFact = Block {
     ShowFrame(PaperStyle.SegmentWidth, 14pt, 0.5);
-//    Paragraph {
-//      super.GetLayoutFact;
-//    };
+    Paragraph {
+      super.GetLayoutFact;
+    };
   };
 }
 
@@ -265,6 +278,8 @@ class SegmentPart {
   ShowSegment(bool link=true) = Segment.ShowSegment(link);
 
   ShowBlock = Segment.ShowBlock;
+
+  override Icon GetIcon = Icons.translate;
 
   override GetLayoutTip = VBox {
     HAlign: Center;

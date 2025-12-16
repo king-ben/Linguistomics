@@ -257,13 +257,13 @@ class AlignPairClass: DocumentEntry {
 //======================================================================
 
 class WorldLanguage: Fact {
-  field string   Name;
-  var Image Image;
-  var int        Cases;
-  var string     ShortName;
-  var int        LangIndex;
-  var            ImagePath;
-  var Color      MapColor;
+  field string Name;
+  var Image    Image;
+  var int      Cases;
+  var string   ShortName;
+  var int      LangIndex;
+  var          ImagePath;
+  var Color    MapColor;
 
   Constructor(id, name, cases=0, imagepath=null) {
     super.Constructor(id);
@@ -305,6 +305,12 @@ class WorldLanguage: Fact {
       ShowMap(ExtentWidth, 2");
     };
   };
+
+  override GetLayoutNode = HBox(null, null, new Edge(0.25pt, 1, 80%) + PadLR(3)) {
+    BorderRadius: 3;
+    Background: Colors.Bisque;
+    Name;
+  };
 }
 
 //======================================================================
@@ -326,6 +332,10 @@ class CognateWord: Fact {
     Language = taxon.Language;
     Cognate  = cognate;
   }
+
+  override GetSourceReference = Variable;
+
+  override Icon GetIcon = Icons.text_format;
 
   void Init {
     Segments = [];
@@ -356,10 +366,10 @@ class CognateWord: Fact {
   }
 
   void InitExperiment(variable, SegmentPart[] segments) {
-    Variable  = variable;
-    Aligned   = segments;
-    Padded    = segments;
-    Segments  = segments.FindSlice(s => not s.Punctuation);
+    Variable = variable;
+    Aligned  = segments;
+    Padded   = segments;
+    Segments = segments.FindSlice(s => not s.Punctuation);
     Connect;
   }
 
@@ -367,17 +377,8 @@ class CognateWord: Fact {
     Link.Connect(this, (each Segments).Segment);
     Link.Connect(this, Cognate);
     Link.Connect(this, Language);
-    Link.Connect(Language, Cognate);
+//    Link.Connect(Language, Cognate); This is probably not needed since words are linked to their language
   }
-
-  override Icon GetIcon = Icons.text_snippet;
-
-  override GetLayoutSpan = Span {
-    foreach (var s in Segments) {
-      if (!s.Punctuation)
-        s.Ipa;
-    }
-  };
 
   ShowPlain = Span {
     PaperStyle.IPAFamily;
@@ -409,6 +410,21 @@ class CognateWord: Fact {
   FieldPar(name) = Paragraph(null, [0.5"]) {
     Bold name;
     Tab;
+  };
+
+  override GetLayoutSpan = Span {
+    PaperStyle.IPAFamily;
+    foreach (var s in Segments) {
+      if (!s.Punctuation)
+        s.Ipa;
+    }
+  };
+
+  override GetLayoutNode = HBox(null, null, new Edge(0.25pt, 1, 80%) + PadLR(3)) {
+    Action: new Action(Actions.ToSource, Variable);
+    BorderRadius: 3;
+    Background: 95%;
+    ShowPlain;
   };
 
   override GetLayoutTip = Block {
@@ -457,6 +473,8 @@ class Concept: Fact {
     Name      = a.Name;
   }
 
+  override GetSourceReference = Variable;
+
   void CheckRaw {
     var v = Attribute.Value;
     Confidence = v.Confidence;
@@ -475,7 +493,11 @@ class Concept: Fact {
 
   override Icon GetIcon = Icons.category;
 
-  override GetLayoutTip = Span {Name; "-"; Confidence};
+  override GetLayoutTip = Block {
+    Span {Lang.Concept; ColonSpace; Name};
+    if (Confidence > 0)
+      Span{"Confidence"; ColonSpace; Confidence};
+  };
 
   override int Compare(c) {
     return Name.Compare(c.Name);
@@ -504,6 +526,8 @@ class Cognate: Fact {
 
   override Icon GetIcon = Icons.format_list_bulleted;
 
+  override GetSourceReference = Attribute;
+
   GetSource = Span {
     Concept.Name;
     if (Name != DefaultCognate) {
@@ -522,6 +546,31 @@ class Cognate: Fact {
       return Name.Compare(c.Name);
     return i;
   }
+
+
+  override GetLayoutNode = VBox(null, null, new Edge(0.25pt, 1, 90%) + PadLR(3)) {
+    BorderRadius: 3;
+    Background: #007F00#;
+    TextColor: Colors.White;
+    var n = Attribute.Name;
+    Concept.Name;
+    if (n != DefaultCognate)
+      Span {TextHeight: 60%; n};
+  };
+
+  override GetLayoutTip = Block {
+    TextHeight: 20pt;
+    Paragraph {
+      Lang.Concept;
+      ColonSpace;
+      Concept.Name;
+    };
+    Paragraph {
+      Lang.Cognate;
+      ColonSpace;
+      Attribute.Name;
+    };
+  };
 }
 
 //======================================================================
