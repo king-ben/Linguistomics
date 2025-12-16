@@ -1,0 +1,134 @@
+using Format;
+
+class Reviewer: Fact {
+  field string Name;
+
+  Constructor(Guid id, name) {
+    super.Constructor(id);
+    Name = name;
+  }
+}
+
+class Comment: Fact {
+  field string Text;
+
+  Constructor(id, text) {
+    super.Constructor(id);
+    Text = text;
+  }
+
+  override GetLayoutTip = Paragraph {
+    ParAlignment: Justify;
+    Text;
+  };
+
+  override Icon GetIcon = Icons.comment;
+}
+
+
+readonly namespace<Reviewer> Reviewers {
+  Reviewer1 = new(#2325fe8f-c15c-48b4-bfe0-6c4ca25f75b5#, "Reviewer 1");
+  Reviewer2 = new(#c8d510c2-3eda-411a-b79a-8546031ca4d9#, "Reviewer 2");
+  Reviewer3 = new(#e2ad7a76-af82-492a-b7a5-ab77d507af3f#, "Reviewer 3");
+}
+
+
+readonly namespace<Comment> Comments {
+  Reviewer1 = new(#3a91fa96-c4c7-4061-b282-9bece6c614a7#, "Reviewer 1");
+}
+
+//======================================================================
+
+class ReviewDocument: DocumentEntry {
+  var ContentStyle Style;
+  Constructor {
+    super.Constructor(#e5710b65-a21f-4a52-9f79-af35a9c03b21#, "Review");
+    Style          = new ReviewStyle;
+    ReferenceStyle = Style;
+  }
+
+  override GetDocument = Document(0.75") {
+    Style.Heading1 {
+      Name;
+    };
+    Letter;
+    PageBreak;
+  };
+
+  Letter = Block {
+    Style.BodyPar {
+      "Dear Prof. Goldstein,";
+    };
+    Style.BodyPar {
+      "Manuscript ID JOLE-2025-026 entitled \"Understanding linguistic evolution using an event-based model\" which you submitted to the Journal of Language Evolution, has been reviewed.  ";
+      "The comments of the reviewer(s) are included at the bottom of this letter.";
+    };
+    Style.BodyPar {
+      "The reviewer(s) have recommended publication, but also suggest some major revisions to your manuscript.  ";
+      "Therefore, I invite you to respond to the reviewer(s)' comments and revise your manuscript.";
+    };
+    Style.BodyPar {
+      "The key issues as far as I see them are:";
+    };
+    ListBlock(@Enumerators.Number) {
+      "The request for a simulation study to verify accuracy and investigate the issue of over-fitting.";
+      "To provide clarifications around the model (e.g. the extent to which clustering of values is expected given the model's structure, the expansion of the prior on _H_ and how the posterior is calculated, etc).";
+      "To connect the discussion to Bouchard-Côté et al (who critique TKF91), and Abner et al., as well as some of the broader literature on the stability of segments in cross-linguistic sound change.";
+      "To discuss the potential to infer the full topology rather than fitting onto a tree.";
+    };
+
+    Empty;
+    Style.FirstPar {
+      "To revise your manuscript, log into https://mc.manuscriptcentral.com/jole ";
+      "and enter your Author Centre, where you will find your manuscript title listed under \"Manuscripts with Decisions.\"  ";
+      "Under \"Actions,\" click on \"Create a Revision.\"  ";
+      "Your manuscript number has been appended to denote a revision.";
+    };
+    Style.BodyPar {
+      "You may also click the below link to start the revision process (or continue the process if you have already started your revision) for your manuscript. ";
+      "If you use the below link you will not be required to login to ScholarOne Manuscripts.";
+    };
+    Style.BodyPar {
+      "*** PLEASE NOTE: This is a two-step process. ";
+      "After clicking on the link, you will be directed to a webpage to confirm. ";
+      "***";
+    };
+    Style.BodyPar {
+      new URL("https://mc.manuscriptcentral.com/jole?URL_MASK=4af2e17d72224547b6bf7ad6fdcaea8b");
+    };
+    Style.BodyPar {
+      "You will be unable to make your revisions on the originally submitted version of the manuscript.  ";
+      "Instead, revise your manuscript using a word processing program and save it on your computer.  ";
+      "Please also highlight the changes to your manuscript within the document by using the track changes mode in MS Word or by using bold or colored text.";
+    };
+    Style.BodyPar {
+      "Once the revised manuscript is prepared, you can upload it and submit it through your Author Centre.";
+    };
+    Style.BodyPar {
+      "When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  ";
+      "You can use this space to document any changes you make to the original manuscript.  ";
+      "In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).";
+    };
+    Style.BodyPar {
+      "IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  ";
+      "Please delete any redundant files before completing the submission.";
+    };
+    Style.BodyPar {
+      "Because we are trying to facilitate timely publication of manuscripts submitted to the Journal of Language Evolution, your revised manuscript should be uploaded as soon as possible.  ";
+      "If it is not possible for you to submit your revision in a reasonable amount of time, we may have to consider your paper as a new submission.";
+    };
+    Style.BodyPar {
+      "Once again, thank you for submitting your manuscript to the Journal of Language Evolution and I look forward to receiving your revision.";
+    };
+    Style.FirstPar {
+      "Kind Regards,";
+    };
+
+    Style.FirstPar {
+      "Dr. Simon Greenhill\nEditor, Journal of Language Evolution\n";
+      new Email("simon@simon.net.nz");
+    };
+  };
+}
+
+//======================================================================
