@@ -1,4 +1,4 @@
-using Format, LinkTypes;
+using Format;
 
 //======================================================================
 
@@ -58,6 +58,55 @@ class SupplementalContent: LinguisticsContent {
 //    Appendix.AddContent(Figures.ExperimentalRuns);
     Appendix.AddContent(Figures.Alignments);
     Appendix.AddContent(Figures.AllAlignments);
+  }
+}
+
+//======================================================================
+
+readonly GraphSection PaperSections.Connections = new;
+
+class GraphSection: Content {
+  Constructor {
+    super.Constructor("Graphs");
+  }
+
+  AddGraph(ContentStyle style, title, facts) = Block {
+    style.Heading2 {
+      title;
+    };
+    var graph = new Graph();
+    graph.AddNodes(facts, 1);
+    graph;
+  };
+
+  override GetBody(ContentStyle style, title) = Block {
+    var spanish = MatchAll(CognateWord) {
+      Text: MatchPrefix MatchGraf "a";
+
+      MatchAll(WorldLanguage) {
+        WorldLanguages.Spanish
+      }
+    };
+
+    AddGraph(style, "Spanish words starting with 'a'", spanish);
+    AddGraph(style, "Reference Authors", MatchAll(Person));
+    AddGraph(style, "Words containing segment", VocalSegments.er);
+    AddGraph(style, "Vowels", VocalSegment.Features.Vowel);
+    AddGraph(style, "Equations containing symbol", EquationSymbols.InsertionRate);
+    AddGraph(style, "Symbols in equation", Equations.BayesianEstimation);
+  };
+}
+
+//======================================================================
+
+class RelationshipContent: LinguisticsContent {
+  Constructor {
+    super.Constructor("Relationships");
+
+    Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
+    Description = "Graphs of linguistic connections";
+
+    AddContent(PaperSections.Connections);
   }
 }
 

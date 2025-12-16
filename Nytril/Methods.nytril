@@ -264,7 +264,7 @@ class AlignmentCompareFigure: Content {
   var ModelComparer   Poisson,
                       NaturalClass;
   var ModelComparer[] Models;
-  var CognateId  Example;
+  var CognateId       Example;
   var int             MaxCount;
 
   Constructor(maxcount, row) {

@@ -36,6 +36,28 @@ class WordsSearchAction: Action {
 
 //======================================================================
 
+class DiagnosticGraphSection: Content {
+  Constructor {
+    super.Constructor("");
+  }
+
+  AddGraph(ContentStyle style, title, fact) = Block {
+    style.Heading2 {
+      title;
+    };
+    var graph = new Graph();
+    graph.AddNodes(fact, 1);
+    graph;
+  };
+
+  override GetBody(ContentStyle style, title) = Block {
+    AddGraph(style, "Diphthongs", VocalSegment.Features.Diphthong);
+    AddGraph(style, "Segment links", VocalSegments.au);
+  };
+}
+
+//======================================================================
+
 class DiagnosticsDocument: DocumentEntry {
   var ExperimentData Data;
   var ContentStyle   Style;
@@ -89,6 +111,7 @@ class DiagnosticsDocument: DocumentEntry {
 
     Content[] content = [
       new PriorTreeFigure(Data),
+      new DiagnosticGraphSection,
       new AppendixContent(Lang.UniqueSegments, Display.VocalSegmentTable),
       new SegmentAssignmentsFigure(Data),
       new SegmentTransitionFigure(Data),
@@ -133,7 +156,7 @@ class DiagnosticsDocument: DocumentEntry {
       ParAlignment: Center;
       "Chang A3";
     };
-    Tree(100%, null) {
+    TreeBox(100%, null) {
       Default: new Node(null) {
         Curvature: 10%;
         Bevel: 10%;

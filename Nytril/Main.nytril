@@ -24,6 +24,7 @@ include "Slideshow";
 include "John Slides";
 include "David's Slides";
 include "Data Validation";
+include "Review";
 
 //======================================================================
 
@@ -31,13 +32,15 @@ readonly ContentStyle     MainContentStyle  = new JOLEStyle;
 readonly ContentStyle     SlideContentStyle = new OtherStyle;
 readonly LinguisticsPaper MainPaper         = new;
 readonly RealmSite        Main.Site         = new LinguistomicsSite;
-readonly                  Main.Facts        = [Equations, WorldLanguages];
+readonly                  Main.Facts        = [People, References, Equations, WorldLanguages];
 
 readonly namespace Main.Documents {
   HomePage            HomePage          = new;
   StyleDocument       PaperPNAS         = new(#670da93e-0b8c-46f0-8ab2-01de4ea8ebdb#, "Paper PNAS", MainPaper, SlideContentStyle);
   StyleDocument       PaperJOLE         = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, MainContentStyle);
   StyleDocument       Supplemental      = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", new SupplementalContent, MainContentStyle);
+  StyleDocument       Analysis          = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Relationship", new RelationshipContent, MainContentStyle);
+  ReviewDocument      Review            = new;
   DavidSlideShow      DavidPresentation = new;
   JohnSlideShow       JohnPresentation  = new;
   DiagnosticsDocument Diagnostic        = new(MainContentStyle, MainResults.Data);
@@ -72,6 +75,19 @@ class OtherStyle: PNASStyle {
   override SetTextStyle = {
     TextFamily: TextFamilies.LibertinusSerif;
     TextHeight: 9pt;
+  };
+}
+
+//===============================================================
+
+class ReviewStyle: PNASStyle {
+  Constructor {
+    super.Constructor("Review", TemplateOptions.None);
+  }
+
+  override SetTextStyle = {
+    TextFamily: TextFamilies.Calibri;
+    TextHeight: 10pt;
   };
 }
 
@@ -141,4 +157,3 @@ class LinguistomicsSite: RealmSite {
 }
 
 //======================================================================
-
