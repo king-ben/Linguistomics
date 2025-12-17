@@ -276,7 +276,7 @@ class AlignmentCompareFigure: Content {
     Models       = [Poisson, NaturalClass];
   }
 
-  override GetCaption(ContentStyle style) = Span {
+  override GetCaption(ContentStyle style) = Paragraph {
     "Alignments of highest posterior probability of the cognate for the concept ";
     Span {
       TextCase: TextCases.AllLower;
@@ -1619,6 +1619,7 @@ class WordSegmentRelSection: Content {
     style.BodyPar {
       var align2 = Figures.AlignmentExample2;
 
+      ReviewComment(Comments.C5);
       "Interestingly, the distribution of alignments depends on the model of segmental change. ";
       style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
@@ -1851,6 +1852,7 @@ class AdvantagesSection: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
+      ReviewComment(Comments.C11);
       "Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
      };
 
@@ -2094,7 +2096,7 @@ class ConclusionSection: Content {
     style.AddFigure(Figures.AlignmentExample2, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
 
     style.BodyPar {
-                  "The code and data for this study are available on ";
+      "The code and data for this study are available on ";
       Span {
         TipAction: new URL("https://github.com/jhuelsenbeck/Linguistomics");
         TextColor: Colors.Blue;

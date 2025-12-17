@@ -32,7 +32,7 @@ readonly ContentStyle     MainContentStyle  = new JOLEStyle;
 readonly ContentStyle     SlideContentStyle = new OtherStyle;
 readonly LinguisticsPaper MainPaper         = new;
 readonly RealmSite        Main.Site         = new LinguistomicsSite;
-readonly                  Main.Facts        = [People, References, Equations, WorldLanguages];
+readonly                  Main.Facts        = [People, References, Equations, WorldLanguages, Comments];
 
 readonly namespace Main.Documents {
   HomePage            HomePage          = new;

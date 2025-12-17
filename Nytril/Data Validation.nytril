@@ -57,8 +57,8 @@ class DiagnosticGraphSection: Content {
     AddGraph(style, "Partitions", Data.Rule.Partitions);
     AddGraph(style, "Segment Property", VocalSegment.Features.Diphthong);
     AddGraph(style, "Segment", VocalSegments.au);
-    foreach (var l in Data.LanguageSet)
-      AddGraph(style, l.Name, l);
+    var l = Data.LanguageSet[0];
+    AddGraph(style, l.Name, l);
   };
 }
 

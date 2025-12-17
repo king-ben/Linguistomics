@@ -10,22 +10,65 @@ readonly namespace<Person> Reviewers {
 
 
 class Comment: Fact {
-  var        Text;
-  var Person Reviewer,
-             Handler;
-  field bool NoAction;
+  field string Text;
+  var        Formatted;
+  var Person Reviewer;
+  var        Response;
+  field bool NoAction,
+             HasAnchor;
 
   Constructor(Guid id, Person reviewer) {
     super.Constructor(id);
     Reviewer = reviewer;
   }
 
-  override GetLayoutTip = Paragraph {
-    ParAlignment: Justify;
-    Text;
+  override Icon GetIcon = Icons.comment;
+
+  override GetLayoutTip = Block {
+    TextHeight: 14pt;
+    Paragraph {
+      ParBackground: Colors.LightGray;
+      Reviewer.First;
+    };
+    ShowText;
   };
 
-  override Icon GetIcon = Icons.comment;
+  ShowText = Block {
+    Block {
+      ParAlignment: Justify;
+      if (NoAction)
+        TextColor: Colors.DarkGray;
+      Text;
+      if (NoAction) Paragraph {
+        "No Action Needed";
+      };
+    };
+
+    var p = FindFacts(Person) as Person[];
+    if (p is valid) {
+      Span {
+        TextColor: Colors.DarkGreen;
+        "Assigned to ";
+        CommaList {
+          (each p).First;
+        };
+      };
+    }
+
+    var region = FindFirstFact(DocumentEntry);
+    if (region is valid)
+      region;
+
+    if (Response is valid) Block {
+      Bold "Response";
+      Paragraph(BorderLR(new(1, 5, Colors.LightGray))) {
+        LeftIndent: 16pt;
+        RightIndent: 16pt;
+        Response;
+      }
+    };
+
+  };
 
   ShowReview(ContentStyle style) = Block {
     style.Heading2 {
@@ -33,22 +76,35 @@ class Comment: Fact {
       each1; ")"; Tab;
       Reviewer.First;
     };
-    Block {
-      ParAlignment: Justify;
-      if (NoAction)
-        TextColor: Colors.DarkGray;
-      Text;
-    };
-    if (Handler is valid) {
-      Span {
-        TextColor: Colors.DarkGreen;
-        "Handled by: ";
-        Handler.First;
+    ShowText;
+    if (HasAnchor) {
+      Paragraph {
+        Span {
+          TextColor: Colors.Blue;
+          "Go to location";
+          Action: new Action(Actions.ToDocAnchor, "{0}/{1}"(Main.Documents.PaperJOLE.FactId, FactId));
+        };
       };
     }
   };
-
 }
+
+AssignedTo(Person p) = {LinkTypes.Link to p};
+
+
+ReviewComment(Comment c) = {DocFields.Anchor(c.FactId); LinkTypes.Link to c; Span {TextColor: Colors.Blue; Icons.comment; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
+ReviewOld                = Span {TextColor: Colors.Red; TextStrike: TextStrikes.Single};
+ReviewNew                = Span {TextColor: Colors.Blue};
+
+
+// For example
+//  ReviewNew {
+//    "new text"
+//  };
+//  ReviewOld {
+//    "Old text";
+//  };
+
 
 readonly namespace<Comment> Comments {
   C1 = new(#24e42fab-cc77-4fff-b209-f3c5abb3bcc3#, Reviewers.R1) {
@@ -66,7 +122,10 @@ readonly namespace<Comment> Comments {
       "The current article uses TKF91 as a base for their inference, while Bouchard-Cˆot´e comments on this model that it lacks expressiveness, and I would agree with this comment. ";
       "Obviously, as Bouchard-Cˆot´e mostly wants to infer the ancestral states, it is possible to use a more complex model.";
     };
-    Handler: People.Goldstein_David;
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "I think this a wonderful suggestion, and I will act on it immediately. ";
+    };
   };
 
   C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
@@ -89,12 +148,17 @@ readonly namespace<Comment> Comments {
       "fig 11). For more clarity, a small table could summarize models M1,M2 and M3. These models could also be mentionned earlier. ";
       "It is not entirely clear to me how are the parameters of M3 designed, it looks to me as a type of hierarchical model.";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    HasAnchor: true;
+    Response: Paragraph {
+      "A reference to Figure 11 is found in section 4.4 par-2. ";
+    };
   };
 
   C6 = new(#98b6f99a-d855-488f-8567-04ae6bf4ab41#, Reviewers.R1) {
     Text: Paragraph {
       "Concerning the environment influence. ";
-      "In Bouchard-Cˆot´e they use transducer to retranscribe some of these interactions. ";
+      "In Bouchard-Côté they use transducer to retranscribe some of these interactions. ";
       "In your model another 1 possibility would be to use a different segmentation: for example align /k/ with /sj/, which would I guess be the best option here.";
     };
   };
@@ -112,8 +176,9 @@ readonly namespace<Comment> Comments {
 
   C8 = new(#83492b5e-b204-4774-90f8-dfd2b7bd0fe6#, Reviewers.R1) {
     Text: Paragraph {
-      "Another model that would be interesting to compare are the ”phylogenies” inferred using levenshtein distances, as your model corresponds to a weighted levenshtein distance by some aspects.";
+      "Another model that would be interesting to compare are the ”phylogenies” inferred using Levenshtein distances, as your model corresponds to a weighted levenshtein distance by some aspects.";
     };
+    AssignedTo(People.Huelsenbeck_John);
   };
 
   C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
@@ -121,6 +186,7 @@ readonly namespace<Comment> Comments {
       "Assuming three topologies can be justified in the Romance example, but is not doable in general. ";
       "Are there possibilities to infer fully the topology of the tree?";
     };
+    AssignedTo(People.Huelsenbeck_John);
   };
 
   C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
@@ -128,17 +194,19 @@ readonly namespace<Comment> Comments {
       "A last question would be the set of possible sounds in the changes. ";
       "What happens if the ancestral language contains sounds that have never been preserved but explains the strange patterns observed in the data?";
     };
+    AssignedTo(People.Huelsenbeck_John);
   };
 
   C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
     Text: Paragraph {
       "Lexical innovation is particularly important in linguistics, in the example presented there is little to no innovation. ";
       "Is that why the author chose this example? ";
-      "In Bouchard-Cˆot´e they infer jointly the cognacy classes and the transducers, would that be possible (or at least added as another step) in your model, or in future studies? ";
+      "In Bouchard-Côté they infer jointly the cognacy classes and the transducers, would that be possible (or at least added as another step) in your model, or in future studies? ";
       "There is an extensive literature on those models (Dollo model by Nicholls and Gray; Gray and Atkinson, etc.). ";
-      "I don’t think these models are related directly to your article, but the second paragraph of 5.5 ";
-      "tells a different story.";
+      "I don’t think these models are related directly to your article, but the second paragraph of 5.5 tells a different story.";
     };
+    AssignedTo(People.Goldstein_David);
+    HasAnchor: true;
   };
 
   C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
@@ -151,7 +219,7 @@ readonly namespace<Comment> Comments {
 
   C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
     Text: Paragraph {
-      "The sentence “who also treat cognate word-forms as observations” concerning Bouchard-Cˆot´e, is false as they extend their method to the case of unknown cognacy classes as well. ";
+      "The sentence “who also treat cognate word-forms as observations” concerning Bouchard-Côté, is false as they extend their method to the case of unknown cognacy classes as well. ";
       "The sentence “model is a historical model with well-defined events that can transform a word” is also somewhat misleading, as the “event-based” model corresponds to a continuous time overall (and reciprocally on a probabilistic perspective).";
     };
   };
@@ -322,42 +390,43 @@ readonly namespace<Comment> Comments {
 
   C32 = new(#f350218e-7962-41d4-9763-2e46b1929a55#, Reviewers.R2) {
     Text: "I find the referencing of figures a bit jarring, i.e., they aren't necessarily in order (e.g., 1, 2, 3...)";
-    Handler: People.McCreight_Shawn;
+    AssignedTo(People.McCreight_Shawn);
   };
 
   C33 = new(#b9de2ab6-70ae-4b54-8017-04ae88bbfc3f#, Reviewers.R2) {
-    Handler: People.McCreight_Shawn;
+    AssignedTo(People.McCreight_Shawn);
     Text: "Colors in figure 1 aren't color blind friendly (I also find the two greens hard to distinguish)";
+    AssignedTo(People.McCreight_Shawn);
   };
 
   C34 = new(#8402afbe-14ee-460e-85c2-aaa8d72d481c#, Reviewers.R2) {
     Text: "\"(DÉRom, 2023)\"? ";
-    Handler: People.Goldstein_David;
+    AssignedTo(People.Goldstein_David);
   };
 
   C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2) {
    Text: "\"study of (Moran et al. 2021, pp. 92-95)\"";
-    Handler: People.Goldstein_David;
+    AssignedTo(People.Goldstein_David);
   };
 
   C36 = new(#b2b69548-e966-4ddb-a42e-688b131a1753#, Reviewers.R2) {
     Text: "  - \"they are measuring the rate at which the size of segmental inventories changes\"";
-    Handler: People.Goldstein_David;
+    AssignedTo(People.Goldstein_David);
   };
 
   C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2) {
    "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
-    Handler: People.Goldstein_David;
+    AssignedTo(People.Goldstein_David);
   };
 
   C38 = new(#c060f19b-87ac-4790-9bd5-e4d126be9082#, Reviewers.R2) {
     Text: "\"not ASCII or ANSI\" -- why is ANSI mentioned here (or at all)? ";
-    Handler: People.McCreight_Shawn;
+    AssignedTo(People.McCreight_Shawn);
   };
 
   C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
     Text: "Given the novelty of the TKF91 model to linguistic data, I was surprised that no simulation study was provided. The model should be validated using Simulation-Based Calibration.";
-    Handler: People.Huelsenbeck_John;
+    AssignedTo(People.Huelsenbeck_John);
   };
 
   C40 = new(#88a595c5-6b2d-4845-87a3-6132c8466320#, Reviewers.R3) {
@@ -378,7 +447,7 @@ readonly namespace<Comment> Comments {
 
   C44 = new(#d6430550-ec51-4710-a073-989ea4df9994#, Reviewers.R3) {
     Text: "There appears to be a contradiction in the parameter count for the Natural Class model. Earlier, the text states that there are “79 parameters for the equilibrium distribution and 80 parameters describing rates among natural classes,” whereas later the model is described as having 78 equilibrium parameters plus 55 class-rate parameters (total 133). The latter seems correct given the 10-class structure (45 off-diagonals + 10 within class rates), so is 80 a typo?";
-    Handler: People.Huelsenbeck_John;
+    AssignedTo(People.Huelsenbeck_John);
   };
 
   C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3) {
