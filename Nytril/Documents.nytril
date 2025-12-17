@@ -101,7 +101,7 @@ class GraphSection: Content {
 
 class RelationshipContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Relationships");
+    super.Constructor("Graphs");
 
     Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
     Description = "Graphs of linguistic connections";

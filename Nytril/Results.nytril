@@ -239,10 +239,10 @@ class AlignmentChart {
 //======================================================================
 
 class RateTransition {
-  var               MaxRate,
-                    MaxFrequency;
-  var Matrix        Rates;
-  var PartitionRule Rule;
+  var                   MaxRate,
+                        MaxFrequency;
+  var Matrix<StatClass> Rates;
+  var PartitionRule     Rule;
 
   Constructor(RunResultsThread run, PartitionRule rule) {
     Rule = rule;

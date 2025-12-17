@@ -37,22 +37,28 @@ class WordsSearchAction: Action {
 //======================================================================
 
 class DiagnosticGraphSection: Content {
-  Constructor {
+  var ExperimentData Data;
+
+  Constructor(ExperimentData data) {
     super.Constructor("");
+    Data = data;
   }
 
-  AddGraph(ContentStyle style, title, fact) = Block {
+  AddGraph(ContentStyle style, title, fact, int depth=1) = Block {
     style.Heading2 {
       title;
     };
     var graph = new Graph();
-    graph.AddNodes(fact, 1);
+    graph.AddNodes(fact, depth);
     graph;
   };
 
   override GetBody(ContentStyle style, title) = Block {
-    AddGraph(style, "Diphthongs", VocalSegment.Features.Diphthong);
-    AddGraph(style, "Segment links", VocalSegments.au);
+    AddGraph(style, "Partitions", Data.Rule.Partitions);
+    AddGraph(style, "Segment Property", VocalSegment.Features.Diphthong);
+    AddGraph(style, "Segment", VocalSegments.au);
+    foreach (var l in Data.LanguageSet)
+      AddGraph(style, l.Name, l);
   };
 }
 
@@ -111,7 +117,7 @@ class DiagnosticsDocument: DocumentEntry {
 
     Content[] content = [
       new PriorTreeFigure(Data),
-      new DiagnosticGraphSection,
+      new DiagnosticGraphSection(Data),
       new AppendixContent(Lang.UniqueSegments, Display.VocalSegmentTable),
       new SegmentAssignmentsFigure(Data),
       new SegmentTransitionFigure(Data),
@@ -424,7 +430,7 @@ class WordDocument: DocumentEntry {
 
       foreach (var cognate in Data.UsedCognates) {
         var concept = cognate.Concept;
-        var lvector = new Vector(Data.LanguageSet.Length, null);
+        var lvector = new Vector<CognateWord>(Data.LanguageSet.Length, null);
 
         foreach (var word in cognate.Words) {
           if (word.Aligned is valid)

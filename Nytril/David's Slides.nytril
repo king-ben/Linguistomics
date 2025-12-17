@@ -126,7 +126,7 @@ namespace DavidSlides.Introduction {
       var list = new List(32);
       foreach (var slide in DavidSlides.ToArray[1..]) {
         if (show.CanInclude(slide))
-          list.Add({Numbered: list.Length+1; Text: slide.Title});
+          list.Add({Numbered: list.Length+1; Text: slide.GetField("Title")});
       }
       return list.ToArray;
     }

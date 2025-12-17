@@ -87,9 +87,10 @@ class CreateViewClass: DocumentEntry {
     Paragraph;
 
     var action = new CreateExperimentClass(Data);
-    ButtonControl(null, null, new Edge(1, 10)) {
-      Background: new RadialGradient(10%, 20%, 10%, 20%, 90%, 50%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
+    ButtonControl(null, null, new Edge(2, 10)) {
+      Background: new RadialGradient(10%, 10%, 10%, 10%, 20%, 40%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
       BorderRadius: 4;
+      BorderClip: true;
       TextHeight: 12pt;
       Bold;
       "Create experiment files";

@@ -40,7 +40,6 @@ readonly namespace Main.Documents {
   StyleDocument       PaperJOLE         = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, MainContentStyle);
   StyleDocument       Supplemental      = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", new SupplementalContent, MainContentStyle);
   StyleDocument       Analysis          = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Relationship", new RelationshipContent, MainContentStyle);
-  ReviewDocument      Review            = new;
   DavidSlideShow      DavidPresentation = new;
   JohnSlideShow       JohnPresentation  = new;
   DiagnosticsDocument Diagnostic        = new(MainContentStyle, MainResults.Data);

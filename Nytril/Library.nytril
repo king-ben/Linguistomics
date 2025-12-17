@@ -716,7 +716,7 @@ class ExperimentData {
   var PartitionRule           Rule;
   var CognateWord             DefWord;
   var TreeSet[]               TreeSets;
-  var List                    PlainBuffer,
+  var List<char>              PlainBuffer,
                               TextBuffer;
   var Attribute               ExampleConcept,
                               FigureConcept,
@@ -1451,7 +1451,7 @@ abstract class FrequencyChart {
 //======================================================================
 
 class SegmentFrequencyChart: FrequencyChart {
-  var Vector        PartitionMax;
+  var Vector<int>   PartitionMax;
   var SegmentPart[] Segments;
 
   Constructor(ExperimentData data, bool group) {
