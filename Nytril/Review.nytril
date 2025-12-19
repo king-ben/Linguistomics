@@ -405,7 +405,8 @@ readonly namespace<Comment> Comments {
 
   C34 = new(#8402afbe-14ee-460e-85c2-aaa8d72d481c#, Reviewers.R2) {
     Text: "\"(DÉRom, 2023)\"? ";
-    AssignedTo(People.Goldstein_David);
+    AssignedTo(People.Buchi_Éva);
+    Response: "N.B. the ATILF is getting rid of the Stella-server, so this URL will soon no longer work, whereas the “generic” URL will always be maintained.";
   };
 
   C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2) {

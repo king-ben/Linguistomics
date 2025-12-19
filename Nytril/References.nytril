@@ -737,8 +737,8 @@ readonly namespace<DocReference> References {
     Key: "DÉRom";
     Title: "Dictionnaire Étymologique Roman";
     Subtitle: "Les mots d’origine latine dans les langues romanes";
-    Date: #2023#;
-    Link to new URL("http://stella.atilf.fr/DERom/");
+    Date: #2008#;
+    Link to new URL("http://www.atilf.fr/DERom,");
     Accessed: #2025-07-04#;
     PublisherLink to Organizations.ATILF;
   };
