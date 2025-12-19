@@ -1,0 +1,227 @@
+using Format;
+readonly namespace<Comment> Comments;
+
+C5 = new(#9628d19f-a73c-4513-8f75-b7d6fe7122b3#, Reviewers.R1) {
+  Text: Paragraph {
+    "I think the article would benefit from more care in the writing. ";
+    "Some figures are not referred in the text (e.g. ";
+    "fig 11). For more clarity, a small table could summarize models M1,M2 and M3. These models could also be mentionned earlier. ";
+    "It is not entirely clear to me how are the parameters of M3 designed, it looks to me as a type of hierarchical model.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  HasAnchor: true;
+  Response: Paragraph {
+    "A reference to Figure 11; is found in section 4.4 par-2. ";
+  };
+};
+
+C7 = new(#bba1563a-d9e3-4583-a553-5c144d26ee9c#, Reviewers.R1) {
+  Text: Paragraph {
+    "Another frequent assumption is the regularity of the changes (as you mention in 5.2, ";
+    "although the context cannot explain itself the regularity in a probabilistic point of view). ";
+    "As it is a common assumption. ";
+    "More concretely in the computation of the likelihood, without this assumption the proximity of two languages for which systematically /a/ corresponds to /e/ would be further away. ";
+    "Is the size of the dataset related with the arguably good results of the method? ";
+    "Or is it only because you select from three highly likely phylogenies.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C8 = new(#83492b5e-b204-4774-90f8-dfd2b7bd0fe6#, Reviewers.R1) {
+  Text: Paragraph {
+    "Another model that would be interesting to compare are the ”phylogenies” inferred using Levenshtein distances, as your model corresponds to a weighted levenshtein distance by some aspects.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+};
+
+C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
+  Text: Paragraph {
+    "Assuming three topologies can be justified in the Romance example, but is not doable in general. ";
+    "Are there possibilities to infer fully the topology of the tree?";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
+  Text: Paragraph {
+    "A last question would be the set of possible sounds in the changes. ";
+    "What happens if the ancestral language contains sounds that have never been preserved but explains the strange patterns observed in the data?";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD - Add text about how the model can be extended...";
+  };
+};
+
+C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
+  Text: Paragraph {
+    "I don’t understand this sentence in the conclusion “When applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches.” ";
+    "as the models I mention above are clear on what they count, the lack of clarity might be on the definition of the cognacy classes and their production from the original data. ";
+    "Note also that these models are event based as well.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
+  Text: Paragraph {
+    "The sentence “who also treat cognate word-forms as observations” concerning Bouchard-Côté, is false as they extend their method to the case of unknown cognacy classes as well. ";
+    "The sentence “model is a historical model with well-defined events that can transform a word” is also somewhat misleading, as the “event-based” model corresponds to a continuous time overall (and reciprocally on a probabilistic perspective).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
+  Text: Paragraph {
+    "In Fig 11 why is the alignment different depending on the models? ";
+    "Is that because it is easier to align in some way if the rates are different between the classes (in particular deleting a /k/?).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C16 = new(#e1d990c4-c441-44b6-b224-51c376b3d2e2#, Reviewers.R1) {
+  Text: Paragraph {
+    "I would have liked to see some examples on simulated dataset, or even on another real family of languages (which is much more work so I understand to only focus on a single family).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C18 = new(#282a37be-a39c-465a-b47d-83c21659b522#, Reviewers.R1) {
+  Text: Paragraph {
+    "I think the theoretical part on Bayesian is very accessible to the non-statisticians, which is a good point. I think more details should be added on the homology H: what is the prior chosen on it? ";
+    "What is the exact procedure you use to compute its posterior distribution (I assume you integrate along the MCMC sample the posterior given the parameters, but it would be good to write it).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C19 = new(#d461c4c4-e6b1-4931-9ff3-febca0c96767#, Reviewers.R1) {
+  Text: Paragraph {
+    "The more I think about it the more I think the prior on H should depend on the value of λ and μ. ";
+    "But in this case, why is it a marginal prior and not a prior given these parameters? ";
+    "(p7 appendix) Please add some detail on that, as it might also explain why you observe more deletions and additions.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C20 = new(#c349a5f9-2263-4c11-8475-9fd5b938c92a#, Reviewers.R1) {
+  Text: Paragraph {
+    "The article by Lunter is quite difficult to read as it includes several elements linked with genetics, and I think some more details in supplement would be great.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C21 = new(#8c6f45b5-fdd1-4c93-be2c-f96a92e2b4a4#, Reviewers.R1) {
+  Text: Paragraph {
+    "The sentence “the likelihood accounts for all the histories of insertion, deletion, and segmental substitution that could have led to the observed words sampled from the nine languages” in 5.1 ";
+    "is strange to that regards. ";
+    "If it accounted for all the additions and deletion possible, I think the number of possible H 3 would be infinite, as the ancestral state can have any number of deleted characters. There is an approximation here somewhere (which is fine but would be interesting to understand exactly).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
+  Text: Paragraph {
+    "I don’t think Ψ is an amazing notation for a tree.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C26 = new(#5ce04d50-ce4a-4f51-9b28-0014edbbdc54#, Reviewers.R1) {
+  Text: Paragraph {
+    "Supplement p6: I would suggest introduce notations X for the observations and θ for the parameters. ";
+    "That would make everything more readable. ";
+    "Note that in your example, the tree topologies are not the parameters per se, they are the possible values of the parameter τ (same for ν). ";
+    "The assumption λ < μ might be better as part of the prior distribution.";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C27 = new(#8dcfb5bc-4e1e-411e-9981-3bd0e57b458e#, Reviewers.R1) {
+  Text: Paragraph {
+    "If you want a more accurate name for Metropolis-Hastings, you can use the full name Hastings-Metropolis-Rosenbluth-Teller (which has the advantage of giving back credit to the original authors).";
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD - Perhaps put the other name in parenthesis?";
+  };
+};
+
+C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
+  Text: Block {
+    Paragraph {
+      "The authors introduce a framework for applying the TKF91 model of molecular evolution of DNA sequences for comparative linguistic analysis at the segment and word levels. ";
+      "Using Bayesian phylogenetic approaches, inference is drawn from cognate word-forms and their segmental compositions directly. ";
+      "They use a subset of Romance languages as a test case, compare three different models (Poisson, an isomorphic DNA sequence evolution, Natural Class model), and results show that the Natural Class model explains the data much better than the other two models.  ";
+    };
+    Paragraph {
+      "The introduction does a nice job of laying out the problems with current historical-comparative approaches, e.g., \"the transformation of word-forms into abstract cognate relationships results in pervasive information loss\", \"since root-meaning traits are analyzed the same way biologists analyze morphological characters ... ";
+      "they are subject to the same limitations\", \"transformation of multistate cognate relationships into binary characters introduces dependencies into the data\", \"continuous-time Markov chains that model the evolution of lexical items in cognate classes assume that character evolution is independent and identically distributed\".  ";
+    };
+
+    Paragraph {
+      "For segmental changes, they find a clear division between vowels and consonants, as expected -- with vowels being more subject to change and diphthongs and long vowels the least stable. ";
+      "This coincides with what I know in the literature.  ";
+    };
+  };
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "Thanks for the compliment";
+  };
+};
+
+C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
+  Text: "Given the novelty of the TKF91 model to linguistic data, I was surprised that no simulation study was provided. The model should be validated using Simulation-Based Calibration.";
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
+C44 = new(#d6430550-ec51-4710-a073-989ea4df9994#, Reviewers.R3) {
+  Text: "There appears to be a contradiction in the parameter count for the Natural Class model. Earlier, the text states that there are “79 parameters for the equilibrium distribution and 80 parameters describing rates among natural classes,” whereas later the model is described as having 78 equilibrium parameters plus 55 class-rate parameters (total 133). The latter seems correct given the 10-class structure (45 off-diagonals + 10 within class rates), so is 80 a typo?";
+  AssignedTo(People.Huelsenbeck_John);
+};
+
+C49 = new(#52049589-ce3b-4965-8348-10c902f0d193#, Reviewers.R3) {
+  Text: "It may help the reader if Figure 7 is labelled explicitly as showing class-pooled average rates derived from the full 79×79 Q-matrix of phoneme-to-phoneme substitutions. Currently, the relationship between the full Q and the reduced 10×10 class matrix in the figure is not stated clearly. Same for Figure 6, I guess these are pooled from the individual phonemes.";
+  AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "TBD";
+  };
+};
+
