@@ -113,7 +113,10 @@ readonly namespace<Comment> Comments {
       "They propose several models and manage to compute a Bayes factor, which is a very good addition to the paper in my opinion. The main positive point of the model in my opinion is that the alignment of the word forms is automatic and a side produce of the inference. ";
       "The main negative point in my opinion is the lack of importance given to H: depending on the choice of the prior on this parameter we can get extremely different results.";
     };
-    NoAction: true;
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C2 = new(#c728912c-ed60-40c3-b780-93a4c0cb10fc#, Reviewers.R1) {
@@ -123,14 +126,19 @@ readonly namespace<Comment> Comments {
       "Obviously, as Bouchard-Côté mostly wants to infer the ancestral states, it is possible to use a more complex model.";
     };
     AssignedTo(People.Goldstein_David);
+    AssignedTo(People.Huelsenbeck_John);
     Response: Paragraph {
-      "I think this a wonderful suggestion, and I will act on it immediately. ";
+      "TBD";
     };
   };
 
   C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
     Text: Paragraph {
       "The second article would be Abner (2024) ”Computational phylogenetics reveal histories of sign languages”, which is closer in the goal but uses different assumptions on the model.";
+    };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -139,6 +147,8 @@ readonly namespace<Comment> Comments {
       "I don’t think a direct comparison with any of those model is doable or interesting (although you mention that TKF91 is not primarily used to infer the phylogeny and thus Bouchard-Côté is your direct competitor), but I would think some more questions can be asked based on those articles (I am not a specialist of Romance languages so some remarks might just mean additional details on the specificities of this domain is needed). ";
       "I mention those questions in the next parts.";
     };
+    AssignedTo(People.Buchi_Éva);
+    Response: "TBD";
   };
 
   C5 = new(#9628d19f-a73c-4513-8f75-b7d6fe7122b3#, Reviewers.R1) {
@@ -151,7 +161,7 @@ readonly namespace<Comment> Comments {
     AssignedTo(People.Huelsenbeck_John);
     HasAnchor: true;
     Response: Paragraph {
-      "A reference to Figure 11 is found in section 4.4 par-2. ";
+      "A reference to Figure 11; is found in section 4.4 par-2. ";
     };
   };
 
@@ -160,6 +170,10 @@ readonly namespace<Comment> Comments {
       "Concerning the environment influence. ";
       "In Bouchard-Côté they use transducer to retranscribe some of these interactions. ";
       "In your model another 1 possibility would be to use a different segmentation: for example align /k/ with /sj/, which would I guess be the best option here.";
+    };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -171,6 +185,10 @@ readonly namespace<Comment> Comments {
       "More concretely in the computation of the likelihood, without this assumption the proximity of two languages for which systematically /a/ corresponds to /e/ would be further away. ";
       "Is the size of the dataset related with the arguably good results of the method? ";
       "Or is it only because you select from three highly likely phylogenies.";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -187,6 +205,9 @@ readonly namespace<Comment> Comments {
       "Are there possibilities to infer fully the topology of the tree?";
     };
     AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
@@ -195,6 +216,9 @@ readonly namespace<Comment> Comments {
       "What happens if the ancestral language contains sounds that have never been preserved but explains the strange patterns observed in the data?";
     };
     AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD - Add text about how the model can be extended...";
+    };
   };
 
   C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
@@ -207,6 +231,9 @@ readonly namespace<Comment> Comments {
     };
     AssignedTo(People.Goldstein_David);
     HasAnchor: true;
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
@@ -215,12 +242,20 @@ readonly namespace<Comment> Comments {
       "as the models I mention above are clear on what they count, the lack of clarity might be on the definition of the cognacy classes and their production from the original data. ";
       "Note also that these models are event based as well.";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
     Text: Paragraph {
       "The sentence “who also treat cognate word-forms as observations” concerning Bouchard-Côté, is false as they extend their method to the case of unknown cognacy classes as well. ";
       "The sentence “model is a historical model with well-defined events that can transform a word” is also somewhat misleading, as the “event-based” model corresponds to a continuous time overall (and reciprocally on a probabilistic perspective).";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -232,6 +267,10 @@ readonly namespace<Comment> Comments {
       "The other possibility is that there are lots of insertion and deletion in your dataset overall. ";
       "Maybe the question should be the segmentation and the alignment themselves.";
     };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
@@ -239,11 +278,19 @@ readonly namespace<Comment> Comments {
       "In Fig 11 why is the alignment different depending on the models? ";
       "Is that because it is easier to align in some way if the rates are different between the classes (in particular deleting a /k/?).";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C16 = new(#e1d990c4-c441-44b6-b224-51c376b3d2e2#, Reviewers.R1) {
     Text: Paragraph {
       "I would have liked to see some examples on simulated dataset, or even on another real family of languages (which is much more work so I understand to only focus on a single family).";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -252,12 +299,20 @@ readonly namespace<Comment> Comments {
       "P6 - Finally, the equilibrium frequencies reveal that Romance languages rely primarily on stops and short vowels for phonemic constrasts” I don’t understand how this relates with the previous sentence: these equilibrium frequencies mean that the stops are more frequent, not that they contrast more, or you need additional steps of thinking. ";
       "I don’t really know why those frequencies are interesting.";
     };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C18 = new(#282a37be-a39c-465a-b47d-83c21659b522#, Reviewers.R1) {
     Text: Paragraph {
       "I think the theoretical part on Bayesian is very accessible to the non-statisticians, which is a good point. I think more details should be added on the homology H: what is the prior chosen on it? ";
       "What is the exact procedure you use to compute its posterior distribution (I assume you integrate along the MCMC sample the posterior given the parameters, but it would be good to write it).";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -267,11 +322,19 @@ readonly namespace<Comment> Comments {
       "But in this case, why is it a marginal prior and not a prior given these parameters? ";
       "(p7 appendix) Please add some detail on that, as it might also explain why you observe more deletions and additions.";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C20 = new(#c349a5f9-2263-4c11-8475-9fd5b938c92a#, Reviewers.R1) {
     Text: Paragraph {
       "The article by Lunter is quite difficult to read as it includes several elements linked with genetics, and I think some more details in supplement would be great.";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -281,12 +344,20 @@ readonly namespace<Comment> Comments {
       "is strange to that regards. ";
       "If it accounted for all the additions and deletion possible, I think the number of possible H 3 would be infinite, as the ancestral state can have any number of deleted characters. There is an approximation here somewhere (which is fine but would be interesting to understand exactly).";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C22 = new(#3778b40f-c2c0-4d5d-9a98-fe1de03b9e2a#, Reviewers.R1) {
     Text: Paragraph {
       "I think the paper is interesting, but I have the impression that most of the choices are ad hoc: inserting the empty characters before the /a/ so that it can evolve into /ie/ in french really does not seem possible unless the people using the model have a thourough knwoledge of the history of the languages. It is my believe that comptuational methods in linguistics should be used to reduce human workload, and to get quantitative results. ";
       "On the second aspect the method proposed here is interesting, but I seriously doubt the possibility to apply it in less studied languages, where adding those empty characters would be criticable.";
+    };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
     };
   };
 
@@ -310,6 +381,10 @@ readonly namespace<Comment> Comments {
     Text: Paragraph {
       "I don’t think Ψ is an amazing notation for a tree.";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C26 = new(#5ce04d50-ce4a-4f51-9b28-0014edbbdc54#, Reviewers.R1) {
@@ -319,11 +394,19 @@ readonly namespace<Comment> Comments {
       "Note that in your example, the tree topologies are not the parameters per se, they are the possible values of the parameter τ (same for ν). ";
       "The assumption λ < μ might be better as part of the prior distribution.";
     };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C27 = new(#8dcfb5bc-4e1e-411e-9981-3bd0e57b458e#, Reviewers.R1) {
     Text: Paragraph {
       "If you want a more accurate name for Metropolis-Hastings, you can use the full name Hastings-Metropolis-Rosenbluth-Teller (which has the advantage of giving back credit to the original authors).";
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD - Perhaps put the other name in parenthesis?";
     };
   };
 
@@ -332,6 +415,10 @@ readonly namespace<Comment> Comments {
       "Appendix 1: You should precise “size of the 95% set ...” ";
       "why are some of the meanings given in english and other in english and latin?";
     };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C29 = new(#f7e84d6b-186b-45fd-94d2-74bb10a1eb40#, Reviewers.R1) {
@@ -339,6 +426,7 @@ readonly namespace<Comment> Comments {
       "Last paragraph of 5.1, ";
       "avoid naming a single number with several letters GM(L) could be written with a single letter. 4";
     };
+    AssignedTo(People.McCreight_Shawn);
   };
 
   C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
@@ -357,6 +445,10 @@ readonly namespace<Comment> Comments {
         "For segmental changes, they find a clear division between vowels and consonants, as expected -- with vowels being more subject to change and diphthongs and long vowels the least stable. ";
         "This coincides with what I know in the literature.  ";
       };
+    };
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "Thanks for the compliment";
     };
   };
 
@@ -389,7 +481,11 @@ readonly namespace<Comment> Comments {
         "But that's not necessary in my opinion for publication, but might be nice in light of comments such as: \"While our results are relevant for the typology of diachronic phonology in that they capture broad trends in segmental evolution, they should not be interpreted as universal patterns of sound change.\" ";
         "I think they do a nice job of outlining the limitations of the current model, without getting into too much detail, e.g.: \"current implementation of the model is unable to take into account phonetic variation of word-forms\" and in describing the limitations of what the model can do in regard to sound change patterns that aren't one-to-one (in Section 5.4). ";
       };
-    }
+    };
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C32 = new(#f350218e-7962-41d4-9763-2e46b1929a55#, Reviewers.R2) {
@@ -412,16 +508,25 @@ readonly namespace<Comment> Comments {
   C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2) {
    Text: "\"study of (Moran et al. 2021, pp. 92-95)\"";
     AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C36 = new(#b2b69548-e966-4ddb-a42e-688b131a1753#, Reviewers.R2) {
     Text: "  - \"they are measuring the rate at which the size of segmental inventories changes\"";
     AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2) {
    Text: "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
     AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C38 = new(#c060f19b-87ac-4790-9bd5-e4d126be9082#, Reviewers.R2) {
@@ -434,22 +539,38 @@ readonly namespace<Comment> Comments {
   C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
     Text: "Given the novelty of the TKF91 model to linguistic data, I was surprised that no simulation study was provided. The model should be validated using Simulation-Based Calibration.";
     AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C40 = new(#88a595c5-6b2d-4845-87a3-6132c8466320#, Reviewers.R3) {
     Text: "The best-fitting model M3 is heavily parameterized relative to the dataset size (133 parameters for the substitution model estimated from only 102 cognate sets in 9 languages). I wonder if this is a case of overfitting to the particular historical trajectory of Romance. For example, the low equilibrium frequency estimated for diphthongs may simply mirror their monophthongization from Latin in this sample rather than reflect a general property of diphthongs in language change. The rate differences in Figure 7 are quite extreme, which made me think that perhaps very low equilibrium frequencies are being assigned to phonemes that just happen to be rare. If datasets of the same size as the empirical data were simulated under a model with less extreme values of stable frequencies and exchangeability rates, would some phonemes be rare simply due to chance? Would the analysis estimate a low equilibrium frequency for these phonemes, even when the true generating frequency is higher?";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD - It is not over-parameterized";
+    };
   };
 
   C41 = new(#f45bfeb0-5b37-456b-b5c3-2dd3a71f31bd#, Reviewers.R3) {
     Text: "I like the argument that in a typical linguistic phylogenetic analysis, cognate classifications are used as observations even though they are hypotheses. However, I don’t see how this new approach gets away from the problem. While the method analyzes observable segmental data, the dataset still depends on traditional cognacy judgments to decide which word-forms are grouped together. Any misclassification at this stage propagates into the analysis, just as in conventional approaches.";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD - Insightful tone down comments about framework";
+    };
   };
 
   C42 = new(#52ecd739-5c63-4458-ad41-2a503ccb4d11#, Reviewers.R3) {
     Text: "In Figure 5, the clustering of -qii values by natural class is striking, but doesn’t it just follow from the model structure? In the Natural Class model, all phonemes in a given class share the same exchangeability rates. Considering two phonemes in the same class, the rows of the Q matrix will be almost identical apart from the difference of 1 out of the 79 stable frequency values. In other words, figure 5 is driven by the exchangeabilities (shared within class) not the equilibrium frequencies. It seems to me the equilibrium frequencies would have to be drastically different within classes to produce a different pattern than that seen in figure 5. The authors should discuss the extent to which clustering is expected given the model structure.";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD - Equilibrium frequencies...";
+    };
   };
 
   C43 = new(#2b06ad58-9746-4319-92af-1602db04f1b1#, Reviewers.R3) {
     Text: "The code repository lacks any instructions or a readme file. The repo should be updated with the aim that the model can be applied by other researchers to their own data.";
+    AssignedTo(People.McCreight_Shawn);
   };
 
   C44 = new(#d6430550-ec51-4710-a073-989ea4df9994#, Reviewers.R3) {
@@ -459,30 +580,55 @@ readonly namespace<Comment> Comments {
 
   C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3) {
     Text: "The authors filtered out any cognate sets without a form in one or more languages. I am unsure after reading the paper whether or not ths was a data collection decision, or if the method implementation actually requires complete data like this. Please clarify.";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD - Only used complete cognate sets...";
+    };
   };
 
   C46 = new(#dbed1663-deba-490b-aa8d-0add0855d896#, Reviewers.R3) {
     Text: "The section starting around Figure 3, which presents an IPA–Unicode encoding example and raw data for the concept “mountain”, is informative but hard to follow in terms of the overall data-processing path. I recommend adding a schematic diagram of the workflow, from initial cognate identification through IPA encoding, segment parsing, alignment generation, and Bayesian inference to final rate and topology estimates. Such a figure would help readers understand the broader computational pipeline, and clarify where key modelling and data decisions occur.";
+    AssignedTo(People.McCreight_Shawn);
+    Response: Paragraph {
+      "Make pipeline fgure and put in appendix";
+    };
   };
 
   C47 = new(#5b0abd3b-4ed9-416e-84e6-5108bc60cad8#, Reviewers.R3) {
     Text: "The paragraph on page 3 beginning “Second, since root-meaning traits…” seems to be a criticism of the multistate model for cognate evolution. This is confusing for two reasons. First, it has already been stated on the previous page that the data is first binarised. Second, “state 0 of one cognate is not equivalent to state 0 of another”, surely you mean state 0 of a concept? The multistate approach has been attempted a few times (Heggarty et al. 2023 SI, Rönchen et al. 2024 and references therein), but for the most part linguistic phylogenies work on binarised data.";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C48 = new(#c245e887-93d9-485b-b6dd-ea06d763f06a#, Reviewers.R3) {
     Text: "The authors state that the method works on cognate words regardless of meaning. However, the data is organised by meaning. I assume that this just refers to the meaning in Latin, but please clarify.";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C49 = new(#52049589-ce3b-4965-8348-10c902f0d193#, Reviewers.R3) {
     Text: "It may help the reader if Figure 7 is labelled explicitly as showing class-pooled average rates derived from the full 79×79 Q-matrix of phoneme-to-phoneme substitutions. Currently, the relationship between the full Q and the reduced 10×10 class matrix in the figure is not stated clearly. Same for Figure 6, I guess these are pooled from the individual phonemes.";
+    AssignedTo(People.Huelsenbeck_John);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C50 = new(#38b4e7cb-4089-47f4-9679-2698fde2ed27#, Reviewers.R3) {
     Text: "It may be worth defining “unigram” explicitly in the manuscript, as many readers from historical linguistics rather than computational linguistics may not be familiar with the term";
+    AssignedTo(People.Goldstein_David);
+    Response: Paragraph {
+      "TBD";
+    };
   };
 
   C51 = new(#9fc6618a-a3db-4fcb-a105-a6f7f86a4b29#, Reviewers.R3) {
     Text: "Reference: Rönchen, Philipp, Tilo Wiklund, and Harald Hammarström. \"Likelihood calculation in a multistate model of vocabulary evolution for linguistic dating.\" Language Dynamics and Change 14.1 (2024): 1-41. ";
+    NoAction: true;
   };
 }
 
