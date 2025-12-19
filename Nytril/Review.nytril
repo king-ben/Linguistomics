@@ -11,6 +11,7 @@ readonly namespace<Comment> Comments {}
 
 // Use these functions
 // For example
+// #2025-12-19# ReviewComment(Comments.C5);
 //  ReviewNew {
 //    "new text"
 //  };
@@ -69,17 +70,6 @@ class Comment: Fact {
       };
     };
 
-    var p = FindFacts(Person) as Person[];
-    if (p is valid) {
-      Span {
-        TextColor: Colors.DarkGreen;
-        "Assigned to ";
-        CommaList {
-          (each p).First;
-        };
-      };
-    }
-
     var region = FindFirstFact(DocumentEntry);
     if (region is valid)
       region;
@@ -87,6 +77,7 @@ class Comment: Fact {
     if (Response is valid) Block {
       Bold "Response";
       Paragraph(BorderLR(new(1, 5, Colors.LightGray))) {
+        ParBackground: 98%;
         LeftIndent: 16pt;
         RightIndent: 16pt;
         Response;
@@ -100,8 +91,17 @@ class Comment: Fact {
       ParBackground: Colors.LightGray;
       name; ")"; Tab;
       Reviewer.First;
+      Tab*4;
+      var p = FindFacts(Person) as Person[];
+      if (p is valid) {
+        Span {
+          TextColor: Colors.DarkGreen;
+          CommaList {
+            (each p).First;
+          };
+        };
+      }
     };
-    ShowText;
     if (HasAnchor) {
       Paragraph {
         Span {
@@ -111,6 +111,7 @@ class Comment: Fact {
         };
       };
     }
+    ShowText;
   };
 }
 
