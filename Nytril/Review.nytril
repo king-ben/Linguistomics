@@ -294,12 +294,16 @@ readonly namespace<Comment> Comments {
     Text: Paragraph {
       "p7: lieasinabed, the whole list should go in appendix.";
     };
+    AssignedTo(People.McCreight_Shawn);
+    HasAnchor: true;
   };
 
   C24 = new(#237ad429-4fa2-4e55-8bb1-94fd1639f8c5#, Reviewers.R1) {
     Text: Paragraph {
       "Conclusion: estinmation";
     };
+    AssignedTo(People.McCreight_Shawn);
+    HasAnchor: true;
   };
 
   C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
@@ -415,13 +419,15 @@ readonly namespace<Comment> Comments {
   };
 
   C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2) {
-   "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
+   Text: "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
     AssignedTo(People.Goldstein_David);
   };
 
   C38 = new(#c060f19b-87ac-4790-9bd5-e4d126be9082#, Reviewers.R2) {
     Text: "\"not ASCII or ANSI\" -- why is ANSI mentioned here (or at all)? ";
     AssignedTo(People.McCreight_Shawn);
+    HasAnchor: true;
+    Response: "That was a good catch. I said 'ANSI' when I meant the 'ANSI Latin 1' code page. I rephrased this part to make it more precise. ";
   };
 
   C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {

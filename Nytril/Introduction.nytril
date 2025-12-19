@@ -295,6 +295,7 @@ class PaperDataSection: Content {
       " cognate sets, which are comprised of "; data.WordCount;
       " word-forms containing "; data.UniqueSegments.Length;
       " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+      ReviewComment(Comments.C23);
       ConceptList(data, style); DotSpace;
     };
 
@@ -368,10 +369,18 @@ class PaperDataCuration: Content {
     style.AddFigure(Figures.SegmentEncoding, FigureOptions.Top | FigureOptions.Bottom, 50%);
 
     style.BodyPar {
+      ReviewComment(Comments.C38);
       "Word-forms from the "; Enumerators.Cardinal(data.Taxa.Length); " languages in our study are organized into classes by concept and then by cognate class. ";
       style.FigureReference(Figures.ConceptEncoding); " shows an example of the raw data for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
-      "A challenge for programming in linguistics is that the IPA representation of words is expressed in Unicode (UCS), not ASCII or ANSI. ";
-      "This requires care with file formats, text encodings and diacritic compositional form. ";
+      "A challenge for programming in linguistics is that the IPA representation of words is expressed in Unicode (UCS), ";
+      ReviewOld {
+        "not ASCII or ANSI. This requires care with file formats, text encodings and diacritic compositional form. ";
+      };
+      ReviewNew {
+        "which cannot be represented in a single-byte encoding like ASCII. ";
+        "Instead, it best stored in UTF8 which is a common, cross-platform, multi-byte encoding for UCS. ";
+        "Diacritic compositional form must be standardized to faciliate equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
+      };
       "Furthermore, each IPA segment string can comprise several UCS code-points, so that the mapping between string characters and segments is not one-to-one. ";
       style.FigureReference(Figures.SegmentEncoding); " shows an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";
       "Since our analysis requires each word to be separated into segments, a parser converts word strings into arrays of segment objects that facilitate the manipulation of segments at a high level. ";

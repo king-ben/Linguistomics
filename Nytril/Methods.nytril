@@ -2088,9 +2088,19 @@ class ConclusionSection: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices"; DotSpace;
-
-      "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). Moreover, the event-based approach has the potential to improve divergence-time estinmation, which relies on estimating the number of events that occurred along the branches of the tree. When applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. By contrast, the possible events in our event-based approach are well defined: segmental transitions, insertions, or deletions.";
+      ReviewComment(Comments.C24);
+      "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
+      "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). ";
+      "Moreover, the event-based approach has the potential to improve divergence-time ";
+      ReviewOld {
+        "estinmation";
+      };
+      ReviewNew {
+        "estimation";
+      };
+      ", which relies on estimating the number of events that occurred along the branches of the tree. ";
+      "When applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. ";
+      "By contrast, the possible events in our event-based approach are well defined: segmental transitions, insertions, or deletions.";
     };
 
     style.AddFigure(Figures.AlignmentExample2, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
