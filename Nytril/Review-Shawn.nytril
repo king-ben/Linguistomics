@@ -30,6 +30,7 @@ C24 = new(#237ad429-4fa2-4e55-8bb1-94fd1639f8c5#, Reviewers.R1) {
   };
   AssignedTo(People.McCreight_Shawn);
   HasAnchor: true;
+  Response: "Corrected. ";
 };
 
 C32 = new(#f350218e-7962-41d4-9763-2e46b1929a55#, Reviewers.R2) {
@@ -41,6 +42,7 @@ C33 = new(#b9de2ab6-70ae-4b54-8017-04ae88bbfc3f#, Reviewers.R2) {
   AssignedTo(People.McCreight_Shawn);
   Text: "Colors in figure 1 aren't color blind friendly (I also find the two greens hard to distinguish)";
   AssignedTo(People.McCreight_Shawn);
+  Response: "Changed ambiguous colors to color-blind friendly ones. ";
 };
 
 C38 = new(#c060f19b-87ac-4790-9bd5-e4d126be9082#, Reviewers.R2) {

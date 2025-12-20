@@ -236,7 +236,7 @@ class CatalanClass: WorldLanguage {
 class WalloonClass: WorldLanguage {
   Constructor {
     super.Constructor(#a13142a6-e509-48a2-9d73-b1260049667b#, "Walloon", 0, res "Images/Walloon.png");
-    MapColor = #6BBD46#;
+    MapColor = #94CBEC#;
   }
 
   override Description = Paragraph {
@@ -253,7 +253,7 @@ class WalloonClass: WorldLanguage {
 class FriulianClass: WorldLanguage {
   Constructor {
     super.Constructor(#7a88dee7-b741-4fb1-819d-38fb9ff962ed#, "Friulian", 0, res "Images/Friulian.png");
-    MapColor = #F27F80#;
+    MapColor = #DCCD7D#;
   }
 
   override Description = Paragraph {
