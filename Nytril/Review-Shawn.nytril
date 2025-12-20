@@ -22,6 +22,7 @@ C23 = new(#dea1d699-0d2c-4f05-9a20-9e6d220f3414#, Reviewers.R1) {
   };
   AssignedTo(People.McCreight_Shawn);
   HasAnchor: true;
+  Response: "Moved list to the end of the Supplemental section. ";
 };
 
 C24 = new(#237ad429-4fa2-4e55-8bb1-94fd1639f8c5#, Reviewers.R1) {

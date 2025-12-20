@@ -2800,7 +2800,16 @@ class MethodsSection: Content {
       Cite{Jukes1969}; ", and assumes that the rates of change between all IPA segments is equal. ";
       "The second model, isomorphic to the model first described by Felsenstein "; Cite{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
     };
-   };
+
+    style.BodyPar {
+      BodyTitle {"Cognates Used in the Paper"}; DotSpace;
+      "In total, the dataset contains "; data.UsedCognates.Length;
+      " cognate sets, which are comprised of "; data.WordCount;
+      " word-forms containing "; data.UniqueSegments.Length;
+      " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+      PaperDataSection.ConceptList(data, style); DotSpace;
+    };
+  };
 }
 
 //======================================================================

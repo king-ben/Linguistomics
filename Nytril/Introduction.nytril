@@ -232,7 +232,7 @@ class PaperDataSection: Content {
     super.Constructor("Data");
   }
 
-  ConceptList(ExperimentData data, ContentStyle style) = style.TextList {
+  static ConceptList(ExperimentData data, ContentStyle style) = style.TextList {
     foreach (var concept in data.UsedConcepts.ToSortedArray()) {
       Span {
         string n = concept.Name;
@@ -291,12 +291,17 @@ class PaperDataSection: Content {
     };
 
     style.BodyPar {
+      ReviewComment(Comments.C23);
       "In total, the dataset contains "; data.UsedCognates.Length;
       " cognate sets, which are comprised of "; data.WordCount;
       " word-forms containing "; data.UniqueSegments.Length;
-      " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
-      ReviewComment(Comments.C23);
-      ConceptList(data, style); DotSpace;
+      ReviewOld {
+        " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+        ConceptList(data, style); DotSpace;
+      };
+      ReviewNew {
+        " unique segments. ";
+      };
     };
 
     style.BodyPar {
