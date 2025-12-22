@@ -59,6 +59,7 @@ C29 = new(#f7e84d6b-186b-45fd-94d2-74bb10a1eb40#, Reviewers.R1) {
     "avoid naming a single number with several letters GM(L) could be written with a single letter. 4";
   };
   AssignedTo(People.McCreight_Shawn);
+  Response: "The symbol was changed to " EquationSymbols.GMLength;
 };
 
 C43 = new(#2b06ad58-9746-4319-92af-1602db04f1b1#, Reviewers.R3) {

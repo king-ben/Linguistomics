@@ -1705,6 +1705,7 @@ class OtherApproachesSection: Content {
     };
 
     style.BodyPar {
+      ReviewComment(Comments.C29);
       "The complexity of the likelihood calculations under the TKF91 model is exponential in the number of taxa and word length. Specifically, the complexity is of order ";
       Equations.LikelihoodComplexity;
       " where "; NumTreeLeaves; " is the number of leaves on the tree and "; GMLength; " is the geometric mean of the word lengths ";
@@ -2804,7 +2805,7 @@ class MethodsSection: Content {
     style.BodyPar {
       BodyTitle {"Cognates Used in the Paper"}; DotSpace;
       "In total, the dataset contains "; data.UsedCognates.Length;
-      " cognate sets, which are comprised of "; data.WordCount;
+      " cognate sets that comprise "; data.WordCount;
       " word-forms containing "; data.UniqueSegments.Length;
       " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
       PaperDataSection.ConceptList(data, style); DotSpace;
