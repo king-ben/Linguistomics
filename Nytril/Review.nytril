@@ -1,7 +1,3 @@
-include "Review-John";
-include "Review-David";
-include "Review-Shawn";
-
 using Format;
 
 // Put comments in this namespace
@@ -21,7 +17,7 @@ readonly namespace<Comment> Comments {}
 
 AssignedTo(Person p)     = {LinkTypes.Link to p};
 ReviewComment(Comment c) = {DocFields.Anchor(c.FactId); LinkTypes.Link to c; Span {TextColor: Colors.Blue; Icons.comment; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
-ReviewOld                = Span {TextColor: Colors.Red; TextStrike: TextStrikes.Single};
+ReviewOld                = Span {/*TextHidden: not ShowReviewOld; */TextColor: Colors.Red; TextStrike: TextStrikes.Single};
 ReviewNew                = Span {TextColor: Colors.Blue};
 
 
