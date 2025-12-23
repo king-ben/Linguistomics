@@ -271,8 +271,15 @@ class PaperDataSection: Content {
     style.AddFigure(Figures.LanguageDistribution, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full, 60%);
 
     style.TitlePar(title) {
-      "This study is based on a dataset of cognate word-forms from a sample of "; langcount;
-      " Romance languages and Latin, whose geographic distribution is presented in ";
+      ReviewComment(Comments.C4);
+      "This study is based on a dataset of cognate word-forms from a sample of ";
+      langcount;
+      " Romance languages and Latin, ";
+      ReviewNew {
+        "an assortment of languages which are all typologically fusional, ";
+      };
+      "whose geographic distribution is presented in ";
+
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
       "The word-forms are cognate in the traditional sense in that they refer to word-forms that descend from a common ancestor"; Cite {Chang2015.OnPage(201)}; DotSpace;
       "In contrast to root-meaning traits (such as the one illustrated in ";
@@ -300,11 +307,8 @@ class PaperDataSection: Content {
         ConceptList(data, style); DotSpace;
       };
       ReviewNew {
-        " unique segments. ";
+        " unique segments drawn from "; data.UsedConcepts.Length; " concepts. ";
       };
-    };
-
-    style.BodyPar {
       "The word-forms can be represented as either phonetic or phonemic sequences. ";
       "We use phonemic representations for two reasons"; DotSpace;
       "First, phonetic data is harder to come by, especially with a corpus language such as Latin"; DotSpace;
@@ -330,20 +334,30 @@ class PaperDataSection: Content {
       "In this study, each lexical item is represented by a single word-form, however. ";
       "For verbs, the present active infinitive is used. ";
       "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word-forms. ";
-      "Among nouns and adjectives in our dataset, the ancestral form is far more often the accusative. ";
+      "Among nouns and adjectives in our dataset, the ancestral form is";
+      ReviewNew {
+        ", as expected, ";
+      };
+      " far more often the accusative. ";
       "The selection of word-forms is not without consequences, since it can impact the estimated transition rates. For instance, most masculine singular nominative adjectives in Latin end in "; TextIpa{"-us"}; DotSpace;
       "By contrast, feminine singular nominative adjectives end in "; TextIpa{"-a"}; DotSpace;
       "Use of the feminine forms would increase the number of transitions originating in this vowel. ";
     };
 
     style.BodyPar{
+      ReviewComment(Comments.C4);
       "The lexical histories of the Romance languages are notoriously complex"; Cite {Stefenelli1992; Dworkin2016b};
       ", as they have been shaped not only by inheritance but also by borrowings from both other Romance languages and Latin itself. ";
       "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
       "In fact, Romance data are in many ways ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
       "Two reasons are responsible for this reduced risk. ";
       "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Cite {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
-      "Second, the phonological developments of the Romance languages are sufficiently well understood that borrowings and Latinisms can often be detected. ";
+      "Second, the phonological developments of the Romance languages, ";
+      ReviewNew {
+        "whose earliest written testimonies go as far back as the 9" sup "th"; " and 10" sup "th";
+        " centuries, so that their history is exceptionally well known, ";
+      };
+      "are sufficiently well understood that borrowings and Latinisms can often be detected. ";
       "We excluded all word-forms for which evidence of borrowing could be identified. ";
       "Romance cognates are therefore appropriate for our analysis for the same reason that scholars have been able to reconstruct Proto-Romance lexemes using the traditional comparative method. ";
       "For instance, the "; textit{"Dictionnaire Étymologique Roman"}; Cite{Derom}; " reconstructs a subset of the Proto-Romance lexicon from a dataset similar in spirit to ours. ";
@@ -384,7 +398,7 @@ class PaperDataCuration: Content {
       ReviewNew {
         "which cannot be represented in a single-byte encoding like ASCII. ";
         "Instead, it best stored in UTF8 which is a common, cross-platform, multi-byte encoding for UCS. ";
-        "Diacritic compositional form must be standardized to faciliate equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
+        "Diacritic compositional form must be standardized to faciliate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
       };
       "Furthermore, each IPA segment string can comprise several UCS code-points, so that the mapping between string characters and segments is not one-to-one. ";
       style.FigureReference(Figures.SegmentEncoding); " shows an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";

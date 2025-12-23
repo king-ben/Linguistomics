@@ -1317,7 +1317,11 @@ class PhylogenyResultsSection: Content {
     };
 
     style.BodyPar {
-      "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin, and the Romance languages"; Cite {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
+      "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin";
+      ReviewNew {
+        "/Proto-Romance";
+      };
+      ", and the Romance languages"; Cite {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
       "In this study, we assume the latter as Latin is an outgroup to the Romance languages. ";
       "This decision was motivated by practical considerations and not linguistic ones, as a tree model allowing sampled ancestry is more complicated than the one used in this paper"; DotSpace;
@@ -1763,7 +1767,7 @@ class SoundChangeSection: Content {
       "The liquids exhibit the highest rate and the diphthongs the lowest"; DotSpace;
       "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class"; DotSpace;
       "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong"; DotSpace;
-      "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"arbor"}; Cite{Abrego2013; Mueller2013}; DotSpace;
+      "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Cite{Abrego2013; Mueller2013}; DotSpace;
       "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is with the short vowels"; DotSpace;
       "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
       "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
@@ -1781,7 +1785,9 @@ class SoundChangeSection: Content {
      style.BodyPar{
        "Finally, the results of model comparison support the relevance of natural classes in sound change "; Cite{King1969.OnPage(201)}; DotSpace;
        "It is well established that sound changes often target natural classes of segments"; DotSpace;
-       "Grimm’s Law, for instance, systematically affects all Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
+       "Grimm’s Law, for instance, systematically affects all ";
+       ReviewNew{"Proto-Germanic reflexes of "};
+       "Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
        "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
        " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
     };
@@ -2803,12 +2809,14 @@ class MethodsSection: Content {
     };
 
     style.BodyPar {
-      BodyTitle {"Cognates Used in the Paper"}; DotSpace;
-      "In total, the dataset contains "; data.UsedCognates.Length;
-      " cognate sets that comprise "; data.WordCount;
-      " word-forms containing "; data.UniqueSegments.Length;
-      " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
-      PaperDataSection.ConceptList(data, style); DotSpace;
+      ReviewNew {
+        BodyTitle {"Cognates Used in the Paper"}; DotSpace;
+        "In total, the dataset contains "; data.UsedCognates.Length;
+        " cognate sets that comprise "; data.WordCount;
+        " word-forms containing "; data.UniqueSegments.Length;
+        " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+        PaperDataSection.ConceptList(data, style); DotSpace;
+      };
     };
   };
 }
