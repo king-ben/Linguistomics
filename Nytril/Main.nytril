@@ -28,7 +28,13 @@ include "Review";
 include "Review-John";
 include "Review-David";
 include "Review-Shawn";
+//======================================================================
 
+readonly namespace<Person> Reviewers {
+  R1 = new(#c2af5714-c3da-4e59-af0e-d6b1b181db8e#, "Reviewer 1", null, null);
+  R2 = new(#8afa017a-9e98-42ef-9052-006768cbb043#, "Reviewer 2", null, null);
+  R3 = new(#e72f0c0e-25f1-4751-9d75-a722c5392850#, "Reviewer 3", null, null);
+}
 
 //======================================================================
 
@@ -47,6 +53,9 @@ readonly namespace Main.Documents {
   DavidSlideShow      DavidPresentation = new;
   JohnSlideShow       JohnPresentation  = new;
   DiagnosticsDocument Diagnostic        = new(MainContentStyle, MainResults.Data);
+  ReviewDocument      Review            = new;
+  RevisedDocument     Revised           = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Revised", PaperJOLE);
+
 //  TexDocument       TexPaper          = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
 }
 

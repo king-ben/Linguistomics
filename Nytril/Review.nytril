@@ -2,6 +2,7 @@ using Format;
 
 // Put comments in this namespace
 readonly namespace<Comment> Comments {}
+readonly namespace<Person> Reviewers {}
 
 
 
@@ -16,33 +17,41 @@ readonly namespace<Comment> Comments {}
 //  };
 
 AssignedTo(Person p)     = {LinkTypes.Link to p};
-ReviewComment(Comment c) = {DocFields.Anchor(c.FactId); LinkTypes.Link to c; Span {TextColor: Colors.Blue; Icons.comment; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
+ReviewComment(Comment c) = {DocFields.Anchor(c.FactId); LinkTypes.Link to c; Span {TextColor: Colors.Blue; Icons.comment; c.Number; Space; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
 ReviewOld                = Span {/*TextHidden: not ShowReviewOld; */TextColor: Colors.Red; TextStrike: TextStrikes.Single};
 ReviewNew                = Span {TextColor: Colors.Blue};
 
-
-
-readonly ReviewDocument Main.Documents.Review = new;
-
-readonly namespace<Person> Reviewers {
-  R1 = new(#c2af5714-c3da-4e59-af0e-d6b1b181db8e#, "Reviewer 1", null, null);
-  R2 = new(#8afa017a-9e98-42ef-9052-006768cbb043#, "Reviewer 2", null, null);
-  R3 = new(#e72f0c0e-25f1-4751-9d75-a722c5392850#, "Reviewer 3", null, null);
+readonly Comment[] CommentList {
+  foreach (var c in attribute(Comments).Children)
+    c.Value.Init(c);
+   return Comments.ToSortedArray(false, @Comment.CompareName);
 }
 
+//======================================================================
 
 class Comment: Fact {
-  field string Text;
-  var        Formatted;
-  var Person Reviewer;
-  var        Response;
-  field bool NoAction,
-             HasAnchor;
+  field string Comment;
+  field string Name;
+  var          Text,
+               Response,
+               Number;
+  var Person   Reviewer;
+  field bool   NoAction,
+               HasAnchor;
 
   Constructor(Guid id, Person reviewer) {
     super.Constructor(id);
     Reviewer = reviewer;
   }
+
+  void Init(value) {
+    Name    = value.Name;
+    Comment = Text;
+    Number  = (Name[1..]) as int;
+  }
+
+
+  static int CompareName(Comment c1, Comment c2) = c1.Number.Compare(c2.Number);
 
   override Icon GetIcon = Icons.comment;
 
@@ -82,10 +91,10 @@ class Comment: Fact {
 
   };
 
-  ShowReview(ContentStyle style, name) = Block {
+  ShowReview(ContentStyle style) = Block {
     style.Heading2 {
       ParBackground: Colors.LightGray;
-      name; ")"; Tab;
+      Number; ")"; Tab;
       Reviewer.First;
       Tab*4;
       var p = FindFacts(Person) as Person[];
@@ -109,6 +118,52 @@ class Comment: Fact {
     }
     ShowText;
   };
+
+  ShowRevised(ContentStyle style) = Block {
+    TextFace: TextFaces.SansSerif;
+
+    style.Heading2 {
+      ParBackground: Colors.LightGray;
+      Number; ")"; Tab;
+      Reviewer.First;
+    };
+    Paragraph {
+      "Reviewer's Comment";
+    };
+
+    Block {
+      ParAlignment: Justify;
+      TextHeight: 10pt;
+      LeftIndent: 16pt;
+      Text;
+    };
+
+    var region = FindFirstFact(DocumentEntry);
+    if (region is valid)
+      region;
+
+    if (Response is valid) Block {
+      Paragraph {
+        SpaceBefore: 4pt;
+        "Author's Response";
+      };
+      Paragraph(BorderLR(new(1, 5, Colors.LightGray))) {
+        LeftIndent: 16pt;
+        RightIndent: 16pt;
+        Response;
+      }
+    };
+
+    if (HasAnchor) {
+      Paragraph {
+        Span {
+          TextColor: Colors.Blue;
+          "In paper";
+          Action: new Action(Actions.ToAnchor, FactId);
+        };
+      };
+    }
+  };
 }
 
 //======================================================================
@@ -129,79 +184,33 @@ class ReviewDocument: DocumentEntry {
       Name;
     };
 
-    foreach (var comment in attribute(Comments).Children)
-      comment.Value.ShowReview(Style, comment.Name);
-    PageBreak;
-    Letter;
-  };
-
-  Letter = Block {
-    Style.BodyPar {
-      "Dear Prof. Goldstein,";
-    };
-    Style.BodyPar {
-      "Manuscript ID JOLE-2025-026 entitled \"Understanding linguistic evolution using an event-based model\" which you submitted to the Journal of Language Evolution, has been reviewed.  ";
-      "The comments of the reviewer(s) are included at the bottom of this letter.";
-    };
-    Style.BodyPar {
-      "The reviewer(s) have recommended publication, but also suggest some major revisions to your manuscript.  ";
-      "Therefore, I invite you to respond to the reviewer(s)' comments and revise your manuscript.";
-    };
-    Style.BodyPar {
-      "The key issues as far as I see them are:";
-    };
-    ListBlock(@Enumerators.Number) {
-      "The request for a simulation study to verify accuracy and investigate the issue of over-fitting.";
-      "To provide clarifications around the model (e.g. the extent to which clustering of values is expected given the model's structure, the expansion of the prior on _H_ and how the posterior is calculated, etc).";
-      "To connect the discussion to Bouchard-Côté et al (who critique TKF91), and Abner et al., as well as some of the broader literature on the stability of segments in cross-linguistic sound change.";
-      "To discuss the potential to infer the full topology rather than fitting onto a tree.";
-    };
-
-    Empty;
-    Style.FirstPar {
-      "To revise your manuscript, log into https://mc.manuscriptcentral.com/jole ";
-      "and enter your Author Centre, where you will find your manuscript title listed under \"Manuscripts with Decisions.\"  ";
-      "Under \"Actions,\" click on \"Create a Revision.\"  ";
-      "Your manuscript number has been appended to denote a revision.";
-    };
-    Style.BodyPar {
-      "You may also click the below link to start the revision process (or continue the process if you have already started your revision) for your manuscript. ";
-      "If you use the below link you will not be required to login to ScholarOne Manuscripts.";
-    };
-    Style.BodyPar {
-      "PLEASE NOTE: This is a two-step process. ";
-      "After clicking on the link, you will be directed to a webpage to confirm. ";
-      new URL("https://mc.manuscriptcentral.com/jole?URL_MASK=4af2e17d72224547b6bf7ad6fdcaea8b");
-    };
-    Style.BodyPar {
-      "You will be unable to make your revisions on the originally submitted version of the manuscript.  ";
-      "Instead, revise your manuscript using a word processing program and save it on your computer.  ";
-      "Please also highlight the changes to your manuscript within the document by using the track changes mode in MS Word or by using bold or colored text.";
-    };
-    Style.BodyPar {
-      "Once the revised manuscript is prepared, you can upload it and submit it through your Author Centre. ";
-      "When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  ";
-      "You can use this space to document any changes you make to the original manuscript.  ";
-      "In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).";
-    };
-    Style.BodyPar {
-      "IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  ";
-      "Please delete any redundant files before completing the submission. ";
-      "Because we are trying to facilitate timely publication of manuscripts submitted to the Journal of Language Evolution, your revised manuscript should be uploaded as soon as possible.  ";
-      "If it is not possible for you to submit your revision in a reasonable amount of time, we may have to consider your paper as a new submission.";
-    };
-    Style.BodyPar {
-      "Once again, thank you for submitting your manuscript to the Journal of Language Evolution and I look forward to receiving your revision.";
-    };
-    Style.FirstPar {
-      "Kind Regards,";
-    };
-
-    Style.FirstPar {
-      "Dr. Simon Greenhill\nEditor, Journal of Language Evolution\n";
-      new Email("simon@simon.net.nz");
-    };
+    foreach (var comment in CommentList)
+      comment.ShowReview(Style);
   };
 }
 
 //======================================================================
+
+class RevisedDocument: StyleDocument {
+  var StyleDocument Manuscript;
+
+  Constructor(Guid id, name, StyleDocument doc) {
+    super.Constructor(id, name, doc.Content, doc.Style);
+    Manuscript = doc;
+  }
+
+  override GetDocument = super.GetDocument {
+    SectionNextPage;
+    Style.Heading1 {
+      "Comments and Responses";
+    };
+
+    foreach (var c in CommentList) {
+      if (!c.NoAction)
+        c.ShowRevised(Style);
+    }
+  };
+}
+
+//======================================================================
+

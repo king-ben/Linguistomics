@@ -76,4 +76,72 @@ C46 = new(#dbed1663-deba-490b-aa8d-0add0855d896#, Reviewers.R3) {
   };
 };
 
+C52 = new(#04bf9a56-f28b-4df9-b913-fab4645a427d#, Reviewers.R1) {
+  Text: Block {
+    Paragraph {
+      "Dear Prof. Goldstein,";
+    };
+    Paragraph {
+      "Manuscript ID JOLE-2025-026 entitled \"Understanding linguistic evolution using an event-based model\" which you submitted to the Journal of Language Evolution, has been reviewed.  ";
+      "The comments of the reviewer(s) are included at the bottom of this letter.";
+    };
+    Paragraph {
+      "The reviewer(s) have recommended publication, but also suggest some major revisions to your manuscript.  ";
+      "Therefore, I invite you to respond to the reviewer(s)' comments and revise your manuscript.";
+    };
+    Paragraph {
+      "The key issues as far as I see them are:";
+    };
+    ListBlock(@Enumerators.Number) {
+      "The request for a simulation study to verify accuracy and investigate the issue of over-fitting.";
+      "To provide clarifications around the model (e.g. the extent to which clustering of values is expected given the model's structure, the expansion of the prior on _H_ and how the posterior is calculated, etc).";
+      "To connect the discussion to Bouchard-Côté et al (who critique TKF91), and Abner et al., as well as some of the broader literature on the stability of segments in cross-linguistic sound change.";
+      "To discuss the potential to infer the full topology rather than fitting onto a tree.";
+    };
 
+    Empty;
+    Paragraph {
+      "To revise your manuscript, log into https://mc.manuscriptcentral.com/jole ";
+      "and enter your Author Centre, where you will find your manuscript title listed under \"Manuscripts with Decisions.\"  ";
+      "Under \"Actions,\" click on \"Create a Revision.\"  ";
+      "Your manuscript number has been appended to denote a revision.";
+    };
+    Paragraph {
+      "You may also click the below link to start the revision process (or continue the process if you have already started your revision) for your manuscript. ";
+      "If you use the below link you will not be required to login to ScholarOne Manuscripts.";
+    };
+    Paragraph {
+      "PLEASE NOTE: This is a two-step process. ";
+      "After clicking on the link, you will be directed to a webpage to confirm. ";
+      new URL("https://mc.manuscriptcentral.com/jole?URL_MASK=4af2e17d72224547b6bf7ad6fdcaea8b");
+    };
+    Paragraph {
+      "You will be unable to make your revisions on the originally submitted version of the manuscript.  ";
+      "Instead, revise your manuscript using a word processing program and save it on your computer.  ";
+      "Please also highlight the changes to your manuscript within the document by using the track changes mode in MS Word or by using bold or colored text.";
+    };
+    Paragraph {
+      "Once the revised manuscript is prepared, you can upload it and submit it through your Author Centre. ";
+      "When submitting your revised manuscript, you will be able to respond to the comments made by the reviewer(s) in the space provided.  ";
+      "You can use this space to document any changes you make to the original manuscript.  ";
+      "In order to expedite the processing of the revised manuscript, please be as specific as possible in your response to the reviewer(s).";
+    };
+    Paragraph {
+      "IMPORTANT:  Your original files are available to you when you upload your revised manuscript.  ";
+      "Please delete any redundant files before completing the submission. ";
+      "Because we are trying to facilitate timely publication of manuscripts submitted to the Journal of Language Evolution, your revised manuscript should be uploaded as soon as possible.  ";
+      "If it is not possible for you to submit your revision in a reasonable amount of time, we may have to consider your paper as a new submission.";
+    };
+    Paragraph {
+      "Once again, thank you for submitting your manuscript to the Journal of Language Evolution and I look forward to receiving your revision.";
+    };
+    Paragraph {
+      "Kind Regards,";
+    };
+
+    Paragraph {
+      "Dr. Simon Greenhill\nEditor, Journal of Language Evolution\n";
+      new Email("simon@simon.net.nz");
+    };
+  };
+};
