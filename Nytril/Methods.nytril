@@ -2897,33 +2897,33 @@ class MethodsSection: Content {
     style.BodyPar {
       BodyTitle {"Workflow"}; DotSpace;
       "The first step in the experiment was to create a dictionary of IPA segment information. ";
-      "The files 'IPA.nytril' and 'Segments.nytril' contain the definitions of these classes and the information about each segment is encoded in a single instance of the class. ";
-      "This definition includes the IPA symbol string {e.g. "; VocalSegments.nya.ShowDoc; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
-      "These files are designed to be reusable for future experiments, and even by other researchers. ";
+      "The files 'IPA.nytril' and 'Segments.nytril' contain the definitions of these classes and the information about each segment is encoded in a separate instances of the these classes. ";
+      "The definition of a segment includes the IPA symbol string {e.g. "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
+      "These files are designed to be reusable for future experiments, and by other researchers. ";
     };
     style.BodyPar {
-      "Next is the aggregation of cognate words, stored in nytril source files as quoted strings, organized by category and language. ";
-      "The strings contain UCS code points encoding the IPA symbol for each segment, described above. ";
+      "Next is the aggregation of cognate words, stored in nytril source files as strings, organized by category and language. ";
+      "The strings contain UCS code points encoding the IPA symbol for each segment, making it easy to copy and paste from different sources. ";
       "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
       "The words also may contain syllable accent marks, but these are ignored for this experiment. ";
       "The format of this file was created to facilitate the collection and editing by the researchers. ";
       "Although these word files are organized by parts of speech (e.g. Nouns, Adjectives, etc..), this has no effect other than to break them up into smaller chunks for editing. ";
-      "In other words, it is organized in the way that makes the most sense to a linguist, not the computer. ";
+      "In other words, it is organized in the way that makes the most sense to a linguist, but when processed, they are aggregated and sorted in a different way. ";
     };
     style.BodyPar {
-      "The next step involves decoding the strings and turning the set of UCS code points into an array of VocalSegment objects. ";
-      "Since the IPA characters contain diacritic marks and have a variable length, the strings must be normalized to a specific diacritic form before being compared. ";
-      "We chose Form C, but the goal is that the diacritics are in the same position in all string for comparison. ";
+      "The next step involves software. The strings are decoded and the UCS code points are turned into an array of VocalSegment objects. ";
+      "Since the IPA characters contain diacritic marks and have a variable length, the code points in the strings must be normalized to a specific form before being compared. ";
+      "We chose Form C (NFC - Canonical precomposition), but the goal is that the diacritics are in the same relative position in all strings, for accurate comparison. ";
       "Once these strings are parsed to object pointers, they are tested by converting them back to a string to confirm that they produce the same sequence as the starting point. ";
       "The segment objects are next grouped into words, and associated by category, cognate and language until the final result is a large conventional data structure representing all of the raw data in the experiment. ";
     };
     style.BodyPar {
       "The next step is to produce a series of diagnostic documents that show the data in a variety of tables and charts. ";
-      "The goal is to slice the words in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
+      "The goal is to slice the words and data in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
     };
     style.BodyPar {
-      "When the team is statisfied that the data is well formed, a process is run (by clicking a button) to take all of the data and create an experiment snapshot. ";
-      "This creates a named folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
+      "When the team is statisfied that the data is well formed, a process is run to take all of the data and create an experiment snapshot. ";
+      "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
     };
     style.BodyPar {
       "TongueTwister preforms the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";

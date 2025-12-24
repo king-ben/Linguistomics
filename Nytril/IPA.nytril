@@ -174,11 +174,6 @@ class VocalSegment: Fact {
       TipAction: this;
   };
 
-  ShowDoc = PaperStyle.TextIpa {
-    TipAction: this;
-    Ipa;
-  };
-
   ShowCodePoint = Paragraph {
     TextHeight: 8pt;
     ParBackground: 95%;
