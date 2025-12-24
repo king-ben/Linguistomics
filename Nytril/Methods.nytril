@@ -1328,7 +1328,7 @@ class PhylogenyResultsSection: Content {
       "That said, our treatment of Latin allows for the possibility that it is ancestral to the other Romance languages; an estimated zero branch length leading to Latin would place it at the root of the Romance language tree"; DotSpace;
     };
 
-    style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Top | FigureOptions.Bottom, 70%);
+    style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Top, 70%);
   };
 }
 
@@ -1513,7 +1513,7 @@ class WordTransformationSection: Content {
       //"Although there are eight transitions in the graph, there are only two output segments, the mid-high front vowel /e/ and the high back vowel /u/. ";
     };
 
-    style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
+    style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Top | FigureOptions.Full);
 
     style.BodyPar {
       style.FigureReference(Figures.EquilibriumCharts);
@@ -1618,7 +1618,7 @@ class WordSegmentRelSection: Content {
       "Finally, the alignments tend to assign segments from the same class to the same column in the alignment. ";
     };
 
-    style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Top | FigureOptions.Bottom);
+    style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Top);
 
     style.BodyPar {
       var align2 = Figures.AlignmentExample2;
@@ -2022,7 +2022,7 @@ class ModelInferenceSection: Content {
       "Besides sampling the phylogenetic parameters of the model, the chain also samples segmental alignments"; Cite{Lunter2004}; DotSpace;
     };
 
-    style.AddTable(Figures.PartitionAssignments, FigureOptions.Top | FigureOptions.Bottom, 98%);
+    style.AddTable(Figures.PartitionAssignments, FigureOptions.Top, 98%);
 
     style.BodyPar {
       var number = Enumerators.Cardinal(rule.Filters.Length);
@@ -2086,6 +2086,75 @@ class SegmentEncodingFigure: Content {
 
 //======================================================================
 
+readonly WorkflowFigure Figures.Workflow = new;
+
+class WorkflowFigure: Content {
+  Constructor {
+    super.Constructor("Workflow");
+  }
+
+  override GetCaption(ContentStyle style) = Span {
+    "The movement of data in the experiment.";
+  };
+
+  Box(index, text) = VBox(96, 96, 2) {
+    TextFace: TextFaces.SansSerif;
+    TextHeight: 14pt;
+    HAlign: Center;
+    VAlign: Center;
+    BorderRadius: 16;
+    var c = Color.ChartColor(index);
+    Background: c;
+    TextColor: Colors.White;
+
+    VBox {
+      HAlign: Center;
+      text;
+    };
+  };
+
+
+  override GetBody(ContentStyle style, title) = HBox(100%) {
+    HAlign: Center;
+    VBox {
+      Margin: PadB(10);
+      HBox {
+        VAlign: Center;
+        Separator: Span {
+          TextHeight: 30;
+          Tex.rightarrow;
+        };
+        Box(0, ["Segment", "Library"]);
+        Box(1, ["Cognate", "Data"]);
+        Box(2, ["Tests", "&", "Validation"]);
+        Box(3, ["Create", "Run", "Dataset"]);
+      };
+
+      Span {
+        HAlignment: Right;
+        TextHeight: 30;
+        Tex.downarrow;
+        Space*5;
+      };
+
+      HBox {
+        Margin: PadT(5);
+        VAlign: Center;
+        Separator: Span {
+          TextHeight: 30;
+          Tex.leftarrow;
+        };
+        Box(7, ["Final", "Paper"]);
+        Box(6, ["Figures", "&", "Narrative"]);
+        Box(5, ["Stats", "&", "Processing"]);
+        Box(4, ["Tongue", "Twister", "MCMC"]);
+      };
+    };
+  };
+}
+
+//======================================================================
+
 readonly ConclusionSection PaperSections.Conclusion = new;
 
 class ConclusionSection: Content {
@@ -2110,7 +2179,11 @@ class ConclusionSection: Content {
       "By contrast, the possible events in our event-based approach are well defined: segmental transitions, insertions, or deletions.";
     };
 
-    style.AddFigure(Figures.AlignmentExample2, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full);
+    style.AddFigure(Figures.AlignmentExample2, FigureOptions.Top | FigureOptions.Full);
+
+    style.AddFigure(Figures.ConceptEncoding, FigureOptions.Top);
+
+    style.AddFigure(Figures.SegmentEncoding, FigureOptions.Top, 50%);
 
     style.BodyPar {
       "The code and data for this study are available on ";
@@ -2817,6 +2890,49 @@ class MethodsSection: Content {
         " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
         PaperDataSection.ConceptList(data, style); DotSpace;
       };
+    };
+
+    style.AddFigure(Figures.Workflow, FigureOptions.Top | FigureOptions.Full);
+
+    style.BodyPar {
+      BodyTitle {"Workflow"}; DotSpace;
+      "The first step in the experiment was to create a dictionary of IPA segment information. ";
+      "The files 'IPA.nytril' and 'Segments.nytril' contain the definitions of these classes and the information about each segment is encoded in a single instance of the class. ";
+      "This definition includes the IPA symbol string {e.g. "; VocalSegments.nya.ShowDoc; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
+      "These files are designed to be reusable for future experiments, and even by other researchers. ";
+    };
+    style.BodyPar {
+      "Next is the aggregation of cognate words, stored in nytril source files as quoted strings, organized by category and language. ";
+      "The strings contain UCS code points encoding the IPA symbol for each segment, described above. ";
+      "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
+      "The words also may contain syllable accent marks, but these are ignored for this experiment. ";
+      "The format of this file was created to facilitate the collection and editing by the researchers. ";
+      "Although these word files are organized by parts of speech (e.g. Nouns, Adjectives, etc..), this has no effect other than to break them up into smaller chunks for editing. ";
+      "In other words, it is organized in the way that makes the most sense to a linguist, not the computer. ";
+    };
+    style.BodyPar {
+      "The next step involves decoding the strings and turning the set of UCS code points into an array of VocalSegment objects. ";
+      "Since the IPA characters contain diacritic marks and have a variable length, the strings must be normalized to a specific diacritic form before being compared. ";
+      "We chose Form C, but the goal is that the diacritics are in the same position in all string for comparison. ";
+      "Once these strings are parsed to object pointers, they are tested by converting them back to a string to confirm that they produce the same sequence as the starting point. ";
+      "The segment objects are next grouped into words, and associated by category, cognate and language until the final result is a large conventional data structure representing all of the raw data in the experiment. ";
+    };
+    style.BodyPar {
+      "The next step is to produce a series of diagnostic documents that show the data in a variety of tables and charts. ";
+      "The goal is to slice the words in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
+    };
+    style.BodyPar {
+      "When the team is statisfied that the data is well formed, a process is run (by clicking a button) to take all of the data and create an experiment snapshot. ";
+      "This creates a named folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
+    };
+    style.BodyPar {
+      "TongueTwister preforms the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
+      "These files are, in turn, digested by another program called TongueTwisterReader, that does the final statistical aggregation and produces final output files in the nytril format. ";
+    };
+    style.BodyPar {
+      "These files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
+      "These figures are combined with narrative from the researchers, to produce the final paper as well as several presentation slide decks. ";
+      style.FigureReference(Figures.Workflow); " shows a model of this workflow. ";
     };
   };
 }

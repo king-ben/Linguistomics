@@ -65,13 +65,14 @@ C29 = new(#f7e84d6b-186b-45fd-94d2-74bb10a1eb40#, Reviewers.R1) {
 C43 = new(#2b06ad58-9746-4319-92af-1602db04f1b1#, Reviewers.R3) {
   Text: "The code repository lacks any instructions or a readme file. The repo should be updated with the aim that the model can be applied by other researchers to their own data.";
   AssignedTo(People.McCreight_Shawn);
+  Response: "The repository now has a \"readme.pdf\" file.";
 };
 
 C46 = new(#dbed1663-deba-490b-aa8d-0add0855d896#, Reviewers.R3) {
   Text: "The section starting around Figure 3, which presents an IPA–Unicode encoding example and raw data for the concept “mountain”, is informative but hard to follow in terms of the overall data-processing path. I recommend adding a schematic diagram of the workflow, from initial cognate identification through IPA encoding, segment parsing, alignment generation, and Bayesian inference to final rate and topology estimates. Such a figure would help readers understand the broader computational pipeline, and clarify where key modelling and data decisions occur.";
   AssignedTo(People.McCreight_Shawn);
   Response: Paragraph {
-    "Make pipeline fgure and put in appendix";
+    "A 'Workflow' section was added to the Supplemental to describe the experimental processing. A pipeline figure was created and put in the same section. ";
   };
 };
 

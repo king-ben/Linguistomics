@@ -268,7 +268,7 @@ class PaperDataSection: Content {
     var data      = MainResults.Data;
     var langcount = Enumerators.Cardinal(data.Taxa.Length-1);
 
-    style.AddFigure(Figures.LanguageDistribution, FigureOptions.Top | FigureOptions.Bottom | FigureOptions.Full, 60%);
+    style.AddFigure(Figures.LanguageDistribution, FigureOptions.Top | FigureOptions.Full, 60%);
 
     style.TitlePar(title) {
       ReviewComment(Comments.C4);
@@ -319,7 +319,7 @@ class PaperDataSection: Content {
       "All segments are coded in standard Unicode IPA"; Cite {IPA1999}; DotSpace;
     };
 
-    style.AddTable(TableFigures.ManualAlignment, FigureOptions.Top | FigureOptions.Bottom);
+    style.AddTable(TableFigures.ManualAlignment, FigureOptions.Top);
 
     style.BodyPar {
       "The word-forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
@@ -382,10 +382,6 @@ class PaperDataCuration: Content {
       "We created an automated framework for the experiment that comprises a reusable IPA library, word data, ";
       "data quality checks, typeset output and input files for the MCMC software (written in C++). ";
     };
-
-    style.AddFigure(Figures.ConceptEncoding, FigureOptions.Top | FigureOptions.Bottom);
-
-    style.AddFigure(Figures.SegmentEncoding, FigureOptions.Top | FigureOptions.Bottom, 50%);
 
     style.BodyPar {
       ReviewComment(Comments.C38);

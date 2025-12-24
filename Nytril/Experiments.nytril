@@ -1,4 +1,4 @@
-using Format, IO, Units, Languages;
+using Format, IO;
 
 //======================================================================
 
@@ -42,7 +42,7 @@ class ExperimentRun {
     Marginal   = marginal;
     RootFolder = model.RootFolder Folder(Name);
     Seed       = Math.Random(0..0xFFFFFFFF);
-    Config     = config ?? IO.ReadScript(Info.ExperimentRoot RootFolder Info.ParametersFile).Root;
+    Config     = config ?? ReadScript(Info.ExperimentRoot RootFolder Info.ParametersFile).Root;
   }
 
   ArgString(arg, string path) = Span {
