@@ -2897,7 +2897,7 @@ class MethodsSection: Content {
     style.BodyPar {
       BodyTitle {"Workflow"}; DotSpace;
       "The first step in the experiment was to create a dictionary of IPA segment information. ";
-      "The files 'IPA.nytril' and 'Segments.nytril' contain the definitions of these classes and the information about each segment is encoded in a separate instances of the these classes. ";
+      "The files 'IPA.nytril' and 'Segments.nytril' contain the definitions of these classes and the information about each segment is encoded in separate instances of the these classes. ";
       "The definition of a segment includes the IPA symbol string {e.g. "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
       "These files are designed to be reusable for future experiments, and by other researchers. ";
     };
@@ -2905,9 +2905,9 @@ class MethodsSection: Content {
       "Next is the aggregation of cognate words, stored in nytril source files as strings, organized by category and language. ";
       "The strings contain UCS code points encoding the IPA symbol for each segment, making it easy to copy and paste from different sources. ";
       "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
-      "The words also may contain syllable accent marks, but these are ignored for this experiment. ";
+      "The words also may contain syllable stress marks, but these are ignored for this experiment. ";
       "The format of this file was created to facilitate the collection and editing by the researchers. ";
-      "Although these word files are organized by parts of speech (e.g. Nouns, Adjectives, etc..), this has no effect other than to break them up into smaller chunks for editing. ";
+      "Although these word files are organized by parts of speech (e.g. Nouns, Adjectives, etc..), this has no effect other than to break them up into smaller chunks for easier editing. ";
       "In other words, it is organized in the way that makes the most sense to a linguist, but when processed, they are aggregated and sorted in a different way. ";
     };
     style.BodyPar {
@@ -2926,12 +2926,12 @@ class MethodsSection: Content {
       "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
     };
     style.BodyPar {
-      "TongueTwister preforms the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
-      "These files are, in turn, digested by another program called TongueTwisterReader, that does the final statistical aggregation and produces final output files in the nytril format. ";
+      "TongueTwister performs the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
+      "After this is complete, these files are read by another program called TongueTwisterReader that does the final statistical aggregation and produces final output files in the nytril format. ";
     };
     style.BodyPar {
-      "These files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
-      "These figures are combined with narrative from the researchers, to produce the final paper as well as several presentation slide decks. ";
+      "Finally, these files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
+      "These figures are combined with narrative from the researchers, to produce the final paper and presentation slide decks. ";
       style.FigureReference(Figures.Workflow); " shows a model of this workflow. ";
     };
   };
