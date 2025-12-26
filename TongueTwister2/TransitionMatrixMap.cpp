@@ -34,10 +34,10 @@ TransitionMatrixMap::TransitionMatrixMap(size_t numStates, size_t initialCapacit
 
 TransitionMatrixMap::~TransitionMatrixMap(void) {
 
-    // Return all matrices to the manager instead of deleting them
+    // return all matrices to the manager instead of deleting them
     TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
     
-    // Return matrices that are in the pool arrays (both used and free)
+    // return matrices that are in the pool arrays (both used and free)
     for (size_t i = 0; i < poolCapacity; i++)
         {
         if (pool[i] != nullptr)
@@ -46,7 +46,7 @@ TransitionMatrixMap::~TransitionMatrixMap(void) {
             manager.returnMatrix(backup[i]);
         }
     
-    // Delete the pointer arrays themselves
+    // delete the pointer arrays themselves
     delete[] keys;
     delete[] values;
     delete[] occupied;
@@ -95,7 +95,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
     
     if (oldKeys)
         {
-        // Build mapping from old entry index to new entry index
+        // build mapping from old entry index to new entry index
         size_t* oldToNew = new size_t[oldNumEntries];
         
         for (size_t i = 0; i < oldNumEntries; i++)
@@ -116,7 +116,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
             addToEntryList(idx);
             }
         
-        // Rebuild dirty list with new indices
+        // rebuild dirty list with new indices
         for (size_t i = 0; i < oldDirtyCount; i++)
             {
             size_t oldEntryIdx = oldDirtyList[i];
@@ -125,13 +125,13 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
             dirtyList[dirtyCount++] = newEntryIdx;
             }
         
-        delete[] oldToNew;
-        delete[] oldKeys;
-        delete[] oldValues;
-        delete[] oldOccupied;
-        delete[] oldEntrySlots;
-        delete[] oldDirty;
-        delete[] oldDirtyList;
+        delete [] oldToNew;
+        delete [] oldKeys;
+        delete [] oldValues;
+        delete [] oldOccupied;
+        delete [] oldEntrySlots;
+        delete [] oldDirty;
+        delete [] oldDirtyList;
         }
 }
 
@@ -314,7 +314,7 @@ DoubleMatrix* TransitionMatrixMap::find(double branchLength) const {
 
 DoubleMatrix* TransitionMatrixMap::getOrCreate(uint64_t key) {
 
-    // Check if already exists
+    // check if already exists
     if (tableCapacity > 0)
         {
         size_t idx = hash(key);
@@ -329,7 +329,7 @@ DoubleMatrix* TransitionMatrixMap::getOrCreate(uint64_t key) {
         } while (idx != startIdx);
         }
     
-    // Need to create new entry
+    // need to create new entry
     if (numEntries >= tableCapacity / 2)
         growTable();
     
@@ -424,7 +424,7 @@ void TransitionMatrixMap::markAllForUpdate(void) {
 
 void TransitionMatrixMap::keep(void) {
 
-    // Accept: clear dirty flags (backup becomes stale, that's fine)
+    // accept: clear dirty flags (backup becomes stale, that's fine)
     for (size_t i = 0; i < dirtyCount; i++)
         dirty[dirtyList[i]] = false;
     dirtyCount = 0;
@@ -432,7 +432,7 @@ void TransitionMatrixMap::keep(void) {
 
 void TransitionMatrixMap::restore(void) {
 
-    // Reject: restore dirty entries from backup
+    // reject: restore dirty entries from backup
     for (size_t i = 0; i < dirtyCount; i++)
         {
         size_t entryIdx = dirtyList[i];
@@ -534,15 +534,15 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
 
     TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
     
-    // Calculate target pool size based on current usage
+    // calculate target pool size based on current usage
     size_t usedCount = poolCapacity - freeCount;
     size_t targetCapacity = usedCount * targetUtilization;
     
-    // Minimum pool size to avoid thrashing
+    // minimum pool size to avoid thrashing
     if (targetCapacity < 32)
         targetCapacity = 32;
     
-    // Only shrink if we can reclaim at least 25% of the pool
+    // only shrink if we can reclaim at least 25% of the pool
     if (poolCapacity <= targetCapacity || poolCapacity < targetCapacity + targetCapacity / 4)
         return;
     
@@ -553,11 +553,11 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
     
     std::memset(isUsed, true, poolCapacity * sizeof(bool));
     
-    // Mark free slots as unused
+    // mark free slots as unused
     for (size_t i = 0; i < freeCount; i++)
         isUsed[freeList[i]] = false;
     
-    // Return unused matrices to the manager
+    // return unused matrices to the manager
     for (size_t i = 0; i < poolCapacity; i++)
         {
         if (!isUsed[i])
@@ -569,7 +569,7 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
             }
         }
     
-    // Build the mapping - only used slots get new indices
+    // build the mapping - only used slots get new indices
     size_t newIdx = 0;
     for (size_t i = 0; i < poolCapacity; i++)
         {
@@ -583,17 +583,17 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
     if (newCapacity < 32)
         newCapacity = 32;
     
-    // Allocate new pointer arrays
+    // allocate new pointer arrays
     DoubleMatrix** newPool = new DoubleMatrix*[newCapacity];
     DoubleMatrix** newBackup = new DoubleMatrix*[newCapacity];
     size_t* newFreeList = new size_t[newCapacity];
     
-    // Initialize to nullptr
+    // initialize to nullptr
     std::memset(newPool, 0, newCapacity * sizeof(DoubleMatrix*));
     std::memset(newBackup, 0, newCapacity * sizeof(DoubleMatrix*));
     
-    // Move used matrix pointers to new arrays (compacting them)
-    for (size_t i = 0; i < poolCapacity; i++)
+    // move used matrix pointers to new arrays (compacting them)
+    for (size_t i=0; i<poolCapacity; i++)
         {
         if (isUsed[i])
             {
@@ -602,20 +602,20 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
             }
         }
     
-    // Allocate new matrices from manager for the extra slots
-    for (size_t i = newIdx; i < newCapacity; i++)
+    // allocate new matrices from manager for the extra slots
+    for (size_t i=newIdx; i<newCapacity; i++)
         {
         newPool[i] = manager.getMatrix();
         newBackup[i] = manager.getMatrix();
         }
     
-    // Update all values[] pointers to point to new pool locations
+    // update all values[] pointers to point to new pool locations
     for (size_t i = 0; i < numEntries; i++)
         {
         size_t slot = entrySlots[i];
         if (values[slot] != nullptr)
             {
-            // Find the old pool index by searching
+            // find the old pool index by searching
             size_t oldPoolIdx = SIZE_MAX;
             for (size_t j = 0; j < poolCapacity; j++)
                 {
@@ -630,17 +630,17 @@ void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
             }
         }
     
-    // Build new free list with the extra slots
+    // build new free list with the extra slots
     size_t newFreeCount = 0;
     for (size_t i = newIdx; i < newCapacity; i++)
         newFreeList[newFreeCount++] = i;
     
-    // Clean up
-    delete[] oldToNew;
-    delete[] isUsed;
-    delete[] pool;
-    delete[] backup;
-    delete[] freeList;
+    // clean up
+    delete [] oldToNew;
+    delete [] isUsed;
+    delete [] pool;
+    delete [] backup;
+    delete [] freeList;
     
     pool = newPool;
     backup = newBackup;

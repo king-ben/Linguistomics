@@ -21,15 +21,12 @@ nlohmann::json* JsonData::getJsonPointer(const std::string& key) {
 
 nlohmann::json* JsonData::findValueForKey(nlohmann::json& obj, const std::string& key) {
 
-    // If this is an object, check its keys
     if (obj.is_object())
         {
-        // Does this object directly contain the key?
         if (obj.contains(key))
             {
             return &obj[key];
             }
-        // Otherwise recurse into child values
         for (auto& [k, v] : obj.items())
             {
             nlohmann::json* result = findValueForKey(v, key);
@@ -37,7 +34,6 @@ nlohmann::json* JsonData::findValueForKey(nlohmann::json& obj, const std::string
                 return result;
             }
         }
-    // If this is an array, search each element
     else if (obj.is_array())
         {
         for (auto& element : obj)
