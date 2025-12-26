@@ -1,0 +1,462 @@
+using Format;
+
+include "Lang";
+include "NytrilStyle";
+
+readonly Main.Documents.InstallGit = new InstallGitDocument;
+
+//======================================================================
+
+abstract class DialogView {
+  const BorderSize = 1;
+  const LineSize   = 0.5;
+  const EditHeight = 18pt;
+  const LineColor  = Colors.LightGray;
+  const TitleColor = #D3E3FD#;
+  const FocusColor = #68A3E6#;
+  const MenuColor  = #F4F4F4#;
+
+  var Thickness BodyPad;
+
+  var          Title,
+               Width;
+  var string[] Buttons;
+
+  Constructor(width, title) {
+    Width   = width;
+    Title   = title;
+    BodyPad = new(16pt, 16pt, 16pt, 16pt);
+  }
+
+  abstract Body;
+
+  Button(w, text, bool focus=false) = Canvas(w, EditHeight, new Edge(LineSize, 0, LineColor)) {
+    BorderRadius: 5;
+    HAlign: Center;
+    VAlign: Center;
+    Background: focus ? FocusColor : 97%;
+    if (focus)
+      TextColor: Colors.White;
+    text;
+  };
+
+  EditBox(name, w, text) = VBox {
+    name;
+    Canvas(w, EditHeight, new Edge(LineSize, 4, LineColor)) {
+      Margin: PadB(5);
+      BorderRadius: 5;
+      VAlign: Center;
+      TextColor: Colors.DarkGreen;
+      text;
+    };
+  };
+
+  TabBar(int focus, string[] tabs) = HBox(100%, 20pt) {
+    foreach (var tab in tabs) {
+      Canvas((100/tabs.Length)%, 100%, BorderRB(new(LineSize, 0, LineColor))) {
+        HAlign: Center;
+        VAlign: Center;
+        if (each0 == focus) {
+          Bold; tab;
+          Canvas(100%, 3pt) {
+            Background: FocusColor;
+            VAlignment: Bottom;
+          };
+        }
+        else
+          tab;
+      };
+    }
+  };
+
+
+  Show = VBox(Width, null, new Edge(BorderSize, 0, LineColor)) {
+    BorderRadius: 5;
+    HBox(100%, 30pt, BorderB(new(LineSize, 5, LineColor)) + PadAll(10)) {
+      BorderRadius: new BorderRadius(5, 5, 0, 0);
+      Background: TitleColor;
+      Bold Title;
+      HBox {
+        HAlignment: Right;
+        Icons.close;
+      }
+    };
+
+    Body;
+    if (Buttons is valid) {
+      Canvas(100%, null, PadAll(8pt) + BorderT(new(LineSize, 0, LineColor))) {
+        HAlign: Right;
+        HBox {
+          Separation: 3pt;
+          foreach (var button in Buttons)
+            Button(1.5", button, each0 == 0);
+        };
+      };
+    }
+  };
+}
+
+//======================================================================
+
+class CloneDialog: DialogView {
+  Constructor {
+    super.Constructor(5", "Clone a repository");
+    Buttons = ["Clone", "Cancel"];
+  }
+
+  override Body = VBox(100%) {
+    TabBar(2, ["GitHub.com", "GitHub Enterprise", "URL"]);
+
+    VBox(100%, null, new Thickness(BodyPad.Left, BodyPad.Top, BodyPad.Right, 0)) {
+      EditBox("Repository URL or GitHub username and repository", 92%, "https://github.com/jhuelsenbeck/Linguistomics");
+
+      HBox {
+        EditBox("Local Path", 70%, "Documents/Linguistomics");
+        Separation: 3pt;
+        Button(1", "Choose...");
+      };
+    };
+  };
+}
+
+//======================================================================
+
+class OpenRepoDialog: DialogView {
+  Constructor {
+    super.Constructor(5", "Open Repo");
+    Buttons = ["OK", "Cancel"];
+  }
+
+  override Body = VBox(100%) {
+    VBox(100%, null, new Thickness(BodyPad.Left, BodyPad.Top, BodyPad.Right, 0)) {
+      EditBox("Local Folder", 100%, Span {"Documents/Linguistomics"; Italic "       (from step 2)"});
+
+      EditBox("Repository Name", 50%, "Linguistomics");
+    };
+  };
+}
+
+//======================================================================
+
+class OpenProjectDialog: DialogView {
+  var Path,
+      Name;
+
+  Constructor(path, name) {
+    super.Constructor(5", "Open Project");
+    Path    = path;
+    Name    = name;
+    Buttons = ["OK", "Cancel"];
+  }
+
+  override Body = VBox(100%) {
+    VBox(100%, null, new Thickness(BodyPad.Left, BodyPad.Top, BodyPad.Right, 0)) {
+      EditBox("Existing Main File", 100%, Path);
+      EditBox("Name", 50%, Name);
+    };
+  };
+}
+
+//======================================================================
+
+
+class NytrilInstallDialog: DialogView {
+  const Border  = 5pt;
+  const Bottom  = 5pt;
+  const Mid     = Bottom * 0.6;
+
+  Constructor {
+    super.Constructor(5", "Nytril Development Environment");
+    Buttons = ["Next", "Cancel"];
+  }
+
+  override Body = HBox {
+    VAlign: Top;
+
+    Size IFrame = new(164, 210);
+    Size screen = new(IFrame.Width - 32, IFrame.Width*0.5);
+
+    Canvas(IFrame.Width, IFrame.Height, PadLR(4pt)) {
+      Background: Colors.White;
+      VBox(IFrame.Width) {
+        HAlign: HAligns.Center;
+
+        Canvas(null, 5);
+
+        NytrilStyle.StandardLogo {
+          TextHeight: 70;
+        };
+
+        Canvas(null, 8);
+
+        Shape(80%, 0.25) {
+          RectanglePath(new(new(0), screen), new(4pt));
+          RectanglePath(new(new(Border), screen - new Size(Border*2)), new(3pt));
+        };
+        Canvas(null, Border * 0.4);
+        Shape(80%, 0.25) {
+          ClosedPath(0) {
+            LineTo(0, Mid);
+            ArcTo(new(Border, Bottom), new(Border, Mid));
+            LineTo(screen.Width - Border, Bottom);
+            ArcTo(new(screen.Width, Mid), new(Border, Mid));
+            LineTo(screen.Width, 0);
+          };
+          RectanglePath(new(new(screen.Width*0.45, Bottom * 0.4), new(screen.Width*0.1, Bottom * 0.2)), new(Bottom * 0.1));
+        };
+      };
+
+      Shape(80%) {
+        HAlignment: HAligns.Center;
+        X: 3;
+        Y: 105;
+        TextHeight: 50;
+        Icons.refresh;
+      };
+    };
+
+    VBox(3", null, PadL(15)) {
+      Bold "Welcome to Nytril Setup";
+      Separation: 20pt;
+      "Setup will guide you through the installation of Nytril.";
+      "Click Next to continue.";
+    }
+  };
+}
+
+//======================================================================
+
+class NytrilDesktop: DialogView {
+  Constructor {
+    super.Constructor(6.5", "Nytril Development Environment");
+  }
+
+  override Body = VBox {
+    HBox(100%, 20pt, PadL(10)) {
+      VAlign: Center;
+      Background: MenuColor;
+      Separation: 10pt;
+      "File"; "Edit"; "View"; "Git"; "Build"; "Repo"; "Project";"Documents"; "Data"; "Device"; "Help";
+    };
+    HBox(100%, 2") {
+      Canvas(50%, 100%);
+      Canvas(5, 100%, BorderLR(new(0.5, 0, Colors.LightGray))) {
+        Background: MenuColor;
+      };
+      Canvas(50%, 100%) {
+      };
+    };
+    HBox(100%, 18pt) {
+      BorderRadius: new BorderRadius(0, 0, 5, 5);
+      Background: #4A6D9D#;
+    };
+  };
+}
+
+//======================================================================
+
+class InstallGitDocument: DocumentEntry {
+  Constructor {
+    super.Constructor(#db4da74f-86ef-491a-ab78-efd10a7414e0#, "Repo Installation");
+    Description = Name;
+  }
+
+  Hyperlink(text, url) = Span {
+    TextColor: NytrilPalette.Hyperlink;
+    text;
+    TipAction: new URL(url);
+  };
+
+  override GetDocument = Document(0.75") {
+    TextHeight: 12pt;
+    SpaceAfter: 10pt;
+    ParAlignment: Justify;
+
+    NytrilStyle.Heading1 {
+      Name;
+    };
+
+    Paragraph {
+      "Follow the steps below to install the Linguistomics Repository on your computer. ";
+    };
+
+
+    NytrilStyle.Heading2 {
+      "Download and install GitHub Desktop";
+    };
+    ListBlock {
+      Span {
+        "Click here to go to the GitHub ";
+        Hyperlink("Download Page", "https://desktop.github.com/download/"); DotSpace;
+      };
+      "Follow the instructions for installing GitHub Desktop on your computer.";
+    };
+    Empty;
+
+    NytrilStyle.Heading2 {
+      "Clone repo";
+    };
+    Paragraph {
+      SpaceAfter: 10pt;
+      "Open GitHub Desktop and choose \"File..Clone Repository...\" from the menu bar.";
+    };
+    (new CloneDialog).Show;
+
+    NytrilStyle.Heading3 {
+      "Input names";
+    };
+    ListBlock {
+      "Type the url of the repository on GitHub. ";
+      Span {
+        "Type the name of the folder on your computer where you want the repository to be stored. ";
+        "If you change this folder, remember it, because you will need it in a later step. ";
+      };
+
+      "Click \"Clone\" and wait for the repo to download. ";
+    };
+    Empty;
+
+    NytrilStyle.Heading2 {
+      "Download and install Nytril";
+    };
+    ListBlock {
+      Span {
+        "Click here to go to ";
+        Hyperlink("Nytril.com", "https://www.nytril.com/"); DotSpace;
+      };
+      "Click \"Download\" at the top of the page.";
+      "Choose your platform and download the installer. ";
+      "Run and Complete the installation";
+    };
+    (new NytrilInstallDialog).Show;
+
+    NytrilStyle.Heading2 {
+      "Run Nytril Desktop";
+    };
+    ListBlock {
+      "On a Mac, the Nytril icon will be in your Applications folder";
+      "On Windows, the icon will be on the desktop. ";
+    };
+    (new NytrilDesktop).Show;
+
+    NytrilStyle.Heading2 {
+      "Open Linguistomics Repo";
+    };
+    ListBlock {
+      "Choose File..Open..Repository...";
+      "The Local Folder should be set to the repo download folder from step 2. ";
+      "Cllck OK.";
+    };
+    (new OpenRepoDialog).Show;
+
+    NytrilStyle.Heading2 {
+      "Open the \"Paper\" Project";
+    };
+    ListBlock {
+      "The following dialog box will appear. ";
+      "Input the text as shown and cllck OK.";
+    };
+    new OpenProjectDialog("Nytril/Main", "Papers").Show;
+
+    NytrilStyle.Heading2 {
+      "Open the \"Create Data Files\" Project";
+    };
+    ListBlock {
+      "Select \"File..Open..Project\".";
+      "Input the text as shown and cllck OK.";
+    };
+    new OpenProjectDialog("Nytril/Create Data Files", "Create Data Files").Show;
+
+    NytrilStyle.Heading2 {
+      "Using the two projects";
+    };
+    Paragraph {
+      "Now that the installation is complete, you can review the documents inside each project. ";
+      "There are 2 projects in the Linguistomics repo that comprise the two main stages of the experiment. ";
+      "You can see these by clicking on the \"Projects\" menu. ";
+      "Choosing a project reloads all the source files and documents to the way that they were the last time you viewed that project, so you can switch back and forth between the two, without losing your way. ";
+    };
+    Paragraph {
+      "A handy feature of this environment is that by holding down the Ctrl-key and clicking anything in the document, you will be taken to the source of the information in the left-hand pane. ";
+      "Holding down Ctrl-Shift and hovering over an element shows its layout lines. ";
+      "Ctrl-Shift-Click on a diagram to see how the diagram was created in code. ";
+    };
+    Paragraph {
+      "The two projects are: ";
+    };
+    ListBlock {
+      var indent = 3pt;
+
+      ListItem {
+        Bold "Create Data Files";
+
+        Paragraph {
+          "This project uses the raw cognate words and segment definitions to build the data files for the MCMC part of the experiment. ";
+          "There are 4 docments in this project: ";
+        };
+        ListBlock(@Enumerators.Number) {
+          ListItem {
+            Bold "Diagnostics";
+            Paragraph {
+              LeftIndent: indent;
+              "Shows the raw data from the data files in a variety of ways in order to allow the researcher to find mistakes in the data. ";
+            };
+          };
+          ListItem {
+            Bold "Create Experiment Files";
+            Paragraph {
+              LeftIndent: indent;
+              "A control panel with a button that triggers the creation of the experiment files from the raw cognate data. ";
+              "Use this button when the raw data changes and you want to re-run the whole experiment. ";
+            };
+          };
+          ListItem {
+            Bold "Configuration File";
+            Paragraph {
+              LeftIndent: indent;
+              "Shows the JSON file that is used to initialize the TongueTwister program. ";
+            };
+          };
+          ListItem {
+            Bold "Word File";
+            Paragraph {
+              LeftIndent: indent;
+              "A copy of the raw data for an experiment. ";
+            };
+          };
+        };
+      };
+
+      ListItem {
+        Bold "Papers";
+        Paragraph {
+          "This contains the result of the completed experiment. ";
+        };
+        ListBlock(@Enumerators.Number) {
+          ListItem {
+            Bold "Paper JOLE";
+            Paragraph {
+              LeftIndent: indent;
+              "Shows the finished manuscript. ";
+            };
+          };
+          ListItem {
+            Bold "Supplemental";
+            Paragraph {
+              LeftIndent: indent;
+              "Extra narrative, equations and figures that did not fit into the main paper. ";
+            };
+          };
+        }
+      };
+    };
+
+    Paragraph {
+      SpaceBefore: 12pt;
+      "If you have trouble with any of these steps, send an email to ";
+      Span {"Shawn"; TextColor: Colors.Blue; TipAction: new Email("shawn.mccreight@gmail.com")};
+      " and he will walk you through any trouble spots. ";
+    };
+  };
+}
+
