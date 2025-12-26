@@ -29,12 +29,12 @@ ParameterTree::~ParameterTree(void) {
 
 bool ParameterTree::checkTipToTipDistances(double threshhold) {
 
-    // If the pruning went as expected, then the distances between all pairs of taxa,
-    // regardless of the number of taxa in the tree, should be the same. This function
-    // goes through all of the subtrees, getting the pairwise distances for each. It then
-    // adds the pairwise distances to another map (allDistances), which has a set as its
-    // value. You can check, visually, that the pairwise distances for all trees is the same.
-    // This function is only used for debugging purposes.
+    /* If the pruning went as expected, then the distances between all pairs of taxa,
+       regardless of the number of taxa in the tree, should be the same. This function
+       goes through all of the subtrees, getting the pairwise distances for each. It then
+       adds the pairwise distances to another map (allDistances), which has a set as its
+       value. You can check, visually, that the pairwise distances for all trees is the same.
+       This function is only used for debugging purposes. */
     std::map<std::pair<std::string,std::string>,std::set<double>> allDistances;
     for (auto st : subTrees)
         {
@@ -363,42 +363,4 @@ size_t ParameterTree::taxonIndex(const std::string& tName) {
             return i;
         }
     return canonicalTaxonList.size();
-}
-
-bool ParameterTree::verifyBranchLengths(double tol) {
-
-    // verify that subtree branch lengths (trees[0]) are consistent with full tree (trees[0])
-    bool allMatch = true;
-    
-    for (auto& [mask, treePair] : subTrees)
-        {
-        std::unordered_map<unsigned, BranchMapping>::iterator mapIt = branchMappings.find(mask);
-        if (mapIt == branchMappings.end())
-            continue;
-            
-        BranchMapping& mapping = mapIt->second;
-        Tree* subTree = treePair.trees[0];
-        const std::vector<Node*>& subPostOrder = subTree->getPostOrder();
-        Node* subRoot = subTree->getRoot();
-        
-        for (Node* p : subPostOrder)
-            {
-            if (p == subRoot)
-                continue;
-                
-            double expected = mapping.recomputeBranchLength(p->getOffset(), fullTree.trees[0]);
-            double actual = p->getBranchLength();
-            
-            if (fabs(expected - actual) > tol)
-                {
-                std::cout << "Mismatch in subtree " << mask
-                          << " node " << p->getOffset()
-                          << ": expected " << expected
-                          << ", got " << actual << std::endl;
-                allMatch = false;
-                }
-            }
-        }
-        
-    return allMatch;
 }

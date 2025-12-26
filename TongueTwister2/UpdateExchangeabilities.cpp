@@ -25,7 +25,7 @@ void UpdateExchangeabilities::setDependants(void) {
     
     updatedParameter      = myParm;
     rateMatrixNeedsUpdate = true;
-    allTiprobsNeedUpdate  = true;   // Model changed → all matrices need recomputation
+    allTiprobsNeedUpdate  = true;   // model changed -> all matrices need recomputation
     singleBranchChanged   = false;
 }
 

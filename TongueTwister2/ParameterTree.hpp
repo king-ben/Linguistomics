@@ -42,7 +42,6 @@ class ParameterTree : public Parameter {
         void                                        print(void);
         void                                        restore(void);
         void                                        setBranchLength(Node* p, double v);
-        bool                                        verifyBranchLengths(double tol);
     
     private:
         bool                                        checkTipToTipDistances(double threshhold);

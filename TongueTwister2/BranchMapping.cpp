@@ -135,32 +135,6 @@ double BranchMapping::recomputeBranchLength(int subTreeNodeOffset, Tree* fullTre
     return sum;
 }
 
-bool BranchMapping::verifyBranchLengths(Tree* fullTree, Tree* subTree, double tolerance) {
-
-    // Verify that each subtree branch length equals the sum of its mapped full tree branches
-    Node* subRoot = subTree->getRoot();
-    const std::vector<Node*>& subPostOrder = subTree->getPostOrder();
-    
-    bool allCorrect = true;
-    for (Node* subNode : subPostOrder)
-        {
-        if (subNode == subRoot)
-            continue;
-            
-        double subLength = subNode->getBranchLength();
-        double computedLength = recomputeBranchLength(subNode->getOffset(), fullTree);
-        
-        if (fabs(subLength - computedLength) > tolerance)
-            {
-            std::cerr << "Branch length mismatch for subtree node " << subNode->getOffset() 
-                      << ": stored=" << subLength << " computed=" << computedLength << std::endl;
-            allCorrect = false;
-            }
-        }
-    
-    return allCorrect;
-}
-
 bool BranchMapping::affectsSubtree(int fullTreeNodeOffset) {
 
     return fullToSubBranch.count(fullTreeNodeOffset) > 0;

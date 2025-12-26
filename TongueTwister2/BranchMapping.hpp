@@ -21,7 +21,6 @@ class BranchMapping {
         void                                        print(void);
         void                                        propagateChange(Node* fullTreeNode, double delta, Tree* subTree);
         double                                      recomputeBranchLength(int subTreeNodeOffset, Tree* fullTree);
-        bool                                        verifyBranchLengths(Tree* fullTree, Tree* subTree, double tolerance = 1e-9);
         
     private:
         Node*                                       findMRCA(Tree* t, std::vector<std::string>& taxa);
