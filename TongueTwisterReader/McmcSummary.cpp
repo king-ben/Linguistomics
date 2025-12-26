@@ -1692,7 +1692,6 @@ int McmcSummary::readNumStates(std::string fn) {
         return 0;
         }
 
-
     auto it = j.find("NumberOfStates");
     if (it == j.end())
         {
