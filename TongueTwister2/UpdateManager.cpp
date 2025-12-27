@@ -60,10 +60,10 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             otherUpdates.push_back(updater1);
             
             // tree topology updater
-//            const std::vector<ParameterAlignment*> alnVec = model->getParametersOfType<ParameterAlignment>();
-//            UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alnVec);
-//            updates.push_back(updater2);
-//            otherUpdates.push_back(updater2);
+            const std::vector<ParameterAlignment*> alnVec = model->getParametersOfType<ParameterAlignment>();
+            UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alnVec);
+            updates.push_back(updater2);
+            otherUpdates.push_back(updater2);
             }
         else 
             Msg::error("Could not find update in update manager object");

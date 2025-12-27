@@ -31,42 +31,43 @@ ParameterTree::~ParameterTree(void) {
 }
 
 void ParameterTree::applyNniToSubtrees(Node* u, Node* v, Node* a, Node* c) {
-
-    // Apply NNI to all subtrees that contain the relevant nodes
-    // The NNI swaps: a from u to v, c from v to u
     
-    // Get the taxon indices involved (we need to find which subtrees contain both a and c)
-    // For leaf nodes, we can use their index; for internal nodes, we need descendants
+    // After NNI on the full tree, we must reinitialize the full tree's postOrder
+    // because the topology changed. Node offsets depend on postOrder position.
+    fullTree.trees[0]->initializeDownPassSequence();
+        
+    // Then rebuild all subtrees from the modified full tree.
+    // Trying to surgically apply NNI to pruned subtrees is error-prone because
+    // node collapsing during pruning changes the local topology.
+    rebuildSubtrees();
+}
+
+void ParameterTree::rebuildSubtrees(void) {
+
+    // Rebuild trees[0] (working copies) from the full tree.
+    // IMPORTANT: We use assignment operator instead of delete/new to keep
+    // the same Tree* address, since other objects (like ParameterAlignment)
+    // may have cached pointers to these trees.
     
     for (auto& [mask, treePair] : subTrees)
         {
-        Tree* subtree = treePair.trees[0];
+        // Create temporary tree from full tree
+        Tree* tempTree = new Tree(*fullTree.trees[0]);
         
-        // Find corresponding nodes in subtree
-        Node* subU = findCorrespondingNode(fullTree.trees[0], subtree, u);
-        Node* subV = findCorrespondingNode(fullTree.trees[0], subtree, v);
-        Node* subA = findCorrespondingNode(fullTree.trees[0], subtree, a);
-        Node* subC = findCorrespondingNode(fullTree.trees[0], subtree, c);
+        // Prune the temporary tree to make subtree
+        makeSubtree(*tempTree, mask);
         
-        // If all four nodes exist in subtree and have the expected relationships,
-        // apply the same NNI
-        if (subU != nullptr && subV != nullptr && subA != nullptr && subC != nullptr)
-            {
-            // Verify relationships before applying NNI
-            if (subA->getAncestor() == subU && 
-                subC->getAncestor() == subV && 
-                subU->getAncestor() == subV)
-                {
-                // Apply NNI: swap a and c
-                subU->removeDescendant(subA);
-                subV->removeDescendant(subC);
-                subU->addDescendant(subC);
-                subV->addDescendant(subA);
-                subA->setAncestor(subV);
-                subC->setAncestor(subU);
-                }
-            }
+        // Assignment copies content but preserves the Tree object's address
+        *treePair.trees[0] = *tempTree;
+        
+        // Ensure postOrder is reinitialized after assignment
+        treePair.trees[0]->initializeDownPassSequence();
+        
+        // Delete the temporary
+        delete tempTree;
         }
+    
+    branchMappings.clear();
 }
 
 bool ParameterTree::checkTipToTipDistances(double threshhold) {
@@ -245,10 +246,14 @@ void ParameterTree::initialize(const std::set<unsigned>& uniqueTaxonCombinations
 }
 
 void ParameterTree::initializeBranchMappings(void) {
-
+    
     branchMappings.clear();
     
-    // build mappings using trees[0] (the working copy)
+    // Build mappings using trees[0] (the working copy)
+    // Note: When called after rebuildSubtrees(), the subtrees already have
+    // correct branch lengths from makeSubtree(), so we don't need to recompute.
+    // When called after restoreTopology(), the subtrees also have correct
+    // branch lengths from the backup.
     for (auto& [mask, treePair] : subTrees)
         {
         BranchMapping mapping;
@@ -461,13 +466,19 @@ void ParameterTree::restore(void) {
 void ParameterTree::restoreTopology(void) {
 
     // Full topology restore from trees[1] to trees[0]
-    // Use the clone operation which copies everything including topology
+    // Use the assignment operator which preserves the Tree object's address
+    // while copying content, since other objects may cache Tree* pointers
     
     *fullTree.trees[0] = *fullTree.trees[1];
     
+    // Reinitialize postOrder
+    fullTree.trees[0]->initializeDownPassSequence();
+    
+    // For subtrees, also use assignment to preserve addresses
     for (auto& [mask, treePair] : subTrees)
         {
         *treePair.trees[0] = *treePair.trees[1];
+        treePair.trees[0]->initializeDownPassSequence();
         }
     
     // Rebuild branch mappings since we restored topology
@@ -477,13 +488,23 @@ void ParameterTree::restoreTopology(void) {
 void ParameterTree::saveTopology(void) {
 
     // Full topology save from trees[0] to trees[1]
-    // Use the clone operation which copies everything including topology
+    // Use assignment operator to copy content
     
     *fullTree.trees[1] = *fullTree.trees[0];
+    fullTree.trees[1]->initializeDownPassSequence();
+    
+    // For subtrees, after rebuildSubtrees() trees[0] has new structure.
+    // We need trees[1] to match so restore will work correctly.
+    // Since trees[1] addresses don't need to be preserved (nothing caches them),
+    // we can delete and recreate, or use assignment if structure is compatible.
     
     for (auto& [mask, treePair] : subTrees)
         {
-        *treePair.trees[1] = *treePair.trees[0];
+        // After rebuildSubtrees, trees[0] structure may differ from trees[1].
+        // Delete old backup and create new one matching current state.
+        delete treePair.trees[1];
+        treePair.trees[1] = new Tree(*treePair.trees[0]);
+        treePair.trees[1]->initializeDownPassSequence();
         }
 }
 

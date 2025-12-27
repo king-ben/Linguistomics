@@ -62,12 +62,10 @@ void BranchMapping::buildMapping(Tree* fullTree, Tree* subTree) {
             q = q->getAncestor();
             }
         
-        // Validate: the mapping should not be empty for non-root subtree nodes
-        if (fullOffsets.empty())
-            {
-            Msg::warning("Empty branch mapping for subtree node " + std::to_string(subOffset) + 
-                         " - fullNode and fullAnc may be the same");
-            }
+        // If mapping is empty, this subtree node corresponds to a single point in full tree.
+        // This can happen when the subtree ancestor's MRCA equals the subtree node's MRCA.
+        // In this case, the subtree branch has length 0 (or should be set from context).
+        // We still record the mapping but with an empty offset list.
             
         subToFullBranches[subOffset] = fullOffsets;
         }
@@ -135,9 +133,41 @@ double BranchMapping::recomputeBranchLength(int subTreeNodeOffset, Tree* fullTre
     return sum;
 }
 
+void BranchMapping::recomputeAllBranchLengths(Tree* fullTree, Tree* subTree) {
+
+    const std::vector<Node*>& subPostOrder = subTree->getPostOrder();
+    Node* subRoot = subTree->getRoot();
+    
+    for (Node* subNode : subPostOrder)
+        {
+        if (subNode == subRoot)
+            continue;
+            
+        int subOffset = subNode->getOffset();
+        double newLength = recomputeBranchLength(subOffset, fullTree);
+        
+        // Ensure minimum branch length
+        if (newLength < MIN_BRANCH_LENGTH)
+            newLength = MIN_BRANCH_LENGTH;
+            
+        subNode->setBranchLength(newLength);
+        }
+}
+
 bool BranchMapping::affectsSubtree(int fullTreeNodeOffset) {
 
     return fullToSubBranch.count(fullTreeNodeOffset) > 0;
+}
+
+Node* BranchMapping::findNodeByOffset(Tree* t, int offset) {
+
+    const std::vector<Node*>& postOrder = t->getPostOrder();
+    for (Node* p : postOrder)
+        {
+        if (p->getOffset() == offset)
+            return p;
+        }
+    return nullptr;
 }
 
 void BranchMapping::getDescendantLeaves(Node* p, std::vector<std::string>& leaves) {
@@ -208,6 +238,8 @@ void BranchMapping::print(void) {
         std::cout << "    Subtree node " << subOffset << " <- Full nodes: ";
         for (int fo : fullOffsets)
             std::cout << fo << " ";
+        if (fullOffsets.empty())
+            std::cout << "(empty - zero length)";
         std::cout << std::endl;
         }
 }

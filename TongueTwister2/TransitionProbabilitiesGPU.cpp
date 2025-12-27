@@ -259,6 +259,7 @@ void TransitionProbabilitiesGPU::restore(void) {
 
     map->restore();
     
+    // remove entries that were created during this proposal
     for (uint64_t key : newEntriesThisProposal)
         map->erase(key);
     newEntriesThisProposal.clear();
@@ -266,7 +267,20 @@ void TransitionProbabilitiesGPU::restore(void) {
 
 void TransitionProbabilitiesGPU::updateAllBranches(void) {
 
+    // =========================================================================
+    // CRITICAL FIX: Must create entries for new branch lengths before marking!
+    // The original code just called markForUpdate() which silently does nothing
+    // if the entry doesn't exist. This caused "Could not find transition 
+    // probabilities" errors after topology changes introduced new branch lengths.
+    // =========================================================================
+    
+    // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
+    
+    // Scan all trees for branch lengths.
+    // For each branch length:
+    //   - If entry doesn't exist, create it and track for restore
+    //   - Mark the entry for update (backs up and adds to dirty list)
     
     std::vector<Tree*> allTrees;
     myTree->getTrees(allTrees);
@@ -277,7 +291,22 @@ void TransitionProbabilitiesGPU::updateAllBranches(void) {
         for (Node* p : dp)
             {
             if (p != t->getRoot())
-                map->markForUpdate(p->getBranchLength());
+                {
+                double bl = p->getBranchLength();
+                
+                // check if this branch length already has an entry
+                DoubleMatrix* matrix = map->find(bl);
+                if (matrix == nullptr)
+                    {
+                    // new branch length - create entry and track for restore
+                    uint64_t key = branchLengthToKey(bl);
+                    newEntriesThisProposal.push_back(key);
+                    map->getOrCreate(bl);
+                    }
+                
+                // mark for update (entry now guaranteed to exist)
+                map->markForUpdate(bl);
+                }
             }
         }
     

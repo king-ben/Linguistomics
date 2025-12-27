@@ -50,6 +50,7 @@ class ParameterTree : public Parameter {
         bool                                        checkTipToTipDistances(double threshhold);
         Node*                                       findCorrespondingNode(Tree* srcTree, Tree* dstTree, Node* srcNode);
         void                                        makeSubtree(Tree& t, const unsigned& taxonMask);
+        void                                        rebuildSubtrees(void);
         void                                        restoreTopology(void);
         void                                        saveTopology(void);
         size_t                                      taxonIndex(const std::string& tName);

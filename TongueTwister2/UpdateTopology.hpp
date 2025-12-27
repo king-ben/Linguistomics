@@ -8,6 +8,7 @@ class Node;
 class ParameterAlignment;
 class ParameterTree;
 class TransitionProbabilityManager;
+class Tree;
 
 
 
@@ -25,7 +26,8 @@ class UpdateTopology : public Update {
     
     private:
         void                                applyNni(Node* u, Node* v, Node* a, Node* c);
-        
+        Node*                               randomlyChooseInternalBranch(Tree* t);
+
         ParameterTree*                      myParm;
         std::vector<ParameterAlignment*>    myAlignments;
         TransitionProbabilityManager*       tiProbs;

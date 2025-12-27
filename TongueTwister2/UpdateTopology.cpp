@@ -2,6 +2,7 @@
 #include <limits>
 #include <set>
 #include "Model.hpp"
+#include "Msg.hpp"
 #include "Node.hpp"
 #include "NodeComparator.hpp"
 #include "ParameterTree.hpp"
@@ -35,6 +36,29 @@ void UpdateTopology::applyNni(Node* u, Node* v, Node* a, Node* c) {
     c->setAncestor(u);
 }
 
+Node* UpdateTopology::randomlyChooseInternalBranch(Tree* t) {
+
+    const std::vector<Node*>& dpseq = t->getPostOrder();
+    size_t n = dpseq.size();
+    Node* rootNode = t->getRoot();
+    Node* p = nullptr;
+    while(p == nullptr)
+        {
+        p = dpseq[static_cast<size_t>(rng->uniformRv() * n)];
+        if (p->getIsLeaf() == true || p == rootNode)
+            {
+            p = nullptr;
+            continue;
+            }
+        if (p == rootNode->getDescendants()[0] || p == rootNode->getDescendants()[1])
+            {
+            p = nullptr;
+            continue;
+            }
+        }
+    return p;
+}
+
 void UpdateTopology::setDependants(void) {
 
     clearDependencyFlags();
@@ -51,64 +75,27 @@ double UpdateTopology::update(void) {
     // Larget, B. and Simon, D. L. 1999. Markov chain Monte Carlo algorithms for 
     //   the Bayesian analysis of phylogenetic trees. Mol. Biol. Evol. 16:750-759.
     
+    // get the tree
     Tree* t = myParm->getTree();
     Node* root = t->getRoot();
+    if (t->getNumTaxa() <= 3)
+        Msg::error("Can only update topology on trees with more than three taxa");
+        
+//    t->print();
     
     // Find valid internal edges
     // An internal edge connects two internal nodes (neither is a leaf)
     // We exclude: root, children of root (to keep root structure unchanged)
-    const std::vector<Node*>& dp = t->getPostOrder();
-    std::vector<Node*> validNodes;
-    
-    for (Node* p : dp)
-        {
-        // p will be 'u' - the lower node of the internal edge
-        if (p->getIsLeaf() == true)
-            continue;
-        if (p == root)
-            continue;
-        if (p->numDescendants() != 2)
-            continue;
-            
-        Node* anc = p->getAncestor();
-        if (anc == nullptr)
-            continue;
-        if (anc == root)
-            continue;  // don't modify edges directly below root
-        if (anc->numDescendants() != 2)
-            continue;
-        
-        // Also exclude if v's parent is the root (keeps root structure unchanged)
-        Node* ancAnc = anc->getAncestor();
-        if (ancAnc == nullptr)
-            continue;
-        if (ancAnc == root)
-            continue;  // v is a child of root, skip to keep root structure intact
-            
-        validNodes.push_back(p);
-        }
-    
-    if (validNodes.empty())
-        {
-        // No valid internal edges (tree too small)
-        setDependants();
-        return -std::numeric_limits<double>::infinity();
-        }
-    
-    // Randomly select an internal edge
-    size_t idx = static_cast<size_t>(rng->uniformRv() * validNodes.size());
-    if (idx >= validNodes.size())
-        idx = validNodes.size() - 1;
-    Node* u = validNodes[idx];
+    Node* u = randomlyChooseInternalBranch(t);
     Node* v = u->getAncestor();
     
-    // Label u's children as a and b (randomly choose which is a)
+    // label u's children as a and b (randomly choose which is a)
     Node* a = u->getDescendants()[0];
     Node* b = u->getDescendants()[1];
     if (rng->uniformRv() < 0.5)
         std::swap(a, b);
     
-    // Find c: v's other child (not u)
+    // find c: v's other child (not u)
     Node* c = nullptr;
     std::set<Node*,NodeComparator>& vChildren = v->getDescendants().getNodes();
     for (Node* child : vChildren)
@@ -119,14 +106,16 @@ double UpdateTopology::update(void) {
             break;
             }
         }
-    
     if (c == nullptr)
-        {
-        setDependants();
-        return -std::numeric_limits<double>::infinity();
-        }
+        Msg::error("Problem in LOCAL update: could not find c");
+        
+//    std::cout << "u = " << u->getIndex() << std::endl;
+//    std::cout << "v = " << v->getIndex() << std::endl;
+//    std::cout << "a = " << a->getIndex() << std::endl;
+//    std::cout << "b = " << b->getIndex() << std::endl;
+//    std::cout << "c = " << c->getIndex() << std::endl;
     
-    // Current path distances (path: a → u → v → c)
+    // Current path distances (path: a -> u -> v -> c)
     // x = dist(a, u) = a's branch length
     // y = dist(a, v) = a's branch length + u's branch length
     // m = dist(a, c) = a's branch length + u's branch length + c's branch length
@@ -138,7 +127,7 @@ double UpdateTopology::update(void) {
     double y = x + oldULen;
     double m = y + oldCLen;
     
-    // Propose new total path length: m* = m × exp(λ(U₁ - 0.5))
+    // propose new total path length: m* = m × exp(λ(U₁ - 0.5))
     double mStar = m * exp(tuning * (rng->uniformRv() - 0.5));
     
     // Propose new node positions
@@ -160,10 +149,10 @@ double UpdateTopology::update(void) {
         yStar = U2 * mStar;
         }
     
-    // Determine if topology changes
+    // determine if topology changes
     bool topologyChanges = (xStar > yStar);
     
-    // Calculate new branch lengths
+    // calculate new branch lengths
     double newALen, newULen, newCLen;
     
     if (topologyChanges == false)
@@ -214,10 +203,12 @@ double UpdateTopology::update(void) {
     myParm->setBranchLength(c, newCLen);
     
     setDependants();
+
+//    t->print();
     
-    // Hastings ratio = (m*/m)²
+    // Hastings ratio = (m*/m)^3
     double ratio = mStar / m;
-    return 2.0 * log(ratio);
+    return 3.0 * log(ratio);
 }
 
 double UpdateTopology::update(double power) {
