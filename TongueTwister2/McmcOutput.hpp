@@ -27,6 +27,8 @@ class McmcOutput {
         void                    openStandardFiles(void);
         void                    closeStandardFiles(void);
         
+        void                    writeConfigurationFile(void);
+        
         void                    writeScalarHeader(void);
         void                    writeScalarSample(int gen);
         void                    writeTreeSample(int gen);

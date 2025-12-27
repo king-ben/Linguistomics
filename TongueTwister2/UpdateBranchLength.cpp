@@ -5,21 +5,21 @@
 #include "RandomVariable.hpp"
 #include "TransitionProbabilityManager.hpp"
 #include "Tree.hpp"
-#include "UpdateTree.hpp"
+#include "UpdateBranchLength.hpp"
 
 
 
-UpdateTree::UpdateTree(Model* m, RandomVariable* r, ParameterTree* p) : Update(m, r), myParm(p) {
+UpdateBranchLength::UpdateBranchLength(Model* m, RandomVariable* r, ParameterTree* p) : Update(m, r), myParm(p) {
 
     tiProbs = model->getTiProbs();
     maxBrlen = myParm->getMaximumBrlen();
 }
 
-void UpdateTree::notifyDependants(void) {
+void UpdateBranchLength::notifyDependants(void) {
 
 }
 
-void UpdateTree::setDependants(void) {
+void UpdateBranchLength::setDependants(void) {
 
     clearDependencyFlags();
     
@@ -30,7 +30,7 @@ void UpdateTree::setDependants(void) {
     // changedBranchLength is set in update()
 }
 
-double UpdateTree::update(void) {
+double UpdateBranchLength::update(void) {
 
     numTries++;
 
@@ -67,14 +67,14 @@ double UpdateTree::update(void) {
     return log(randomFactor) + log(boundaryFactor);
 }
 
-double UpdateTree::update(double power) {
+double UpdateBranchLength::update(double power) {
 
     if (rng->uniformRv() < priorSampleProb(power))
         return updateFromPrior();
     return update();
 }
 
-double UpdateTree::updateFromPrior(void) {
+double UpdateBranchLength::updateFromPrior(void) {
 
     Tree* t = myParm->getTree();
     

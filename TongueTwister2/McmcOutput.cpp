@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <unistd.h>
 #include "Alignment.hpp"
+#include "JsonData.hpp"
 #include "McmcOutput.hpp"
 #include "Model.hpp"
 #include "Msg.hpp"
@@ -32,6 +33,9 @@ McmcOutput::McmcOutput(Model* m, const char* base) : model(m) {
     alignmentFiles = nullptr;
     alignmentFirstSample = nullptr;
     alignmentCacheCapacity = 64; // conservative default; stays well under typical ulimit -n
+    
+    // write the configuration file
+    writeConfigurationFile();
     
     // find the tree parameter
     treeParm = model->findParameter<ParameterTree>();
@@ -344,6 +348,21 @@ bool McmcOutput::reopenJsonArrayForAppend(FILE* f) {
         return false;
 
     return true;
+}
+
+void McmcOutput::writeConfigurationFile(void) {
+
+    // write the configuration file
+    char fileName[512];
+    snprintf(fileName, 512, "%s.config", baseName);
+    FILE* configFile = fopen(fileName, "w");
+    if (configFile == nullptr)
+        Msg::error("Could not open configuration file");
+    
+    JsonData& j = JsonData::jsonInstance();
+    fprintf(configFile, "%s\n", j.dump().c_str());
+    
+    fclose(configFile);
 }
 
 void McmcOutput::writeNewick(FILE* f, Tree* t) {

@@ -40,7 +40,6 @@ int McmcMarginal::calculateNumCycles(void) {
     // to calculate numCycles from the MCMC phase information and the number
     // of stones in the path sampling algorithm.
     int nc = 0;
-    size_t maxPhaseLength = 0;
     std::vector<std::string>& phases = mcmcPhases->getPhases();
     for (std::string phase : phases)
         nc += mcmcPhases->getLengthForPhase(1, phase);
@@ -75,7 +74,7 @@ void McmcMarginal::printStatus(size_t stoneIdx, size_t cycle, size_t cnt, std::s
     std::cout << std::setw(3) << stoneIdx+1 << "/" << samples->size() << " ";
     std::cout << std::setw(numDigits) << cnt << " ";
     std::cout << std::setw(numDigitsPhase) << cycle << " ";
-    std::cout << std::fixed << std::setprecision(5) << (*samples)[stoneIdx]->getPower() << " ";
+    std::cout << std::fixed << std::setprecision(6) << (*samples)[stoneIdx]->getPower() << " ";
     std::cout << std::setw(6) << phase << " ";
     std::cout << "-- " << std::fixed << std::setprecision(2) << lnL1 << " -> " << lnL2 << " -- ";
     timer->printStatus(cnt, numCycles);

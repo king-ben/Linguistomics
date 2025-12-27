@@ -33,8 +33,8 @@ void McmcPosterior::run(void) {
     std::cout << "   * Chain Length: " << numCycles << std::endl;
     std::cout << "   * Base Output File: " << baseOutputFileName << std::endl;
 
-    McmcOutput* output = new McmcOutput(myModel, baseOutputFileName.c_str());  // true enables Nytril
-    output->open();
+    McmcOutput output(myModel, baseOutputFileName.c_str());
+    output.open();
     
     double currentLnL = myModel->lnLikelihood();
     double currentLnP = myModel->lnPrior();
@@ -79,12 +79,10 @@ void McmcPosterior::run(void) {
             
         // sample chain
         if (n % sampleFrequency == 0)
-            output->sample(n);
+            output.sample(n);
         }
 
     timer.end();
     updateMngr->summary();
-    output->close();
-    
-    delete output;
+    output.close();
 }

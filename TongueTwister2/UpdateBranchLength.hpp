@@ -1,5 +1,5 @@
-#ifndef UpdateTree_hpp
-#define UpdateTree_hpp
+#ifndef UpdateBranchLength_hpp
+#define UpdateBranchLength_hpp
 
 #include "Update.hpp"
 class Model;
@@ -8,12 +8,12 @@ class TransitionProbabilityManager;
 
 
 
-class UpdateTree : public Update {
+class UpdateBranchLength : public Update {
 
     public:
-                                        UpdateTree(void) = delete;
-                                        UpdateTree(Model* m, RandomVariable* r, ParameterTree* p);
-        std::string                     getUpdateName(void) { return "Tree Update"; }
+                                        UpdateBranchLength(void) = delete;
+                                        UpdateBranchLength(Model* m, RandomVariable* r, ParameterTree* p);
+        std::string                     getUpdateName(void) { return "Branch Length Update"; }
         void                            notifyDependants(void);
         std::string                     parameterType(void) { return "ParameterTree"; }
         void                            setDependants(void);

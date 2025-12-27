@@ -25,6 +25,7 @@ class JsonData {
         nlohmann::json*     getJsonPointer(const std::string& key);                  // get pointer to json object at key (nullptr if not found)
         
                             // utility functions
+        std::string         dump(void) { return j.dump(); }
         size_t              numKeys(void);
         void                readJsonFile(std::string fn);
         void                print(void);

@@ -10,11 +10,11 @@
 #include "RateMatrix.hpp"
 #include "TransitionProbabilityManager.hpp"
 #include "UpdateAlignment.hpp"
+#include "UpdateBranchLength.hpp"
 #include "UpdateExchangeabilities.hpp"
 #include "UpdateFrequencies.hpp"
 #include "UpdateIndelRates.hpp"
 #include "UpdateManager.hpp"
-#include "UpdateTree.hpp"
 
 
 
@@ -52,7 +52,7 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             }
         else if (dynamic_cast<ParameterTree*>(parm) != nullptr)
             {
-            UpdateTree* updater = new UpdateTree(model, rng, dynamic_cast<ParameterTree*>(parm));
+            UpdateBranchLength* updater = new UpdateBranchLength(model, rng, dynamic_cast<ParameterTree*>(parm));
             updates.push_back(updater);
             otherUpdates.push_back(updater);
             }
