@@ -233,7 +233,7 @@ FILE* McmcOutput::ensureAlignmentFileOpen(int alnIdx) {
 
     if (alignmentFirstSample[alnIdx] == true)
         {
-        // First time: overwrite and start JSON array
+        // first time: overwrite and start JSON array
         f = fopen(fileName, "w");
         if (f == nullptr)
             Msg::error("Could not open alignment output file");
@@ -289,7 +289,7 @@ void McmcOutput::closeAlignmentFile(int alnIdx) {
     FILE* f = alignmentFiles[alnIdx];
     if (f != nullptr)
         {
-        // Finalize the JSON array for this file before closing.
+        // finalize the JSON array for this file before closing
         fprintf(f, "\n]\n");
         fclose(f);
         alignmentFiles[alnIdx] = nullptr;
@@ -335,11 +335,11 @@ bool McmcOutput::reopenJsonArrayForAppend(FILE* f) {
     if (fd < 0)
         return false;
 
-    // Truncate at the position of the closing bracket.
+    // truncate at the position of the closing bracket
     if (ftruncate(fd, pos - 1) != 0)
         return false;
 
-    // Seek to end so subsequent fprintf appends correctly.
+    // seek to end so subsequent fprintf appends correctly
     if (fseek(f, 0, SEEK_END) != 0)
         return false;
 
@@ -407,10 +407,10 @@ void McmcOutput::writeScalarHeader(void) {
         if (helper == nullptr)
             {
             // format for GTR model (numStates * (numStates-1) / 2 = numRates columns)
-            size_t numRates = exchParm->getNumRates();
-            for (size_t i=0; i<numRates; i++)
+            size_t numStates = exchParm->getNumStates();
+            for (size_t i=0; i<numStates; i++)
                 {
-                for (size_t j=i+1; j<numRates; j++)
+                for (size_t j=i+1; j<numStates; j++)
                     fprintf(scalarFile, "\tR[%zu-%zu]", i, j);
                 }
             }

@@ -47,13 +47,13 @@ class ParameterTree : public Parameter {
         bool                                        checkTipToTipDistances(double threshhold);
         void                                        makeSubtree(Tree& t, const unsigned& taxonMask);
         size_t                                      taxonIndex(const std::string& tName);
-        constexpr static const double               MAX_BRLEN = 2.0;
+        constexpr static const double               MAX_BRLEN = 2.0; // 2 is a very long branch and we don't want to mess up the branch length hashing
         double                                      lnProbLessMax;
         double                                      brlenLambda;
         TreePair                                    fullTree;
         std::unordered_map<unsigned,TreePair>       subTrees;
         std::vector<std::string>                    canonicalTaxonList;
-        std::unordered_map<unsigned, BranchMapping> branchMappings;
+        std::unordered_map<unsigned,BranchMapping>  branchMappings;
 };
 
 #endif

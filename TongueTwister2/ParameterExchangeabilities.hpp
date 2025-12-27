@@ -15,6 +15,7 @@ class ParameterExchangeabilities : public Parameter {
                                    ~ParameterExchangeabilities(void);
         std::vector<double>&        getAlpha(void) { return alpha; }
         size_t                      getNumRates(void) { return numRates; }
+        size_t                      getNumStates(void) { return numStates; }
         std::vector<double>&        getRates(void) { return rates[0]; }
         const std::vector<double>&  getRates(void) const { return rates[0]; }
         void                        keep(void);
