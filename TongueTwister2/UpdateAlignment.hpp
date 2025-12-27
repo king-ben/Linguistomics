@@ -23,13 +23,13 @@ class UpdateAlignment : public Update {
         double                          update(double power);
         double                          updateFromPrior(void);
         
-        // Public method to realign entire alignment (extensionProb = 1.0)
-        // This is intended for use by UpdateTopology to jointly update
-        // the tree topology and all alignments together.
-        // Returns the log proposal ratio for the alignment change.
+                                        // Public method to realign entire alignment (extensionProb = 1.0)
+                                        // This is intended for use by UpdateTopology to jointly update
+                                        // the tree topology and all alignments together.
+                                        // Returns the log proposal ratio for the alignment change.
         double                          realignFull(void);
         
-        // Accessor for the alignment parameter (needed by UpdateTopology)
+                                        // accessor for the alignment parameter (needed by UpdateTopology)
         ParameterAlignment*             getAlignmentParameter(void) { return myParm; }
     
     private:
