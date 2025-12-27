@@ -4,6 +4,7 @@
 #include <vector>
 #include "Update.hpp"
 class Model;
+class Node;
 class ParameterAlignment;
 class ParameterTree;
 class TransitionProbabilityManager;
@@ -15,7 +16,7 @@ class UpdateTopology : public Update {
     public:
                                             UpdateTopology(void) = delete;
                                             UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<ParameterAlignment*>& alnVec);
-        std::string                         getUpdateName(void) { return "Branch Length Update"; }
+        std::string                         getUpdateName(void) { return "LOCAL Topology Update"; }
         std::string                         parameterType(void) { return "ParameterTree"; }
         void                                setDependants(void);
         double                              update(void);
@@ -23,10 +24,13 @@ class UpdateTopology : public Update {
         double                              updateFromPrior(void);
     
     private:
+        void                                applyNni(Node* u, Node* v, Node* a, Node* c);
+        
         ParameterTree*                      myParm;
         std::vector<ParameterAlignment*>    myAlignments;
         TransitionProbabilityManager*       tiProbs;
         double                              maxBrlen;
+        double                              tuning;
 };
 
 #endif

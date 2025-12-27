@@ -1,9 +1,11 @@
 #include <iomanip>
 #include <iostream>
+#include <set>
 #include "BitMask.hpp"
 #include "JsonData.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
+#include "NodeComparator.hpp"
 #include "ParameterTree.hpp"
 #include "Probability.hpp"
 #include "Tree.hpp"
@@ -13,7 +15,8 @@
 ParameterTree::ParameterTree(Model* m, RandomVariable* r, std::string n) : Parameter(m, r, n) {
 
     brlenLambda = 10.0;
-    lnProbLessMax = log( 1.0 - exp(-brlenLambda * MAX_BRLEN) ); // evaluate once for conditioning on max brlen
+    lnProbLessMax = log( 1.0 - exp(-brlenLambda * MAX_BRLEN) );
+    topologyChanged = false;
 }
 
 ParameterTree::~ParameterTree(void) {
@@ -27,14 +30,47 @@ ParameterTree::~ParameterTree(void) {
         }
 }
 
+void ParameterTree::applyNniToSubtrees(Node* u, Node* v, Node* a, Node* c) {
+
+    // Apply NNI to all subtrees that contain the relevant nodes
+    // The NNI swaps: a from u to v, c from v to u
+    
+    // Get the taxon indices involved (we need to find which subtrees contain both a and c)
+    // For leaf nodes, we can use their index; for internal nodes, we need descendants
+    
+    for (auto& [mask, treePair] : subTrees)
+        {
+        Tree* subtree = treePair.trees[0];
+        
+        // Find corresponding nodes in subtree
+        Node* subU = findCorrespondingNode(fullTree.trees[0], subtree, u);
+        Node* subV = findCorrespondingNode(fullTree.trees[0], subtree, v);
+        Node* subA = findCorrespondingNode(fullTree.trees[0], subtree, a);
+        Node* subC = findCorrespondingNode(fullTree.trees[0], subtree, c);
+        
+        // If all four nodes exist in subtree and have the expected relationships,
+        // apply the same NNI
+        if (subU != nullptr && subV != nullptr && subA != nullptr && subC != nullptr)
+            {
+            // Verify relationships before applying NNI
+            if (subA->getAncestor() == subU && 
+                subC->getAncestor() == subV && 
+                subU->getAncestor() == subV)
+                {
+                // Apply NNI: swap a and c
+                subU->removeDescendant(subA);
+                subV->removeDescendant(subC);
+                subU->addDescendant(subC);
+                subV->addDescendant(subA);
+                subA->setAncestor(subV);
+                subC->setAncestor(subU);
+                }
+            }
+        }
+}
+
 bool ParameterTree::checkTipToTipDistances(double threshhold) {
 
-    /* If the pruning went as expected, then the distances between all pairs of taxa,
-       regardless of the number of taxa in the tree, should be the same. This function
-       goes through all of the subtrees, getting the pairwise distances for each. It then
-       adds the pairwise distances to another map (allDistances), which has a set as its
-       value. You can check, visually, that the pairwise distances for all trees is the same.
-       This function is only used for debugging purposes. */
     std::map<std::pair<std::string,std::string>,std::set<double>> allDistances;
     for (auto st : subTrees)
         {
@@ -65,6 +101,80 @@ bool ParameterTree::checkTipToTipDistances(double threshhold) {
             return false;
         }
     return true;
+}
+
+Node* ParameterTree::findCorrespondingNode(Tree* srcTree, Tree* dstTree, Node* srcNode) {
+
+    // Find the node in dstTree that corresponds to srcNode in srcTree
+    // For leaf nodes, match by name; for internal nodes, match by descendant leaf sets
+    
+    if (srcNode == nullptr)
+        return nullptr;
+    
+    if (srcNode->getIsLeaf())
+        {
+        // Match leaf by name
+        return dstTree->getLeafNamed(srcNode->getName());
+        }
+    else
+        {
+        // For internal nodes, we need to find the node with the same set of descendant leaves
+        // This is complex; for now, use offset-based matching if trees have same structure
+        const std::vector<Node*>& dstPostOrder = dstTree->getPostOrder();
+        for (Node* dstNode : dstPostOrder)
+            {
+            if (dstNode->getIsLeaf() == false && dstNode->getOffset() == srcNode->getOffset())
+                return dstNode;
+            }
+        
+        // Fallback: try to match by descendant leaves
+        // Get leaves under srcNode
+        std::set<std::string> srcLeaves;
+        std::vector<Node*> stack;
+        stack.push_back(srcNode);
+        while (!stack.empty())
+            {
+            Node* n = stack.back();
+            stack.pop_back();
+            if (n->getIsLeaf())
+                srcLeaves.insert(n->getName());
+            else
+                {
+                std::set<Node*,NodeComparator>& des = n->getDescendants().getNodes();
+                for (Node* d : des)
+                    stack.push_back(d);
+                }
+            }
+        
+        // Find internal node in dstTree with same leaves
+        for (Node* dstNode : dstPostOrder)
+            {
+            if (dstNode->getIsLeaf())
+                continue;
+                
+            std::set<std::string> dstLeaves;
+            stack.clear();
+            stack.push_back(dstNode);
+            while (!stack.empty())
+                {
+                Node* n = stack.back();
+                stack.pop_back();
+                if (n->getIsLeaf())
+                    dstLeaves.insert(n->getName());
+                else
+                    {
+                    std::set<Node*,NodeComparator>& des = n->getDescendants().getNodes();
+                    for (Node* d : des)
+                        stack.push_back(d);
+                    }
+                }
+            
+            if (srcLeaves == dstLeaves)
+                return dstNode;
+            }
+        }
+    
+    return nullptr;
 }
 
 size_t ParameterTree::getNumTaxa(void) {
@@ -149,25 +259,34 @@ void ParameterTree::initializeBranchMappings(void) {
 
 void ParameterTree::keep(void) {
 
-    // copy branch lengths from trees[0] to trees[1] for all trees
-    // called when MCMC proposal is accepted
+    // Called when MCMC proposal is accepted
+    // Copy state from trees[0] to trees[1] for all trees
     
-    // copy full tree branch lengths
-    const std::vector<Node*>& srcPostOrder = fullTree.trees[0]->getPostOrder();
-    const std::vector<Node*>& dstPostOrder = fullTree.trees[1]->getPostOrder();
-    for (size_t i=0; i<srcPostOrder.size(); i++)
+    if (topologyChanged)
         {
-        Node* srcNode = srcPostOrder[i];
-        Node* dstNode = dstPostOrder[i];
-        dstNode->setBranchLength(srcNode->getBranchLength());
+        // Topology changed: do full clone to backup the new topology
+        saveTopology();
+        topologyChanged = false;
         }
-    
-    // copy subtree branch lengths
-    for (auto& [mask, treePair] : subTrees)
+    else
         {
-        std::unordered_map<unsigned, BranchMapping>::iterator it = branchMappings.find(mask);
-        if (it != branchMappings.end())
-            it->second.copyBranchLengths(treePair.trees[0], treePair.trees[1]);
+        // Only branch lengths changed: just copy branch lengths
+        const std::vector<Node*>& srcPostOrder = fullTree.trees[0]->getPostOrder();
+        const std::vector<Node*>& dstPostOrder = fullTree.trees[1]->getPostOrder();
+        for (size_t i=0; i<srcPostOrder.size(); i++)
+            {
+            Node* srcNode = srcPostOrder[i];
+            Node* dstNode = dstPostOrder[i];
+            dstNode->setBranchLength(srcNode->getBranchLength());
+            }
+        
+        // copy subtree branch lengths
+        for (auto& [mask, treePair] : subTrees)
+            {
+            std::unordered_map<unsigned, BranchMapping>::iterator it = branchMappings.find(mask);
+            if (it != branchMappings.end())
+                it->second.copyBranchLengths(treePair.trees[0], treePair.trees[1]);
+            }
         }
 }
 
@@ -196,10 +315,6 @@ double ParameterTree::lnPriorProbability(void) {
 }
 
 void ParameterTree::makeSubtree(Tree& t, const unsigned& taxonMask) {
-
-#   if 0
-    print("original tree");
-#   endif
 
     // 1. mark all nodes that are part of the subtree
     t.setAllFlags(false);
@@ -296,10 +411,6 @@ void ParameterTree::makeSubtree(Tree& t, const unsigned& taxonMask) {
         }
     if (t.numTaxa != BitMask::numSet(taxonMask, canonicalTaxonList.size()))
         Msg::error("Inconsistency between the number of tips and number of set bits when pruning taxa");
-            
-#   if 0
-    print("pruned tree");
-#   endif
 }
 
 void ParameterTree::print(void) {
@@ -316,25 +427,63 @@ void ParameterTree::print(void) {
 
 void ParameterTree::restore(void) {
 
-    // copy branch lengths from trees[1] to trees[0] for all trees
-    // called when MCMC proposal is rejected
+    // Called when MCMC proposal is rejected
+    // Copy state from trees[1] back to trees[0] for all trees
     
-    // restore full tree branch lengths
-    const std::vector<Node*>& srcPostOrder = fullTree.trees[1]->getPostOrder();
-    const std::vector<Node*>& dstPostOrder = fullTree.trees[0]->getPostOrder();
-    for (size_t i=0; i<srcPostOrder.size(); i++)
+    if (topologyChanged)
         {
-        Node* srcNode = srcPostOrder[i];
-        Node* dstNode = dstPostOrder[i];
-        dstNode->setBranchLength(srcNode->getBranchLength());
+        // Topology changed: do full restore from backup
+        restoreTopology();
+        topologyChanged = false;
         }
+    else
+        {
+        // Only branch lengths changed: just copy branch lengths back
+        const std::vector<Node*>& srcPostOrder = fullTree.trees[1]->getPostOrder();
+        const std::vector<Node*>& dstPostOrder = fullTree.trees[0]->getPostOrder();
+        for (size_t i=0; i<srcPostOrder.size(); i++)
+            {
+            Node* srcNode = srcPostOrder[i];
+            Node* dstNode = dstPostOrder[i];
+            dstNode->setBranchLength(srcNode->getBranchLength());
+            }
+        
+        // restore subtree branch lengths
+        for (auto& [mask, treePair] : subTrees)
+            {
+            std::unordered_map<unsigned, BranchMapping>::iterator it = branchMappings.find(mask);
+            if (it != branchMappings.end())
+                it->second.copyBranchLengths(treePair.trees[1], treePair.trees[0]);
+            }
+        }
+}
+
+void ParameterTree::restoreTopology(void) {
+
+    // Full topology restore from trees[1] to trees[0]
+    // Use the clone operation which copies everything including topology
     
-    // restore subtree branch lengths
+    *fullTree.trees[0] = *fullTree.trees[1];
+    
     for (auto& [mask, treePair] : subTrees)
         {
-        std::unordered_map<unsigned, BranchMapping>::iterator it = branchMappings.find(mask);
-        if (it != branchMappings.end())
-            it->second.copyBranchLengths(treePair.trees[1], treePair.trees[0]);
+        *treePair.trees[0] = *treePair.trees[1];
+        }
+    
+    // Rebuild branch mappings since we restored topology
+    initializeBranchMappings();
+}
+
+void ParameterTree::saveTopology(void) {
+
+    // Full topology save from trees[0] to trees[1]
+    // Use the clone operation which copies everything including topology
+    
+    *fullTree.trees[1] = *fullTree.trees[0];
+    
+    for (auto& [mask, treePair] : subTrees)
+        {
+        *treePair.trees[1] = *treePair.trees[0];
         }
 }
 

@@ -8,6 +8,7 @@
 #include "BranchMapping.hpp"
 #include "json.hpp"
 #include "Parameter.hpp"
+class Node;
 class Tree;
 
 
@@ -27,6 +28,7 @@ class ParameterTree : public Parameter {
                                                     ParameterTree(void) = delete;
                                                     ParameterTree(Model* m, RandomVariable* r, std::string n);
                                                    ~ParameterTree(void);
+        void                                        applyNniToSubtrees(Node* u, Node* v, Node* a, Node* c);
         double                                      getBrlenLambda(void) { return brlenLambda; }
         size_t                                      getNumTaxa(void);
         const std::vector<std::string>&             getCanonicalTaxonList(void) const { return canonicalTaxonList; }
@@ -42,14 +44,19 @@ class ParameterTree : public Parameter {
         void                                        print(void);
         void                                        restore(void);
         void                                        setBranchLength(Node* p, double v);
+        void                                        setTopologyChanged(bool tf) { topologyChanged = tf; }
     
     private:
         bool                                        checkTipToTipDistances(double threshhold);
+        Node*                                       findCorrespondingNode(Tree* srcTree, Tree* dstTree, Node* srcNode);
         void                                        makeSubtree(Tree& t, const unsigned& taxonMask);
+        void                                        restoreTopology(void);
+        void                                        saveTopology(void);
         size_t                                      taxonIndex(const std::string& tName);
-        constexpr static const double               MAX_BRLEN = 2.0; // 2 is a very long branch and we don't want to mess up the branch length hashing
+        constexpr static const double               MAX_BRLEN = 2.0;
         double                                      lnProbLessMax;
         double                                      brlenLambda;
+        bool                                        topologyChanged;
         TreePair                                    fullTree;
         std::unordered_map<unsigned,TreePair>       subTrees;
         std::vector<std::string>                    canonicalTaxonList;

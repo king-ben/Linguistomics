@@ -125,18 +125,18 @@ void TransitionProbabilities::shrinkCalculatorPoolIfNeeded(void) {
     
     calculatorShrinkCounter = 0;
     
-    // Determine target size based on recent usage with 2x headroom
+    // determine target size based on recent usage with 2x headroom
     size_t targetSize = maxCalculatorsUsedRecently * 2;
     if (targetSize < CALCULATOR_MIN_POOL_SIZE)
         targetSize = CALCULATOR_MIN_POOL_SIZE;
     
-    // Reset usage tracking for next period
+    // reset usage tracking for next period
     maxCalculatorsUsedRecently = 0;
     
-    // Only shrink if we can reclaim significant memory (at least 25%)
+    // only shrink if we can reclaim significant memory (at least 25%)
     if (calculatorPoolSize > targetSize && calculatorPoolSize > targetSize + targetSize / 4)
         {
-        // Delete excess calculators (each has a MathCache with 16 matrices)
+        // delete excess calculators (each has a MathCache with 16 matrices)
         for (size_t i = targetSize; i < calculatorPoolSize; i++)
             {
             delete calculatorPool[i];
@@ -239,9 +239,10 @@ void TransitionProbabilities::updateAllBranches(void) {
     // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
     
-    // Only mark entries that are actually in use by current tree branches.
-    // This avoids wasting computation on orphaned entries from previous
-    // branch length proposals that have since been accepted or rejected.
+    // Scan all trees for branch lengths.
+    // For each branch length:
+    //   - If entry doesn't exist, create it and track for restore
+    //   - Mark the entry for update (backs up and adds to dirty list)
     
     std::vector<Tree*> allTrees;
     myTree->getTrees(allTrees);
@@ -254,12 +255,24 @@ void TransitionProbabilities::updateAllBranches(void) {
             if (p != t->getRoot())
                 {
                 double bl = p->getBranchLength();
+                
+                // check if this branch length already has an entry
+                DoubleMatrix* matrix = map->find(bl);
+                if (matrix == nullptr)
+                    {
+                    // new branch length - create entry and track for restore
+                    uint64_t key = branchLengthToKey(bl);
+                    newEntriesThisProposal.push_back(key);
+                    map->getOrCreate(bl);
+                    }
+                
+                // mark for update (entry now guaranteed to exist)
                 map->markForUpdate(bl);
                 }
             }
         }
     
-    // compute only the entries we just marked
+    // compute only the entries we marked
     computeDirtyMatrices();
 }
 
