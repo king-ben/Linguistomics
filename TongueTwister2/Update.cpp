@@ -5,8 +5,8 @@
 
 
 Update::Update(Model* m, RandomVariable* r) : 
-    model(m), rng(r), numTries(0), numAcceptances(0), 
-    updatedParameter(nullptr), rateMatrixNeedsUpdate(false), allTiprobsNeedUpdate(false), 
+    model(m), rng(r), updatedParameter(nullptr), 
+    rateMatrixNeedsUpdate(false), allTiprobsNeedUpdate(false), 
     singleBranchChanged(false), changedBranchLength(0.0) {
     
 }

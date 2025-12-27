@@ -1,5 +1,5 @@
+#include <iomanip>
 #include <iostream>
-#include <unordered_map>
 #include "Model.hpp"
 #include "Msg.hpp"
 #include "ParameterAlignment.hpp"
@@ -68,6 +68,14 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
         else 
             Msg::error("Could not find update in update manager object");
         }
+    
+    // build index map for O(1) lookup from Update* to index
+    for (size_t i = 0; i < updates.size(); i++)
+        updateIndex[updates[i]] = i;
+    
+    // initialize acceptance statistics
+    numTries.resize(updates.size(), 0);
+    numAcceptances.resize(updates.size(), 0);
         
     setProposalProbabilities();
     buildAliasTable();
@@ -81,7 +89,9 @@ UpdateManager::~UpdateManager(void) {
 
 void UpdateManager::accept(Update* u) {
 
-    u->accept();
+    // increment acceptance count
+    size_t idx = updateIndex[u];
+    numAcceptances[idx]++;
 
     Parameter* parm = u->getUpdatedParameter();
     parm->keep();
@@ -98,7 +108,7 @@ void UpdateManager::buildAliasTable(void) {
 
     // Walker, A. J. 1977. An efficient method for generating 
     //    discrete random variables with general distributions.
-    //    ACM Transactions on Mathematical Soware, 3(3):253-256
+    //    ACM Transactions on Mathematical Software, 3(3):253-256
     
     const size_t n = proposalProbabilities.size();
     if (n == 0)
@@ -114,7 +124,6 @@ void UpdateManager::buildAliasTable(void) {
         scaledProb[i] = proposalProbabilities[i] * static_cast<double>(n);
     
     // partition into small (<1) and large (>=1) groups
-    // using indices rather than separate vectors to avoid allocations
     std::vector<size_t> small, large;
     small.reserve(n);
     large.reserve(n);
@@ -175,7 +184,6 @@ void UpdateManager::print(void) {
 Update* UpdateManager::randomlyChooseUpdate(void) {
 
     // Walker's alias method: O(1) selection
-    // Generate two random numbers: one for bin selection, one for alias decision
     
     const size_t n = updates.size();
     if (n == 0)
@@ -192,10 +200,12 @@ Update* UpdateManager::randomlyChooseUpdate(void) {
     
     // flip biased coin to decide: original or alias
     double v = rng->uniformRv();
-    if (v < aliasProbability[bin])
-        return updates[bin];
-    else
-        return updates[aliasIndex[bin]];
+    size_t chosenIdx = (v < aliasProbability[bin]) ? bin : aliasIndex[bin];
+    
+    // increment try count for chosen update
+    numTries[chosenIdx]++;
+    
+    return updates[chosenIdx];
 }
 
 void UpdateManager::reject(Update* u) {
@@ -215,11 +225,6 @@ void UpdateManager::setProposalProbabilities(void) {
 
     // initialize probability vector (all managed here, not in Update objects)
     proposalProbabilities.resize(updates.size(), 0.0);
-    
-    // map updates to their indices for quick lookup
-    std::unordered_map<Update*, size_t> updateIndex;
-    for (size_t i=0; i<updates.size(); i++)
-        updateIndex[updates[i]] = i;
     
     // alignments get probability 1.0 each (will be normalized)
     for (Update* u : alignmentUpdates)
@@ -257,27 +262,23 @@ void UpdateManager::summary(void) {
         if (name.length() > longestNameLength)
             longestNameLength = name.length();
         }
-    
-    // map for probability lookup
-    std::unordered_map<Update*, size_t> updateIndex;
-    for (size_t i = 0; i < updates.size(); i++)
-        updateIndex[updates[i]] = i;
         
     std::cout << "   MCMC Update Summary" << std::endl;
     for (Update* u : updates)
         {
+        size_t idx = updateIndex[u];
         std::cout << "   * ";
         std::string name = u->getUpdateName();
         std::cout << name << " ";
         for (size_t i=0; i<longestNameLength-name.length(); i++)
             std::cout << " ";
-        std::cout << std::setw(4) << u->getNumTries() << " ";
-        std::cout << std::setw(4) << u->getNumAcceptances() << " ";
-        if (u->getNumTries() > 0)
-            std::cout << std::fixed << std::setprecision(1) << std::setw(5) << (double)(u->getNumAcceptances() * 100.0) / u->getNumTries() << "% ";
+        std::cout << std::setw(4) << numTries[idx] << " ";
+        std::cout << std::setw(4) << numAcceptances[idx] << " ";
+        if (numTries[idx] > 0)
+            std::cout << std::fixed << std::setprecision(1) << std::setw(5) << (double)(numAcceptances[idx] * 100.0) / numTries[idx] << "% ";
         else 
             std::cout << std::setw(5) << "N/A" << " ";
-        std::cout << std::fixed << std::setprecision(4) << std::setw(6) << proposalProbabilities[updateIndex[u]];
+        std::cout << std::fixed << std::setprecision(4) << std::setw(6) << proposalProbabilities[idx];
         std::cout << std::endl;
         }
     std::cout << std::endl;
