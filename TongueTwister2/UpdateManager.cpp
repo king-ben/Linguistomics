@@ -59,6 +59,8 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
         else 
             Msg::error("Could not find update in update manager object");
         }
+        
+    setProposalProbabilities();
 }
 
 UpdateManager::~UpdateManager(void) {
@@ -91,17 +93,17 @@ void UpdateManager::print(void) {
 
 Update* UpdateManager::randomlyChooseUpdate(void) {
 
-    double alignmentUpdateProb = 0.5;
-
-    Update* u = nullptr;
-    if (rng->uniformRv() < alignmentUpdateProb)
-        u = alignmentUpdates[static_cast<int>(rng->uniformRv()*alignmentUpdates.size())];
-    else 
-        u = otherUpdates[static_cast<int>(rng->uniformRv()*otherUpdates.size())];
-    if (u == nullptr)
-        Msg::error("Failed to randomly choose a parameter to update");
-        
-    return u;
+    double u = rng->uniformRv();
+    double sum = 0.0;
+    for (Update* update : updates)
+        {
+        sum += update->getProposalProbability();
+        if (u < sum)
+            return update;
+        }
+    
+    Msg::error("Failed to randomly choose a parameter to update");
+    return nullptr;
 }
 
 void UpdateManager::reject(Update* u) {
@@ -115,6 +117,27 @@ void UpdateManager::reject(Update* u) {
     // transition probabilities: restore from backup
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
         tiProbs->restore();
+}
+
+void UpdateManager::setProposalProbabilities(void) {
+
+    // alignments all have a proposal probability of 1 X C, set on consturction of the update
+    double sum = 0.0;
+    for (Update* u : alignmentUpdates)
+        sum += u->getProposalProbability();
+    
+    // now, set the proposal probabilities for other parameters to be (sum/(<Number of other updates>)) * C
+    double n = static_cast<double>(otherUpdates.size());
+    for (Update* u : otherUpdates)
+        u->setProposalProbability(sum/n);
+        
+    // normalize
+    sum = 0.0;
+    for (Update* u : updates)
+        sum += u->getProposalProbability();
+    double scaler = 1.0 / sum;
+    for (Update* u : updates)
+        u->setProposalProbability( u->getProposalProbability() * scaler );
 }
 
 void UpdateManager::summary(void) {

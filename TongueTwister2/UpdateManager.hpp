@@ -24,6 +24,7 @@ class UpdateManager {
         void                            updateDependants(Update* u);
     
     private:
+        void                            setProposalProbabilities(void);
         Model*                          model;
         RandomVariable*                 rng;
         RateMatrix*                     rateMatrix;

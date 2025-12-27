@@ -4,13 +4,11 @@
 
 
 
-Update::Update(Model* m, RandomVariable* r) : model(m), rng(r), numTries(0), numAcceptances(0) {
+Update::Update(Model* m, RandomVariable* r) : 
+    model(m), rng(r), numTries(0), numAcceptances(0), proposalProbability(1.0), 
+    updatedParameter(nullptr), rateMatrixNeedsUpdate(false), allTiprobsNeedUpdate(false), 
+    singleBranchChanged(false), changedBranchLength(0.0) {
     
-    updatedParameter = nullptr;
-    rateMatrixNeedsUpdate = false;
-    allTiprobsNeedUpdate = false;
-    singleBranchChanged = false;
-    changedBranchLength = 0.0;
 }
 
 void Update::clearDependencyFlags(void) {
@@ -43,18 +41,4 @@ double Update::priorSampleProb(double power) {
     const double x = power / beta50;
     const double xh = std::pow(x, h);
     return 1.0 / (1.0 + xh);
-
-#   if 0
-    // power law with threshhold
-    double beta0 = 0.01;
-    double k = 2.0;
-    if (power > beta0)
-        return 0.0;
-    double x = (1.0 - power) / (1.0 - beta0);
-    return std::pow(x, k);
-
-    // power law
-    //double k = 2.0;
-    //return std::pow(1.0 - power, k);
-#   endif
 }

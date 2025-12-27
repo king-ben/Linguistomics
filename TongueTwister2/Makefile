@@ -135,11 +135,12 @@ CORE_SRCS = \
     Tree.cpp \
     Update.cpp \
     UpdateAlignment.cpp \
+    UpdateBranchLength.cpp \
     UpdateExchangeabilities.cpp \
     UpdateFrequencies.cpp \
     UpdateIndelRates.cpp \
     UpdateManager.cpp \
-    UpdateTree.cpp \
+    UpdateTopology.cpp \
     UserSettings.cpp \
     main.cpp
 
