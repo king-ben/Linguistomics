@@ -973,8 +973,6 @@ void UpdateAlignment::setDependants(void) {
 }
 
 double UpdateAlignment::update(void) {
-
-    numTries++;
     
     setDependants();
     return propose();

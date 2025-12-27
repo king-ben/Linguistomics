@@ -28,8 +28,6 @@ void UpdateBranchLength::setDependants(void) {
 
 double UpdateBranchLength::update(void) {
 
-    numTries++;
-
     Tree* t = myParm->getTree();
     double tuning = log(4.0);
     

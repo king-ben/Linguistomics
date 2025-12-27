@@ -29,8 +29,6 @@ void UpdateTopology::setDependants(void) {
 
 double UpdateTopology::update(void) {
 
-    numTries++;
-
     Tree* t = myParm->getTree();
     double tuning = log(4.0);
     

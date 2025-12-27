@@ -36,8 +36,6 @@ double UpdateFrequencies::update(void) {
 }
 
 double UpdateFrequencies::update(int k) {
-
-    numTries++;
     
     std::vector<double>& freqs = myParm->getFrequencies();
     double bounce = 1.0;

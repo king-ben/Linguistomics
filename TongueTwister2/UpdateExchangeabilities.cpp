@@ -26,8 +26,6 @@ void UpdateExchangeabilities::setDependants(void) {
 }
 
 double UpdateExchangeabilities::update(void) {
-
-    numTries++;
     
     double bounce = 1.0;
     std::vector<double>& rates = myParm->getRates();

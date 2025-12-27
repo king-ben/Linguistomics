@@ -22,8 +22,6 @@ void UpdateIndelRates::setDependants(void) {
 
 double UpdateIndelRates::update(void) {
 
-    numTries++;
-
     // initialize some variables
     double window = 0.03;
     double theta1 = myParm->getInsertionRate();
