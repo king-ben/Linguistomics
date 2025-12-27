@@ -2,6 +2,7 @@
 #define Update_hpp
 
 #include <string>
+#include <vector>
 class Model;
 class Parameter;
 class RandomVariable;
@@ -23,6 +24,11 @@ class Update {
         bool                getAllTiprobsNeedUpdate(void) { return allTiprobsNeedUpdate; }
         bool                getSingleBranchChanged(void) { return singleBranchChanged; }
         double              getChangedBranchLength(void) { return changedBranchLength; }
+        
+                            // For updates that modify multiple parameters (e.g., UpdateTopology
+                            // modifies the tree AND all alignments). These additional parameters
+                            // need to be kept/restored along with the primary updatedParameter.
+        virtual std::vector<Parameter*> getAdditionalModifiedParameters(void) { return {}; }
         
         virtual std::string getUpdateName(void) = 0;
         virtual std::string parameterType(void) = 0;

@@ -109,7 +109,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatricesThreaded(void) {
         if (batchSize > MAX_BATCH_SIZE)
             batchSize = MAX_BATCH_SIZE;
         
-        for (size_t i = 0; i < batchSize; i++)
+        for (size_t i=0; i<batchSize; i++)
             {
             size_t idx = processed + i;
             double branchLength = map->getDirtyBranchLength(idx);
@@ -133,7 +133,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatricesBatched(void) {
     batchBranchLengths.reserve(n);
     batchOutputs.reserve(n);
     
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
         batchBranchLengths.push_back(map->getDirtyBranchLength(i));
         batchOutputs.push_back(map->getDirtyMatrix(i));
@@ -184,7 +184,7 @@ void TransitionProbabilitiesGPU::ensureCalculatorPoolCapacity(size_t n) {
         
         TransitionProbabilityCalculator** newPool = new TransitionProbabilityCalculator*[newCapacity];
         
-        for (size_t i = 0; i < calculatorPoolSize; i++)
+        for (size_t i=0; i<calculatorPoolSize; i++)
             newPool[i] = calculatorPool[i];
         
         delete[] calculatorPool;
@@ -192,7 +192,7 @@ void TransitionProbabilitiesGPU::ensureCalculatorPoolCapacity(size_t n) {
         calculatorPoolCapacity = newCapacity;
         }
     
-    for (size_t i = calculatorPoolSize; i < n; i++)
+    for (size_t i=calculatorPoolSize; i<n; i++)
         calculatorPool[i] = new TransitionProbabilityCalculator(subModel);
     
     calculatorPoolSize = n;
@@ -267,13 +267,6 @@ void TransitionProbabilitiesGPU::restore(void) {
 
 void TransitionProbabilitiesGPU::updateAllBranches(void) {
 
-    // =========================================================================
-    // CRITICAL FIX: Must create entries for new branch lengths before marking!
-    // The original code just called markForUpdate() which silently does nothing
-    // if the entry doesn't exist. This caused "Could not find transition 
-    // probabilities" errors after topology changes introduced new branch lengths.
-    // =========================================================================
-    
     // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
     

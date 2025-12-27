@@ -9,6 +9,7 @@ class RateMatrix;
 class RandomVariable;
 class TransitionProbabilityManager;
 class Update;
+class UpdateAlignment;
 
 
 
@@ -35,7 +36,7 @@ class UpdateManager {
         TransitionProbabilityManager*   tiProbs;
         
         std::vector<Update*>            updates;
-        std::vector<Update*>            alignmentUpdates;
+        std::vector<UpdateAlignment*>   alignmentUpdates;
         std::vector<Update*>            otherUpdates;
         
                                         // map from Update pointer to index (for O(1) lookup)

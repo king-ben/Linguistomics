@@ -379,7 +379,7 @@ void TransitionProbabilities::cleanupOrphanedEntries(void) {
     
     // collect keys to erase (can't erase while iterating)
     size_t numEntries = map->size();
-    for (size_t i = 0; i < numEntries; ++i)
+    for (size_t i=0; i<numEntries; ++i)
         {
         uint64_t key = map->getEntryKey(i);
         if (!std::binary_search(usedKeysBuffer.begin(), usedKeysBuffer.end(), key))

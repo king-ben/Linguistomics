@@ -26,6 +26,7 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
     rateMatrix = model->getRateMatrix();
     const std::vector<Parameter*> parameters = model->getParameters();
         
+    // first, collect all of the alignment updates
     for (Parameter* parm : parameters)
         {
         if (dynamic_cast<ParameterAlignment*>(parm) != nullptr)
@@ -34,7 +35,12 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             updates.push_back(updater);
             alignmentUpdates.push_back(updater);
             }
-        else if (dynamic_cast<ParameterExchangeabilities*>(parm) != nullptr)
+        }
+ 
+    // then, collect the updates for all of the other parameters
+     for (Parameter* parm : parameters)
+        {
+        if (dynamic_cast<ParameterExchangeabilities*>(parm) != nullptr)
             {
             UpdateExchangeabilities* updater = new UpdateExchangeabilities(model, rng, dynamic_cast<ParameterExchangeabilities*>(parm));
             updates.push_back(updater);
@@ -60,13 +66,10 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             otherUpdates.push_back(updater1);
             
             // tree topology updater
-            const std::vector<ParameterAlignment*> alnVec = model->getParametersOfType<ParameterAlignment>();
-            UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alnVec);
-            updates.push_back(updater2);
-            otherUpdates.push_back(updater2);
+            //UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alignmentUpdates);
+            //updates.push_back(updater2);
+            //otherUpdates.push_back(updater2);
             }
-        else 
-            Msg::error("Could not find update in update manager object");
         }
     
     // build index map for O(1) lookup from Update* to index
@@ -93,8 +96,13 @@ void UpdateManager::accept(Update* u) {
     size_t idx = updateIndex[u];
     numAcceptances[idx]++;
 
+    // keep the primary updated parameter
     Parameter* parm = u->getUpdatedParameter();
     parm->keep();
+    
+    // keep any additional parameters that were modified (e.g., alignments during topology update)
+    for (Parameter* p : u->getAdditionalModifiedParameters())
+        p->keep();
     
     if (u->getRateMatrixNeedsUpdate() == true && rateMatrix != nullptr)
         rateMatrix->keep();
@@ -210,8 +218,13 @@ Update* UpdateManager::randomlyChooseUpdate(void) {
 
 void UpdateManager::reject(Update* u) {
 
+    // restore the primary updated parameter
     Parameter* parm = u->getUpdatedParameter();
     parm->restore();
+    
+    // restore any additional parameters that were modified (e.g., alignments during topology update)
+    for (Parameter* p : u->getAdditionalModifiedParameters())
+        p->restore();
     
     if (u->getRateMatrixNeedsUpdate() == true && rateMatrix != nullptr)
         rateMatrix->restore();

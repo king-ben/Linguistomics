@@ -682,6 +682,12 @@ void UpdateAlignment::initializeTreeStructure(void) {
 
 double UpdateAlignment::propose(void) {
 
+    // Default version uses the member extensionProb
+    return propose(extensionProb);
+}
+
+double UpdateAlignment::propose(double extProb) {
+
     initializeTreeStructure();
     
     // get alignments
@@ -705,7 +711,7 @@ double UpdateAlignment::propose(void) {
         
         // choose region to realign using geometric distribution
         len = 1;
-        while (len < numSites && rng->uniformRv() < extensionProb)
+        while (len < numSites && rng->uniformRv() < extProb)
             len++;
         //pos = rv->uniformRvInt(numSites - len + 1);
         pos = static_cast<int>(rng->uniformRv() * (numSites - len + 1));
@@ -956,7 +962,10 @@ double UpdateAlignment::propose(void) {
     proposalLnProb += log((double)cf2);
     
     // length change contribution
-    proposalLnProb += (len - len2) * log(1.0 - extensionProb);
+    // When extProb < 1.0, account for the geometric distribution of region lengths
+    // When extProb = 1.0, both forward and reverse select full alignment, so this term is 0
+    if (extProb < 1.0)
+        proposalLnProb += (len - len2) * log(1.0 - extProb);
     
     // reverse proposal probability
     proposalLnProb += calculateReverseProposal(curAlignment, pos, len);
@@ -989,5 +998,19 @@ double UpdateAlignment::updateFromPrior(void) {
 
     setDependants();
     return propose();
+}
+
+double UpdateAlignment::realignFull(void) {
+
+    // Realign the entire alignment by using extensionProb = 1.0
+    // This ensures len = numSites and pos = 0, so all sites are realigned.
+    // This method is intended for use by UpdateTopology to jointly update
+    // the tree topology and all alignments together.
+    // 
+    // Note: This does NOT call setDependants() - the caller (UpdateTopology)
+    // is responsible for managing dependencies since it's updating multiple
+    // parameters together.
+    
+    return propose(1.0);
 }
 

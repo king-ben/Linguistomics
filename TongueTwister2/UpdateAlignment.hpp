@@ -22,6 +22,15 @@ class UpdateAlignment : public Update {
         double                          update(void);
         double                          update(double power);
         double                          updateFromPrior(void);
+        
+        // Public method to realign entire alignment (extensionProb = 1.0)
+        // This is intended for use by UpdateTopology to jointly update
+        // the tree topology and all alignments together.
+        // Returns the log proposal ratio for the alignment change.
+        double                          realignFull(void);
+        
+        // Accessor for the alignment parameter (needed by UpdateTopology)
+        ParameterAlignment*             getAlignmentParameter(void) { return myParm; }
     
     private:
         void                            buildScoringMatrix(Node* lftChild, Node* rhtChild);
@@ -30,6 +39,7 @@ class UpdateAlignment : public Update {
         void                            getIndelMatrix(Alignment* aln, int startCol, int len);
         void                            initializeTreeStructure(void);
         double                          propose(void);
+        double                          propose(double extProb);  // overload that accepts extension probability
         
         ParameterAlignment*             myParm;
         ParameterFrequencies*           freqsParm;

@@ -5,17 +5,19 @@
 #include "Msg.hpp"
 #include "Node.hpp"
 #include "NodeComparator.hpp"
+#include "ParameterAlignment.hpp"
 #include "ParameterTree.hpp"
 #include "Probability.hpp"
 #include "RandomVariable.hpp"
 #include "TransitionProbabilityManager.hpp"
 #include "Tree.hpp"
+#include "UpdateAlignment.hpp"
 #include "UpdateTopology.hpp"
 
 
 
-UpdateTopology::UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<ParameterAlignment*>& alnVec) : 
-    Update(m, r), myParm(p), myAlignments(alnVec) {
+UpdateTopology::UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<UpdateAlignment*>& alnVec) : 
+    Update(m, r), myParm(p), myAlignmentUpdates(alnVec) {
 
     tiProbs = model->getTiProbs();
     maxBrlen = myParm->getMaximumBrlen();
@@ -34,6 +36,17 @@ void UpdateTopology::applyNni(Node* u, Node* v, Node* a, Node* c) {
     v->addDescendant(a);
     a->setAncestor(v);
     c->setAncestor(u);
+}
+
+std::vector<Parameter*> UpdateTopology::getAdditionalModifiedParameters(void) {
+
+    // Return the alignment parameters that are modified during topology updates.
+    // These need to be kept/restored along with the tree parameter.
+    std::vector<Parameter*> params;
+    params.reserve(myAlignmentUpdates.size());
+    for (UpdateAlignment* aln : myAlignmentUpdates)
+        params.push_back(aln->getAlignmentParameter());
+    return params;
 }
 
 Node* UpdateTopology::randomlyChooseInternalBranch(Tree* t) {
@@ -77,12 +90,9 @@ double UpdateTopology::update(void) {
     
     // get the tree
     Tree* t = myParm->getTree();
-    Node* root = t->getRoot();
     if (t->getNumTaxa() <= 3)
         Msg::error("Can only update topology on trees with more than three taxa");
-        
-//    t->print();
-    
+            
     // Find valid internal edges
     // An internal edge connects two internal nodes (neither is a leaf)
     // We exclude: root, children of root (to keep root structure unchanged)
@@ -108,13 +118,7 @@ double UpdateTopology::update(void) {
         }
     if (c == nullptr)
         Msg::error("Problem in LOCAL update: could not find c");
-        
-//    std::cout << "u = " << u->getIndex() << std::endl;
-//    std::cout << "v = " << v->getIndex() << std::endl;
-//    std::cout << "a = " << a->getIndex() << std::endl;
-//    std::cout << "b = " << b->getIndex() << std::endl;
-//    std::cout << "c = " << c->getIndex() << std::endl;
-    
+            
     // Current path distances (path: a -> u -> v -> c)
     // x = dist(a, u) = a's branch length
     // y = dist(a, v) = a's branch length + u's branch length
@@ -173,15 +177,15 @@ double UpdateTopology::update(void) {
         newCLen = mStar - xStar;          // dist(u*, c) - c's new branch length
         }
     
-    // Validate proposed branch lengths
+    // validate proposed branch lengths
     if (newALen <= 0.0 || newULen <= 0.0 || newCLen <= 0.0 ||
         newALen > maxBrlen || newULen > maxBrlen || newCLen > maxBrlen)
         {
         setDependants();
-        return -std::numeric_limits<double>::infinity();
+        Msg::error("Invalid branch lengths in LOCAL");
         }
     
-    // Apply changes
+    // apply changes
     if (topologyChanges == true)
         {
         // Mark that topology is changing (for proper backup/restore)
@@ -197,18 +201,32 @@ double UpdateTopology::update(void) {
         myParm->initializeBranchMappings();
         }
     
-    // Update branch lengths (propagates to subtrees via mappings)
+    // update branch lengths (propagates to subtrees via mappings)
     myParm->setBranchLength(a, newALen);
     myParm->setBranchLength(u, newULen);
     myParm->setBranchLength(c, newCLen);
     
+    // set dependency flags
     setDependants();
-
-//    t->print();
     
-    // Hastings ratio = (m*/m)^3
+    // Update transition probabilities NOW, before realigning.
+    // The alignment proposal (realignFull) needs transition probabilities to
+    // build the scoring matrix. Normally updateDependants() is called after
+    // update() returns, but we need them immediately.
+    tiProbs->updateAllBranches();
+    
+    // clear the flag to prevent redundant computation in updateDependants()
+    allTiprobsNeedUpdate = false;
+    
+    // Update all alignments on the new tree topology.
+    // Each realignFull() returns the log proposal ratio for that alignment.
+    double lnAlignmentProposalRatio = 0.0;
+    for (UpdateAlignment* aln : myAlignmentUpdates)
+        lnAlignmentProposalRatio += aln->realignFull();
+    
+    // Hastings ratio = (m*/m)^3 * alignment_proposal_ratio
     double ratio = mStar / m;
-    return 3.0 * log(ratio);
+    return 3.0 * log(ratio) + lnAlignmentProposalRatio;
 }
 
 double UpdateTopology::update(double power) {
@@ -260,7 +278,7 @@ double UpdateTopology::updateFromPrior(void) {
     if (validNodes.empty())
         {
         setDependants();
-        return -std::numeric_limits<double>::infinity();
+        Msg::error("Problem updating tree from prior");
         }
     
     // Randomly select an internal edge
@@ -290,7 +308,7 @@ double UpdateTopology::updateFromPrior(void) {
     if (c == nullptr)
         {
         setDependants();
-        return -std::numeric_limits<double>::infinity();
+        Msg::error("Problem updating tree from prior");
         }
     
     // Current values
