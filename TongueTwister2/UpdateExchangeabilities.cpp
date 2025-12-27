@@ -15,10 +15,6 @@ UpdateExchangeabilities::UpdateExchangeabilities(Model* m, RandomVariable* r, Pa
     numRates = myParm->getNumRates();
 }
 
-void UpdateExchangeabilities::notifyDependants(void) {
-
-}
-
 void UpdateExchangeabilities::setDependants(void) {
 
     clearDependencyFlags();

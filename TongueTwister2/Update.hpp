@@ -27,12 +27,9 @@ class Update {
         void                accept(void) { numAcceptances++; }
         int                 getNumTries(void) { return numTries; }
         int                 getNumAcceptances(void) { return numAcceptances; }
-        double              getProposalProbability(void) { return proposalProbability; }
         virtual std::string getUpdateName(void) = 0;
-        virtual void        notifyDependants(void) = 0;
         virtual std::string parameterType(void) = 0;
         virtual void        setDependants(void) = 0;
-        void                setProposalProbability(double x) { proposalProbability = x; }
         virtual double      update(void) = 0;
         virtual double      update(double power) = 0;
         virtual double      updateFromPrior(void) = 0;
@@ -46,7 +43,6 @@ class Update {
         Parameter*          updatedParameter;
         
                             // summary counts
-        double              proposalProbability;
         int                 numTries;
         int                 numAcceptances;
         

@@ -10,10 +10,6 @@ UpdateIndelRates::UpdateIndelRates(Model* m, RandomVariable* r, ParameterIndelRa
 
 }
 
-void UpdateIndelRates::notifyDependants(void) {
-
-}
-
 void UpdateIndelRates::setDependants(void) {
 
     clearDependencyFlags();

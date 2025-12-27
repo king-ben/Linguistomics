@@ -27,6 +27,8 @@ class Model {
         T*                                  findParameter(void);
         size_t                              getNumStates(void) { return numStates; }
         const std::vector<Parameter*>&      getParameters(void) const { return parameters; }
+        template <typename T>
+        const std::vector<T*>               getParametersOfType(void) const;
         RateMatrix*                         getRateMatrix(void) { return rateMatrix; }
         TransitionProbabilityManager*       getTiProbs(void) { return tiProbs; }
         double                              lnLikelihood(void);
@@ -67,6 +69,18 @@ T* Model::findParameter(void) {
             return q;
         }
     return nullptr;
+}
+
+template <typename T>
+const std::vector<T*> Model::getParametersOfType(void) const {
+
+    std::vector<T*> vec;
+    for (Parameter* p : parameters)
+        {
+        if (dynamic_cast<T*>(p) != nullptr)
+            vec.push_back(dynamic_cast<T*>(p));
+        }
+    return vec;
 }
 
 #endif

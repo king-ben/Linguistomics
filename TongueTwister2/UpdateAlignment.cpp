@@ -680,10 +680,6 @@ void UpdateAlignment::initializeTreeStructure(void) {
         }
 }
 
-void UpdateAlignment::notifyDependants(void) {
-
-}
-
 double UpdateAlignment::propose(void) {
 
     initializeTreeStructure();

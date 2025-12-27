@@ -15,10 +15,6 @@ UpdateFrequencies::UpdateFrequencies(Model* m, RandomVariable* r, ParameterFrequ
     numStates = myParm->getNumStates();
 }
 
-void UpdateFrequencies::notifyDependants(void) {
-
-}
-
 void UpdateFrequencies::setDependants(void) {
 
     clearDependencyFlags();

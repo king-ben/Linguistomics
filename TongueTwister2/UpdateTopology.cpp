@@ -9,14 +9,11 @@
 
 
 
-UpdateTopology::UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p) : Update(m, r), myParm(p) {
+UpdateTopology::UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<ParameterAlignment*>& alnVec) : 
+    Update(m, r), myParm(p), myAlignments(alnVec) {
 
     tiProbs = model->getTiProbs();
     maxBrlen = myParm->getMaximumBrlen();
-}
-
-void UpdateTopology::notifyDependants(void) {
-
 }
 
 void UpdateTopology::setDependants(void) {

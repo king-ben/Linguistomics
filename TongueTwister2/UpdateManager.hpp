@@ -24,14 +24,24 @@ class UpdateManager {
         void                            updateDependants(Update* u);
     
     private:
+        void                            buildAliasTable(void);
         void                            setProposalProbabilities(void);
+        
         Model*                          model;
         RandomVariable*                 rng;
         RateMatrix*                     rateMatrix;
         TransitionProbabilityManager*   tiProbs;
+        
         std::vector<Update*>            updates;
         std::vector<Update*>            alignmentUpdates;
         std::vector<Update*>            otherUpdates;
+        
+                                        // proposal probability management (decoupled from Update objects)
+        std::vector<double>             proposalProbabilities;
+        
+                                        // Walker's alias method tables for O(1) selection
+        std::vector<double>             aliasProbability;
+        std::vector<size_t>             aliasIndex;
 };
 
 #endif

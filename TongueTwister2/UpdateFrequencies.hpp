@@ -14,7 +14,6 @@ class UpdateFrequencies : public Update {
                                 UpdateFrequencies(void) = delete;
                                 UpdateFrequencies(Model* m, RandomVariable* r, ParameterFrequencies* p);
         std::string             getUpdateName(void) { return "Stationary Frequencies Update"; }
-        void                    notifyDependants(void);
         std::string             parameterType(void) { return "ParameterFrequencies"; }
         void                    setDependants(void);
         double                  update(void);

@@ -14,7 +14,6 @@ class UpdateBranchLength : public Update {
                                         UpdateBranchLength(void) = delete;
                                         UpdateBranchLength(Model* m, RandomVariable* r, ParameterTree* p);
         std::string                     getUpdateName(void) { return "Branch Length Update"; }
-        void                            notifyDependants(void);
         std::string                     parameterType(void) { return "ParameterTree"; }
         void                            setDependants(void);
         double                          update(void);

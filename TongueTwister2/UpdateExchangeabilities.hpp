@@ -13,7 +13,6 @@ class UpdateExchangeabilities : public Update {
                                     UpdateExchangeabilities(void) = delete;
                                     UpdateExchangeabilities(Model* m, RandomVariable* r, ParameterExchangeabilities* p);
         std::string                 getUpdateName(void) { return "Exchangeability Rates Update"; }
-        void                        notifyDependants(void);
         std::string                 parameterType(void) { return "ParameterExchangeabilities"; }
         void                        setDependants(void);
         double                      update(void);

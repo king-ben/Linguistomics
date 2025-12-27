@@ -15,10 +15,6 @@ UpdateBranchLength::UpdateBranchLength(Model* m, RandomVariable* r, ParameterTre
     maxBrlen = myParm->getMaximumBrlen();
 }
 
-void UpdateBranchLength::notifyDependants(void) {
-
-}
-
 void UpdateBranchLength::setDependants(void) {
 
     clearDependencyFlags();

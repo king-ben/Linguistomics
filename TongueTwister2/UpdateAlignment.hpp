@@ -18,7 +18,6 @@ class UpdateAlignment : public Update {
                                        ~UpdateAlignment(void);
         std::string                     getUpdateName(void);
         std::string                     parameterType(void) { return "ParameterAlignment"; }
-        void                            notifyDependants(void);
         void                            setDependants(void);
         double                          update(void);
         double                          update(double power);

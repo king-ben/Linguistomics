@@ -13,7 +13,6 @@ class UpdateIndelRates : public Update {
                                     UpdateIndelRates(void) = delete;
                                     UpdateIndelRates(Model* m, RandomVariable* r, ParameterIndelRates* p);
         std::string                 getUpdateName(void) { return "Indel Rates Update"; }
-        void                        notifyDependants(void);
         std::string                 parameterType(void) { return "ParameterIndelRates"; }
         void                        setDependants(void);
         double                      update(void);
