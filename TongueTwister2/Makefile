@@ -100,6 +100,7 @@ CORE_SRCS = \
     JsonData.cpp \
     LikelihoodCalculator.cpp \
     MathCache.cpp \
+    MatrixPool.cpp \
     Mcmc.cpp \
     McmcMarginal.cpp \
     McmcOutput.cpp \
@@ -128,7 +129,6 @@ CORE_SRCS = \
     Stone.cpp \
     Subset.cpp \
     Threads.cpp \
-    TransitionMatrixManager.cpp \
     TransitionMatrixMap.cpp \
     TransitionProbabilities.cpp \
     TransitionProbabilityCalculator.cpp \

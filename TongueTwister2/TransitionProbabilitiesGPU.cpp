@@ -22,6 +22,7 @@ TransitionProbabilitiesGPU::TransitionProbabilitiesGPU(ThreadPool* p, ParameterT
     pool(p),
     myTree(t),
     subModel(sm),
+    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     map(nullptr),
     calculatorPool(nullptr),
     calculatorPoolCapacity(0),
@@ -32,7 +33,7 @@ TransitionProbabilitiesGPU::TransitionProbabilitiesGPU(ThreadPool* p, ParameterT
     cleanupCounter(0) {
 
     numStates = subModel->getNumStates();
-    map = new TransitionMatrixMap(numStates, 128);
+    map = new TransitionMatrixMap(numStates, 128, &matrixPool);
     
     // initialize compute backend 
     computeBackend = ComputeBackend::Auto;
@@ -247,7 +248,6 @@ void TransitionProbabilitiesGPU::keep(void) {
         if (cleanupCounter >= cleanupFrequency)
             {
             cleanupOrphanedEntries();
-            map->shrinkPoolIfNeeded();
             cleanupCounter = 0;
             }
         }
@@ -390,8 +390,6 @@ void TransitionProbabilitiesGPU::cleanupOrphanedEntries(void) {
     
     for (uint64_t key : keysToEraseBuffer)
         map->erase(key);
-    
-    map->shrinkPoolIfNeeded();
 }
 
 void TransitionProbabilitiesGPU::setComputeBackend(ComputeBackend backend) {
@@ -429,5 +427,6 @@ void TransitionProbabilitiesGPU::print(void) const {
     if (isGPUAvailable())
         std::cout << "  GPU device: " << getGPUDeviceName() << std::endl;
     std::cout << "  Calculator pool: " << calculatorPoolSize << " (capacity " << calculatorPoolCapacity << ")" << std::endl;
+    matrixPool.printStatistics();
     map->print();
 }

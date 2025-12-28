@@ -14,7 +14,7 @@ class UpdateAlignment : public Update {
 
     public:
                                         UpdateAlignment(void) = delete;
-                                        UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p, double exponent, double gapPenalty, double extProb);
+                                        UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p);
                                        ~UpdateAlignment(void);
         std::string                     getUpdateName(void);
         std::string                     parameterType(void) { return "ParameterAlignment"; }
@@ -40,6 +40,10 @@ class UpdateAlignment : public Update {
         void                            initializeTreeStructure(void);
         double                          propose(void);
         double                          propose(double extProb, bool alignmentsMustBeDifferent);  // overload that accepts extension probability
+
+        static constexpr double         basis = 1.5; 
+        static constexpr double         gapPenalty = -5.0;
+        static constexpr double         extensionProb = 0.5;
         
         ParameterAlignment*             myParm;
         ParameterFrequencies*           freqsParm;
@@ -53,9 +57,6 @@ class UpdateAlignment : public Update {
         int                             numNodes;
         int                             numStates;
         int                             gapCode;
-        double                          gapPenalty;
-        double                          basis;
-        double                          extensionProb;
         
         int                             maxLength;
         int                             maxUnalignDimension;
@@ -70,8 +71,8 @@ class UpdateAlignment : public Update {
         int*                            profileNumber;
         int**                           tempProfile;
         
-        Node**                          lftChildren;
-        Node**                          rhtChildren;
+        Node**                          lftDescendants;
+        Node**                          rhtDescendants;
         int*                            sorter;
         
         int*                            possibles;

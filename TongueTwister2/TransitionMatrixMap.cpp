@@ -1,60 +1,48 @@
 #include <cstring>
 #include <iomanip>
 #include <iostream>
-#include "TransitionMatrixManager.hpp"
+#include "MatrixPool.hpp"
 #include "TransitionMatrixMap.hpp"
 
 
 
-TransitionMatrixMap::TransitionMatrixMap(size_t numStates, size_t initialCapacity) : 
+TransitionMatrixMap::TransitionMatrixMap(size_t ns, size_t initialCapacity, MatrixPool* pool) : 
     keys(nullptr),
     values(nullptr),
+    backupValues(nullptr),
     occupied(nullptr),
     tableCapacity(0),
     numEntries(0),
     entrySlots(nullptr),
     slotToEntry(nullptr),
-    pool(nullptr),
-    backup(nullptr),
-    freeList(nullptr),
-    poolCapacity(0),
-    freeCount(0),
-    numStates(numStates),
+    matrixPool(pool),
+    numStates(ns),
     dirty(nullptr),
     dirtyList(nullptr),
     dirtyCount(0) {
 
-    // ensure the matrix manager is initialized with the correct number of states
-    TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
-    manager.initialize(numStates, initialCapacity * 2);
-    
     reserve(initialCapacity);
-    reservePool(initialCapacity);
 }
 
 TransitionMatrixMap::~TransitionMatrixMap(void) {
 
-    // return all matrices to the manager instead of deleting them
-    TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
-    
-    // return matrices that are in the pool arrays (both used and free)
-    for (size_t i = 0; i < poolCapacity; i++)
+    // release all matrices back to the pool
+    for (size_t i = 0; i < numEntries; i++)
         {
-        if (pool[i] != nullptr)
-            manager.returnMatrix(pool[i]);
-        if (backup[i] != nullptr)
-            manager.returnMatrix(backup[i]);
+        size_t slot = entrySlots[i];
+        if (values[slot] != nullptr)
+            matrixPool->release(values[slot]);
+        if (backupValues[slot] != nullptr)
+            matrixPool->release(backupValues[slot]);
         }
     
-    // delete the pointer arrays themselves
+    // delete the pointer arrays
     delete[] keys;
     delete[] values;
+    delete[] backupValues;
     delete[] occupied;
     delete[] entrySlots;
     delete[] slotToEntry;
-    delete[] pool;
-    delete[] backup;
-    delete[] freeList;
     delete[] dirty;
     delete[] dirtyList;
 }
@@ -70,6 +58,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
     
     uint64_t* oldKeys = keys;
     DoubleMatrix** oldValues = values;
+    DoubleMatrix** oldBackupValues = backupValues;
     bool* oldOccupied = occupied;
     size_t* oldEntrySlots = entrySlots;
     bool* oldDirty = dirty;
@@ -79,6 +68,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
     
     keys = new uint64_t[newCapacity];
     values = new DoubleMatrix*[newCapacity];
+    backupValues = new DoubleMatrix*[newCapacity];
     occupied = new bool[newCapacity];
     entrySlots = new size_t[newCapacity];
     slotToEntry = new size_t[newCapacity];
@@ -88,6 +78,8 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
     
     std::memset(occupied, 0, newCapacity * sizeof(bool));
     std::memset(dirty, 0, newCapacity * sizeof(bool));
+    std::memset(values, 0, newCapacity * sizeof(DoubleMatrix*));
+    std::memset(backupValues, 0, newCapacity * sizeof(DoubleMatrix*));
     for (size_t i = 0; i < newCapacity; i++)
         slotToEntry[i] = SIZE_MAX;
     numEntries = 0;
@@ -103,6 +95,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
             size_t oldSlot = oldEntrySlots[i];
             uint64_t key = oldKeys[oldSlot];
             DoubleMatrix* value = oldValues[oldSlot];
+            DoubleMatrix* backupValue = oldBackupValues[oldSlot];
             
             size_t idx = hash(key);
             while (occupied[idx])
@@ -110,6 +103,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
             
             keys[idx] = key;
             values[idx] = value;
+            backupValues[idx] = backupValue;
             occupied[idx] = true;
             
             oldToNew[i] = numEntries;
@@ -128,6 +122,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
         delete [] oldToNew;
         delete [] oldKeys;
         delete [] oldValues;
+        delete [] oldBackupValues;
         delete [] oldOccupied;
         delete [] oldEntrySlots;
         delete [] oldDirty;
@@ -135,88 +130,11 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
         }
 }
 
-void TransitionMatrixMap::reservePool(size_t capacity) {
-
-    if (capacity <= poolCapacity)
-        return;
-    growPool(capacity);
-}
-
-void TransitionMatrixMap::growPool(size_t newCapacity) {
-
-    TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
-    
-    // allocate new pointer arrays
-    DoubleMatrix** newPool = new DoubleMatrix*[newCapacity];
-    DoubleMatrix** newBackup = new DoubleMatrix*[newCapacity];
-    size_t* newFreeList = new size_t[newCapacity];
-    
-    // initialize all pointers to nullptr
-    std::memset(newPool, 0, newCapacity * sizeof(DoubleMatrix*));
-    std::memset(newBackup, 0, newCapacity * sizeof(DoubleMatrix*));
-    
-    // copy existing pointers (matrices stay the same, just copy the pointers)
-    if (pool)
-        {
-        for (size_t i = 0; i < poolCapacity; i++)
-            {
-            newPool[i] = pool[i];
-            newBackup[i] = backup[i];
-            }
-        std::memcpy(newFreeList, freeList, freeCount * sizeof(size_t));
-        }
-    
-    // allocate new matrices from the manager for the new slots
-    for (size_t i = poolCapacity; i < newCapacity; i++)
-        {
-        newPool[i] = manager.getMatrix();
-        newBackup[i] = manager.getMatrix();
-        newFreeList[freeCount++] = i;
-        }
-    
-    // delete old pointer arrays (not the matrices themselves!)
-    delete [] pool;
-    delete [] backup;
-    delete [] freeList;
-    
-    pool = newPool;
-    backup = newBackup;
-    freeList = newFreeList;
-    poolCapacity = newCapacity;
-}
-
-DoubleMatrix* TransitionMatrixMap::allocateFromPool(void) {
-
-    if (freeCount == 0)
-        growPool(poolCapacity + poolCapacity / 2 + 16);
-    
-    size_t idx = freeList[--freeCount];
-    pool[idx]->setZero();
-    return pool[idx];
-}
-
-void TransitionMatrixMap::returnToPool(DoubleMatrix* matrix) {
-
-    size_t idx = matrixIndex(matrix);
-    freeList[freeCount++] = idx;
-}
-
-size_t TransitionMatrixMap::matrixIndex(DoubleMatrix* matrix) const {
-
-    // search for the matrix pointer in the pool array
-    for (size_t i = 0; i < poolCapacity; i++)
-        {
-        if (pool[i] == matrix)
-            return i;
-        }
-    return SIZE_MAX;  // not found (error condition)
-}
-
 void TransitionMatrixMap::addToEntryList(size_t slot) {
 
     entrySlots[numEntries] = slot;
     slotToEntry[slot] = numEntries;
-    ++numEntries;
+    numEntries++;
 }
 
 void TransitionMatrixMap::removeFromEntryList(size_t slot) {
@@ -269,7 +187,16 @@ void TransitionMatrixMap::clear(void) {
     for (size_t i = 0; i < numEntries; i++)
         {
         size_t slot = entrySlots[i];
-        returnToPool(values[slot]);
+        
+        // release matrices back to pool
+        matrixPool->release(values[slot]);
+        if (backupValues[slot] != nullptr)
+            {
+            matrixPool->release(backupValues[slot]);
+            backupValues[slot] = nullptr;
+            }
+        values[slot] = nullptr;
+        
         occupied[slot] = false;
         slotToEntry[slot] = SIZE_MAX;
         dirty[i] = false;
@@ -337,8 +264,13 @@ DoubleMatrix* TransitionMatrixMap::getOrCreate(uint64_t key) {
     while (occupied[idx])
         idx = (idx + 1) & (tableCapacity - 1);
     
+    // acquire matrix from pool and zero it
+    DoubleMatrix* matrix = matrixPool->acquire();
+    matrix->setZero();
+    
     keys[idx] = key;
-    values[idx] = allocateFromPool();
+    values[idx] = matrix;
+    backupValues[idx] = nullptr;  // backup allocated lazily when needed
     occupied[idx] = true;
     addToEntryList(idx);
     
@@ -356,8 +288,13 @@ void TransitionMatrixMap::backupIfNeeded(size_t entryIndex) {
         return;
     
     size_t slot = entrySlots[entryIndex];
-    size_t poolIdx = matrixIndex(values[slot]);
-    backup[poolIdx]->copy(*pool[poolIdx]);
+    
+    // allocate backup matrix if not already allocated
+    if (backupValues[slot] == nullptr)
+        backupValues[slot] = matrixPool->acquire();
+    
+    // copy current values to backup
+    backupValues[slot]->copy(*values[slot]);
     
     dirty[entryIndex] = true;
     dirtyList[dirtyCount++] = entryIndex;
@@ -437,8 +374,10 @@ void TransitionMatrixMap::restore(void) {
         {
         size_t entryIdx = dirtyList[i];
         size_t slot = entrySlots[entryIdx];
-        size_t poolIdx = matrixIndex(values[slot]);
-        pool[poolIdx]->copy(*backup[poolIdx]);
+        
+        // copy backup back to working matrix
+        values[slot]->copy(*backupValues[slot]);
+        
         dirty[entryIdx] = false;
         }
     dirtyCount = 0;
@@ -468,7 +407,15 @@ bool TransitionMatrixMap::erase(uint64_t key) {
         {
         if (keys[idx] == key)
             {
-            returnToPool(values[idx]);
+            // release matrices back to pool
+            matrixPool->release(values[idx]);
+            if (backupValues[idx] != nullptr)
+                {
+                matrixPool->release(backupValues[idx]);
+                backupValues[idx] = nullptr;
+                }
+            values[idx] = nullptr;
+            
             occupied[idx] = false;
             removeFromEntryList(idx);
             
@@ -478,6 +425,7 @@ bool TransitionMatrixMap::erase(uint64_t key) {
                 {
                 uint64_t rehashKey = keys[idx];
                 DoubleMatrix* rehashValue = values[idx];
+                DoubleMatrix* rehashBackup = backupValues[idx];
                 
                 occupied[idx] = false;
                 removeFromEntryList(idx);
@@ -488,6 +436,7 @@ bool TransitionMatrixMap::erase(uint64_t key) {
                 
                 keys[newIdx] = rehashKey;
                 values[newIdx] = rehashValue;
+                backupValues[newIdx] = rehashBackup;
                 occupied[newIdx] = true;
                 addToEntryList(newIdx);
                 
@@ -530,130 +479,13 @@ void TransitionMatrixMap::growTable(void) {
     reserve(newCapacity);
 }
 
-void TransitionMatrixMap::shrinkPoolIfNeeded(size_t targetUtilization) {
-
-    TransitionMatrixManager& manager = TransitionMatrixManager::getInstance();
-    
-    // calculate target pool size based on current usage
-    size_t usedCount = poolCapacity - freeCount;
-    size_t targetCapacity = usedCount * targetUtilization;
-    
-    // minimum pool size to avoid thrashing
-    if (targetCapacity < 32)
-        targetCapacity = 32;
-    
-    // only shrink if we can reclaim at least 25% of the pool
-    if (poolCapacity <= targetCapacity || poolCapacity < targetCapacity + targetCapacity / 4)
-        return;
-    
-    // Build a mapping from old pool indices to new pool indices
-    // Only the indices that are currently in use (not in freeList) will be kept
-    size_t* oldToNew = new size_t[poolCapacity];
-    bool* isUsed = new bool[poolCapacity];
-    
-    std::memset(isUsed, true, poolCapacity * sizeof(bool));
-    
-    // mark free slots as unused
-    for (size_t i = 0; i < freeCount; i++)
-        isUsed[freeList[i]] = false;
-    
-    // return unused matrices to the manager
-    for (size_t i = 0; i < poolCapacity; i++)
-        {
-        if (!isUsed[i])
-            {
-            manager.returnMatrix(pool[i]);
-            manager.returnMatrix(backup[i]);
-            pool[i] = nullptr;
-            backup[i] = nullptr;
-            }
-        }
-    
-    // build the mapping - only used slots get new indices
-    size_t newIdx = 0;
-    for (size_t i = 0; i < poolCapacity; i++)
-        {
-        if (isUsed[i])
-            oldToNew[i] = newIdx++;
-        else
-            oldToNew[i] = SIZE_MAX;
-        }
-    
-    size_t newCapacity = newIdx * targetUtilization;
-    if (newCapacity < 32)
-        newCapacity = 32;
-    
-    // allocate new pointer arrays
-    DoubleMatrix** newPool = new DoubleMatrix*[newCapacity];
-    DoubleMatrix** newBackup = new DoubleMatrix*[newCapacity];
-    size_t* newFreeList = new size_t[newCapacity];
-    
-    // initialize to nullptr
-    std::memset(newPool, 0, newCapacity * sizeof(DoubleMatrix*));
-    std::memset(newBackup, 0, newCapacity * sizeof(DoubleMatrix*));
-    
-    // move used matrix pointers to new arrays (compacting them)
-    for (size_t i=0; i<poolCapacity; i++)
-        {
-        if (isUsed[i])
-            {
-            newPool[oldToNew[i]] = pool[i];
-            newBackup[oldToNew[i]] = backup[i];
-            }
-        }
-    
-    // allocate new matrices from manager for the extra slots
-    for (size_t i=newIdx; i<newCapacity; i++)
-        {
-        newPool[i] = manager.getMatrix();
-        newBackup[i] = manager.getMatrix();
-        }
-    
-    // update all values[] pointers to point to new pool locations
-    for (size_t i = 0; i < numEntries; i++)
-        {
-        size_t slot = entrySlots[i];
-        if (values[slot] != nullptr)
-            {
-            // find the old pool index by searching
-            size_t oldPoolIdx = SIZE_MAX;
-            for (size_t j = 0; j < poolCapacity; j++)
-                {
-                if (pool[j] == values[slot])
-                    {
-                    oldPoolIdx = j;
-                    break;
-                    }
-                }
-            if (oldPoolIdx != SIZE_MAX)
-                values[slot] = newPool[oldToNew[oldPoolIdx]];
-            }
-        }
-    
-    // build new free list with the extra slots
-    size_t newFreeCount = 0;
-    for (size_t i = newIdx; i < newCapacity; i++)
-        newFreeList[newFreeCount++] = i;
-    
-    // clean up
-    delete [] oldToNew;
-    delete [] isUsed;
-    delete [] pool;
-    delete [] backup;
-    delete [] freeList;
-    
-    pool = newPool;
-    backup = newBackup;
-    freeList = newFreeList;
-    poolCapacity = newCapacity;
-    freeCount = newFreeCount;
-}
-
 void TransitionMatrixMap::print(void) const {
 
     std::cout << "TransitionMatrixMap:" << std::endl;
     std::cout << "  Entries: " << numEntries << ", capacity " << tableCapacity << std::endl;
-    std::cout << "  Pool: " << (poolCapacity - freeCount) << " used, " << poolCapacity << " total" << std::endl;
+    std::cout << "  Pool: " << matrixPool->numInUse() << " in use, " 
+              << matrixPool->numFree() << " free, "
+              << matrixPool->totalAllocated() << " total" << std::endl;
     std::cout << "  Dirty: " << dirtyCount << " entries" << std::endl;
     
     if (numEntries == 0)

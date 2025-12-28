@@ -303,7 +303,7 @@ double ParameterTree::lnPriorProbability(void) {
     // root branch probability
     const NodeSet& rootDescendants = r->getDescendants();
     double rootV = rootDescendants[0]->getBranchLength() + rootDescendants[1]->getBranchLength();
-    double lnP = Probability::Exponential::lnPdf(brlenLambda, rootV) - lnProbLessMax;;
+    double lnP = Probability::Exponential::lnPdf(brlenLambda, rootV) - lnProbLessMax;
     
     // now deal with all of the non-root branches
     const std::vector<Node*>& dp = t->getPostOrder();

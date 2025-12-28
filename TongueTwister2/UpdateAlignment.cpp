@@ -12,15 +12,8 @@
 
 
 
-UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p, double exponent, double gapPen, double extProb) : 
+UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p) : 
     Update(m, r), myParm(p) {
-
-    if (exponent < 1.0)
-        Msg::error("Exponent parameter must be greater than 1");
-    if (gapPen >= 0.0)
-        Msg::error("Gap penalty parameter must be less than 0");
-    if (extProb <= 0.0 || extProb > 1.0)
-        Msg::error("Extension probability must be in range (0,1]");
 
     freqsParm = model->findParameter<ParameterFrequencies>(); // OK if this is NULL
 
@@ -29,10 +22,6 @@ UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment
         Msg::error("Could not find tree parameter for the alignment update");
 
     tiProbs = model->getTiProbs();
-
-    basis = exponent;
-    gapPenalty = gapPen;
-    extensionProb = extProb;
     
     // get taxon mask and tree
     taxonMask = myParm->getTaxonMask();
@@ -108,13 +97,13 @@ UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment
         for (int j=0; j<maxLength; j++)
             tempProfile[i][j] = 0;
     
-    lftChildren = new Node*[numNodes];
-    rhtChildren = new Node*[numNodes];
+    lftDescendants = new Node*[numNodes];
+    rhtDescendants = new Node*[numNodes];
     sorter = new int[numNodes];
     for (int i=0; i<numNodes; i++)
         {
-        lftChildren[i] = nullptr;
-        rhtChildren[i] = nullptr;
+        lftDescendants[i] = nullptr;
+        rhtDescendants[i] = nullptr;
         sorter[i] = 0;
         }
     
@@ -167,8 +156,8 @@ UpdateAlignment::~UpdateAlignment(void) {
     delete [] tempProfile[0];
     delete [] tempProfile;
     
-    delete [] lftChildren;
-    delete [] rhtChildren;
+    delete [] lftDescendants;
+    delete [] rhtDescendants;
     delete [] sorter;
     
     delete [] possibles;
@@ -179,11 +168,11 @@ UpdateAlignment::~UpdateAlignment(void) {
     delete [] pathFinalPos;
 }
 
-void UpdateAlignment::buildScoringMatrix(Node* lftChild, Node* rhtChild) {
+void UpdateAlignment::buildScoringMatrix(Node* lftDescendant, Node* rhtDescendant) {
 
     // get transition probabilities for both branches
-    DoubleMatrix& tiL = tiProbs->getTransitionProbability(lftChild->getBranchLength());
-    DoubleMatrix& tiR = tiProbs->getTransitionProbability(rhtChild->getBranchLength());
+    DoubleMatrix& tiL = tiProbs->getTransitionProbability(lftDescendant->getBranchLength());
+    DoubleMatrix& tiR = tiProbs->getTransitionProbability(rhtDescendant->getBranchLength());
     
     // build scoring matrix: score[i][j] = log(sum_k P(i|k)*P(k|j) / pi_j)
     for (int i=0; i<numStates; i++)
@@ -232,20 +221,20 @@ double UpdateAlignment::calculateReverseProposal(Alignment* aln, int pos, int le
             }
         }
     
-    // build internal node profiles by merging children
+    // build internal node profiles by merging descendants
     for (Node* p : postOrder)
         {
         if (p->getIsLeaf() == true)
             continue;
         
         int idx = p->getIndex();
-        Node* lftChild = lftChildren[idx];
-        Node* rhtChild = rhtChildren[idx];
-        if (lftChild == nullptr || rhtChild == nullptr)
+        Node* lftDescendant = lftDescendants[idx];
+        Node* rhtDescendant = rhtDescendants[idx];
+        if (lftDescendant == nullptr || rhtDescendant == nullptr)
             continue;
         
-        int lftIdx = lftChild->getIndex();
-        int rhtIdx = rhtChild->getIndex();
+        int lftIdx = lftDescendant->getIndex();
+        int rhtIdx = rhtDescendant->getIndex();
         
         yProfile[idx] = yProfile[lftIdx] + yProfile[rhtIdx];
         
@@ -295,16 +284,16 @@ double UpdateAlignment::calculateReverseProposal(Alignment* aln, int pos, int le
             continue;
         
         int idx = p->getIndex();
-        Node* lftChild = lftChildren[idx];
-        Node* rhtChild = rhtChildren[idx];
-        if (lftChild == nullptr || rhtChild == nullptr)
+        Node* lftDescendant = lftDescendants[idx];
+        Node* rhtDescendant = rhtDescendants[idx];
+        if (lftDescendant == nullptr || rhtDescendant == nullptr)
             continue;
         
-        int lftIdx = lftChild->getIndex();
-        int rhtIdx = rhtChild->getIndex();
+        int lftIdx = lftDescendant->getIndex();
+        int rhtIdx = rhtDescendant->getIndex();
         
         // build scoring matrix
-        buildScoringMatrix(lftChild, rhtChild);
+        buildScoringMatrix(lftDescendant, rhtDescendant);
         
         // fill dp table
         dp[0][0] = 0.0;
@@ -625,11 +614,11 @@ void UpdateAlignment::initializeTreeStructure(void) {
             for (int k=0; k<maxLength; k++)
                 profile[i][j][k] = 0;
     
-    // build child pointers from tree structure
+    // build descendant pointers from tree structure
     for (int i=0; i<numNodes; i++)
         {
-        lftChildren[i] = nullptr;
-        rhtChildren[i] = nullptr;
+        lftDescendants[i] = nullptr;
+        rhtDescendants[i] = nullptr;
         }
     
     const std::vector<Node*>& postOrder = tree->getPostOrder();
@@ -642,15 +631,15 @@ void UpdateAlignment::initializeTreeStructure(void) {
             auto it = des.begin();
             if (it != des.end())
                 {
-                lftChildren[idx] = *it;
+                lftDescendants[idx] = *it;
                 ++it;
                 }
             if (it != des.end())
-                rhtChildren[idx] = *it;
+                rhtDescendants[idx] = *it;
             }
         }
     
-    // sort children to ensure profile order matches taxon order
+    // sort descendants to ensure profile order matches taxon order
     for (int i=0; i<numTaxa; i++)
         sorter[i] = i;
     for (Node* p : postOrder)
@@ -658,8 +647,8 @@ void UpdateAlignment::initializeTreeStructure(void) {
         if (p->getIsLeaf() == false)
             {
             int idx = p->getIndex();
-            Node* lft = lftChildren[idx];
-            Node* rht = rhtChildren[idx];
+            Node* lft = lftDescendants[idx];
+            Node* rht = rhtDescendants[idx];
             if (lft != nullptr && rht != nullptr)
                 {
                 int lftSort = sorter[lft->getIndex()];
@@ -667,9 +656,9 @@ void UpdateAlignment::initializeTreeStructure(void) {
                 if (lftSort > rhtSort)
                     {
                     sorter[idx] = rhtSort;
-                    // swap children so left has smaller sorter value
-                    lftChildren[idx] = rht;
-                    rhtChildren[idx] = lft;
+                    // swap descedants so left has smaller sorter value
+                    lftDescendants[idx] = rht;
+                    rhtDescendants[idx] = lft;
                     }
                 else
                     {
@@ -695,6 +684,7 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
     Alignment* oldAlignment = myParm->getAlignment(1);
     int numSites = static_cast<int>(curAlignment->getNumSites());
     
+    tree = treeParm->getTree(taxonMask);
     const std::vector<Node*>& postOrder = tree->getPostOrder();
     Node* rootNode = tree->getRoot();
     int rootIdx = rootNode->getIndex();
@@ -752,16 +742,16 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
                 continue;
             
             int idx = p->getIndex();
-            Node* lftChild = lftChildren[idx];
-            Node* rhtChild = rhtChildren[idx];
-            if (lftChild == nullptr || rhtChild == nullptr)
+            Node* lftDescendant = lftDescendants[idx];
+            Node* rhtDescendant = rhtDescendants[idx];
+            if (lftDescendant == nullptr || rhtDescendant == nullptr)
                 continue;
             
-            int lftIdx = lftChild->getIndex();
-            int rhtIdx = rhtChild->getIndex();
+            int lftIdx = lftDescendant->getIndex();
+            int rhtIdx = rhtDescendant->getIndex();
             
             // build scoring matrix from transition probabilities
-            buildScoringMatrix(lftChild, rhtChild);
+            buildScoringMatrix(lftDescendant, rhtDescendant);
             
             // initialize dp table borders
             dp[0][0] = 0.0;

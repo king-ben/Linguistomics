@@ -29,9 +29,9 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
     // first, collect all of the alignment updates
     for (Parameter* parm : parameters)
         {
-        if (dynamic_cast<ParameterAlignment*>(parm) != nullptr)
+        if (ParameterAlignment* p = dynamic_cast<ParameterAlignment*>(parm))
             {
-            UpdateAlignment* updater = new UpdateAlignment(model, rng, dynamic_cast<ParameterAlignment*>(parm), 1.5, -5.0, 0.5);
+            UpdateAlignment* updater = new UpdateAlignment(model, rng, p);
             updates.push_back(updater);
             alignmentUpdates.push_back(updater);
             }
@@ -40,33 +40,33 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
     // then, collect the updates for all of the other parameters
      for (Parameter* parm : parameters)
         {
-        if (dynamic_cast<ParameterExchangeabilities*>(parm) != nullptr)
+        if (ParameterExchangeabilities* p = dynamic_cast<ParameterExchangeabilities*>(parm))
             {
-            UpdateExchangeabilities* updater = new UpdateExchangeabilities(model, rng, dynamic_cast<ParameterExchangeabilities*>(parm));
+            UpdateExchangeabilities* updater = new UpdateExchangeabilities(model, rng, p);
             updates.push_back(updater);
             otherUpdates.push_back(updater);
             }
-        else if (dynamic_cast<ParameterFrequencies*>(parm) != nullptr)
+        else if (ParameterFrequencies* p = dynamic_cast<ParameterFrequencies*>(parm))
             {
-            UpdateFrequencies* updater = new UpdateFrequencies(model, rng, dynamic_cast<ParameterFrequencies*>(parm));
+            UpdateFrequencies* updater = new UpdateFrequencies(model, rng, p);
             updates.push_back(updater);
             otherUpdates.push_back(updater);
             }
-        else if (dynamic_cast<ParameterIndelRates*>(parm) != nullptr)
+        else if (ParameterIndelRates* p = dynamic_cast<ParameterIndelRates*>(parm))
             {
-            UpdateIndelRates* updater = new UpdateIndelRates(model, rng, dynamic_cast<ParameterIndelRates*>(parm));
+            UpdateIndelRates* updater = new UpdateIndelRates(model, rng, p);
             updates.push_back(updater);
             otherUpdates.push_back(updater);
             }
-        else if (dynamic_cast<ParameterTree*>(parm) != nullptr)
+        else if (ParameterTree* p = dynamic_cast<ParameterTree*>(parm))
             {
             // branch length updater
-            UpdateBranchLength* updater1 = new UpdateBranchLength(model, rng, dynamic_cast<ParameterTree*>(parm));
+            UpdateBranchLength* updater1 = new UpdateBranchLength(model, rng, p);
             updates.push_back(updater1);
             otherUpdates.push_back(updater1);
             
             // tree topology updater
-//            UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alignmentUpdates);
+//            UpdateTopology* updater2 = new UpdateTopology(model, rng, p, alignmentUpdates);
 //            updates.push_back(updater2);
 //            otherUpdates.push_back(updater2);
             }
@@ -192,7 +192,6 @@ void UpdateManager::print(void) {
 Update* UpdateManager::randomlyChooseUpdate(void) {
 
     // Walker's alias method: O(1) selection
-    
     const size_t n = updates.size();
     if (n == 0)
         {

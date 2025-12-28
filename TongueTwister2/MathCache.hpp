@@ -30,5 +30,4 @@ class MathCache {
                      arrayCount;
 };
 
-
 #endif

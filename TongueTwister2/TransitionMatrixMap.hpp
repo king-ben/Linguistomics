@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <cstddef>
 #include "Container.hpp"
+class MatrixPool;
 
 
 
@@ -23,7 +24,7 @@ class TransitionMatrixMap {
 
     public:
                             TransitionMatrixMap(void) = delete;
-                            TransitionMatrixMap(size_t numStates, size_t initialCapacity);
+                            TransitionMatrixMap(size_t numStates, size_t initialCapacity, MatrixPool* pool);
                             TransitionMatrixMap(const TransitionMatrixMap&) = delete;
                            ~TransitionMatrixMap(void);
         TransitionMatrixMap& operator=(const TransitionMatrixMap&) = delete;
@@ -32,8 +33,6 @@ class TransitionMatrixMap {
         size_t              size(void) const { return numEntries; }
         size_t              capacity(void) const { return tableCapacity; }
         size_t              getNumStates(void) const { return numStates; }
-        size_t              getPoolCapacity(void) const { return poolCapacity; }
-        size_t              getPoolFreeCount(void) const { return freeCount; }
         bool                empty(void) const { return numEntries == 0; }
         
                             // lookup (read-only, does not mark dirty)
@@ -75,25 +74,20 @@ class TransitionMatrixMap {
         bool                erase(uint64_t key);
         bool                erase(double branchLength);
         void                reserve(size_t capacity);
-        void                reservePool(size_t capacity);
-        void                shrinkPoolIfNeeded(size_t targetUtilization = 2);
         
         void                print(void) const;
         
     private:
         void                addToEntryList(size_t slot);
-        DoubleMatrix*       allocateFromPool(void);
-        void                growPool(size_t newCapacity);
+        void                backupIfNeeded(size_t entryIndex);
         void                growTable(void);
         size_t              hash(uint64_t key) const;
-        size_t              matrixIndex(DoubleMatrix* matrix) const;
         void                removeFromEntryList(size_t slot);
-        void                returnToPool(DoubleMatrix* matrix);
-        void                backupIfNeeded(size_t entryIndex);
         
                             // hash table
         uint64_t*           keys;
         DoubleMatrix**      values;
+        DoubleMatrix**      backupValues;   // parallel array for MCMC backup
         bool*               occupied;
         size_t              tableCapacity;
         size_t              numEntries;
@@ -102,12 +96,8 @@ class TransitionMatrixMap {
         size_t*             entrySlots;
         size_t*             slotToEntry;
         
-                            // matrix pools - arrays of pointers to matrices from TransitionMatrixManager
-        DoubleMatrix**      pool;
-        DoubleMatrix**      backup;
-        size_t*             freeList;
-        size_t              poolCapacity;
-        size_t              freeCount;
+                            // external matrix pool (not owned)
+        MatrixPool*         matrixPool;
         size_t              numStates;
         
                             // dirty tracking

@@ -16,10 +16,12 @@
 static const size_t MAX_BATCH_SIZE = 512;
 
 
+
 TransitionProbabilities::TransitionProbabilities(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFreq) : 
     pool(p),
     myTree(t),
     subModel(sm),
+    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     map(nullptr),
     calculatorPool(nullptr),
     calculatorPoolCapacity(0),
@@ -30,7 +32,7 @@ TransitionProbabilities::TransitionProbabilities(ThreadPool* p, ParameterTree* t
     cleanupCounter(0) {
 
     numStates = subModel->getNumStates();
-    map = new TransitionMatrixMap(numStates, 128);
+    map = new TransitionMatrixMap(numStates, 128, &matrixPool);
     
     // pre-allocate buffers for cleanup to avoid repeated allocations
     usedKeysBuffer.reserve(256);
@@ -171,7 +173,6 @@ DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
                 if (p != t->getRoot() && count < 20)
                     {
                     double bl = p->getBranchLength();
-                    DoubleMatrix* existing = map->find(bl);
                     count++;
                     }
                 }
@@ -195,7 +196,6 @@ void TransitionProbabilities::keep(void) {
         if (cleanupCounter >= cleanupFrequency)
             {
             cleanupOrphanedEntries();
-            map->shrinkPoolIfNeeded();
             cleanupCounter = 0;
             }
         }
@@ -212,6 +212,7 @@ void TransitionProbabilities::print(void) const {
     std::cout << "  Cleanup frequency: " << cleanupFrequency << std::endl;
     std::cout << "  Cleanup counter: " << cleanupCounter << std::endl;
     std::cout << "  New entries this proposal: " << newEntriesThisProposal.size() << std::endl;
+    matrixPool.printStatistics();
     map->print();
 }
 
@@ -372,7 +373,4 @@ void TransitionProbabilities::cleanupOrphanedEntries(void) {
     // now erase the orphaned entries
     for (uint64_t key : keysToEraseBuffer)
         map->erase(key);
-    
-    // shrink the map's pool to reclaim memory from erased entries
-    map->shrinkPoolIfNeeded();
 }

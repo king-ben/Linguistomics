@@ -4,6 +4,7 @@
 #include <vector>
 #include "Container.hpp"
 #include "MathCache.hpp"
+#include "MatrixPool.hpp"
 #include "TransitionProbabilityManager.hpp"
 
 class Ctmc;
@@ -50,6 +51,11 @@ class TransitionProbabilities : public TransitionProbabilityManager {
         ThreadPool*                         pool;
         ParameterTree*                      myTree;
         Ctmc*                               subModel;
+        
+                                            // matrix pool (owned) - must be declared before map
+        MatrixPool                          matrixPool;
+        
+                                            // transition matrix map (uses matrixPool)
         TransitionMatrixMap*                map;
         
                                             // calculator pool with shrinking support
