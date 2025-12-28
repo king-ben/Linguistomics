@@ -37,14 +37,14 @@ TransitionMatrixMap::~TransitionMatrixMap(void) {
         }
     
     // delete the pointer arrays
-    delete[] keys;
-    delete[] values;
-    delete[] backupValues;
-    delete[] occupied;
-    delete[] entrySlots;
-    delete[] slotToEntry;
-    delete[] dirty;
-    delete[] dirtyList;
+    delete [] keys;
+    delete [] values;
+    delete [] backupValues;
+    delete [] occupied;
+    delete [] entrySlots;
+    delete [] slotToEntry;
+    delete [] dirty;
+    delete [] dirtyList;
 }
 
 void TransitionMatrixMap::reserve(size_t requestedCapacity) {

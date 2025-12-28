@@ -47,7 +47,7 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
 
     size_t n = Q.getNumRows();
     
-    /* allocate working matrices from base class buffer */
+    // allocate working matrices from base class buffer
     DoubleMatrix* A  = pushMatrix(n);
     DoubleMatrix* A2 = pushMatrix(n);
     DoubleMatrix* A4 = pushMatrix(n);
@@ -57,10 +57,10 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
     DoubleMatrix* temp1 = pushMatrix(n);
     DoubleMatrix* temp2 = pushMatrix(n);
     
-    /* A = Q * t */
+    // A = Q * t 
     Q.multiply(t, *A);
     
-    /* compute scaling factor using infinity norm */
+    // compute scaling factor using infinity norm
     double normA = infinityNorm(*A);
     int s = 0;
     if (normA > THETA_13)
@@ -70,12 +70,12 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
         A->multiply(scale);
         }
     
-    /* compute A^2, A^4, A^6 using BLAS */
+    // compute A^2, A^4, A^6 using BLAS
     blasMultiply(*A, *A, *A2);
     blasMultiply(*A2, *A2, *A4);
     blasMultiply(*A2, *A4, *A6);
     
-    /* temp1 = b13*A6 + b11*A4 + b9*A2 + b7*I */
+    // temp1 = b13*A6 + b11*A4 + b9*A2 + b7*I
     temp1->setIdentity();
     temp1->multiply(PADE_B[7]);
     for (size_t i = 0; i < n; i++)
@@ -86,10 +86,10 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
             }
         }
     
-    /* temp2 = A6 * temp1 */
+    // temp2 = A6 * temp1
     blasMultiply(*A6, *temp1, *temp2);
     
-    /* temp2 += b5*A4 + b3*A2 + b1*I */
+    // temp2 += b5*A4 + b3*A2 + b1*I
     for (size_t i = 0; i < n; i++)
         {
         for (size_t j = 0; j < n; j++)
@@ -99,10 +99,10 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
         (*temp2)(i,i) += PADE_B[1];
         }
     
-    /* U = A * temp2 */
+    // U = A * temp2
     blasMultiply(*A, *temp2, *U);
     
-    /* temp1 = b12*A6 + b10*A4 + b8*A2 + b6*I */
+    // temp1 = b12*A6 + b10*A4 + b8*A2 + b6*I
     temp1->setIdentity();
     temp1->multiply(PADE_B[6]);
     for (size_t i = 0; i < n; i++)
@@ -113,10 +113,10 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
             }
         }
     
-    /* V = A6 * temp1 */
+    // V = A6 * temp1
     blasMultiply(*A6, *temp1, *V);
     
-    /* V += b4*A4 + b2*A2 + b0*I */
+    // V += b4*A4 + b2*A2 + b0*I
     for (size_t i = 0; i < n; i++)
         {
         for (size_t j = 0; j < n; j++)
@@ -126,7 +126,7 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
         (*V)(i,i) += PADE_B[0];
         }
     
-    /* compute V-U and V+U for solve */
+    // compute V-U and V+U for solve
     for (size_t i = 0; i < n; i++)
         {
         for (size_t j = 0; j < n; j++)
@@ -138,17 +138,17 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
             }
         }
     
-    /* solve (V - U) * P = (V + U) using base class method */
+    // solve (V - U) * P = (V + U) using base class method 
     gaussianElimination(*temp1, *temp2, P);
     
-    /* squaring phase: P = P^(2^s) */
+    // squaring phase: P = P^(2^s) 
     for (int sq = 0; sq < s; sq++)
         {
         blasMultiply(P, P, *temp1);
         P.copy(*temp1);
         }
     
-    /* absolute value cleanup */
+    // absolute value cleanup
     for (size_t i = 0; i < n; i++)
         {
         for (size_t j = 0; j < n; j++)
@@ -157,6 +157,6 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
             }
         }
     
-    /* release working matrices */
+    // release working matrices
     popMatrix(8);
 }

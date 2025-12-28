@@ -76,7 +76,7 @@ double Probability::Beta::quantile(double alpha, double beta, double x) {
         curFraction = Probability::Helper::incompleteBeta(alpha, beta, curPos);
         if (curFraction > x && directionUp == false)
             {
-            /* continue going down */
+            // continue going down
             while (curPos - increment <= 0.0)
                 {
                 increment /= 2.0;
@@ -85,7 +85,7 @@ double Probability::Beta::quantile(double alpha, double beta, double x) {
             }
         else if (curFraction > x && directionUp == true)
             {
-            /* switch directions, and go down */
+            // switch directions, and go down
             nswitches++;
             directionUp = false;
             while (curPos - increment <= 0.0)
@@ -97,7 +97,7 @@ double Probability::Beta::quantile(double alpha, double beta, double x) {
             }
         else if (curFraction < x && directionUp == true)
             {
-            /* continue going up */
+            // continue going up
             while (curPos + increment >= 1.0)
                 {
                 increment /= 2.0;
@@ -106,7 +106,7 @@ double Probability::Beta::quantile(double alpha, double beta, double x) {
             }
         else if (curFraction < x && directionUp == false)
             {
-            /* switch directions, and go up */
+            // switch directions, and go up
             nswitches++;
             directionUp = true;
             while (curPos + increment >= 1.0)
@@ -380,15 +380,14 @@ void Probability::Gamma::discretization(std::vector<double> &catRate, double a, 
 		{
 		/* the mean value for each category is used to represent all of the values
 		   in that category */
-		/* calculate the points in the gamma distribution */
 		for (size_t i=0; i<nCats-1; i++)
 			catRate[i] = Probability::ChiSquare::quantile((i + 1.0) / nCats, 2.0 * a) / (2.0 * b);
-		/* calculate the cumulative values */
+		// calculate the cumulative values
 		double lnGammaValue = Probability::Helper::lnGamma(a + 1.0);
 		for (size_t i=0; i<nCats-1; i++)
 			catRate[i] = Probability::Helper::incompleteGamma(catRate[i] * b, a + 1.0, lnGammaValue);
 		catRate[nCats-1] = 1.0;
-		/* calculate the relative values and rescale */
+		// calculate the relative values and rescale
 		for (int i=static_cast<int>(nCats-1); i>0; i--)
 			{
 			catRate[i] -= catRate[i-1];
@@ -491,12 +490,12 @@ double Probability::Normal::cdf(double mu, double sigma, double x) {
 		}
 	if ( z < 0.0 )
 		{
-		/* negative x */
+		// negative x
 		cdf = q;
 		}
 	else
 		{
-		/* positive x */
+		// positive x
 		cdf = 1.0 - q;
 		}
 	return cdf;
@@ -570,12 +569,10 @@ double Probability::Helper::chebyshevEval(double x, const double *a, const int n
     return (b0 - b2) * 0.5;
 }
 
-/*
- * This function returns the round off unit for floating point arithmetic.
- * The returned value is a number, r, which is a power of 2 with the property
- * that, to the precision of the computer's arithmetic, 1 < 1 + r, but
- * 1 = 1 + r / 2. This function comes from John Burkardt.
- */
+/* This function returns the round off unit for floating point arithmetic.
+   The returned value is a number, r, which is a power of 2 with the property
+   that, to the precision of the computer's arithmetic, 1 < 1 + r, but
+   1 = 1 + r / 2. This function comes from John Burkardt. */
 double Probability::Helper::epsilon(void) {
 
     double r = 1.0;
@@ -584,9 +581,7 @@ double Probability::Helper::epsilon(void) {
     return 2.0 * r;
 }
 
-/*!
- * This function calculates the gamma function for real x.
- */
+// calculate the gamma function for real x.
 double Probability::Helper::gamma(double x) {
 
     double c[7] = { -1.910444077728E-03,
@@ -635,7 +630,7 @@ double Probability::Helper::gamma(double x) {
 
     if ( y <= 0.0 )
         {
-        /* argument negative */
+        // argument negative
         y = -x;
         y1 = ( double ) ( ( int ) ( y ) );
         value = y - y1;
@@ -649,21 +644,21 @@ double Probability::Helper::gamma(double x) {
             }
         else
             {
-            //value = d_huge ( );
+            // value = d_huge ( );
             value = HUGE_VAL;
             return value;
             }
         }
     if ( y < Probability::Helper::epsilon() )
         {
-        /* argument < EPS */
+        // argument < EPS 
         if ( xminin <= y )
             {
             value = 1.0 / y;
             }
         else
             {
-            //value = d_huge ( );
+            // value = d_huge ( );
             value = HUGE_VAL;
             return value;
             }
@@ -671,20 +666,20 @@ double Probability::Helper::gamma(double x) {
     else if ( y < 12.0 )
         {
         y1 = y;
-        /* 0.0 < argument < 1.0 */
+        // 0.0 < argument < 1.0 
         if ( y < 1.0 )
             {
             z = y;
             y = y + 1.0;
             }
-        /* 1.0 < argument < 12.0, reduce argument if necessary */
+        // 1.0 < argument < 12.0, reduce argument if necessary
         else
             {
             n = int ( y ) - 1;
             y = y - ( double ) ( n );
             z = y - 1.0;
             }
-        /* evaluate approximation for 1.0 < argument < 2.0 */
+        // evaluate approximation for 1.0 < argument < 2.0
         xnum = 0.0;
         xden = 1.0;
         for ( i = 0; i < 8; i++ )
@@ -694,12 +689,12 @@ double Probability::Helper::gamma(double x) {
             }
 
         value = xnum / xden + 1.0;
-        /* adjust result for case  0.0 < argument < 1.0 */
+        // adjust result for case  0.0 < argument < 1.0
         if ( y1 < y )
             {
             value = value / y1;
             }
-        /* adjust result for case  2.0 < argument < 12.0 */
+        // adjust result for case  2.0 < argument < 12.0
         else if ( y < y1 )
             {
             for ( i = 1; i <= n; i++ )
@@ -711,7 +706,7 @@ double Probability::Helper::gamma(double x) {
         }
     else
         {
-        /* evaluate for 12 <= argument */
+        // evaluate for 12 <= argument
         if ( y <= xbig )
             {
             ysq = y * y;
@@ -726,13 +721,13 @@ double Probability::Helper::gamma(double x) {
             }
         else
             {
-            //value = d_huge ( );
+            // value = d_huge ( );
             value = HUGE_VAL;
             return value;
             }
 
         }
-    /* final adjustments and return */
+    // final adjustments and return
     if ( parity )
         {
         value = -value;
@@ -750,52 +745,49 @@ double Probability::Helper::lnBeta(double a, double b)
     double corr, p, q;
     
     p = q = a;
-    if (b < p) p = b;/* := min(a,b) */
-    if (b > q) q = b;/* := max(a,b) */
+    if (b < p) p = b; // := min(a,b)
+    if (b > q) q = b; // := max(a,b)
     
-    /* both arguments must be >= 0 */
+    // both arguments must be >= 0
     if (p < 0)
-    {
+        {
 
         std::cout << "Cannot compute log-beta function for a = " << a << " and b = " << b;
-    }
+        }
     else if (p == 0)
-    {
+        {
         return -1;
-        //return RbConstants::Double::inf;
-    }
+        }
     else if (!std::isfinite(q))
-    { /* q == +Inf */
+        { // q == +Inf
         return -1;
-        //return RbConstants::Double::neginf;
-    }
+        }
     
-    if (p >= 10) {
-        /* p and q are big. */
+    if (p >= 10) 
+        {
+        // p and q are big.
         corr = lnGammacor(p) + lnGammacor(q) - lnGammacor(p + q);
         return log(q) * -0.5 + 0.918938533204672741780329736406 + corr
             + (p - 0.5) * log(p / (p + q)) + q * log1p(-p / (p + q));
-    }
-    else if (q >= 10) {
-        /* p is small, but q is big. */
+        }
+    else if (q >= 10) 
+        {
+        // p is small, but q is big.
         corr = lnGammacor(q) - lnGammacor(p + q);
         return lnGamma(p) + corr + p - p * log(p + q) + (q - 0.5) * log1p(-p / (p + q));
-    }
+        }
     else
-        /* p and q are small: p <= q < 10. */
+        // p and q are small: p <= q < 10.
         return log(gamma(p) * (gamma(q) / gamma(p + q)));
-    
 }
 
-/*
- * This function calculates the log of the gamma function, which is equal to:
- * Gamma(alp) = {integral from 0 to infinity} t^{alp-1} e^-t dt
- * The result is accurate to 10 decimal places. Stirling's formula is used
- * for the central polynomial part of the procedure.
- *
- * Pike, M. C. and I. D. Hill. 1966. Algorithm 291: Logarithm of the gamma
- *      function. Communications of the Association for Computing Machinery, 9:684.
- */
+/* This function calculates the log of the gamma function, which is equal to:
+   Gamma(alp) = {integral from 0 to infinity} t^{alp-1} e^-t dt
+   The result is accurate to 10 decimal places. Stirling's formula is used
+   for the central polynomial part of the procedure.
+  
+   Pike, M. C. and I. D. Hill. 1966. Algorithm 291: Logarithm of the gamma
+        function. Communications of the Association for Computing Machinery, 9:684. */
 double Probability::Helper::lnGamma(double a) {
 
     double x = a;
@@ -839,25 +831,26 @@ double Probability::Helper::lnGammacor(double x) {
     double tmp;
     
     /* For IEEE double precision DBL_EPSILON = 2^-52 = 2.220446049250313e-16 :
-     *   xbig = 2 ^ 26.5
-     *   xmax = DBL_MAX / 48 =  2^1020 / 3 */
-#define nalgm 5
-#define xbig  94906265.62425156
-#undef  xmax
-#define xmax  3.745194030963158e306
+         xbig = 2 ^ 26.5
+         xmax = DBL_MAX / 48 =  2^1020 / 3 */
+#   define nalgm 5
+#   define xbig  94906265.62425156
+#   undef  xmax
+#   define xmax  3.745194030963158e306
     
     if (x < 10)
-    {
+        {
         Msg::error("Cannot compute log-gammacor function");
-    }
-    else if (x >= xmax) {
+        }
+    else if (x >= xmax) 
+        {
         Msg::error("Cannot compute log-gammacor function");
-        /* allow to underflow below */
-    }
-    else if (x < xbig) {
+        }
+    else if (x < xbig) 
+        {
         tmp = 10 / x;
         return chebyshevEval(tmp * tmp * 2 - 1, algmcs, nalgm) / x;
-    }
+        }
     return 1 / (x * 12);
 }
 
@@ -867,17 +860,17 @@ double Probability::Helper::incompleteBeta(double a, double b, double x) {
     
     double value;
     if ( x <= 0.0 )
-    {
+        {
         value = 0.0;
         return value;
-    }
+        }
     else if ( 1.0 <= x )
-    {
+        {
         value = 1.0;
         return value;
-    }
+        }
     
-    /* change tail if necessary and determine S */
+    // change tail if necessary and determine S 
     double psq = a + b;
     
     double xx, cx, pp, qq;
@@ -904,7 +897,7 @@ double Probability::Helper::incompleteBeta(double a, double b, double x) {
     value = 1.0;
     int ns = static_cast<int>(qq + cx * (a + b));
     
-    /* use Soper's reduction formulas */
+    // use Soper's reduction formulas
     double rx = xx / cx;
     
     double temp = qq - (double)i;
@@ -918,7 +911,6 @@ double Probability::Helper::incompleteBeta(double a, double b, double x) {
         it++;
         if ( it_max < it )
             {
-            //std::cerr << "Error in incompleteBeta: Maximum number of iterations exceeded!" << std::endl;
             return -1;
             }
         term = term * temp * rx / ( pp + ( double ) ( i ) );
@@ -941,20 +933,18 @@ double Probability::Helper::incompleteBeta(double a, double b, double x) {
             }
         }
     
-    /* finish calculation */
+    // finish calculation 
     value = value * exp(pp * log(xx) + (qq - 1.0) * log(cx) - lnBeta(a, b) - log(pp));
     if ( indx )
         value = 1.0 - value;
     return value;
 }
 
-/*
- * This function returns the incomplete gamma ratio I(x,alpha) where x is
- * the upper limit of the integration and alpha is the shape parameter.
- *
- * Bhattacharjee, G. P. 1970. The incomplete gamma integral. Applied
- *      Statistics, 19:285-287.
- */
+/* This function returns the incomplete gamma ratio I(x,alpha) where x is
+   the upper limit of the integration and alpha is the shape parameter.
+  
+   Bhattacharjee, G. P. 1970. The incomplete gamma integral. Applied
+        Statistics, 19:285-287. */
 double Probability::Helper::incompleteGamma (double x, double alpha, double LnGamma_alpha) {
 
     double            p = alpha, g = LnGamma_alpha,

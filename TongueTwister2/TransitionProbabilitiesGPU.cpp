@@ -62,7 +62,7 @@ TransitionProbabilitiesGPU::~TransitionProbabilitiesGPU(void) {
     delete subModel;
     for (size_t i = 0; i < calculatorPoolSize; i++)
         delete calculatorPool[i];
-    delete[] calculatorPool;
+    delete [] calculatorPool;
 }
 
 void TransitionProbabilitiesGPU::computeDirtyMatrices(void) {
@@ -140,7 +140,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatricesBatched(void) {
         batchOutputs.push_back(map->getDirtyMatrix(i));
         }
     
-    /* get rate matrix Q from the substitution model */
+    // get rate matrix Q from the substitution model
     const double* qData = getRateMatrixData();
     
     if (qData != nullptr)
@@ -188,7 +188,7 @@ void TransitionProbabilitiesGPU::ensureCalculatorPoolCapacity(size_t n) {
         for (size_t i=0; i<calculatorPoolSize; i++)
             newPool[i] = calculatorPool[i];
         
-        delete[] calculatorPool;
+        delete [] calculatorPool;
         calculatorPool = newPool;
         calculatorPoolCapacity = newCapacity;
         }

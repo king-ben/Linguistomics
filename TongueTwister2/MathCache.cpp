@@ -193,11 +193,11 @@ void MathCache::gaussianElimination(DoubleMatrix& A, DoubleMatrix& B, DoubleMatr
         for (auto bp = b, br = brow; bp < bend; ++bp, br += n)
             *bp = *br;
 
-        /* Answer of Ly = b (which is solving for y) is copied into b. */
+        // Answer of Ly = b (which is solving for y) is copied into b.
         forwardSubstitutionRow(*l, b);
 
-        /* Answer of Ux = y (solving for x and the y was copied into b above)
-           is also copied into b. */
+        // Answer of Ux = y (solving for x and the y was copied into b above)
+        //   is also copied into b.
         backSubstitutionRow(*s, b);
 
         for (auto bp = b, xr = xrow; bp < bend; ++bp, xr += n)

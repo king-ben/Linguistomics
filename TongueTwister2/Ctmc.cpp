@@ -188,14 +188,14 @@ void CtmcGeneral::computeTransitionProbs(double branchLength, DoubleMatrix* outp
         {
         c = c * (qValue - k + 1.0) / ((2.0 * qValue - k + 1.0) * k);
 
-        /* X = AX */
+        // X = AX
         cache->multiply(*a, *x);
 
-        /* N = N + cX */
+        // N = N + cX
         x->multiply(c, *cx);
         n->add(*cx);
 
-        /* D = D + (-1)^k*cX */
+        // D = D + (-1)^k*cX 
         int negativeFactor = (k % 2 == 0 ? 1 : -1);
         if (negativeFactor == -1)
             cx->multiply(negativeFactor);

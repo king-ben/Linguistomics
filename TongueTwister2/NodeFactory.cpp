@@ -26,8 +26,8 @@ Node* NodeFactory::getNode(void) {
 
     if (pool.empty() == true)
         {
-        /* If the node pool is empty, we allocate a new node and return it. We
-           do not need to add it to the node pool. */
+        // If the node pool is empty, we allocate a new node and return it. We
+        // do not need to add it to the node pool.
         Node* n = new Node;
         allocated.insert( n );
         return n;

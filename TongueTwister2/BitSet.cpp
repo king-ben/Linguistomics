@@ -10,7 +10,7 @@ unsigned BitSet::highBit = (unsigned(1) << (BitSet::bitsPerUint-1));
 
 
 
-/** BitSet constructor */
+// default constructor
 BitSet::BitSet(void) {
 
     numElements = 0;
@@ -19,15 +19,13 @@ BitSet::BitSet(void) {
     v.clear();
 }
 
-/** BitSet copy constructor
-* @param b reference to the BitSet to be copied */
+// copy constructor
 BitSet::BitSet(const BitSet& b) {
 
     clone(b);
 }
 
-/** BitSet constructor
-* @param n the number of elements in the bitset */
+// constructor
 BitSet::BitSet(size_t n) {
 
     // calculate size of vector and allocate memory for bitfield
@@ -117,8 +115,7 @@ BitSet::BitSet(size_t n, bool def) {
         }
 }
 
-/** BitSet subscript operator
-* @param idx the bit to return */
+// subscript operator
 bool BitSet::operator[](size_t idx) {
 
     if (idx >= numElements)
@@ -126,8 +123,7 @@ bool BitSet::operator[](size_t idx) {
     return (( v[idx/BitSet::bitsPerUint] & (BitSet::highBit >> (idx % BitSet::bitsPerUint))) != 0);
 }
 
-/** BitSet subscript operator
-* @param idx the bit to return */
+// subscript operator
 bool BitSet::operator[](size_t idx) const {
 
     if (idx >= numElements)
@@ -135,8 +131,7 @@ bool BitSet::operator[](size_t idx) const {
     return (( v[idx/BitSet::bitsPerUint] & (BitSet::highBit >> (idx % BitSet::bitsPerUint))) != 0);
 }
 
-/** BitSet assignment operator
-* @param b the bitset to equate this one to */
+// assignment operator
 BitSet& BitSet::operator=(const BitSet& b) {
 
     if (this != &b)
@@ -144,8 +139,7 @@ BitSet& BitSet::operator=(const BitSet& b) {
     return *this;
 }
 
-/** BitSet equality operator
-* @param b the bitset to compare to this one */
+// equality operator
 bool BitSet::operator==(const BitSet& b) const {
 
     if (numElements != b.numElements)
@@ -156,8 +150,7 @@ bool BitSet::operator==(const BitSet& b) const {
     return true;
 }
 
-/** BitSet not operator
-* @param b the bitset whose bits are to be flipped */
+// not operator
 BitSet operator!(const BitSet& b) {
 
     BitSet newB(b);
@@ -165,16 +158,13 @@ BitSet operator!(const BitSet& b) {
     return newB;
 }
 
-/** BitSet inequality operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// inequality operator
 bool operator!=(const BitSet& lhs, const BitSet& rhs) {
 
     return !(lhs == rhs);
 }
 
-/** BitSet less than or equal to operator
-* @param b the bitset to compare to this one */
+// less than or equal to operator
 bool operator<=(const BitSet& a, const BitSet& b) {
 
     if (a > b)
@@ -183,9 +173,7 @@ bool operator<=(const BitSet& a, const BitSet& b) {
         return true;
 }
 
-/** BitSet less than operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// less than operator
 bool operator<(const BitSet& lhs, const BitSet& rhs) {
 
     if (lhs > rhs || lhs == rhs)
@@ -194,20 +182,16 @@ bool operator<(const BitSet& lhs, const BitSet& rhs) {
         return true;
 }
 
-/** BitSet greater than or equal to operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// greater than or equal to operator
 bool operator>=(const BitSet& lhs, const BitSet& rhs) {
 
     if (lhs > rhs || lhs == rhs)
         return true;
     else
         return false;
-    
 }
 
-/** BitSet greater than operator
-* @param b the right hand side bitset */
+// greater than operator
 bool BitSet::operator>(const BitSet& b) const {
 
     size_t x = (numUints < b.numUints) ? numUints : b.numUints;
@@ -221,8 +205,7 @@ bool BitSet::operator>(const BitSet& b) const {
     return false;
 }
 
-/** BitSet and operator
-* @param a the right hand side bitset */
+// AND operator
 BitSet BitSet::operator&(const BitSet& a) const {
 
     if (a.numElements != numElements )
@@ -236,8 +219,7 @@ BitSet BitSet::operator&(const BitSet& a) const {
         }
 }
 
-/** BitSet or operator
-* @param a the right hand side bitset */
+// OR operator
 BitSet BitSet::operator|(const BitSet& a) const {
 
     if (a.numElements != numElements )
@@ -251,8 +233,7 @@ BitSet BitSet::operator|(const BitSet& a) const {
         }
 }
 
-/** BitSet xor operator
-* @param a the right hand side bitset */
+// XOR operator
 BitSet BitSet::operator^(const BitSet& a) const {
 
     if (a.numElements != numElements )
@@ -266,25 +247,21 @@ BitSet BitSet::operator^(const BitSet& a) const {
         }
 }
 
-/** Unary not */
+// unary not
 BitSet& BitSet::operator~() {
 
     flip();
     return *this;
 }
 
-/** BitSet stream operator
-* @param s the stream
-* @param b the right hand side bitset */
+// stream operator
 std::ostream& operator<<(std::ostream& s, const BitSet& b) {
 
     s << "[" << b.bitString() << "]";
     return s;
 }
 
-/** BitSet and equals  operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// AND equals operator
 BitSet& operator&=(BitSet& lhs, const BitSet& rhs) {
 
     if (lhs.size() == rhs.size())
@@ -299,9 +276,7 @@ BitSet& operator&=(BitSet& lhs, const BitSet& rhs) {
     return lhs;
 }
 
-/** BitSet or equals  operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// OR equals operator
 BitSet& operator|=(BitSet& lhs, const BitSet& rhs) {
 
     if (lhs.size() == rhs.size())
@@ -316,9 +291,7 @@ BitSet& operator|=(BitSet& lhs, const BitSet& rhs) {
     return lhs;
 }
 
-/** BitSet xor equals  operator
-* @param lhs the left hand side bitset
-* @param rhs the right hand side bitset */
+// XOR equals operator
 BitSet& operator^=(BitSet& lhs, const BitSet& rhs) {
 
     if (lhs.size() == rhs.size())
@@ -333,7 +306,7 @@ BitSet& operator^=(BitSet& lhs, const BitSet& rhs) {
     return lhs;
 }
 
-/** Return a string with the bitset */
+// return a string with the bitset
 std::string BitSet::bitString(void) const {
 
     std::string str = "";
@@ -348,8 +321,7 @@ std::string BitSet::bitString(void) const {
     return str;
 }
 
-/** Clone function
-* @param b the BitSet to be copied */
+// clone function
 void BitSet::clone(const BitSet& b) {
 
     numElements = b.numElements;
@@ -358,7 +330,7 @@ void BitSet::clone(const BitSet& b) {
     v           = b.v;
 }
 
-/** Erase all bits */
+// erase all bits
 void BitSet::clear(void) {
 
     numElements = 0;
@@ -367,20 +339,19 @@ void BitSet::clear(void) {
     v.clear();
 }
 
-/** Is the bitset of size zero */
+// is the bitset of size zero
 bool BitSet::empty(void) const {
 
     return v.empty();
 }
 
-/** Flip the bit at the index
-* @param idx the index of the bit to flip */
+// flip the bit at the index
 void BitSet::flip(size_t idx) {
 
     v[idx/BitSet::bitsPerUint] ^= ((BitSet::highBit >> (idx % BitSet::bitsPerUint)));
 }
 
-/** Flip all bits */
+// flip all bits
 void BitSet::flip(void) {
 
     for (size_t i=0; i<numUints; i++)
@@ -388,8 +359,7 @@ void BitSet::flip(void) {
     v[numUints-1] &= mask;
 }
 
-/** The position of the first on bit
-* @return The index of the first on bit */
+// position of the first on bit
 size_t BitSet::getFirstSetBit(void) const {
     
     unsigned long i;
@@ -407,11 +377,9 @@ size_t BitSet::getFirstSetBit(void) const {
             break;
         }
     return (i * BitSet::bitsPerUint + j);
-
 }
 
-/** The number of on bits
-* @return The number of on bits */
+// number of on bits
 size_t BitSet::getNumberSetBits(void) const {
     
     size_t count = 0;
@@ -423,9 +391,7 @@ size_t BitSet::getNumberSetBits(void) const {
     return count;
 }
 
-/** Insert a bit
-* @param pos the position in the bitset to insert
-* @param tf the sign of the bit */
+// insert a bit
 void BitSet::insert(size_t pos, bool tf) {
 
     // check position of insertion
@@ -434,6 +400,7 @@ void BitSet::insert(size_t pos, bool tf) {
         std::cout << "Cannot insert bit at position " << pos << " because there are only " << numElements << " bits" << std::endl;
         return;
         }
+        
     // resize, if necessary
     size_t n = numElements + 1;
     size_t nu = (n / BitSet::bitsPerUint);
@@ -471,15 +438,13 @@ void BitSet::insert(size_t pos, bool tf) {
         unset(pos);
 }
 
-/** The number of on bits
-* @param idx the index of the bit
-* @return  whether the bit is on */
+// the number of on bits
 bool BitSet::isSet(size_t idx) const {
 
     return ((v[idx/BitSet::bitsPerUint] & (BitSet::highBit >> (idx % BitSet::bitsPerUint))) != 0);
 }
 
-/** Print in a long format the bitset */
+// print in a long format the bitset
 void BitSet::print(void) {
 
     std::string str = "";
@@ -490,8 +455,7 @@ void BitSet::print(void) {
     std::cout << str << std::endl;
 }
 
-/** Add a bit to the end of the set
-* @param tf the value of the bit to add */
+// add a bit to the end of the set
 void BitSet::push_back(bool tf) {
 
     size_t n = numElements + 1;
@@ -521,8 +485,7 @@ void BitSet::push_back(bool tf) {
         unset(numElements-1);
 }
 
-/** Add a bit to the front of the set
-* @param tf the value of the bit to add */
+// add a bit to the front of the set
 void BitSet::push_front(bool tf) {
 
     size_t n = numElements + 1;
@@ -594,15 +557,14 @@ void BitSet::resize(size_t n, bool tf) {
         }
 }
 
-/** Set all bist to on  */
+// set all bist to on
 void BitSet::set(void) {
 
     for (size_t i=0; i<numElements; i++)
         v[i/BitSet::bitsPerUint] |= (BitSet::highBit >> (i % BitSet::bitsPerUint));
 }
 
-/** Set a bit to on
-* @param idx the index of the bit to turn on */
+// set a bit to on
 void BitSet::set(size_t idx) {
 
     if (idx >= numElements)
@@ -610,15 +572,14 @@ void BitSet::set(size_t idx) {
     v[idx/BitSet::bitsPerUint] |= (BitSet::highBit >> (idx % BitSet::bitsPerUint));
 }
 
-/** Set all bits to 0  */
+// set all bits to 0
 void BitSet::unset(void) {
 
     for (size_t i=0; i<numElements; i++)
         v[i/BitSet::bitsPerUint] &= ((BitSet::highBit >> (i % BitSet::bitsPerUint))^BitSet::maxUInt);
 }
 
-/** Set a bit to 0
-* @param idx the index of the bit to change */
+// set a bit to 0
 void BitSet::unset(size_t idx) {
 
     if (idx >= numElements)
@@ -626,7 +587,7 @@ void BitSet::unset(size_t idx) {
     v[idx/BitSet::bitsPerUint] &= ((BitSet::highBit >> (idx % BitSet::bitsPerUint))^BitSet::maxUInt);
 }
 
-/** Check the functionality of the class */
+// check the functionality of the class
 void BitSet::test(void) {
 
     // first check that edge cases are OK

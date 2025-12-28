@@ -261,7 +261,7 @@ class TaskPool {
         MatrixExponentialTask* getTask() {
             size_t idx = nextIndex.fetch_add(1, std::memory_order_relaxed);
             if (idx >= MAX_TASKS) {
-                /* overflow - this shouldn't happen with reasonable batch sizes */
+                // overflow - this shouldn't happen with reasonable batch sizes
                 return &tasks[0];
             }
             return &tasks[idx];
