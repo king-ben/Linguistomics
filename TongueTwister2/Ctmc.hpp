@@ -1,5 +1,5 @@
-#ifndef SubstitutionModel_hpp
-#define SubstitutionModel_hpp
+#ifndef Ctmc_hpp
+#define Ctmc_hpp
 
 #include <cstddef>
 #include "Container.hpp"

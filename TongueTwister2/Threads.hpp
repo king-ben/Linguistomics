@@ -1,5 +1,5 @@
-#ifndef threads_hpp
-#define threads_hpp
+#ifndef ThreadPool_hpp
+#define ThreadPool_hpp
 
 #include <thread>
 #include <mutex> 

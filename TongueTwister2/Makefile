@@ -14,7 +14,7 @@ OBJCXX = clang++
 CXXFLAGS_BASE = -std=c++20 -O3 -march=native -flto -DNDEBUG -ffast-math -fno-finite-math-only -pthread -m64
 
 # Warnings (optional, uncomment for development)
-CXXFLAGS_BASE += -Wall -Wextra -Wpedantic
+#CXXFLAGS_BASE += -Wall -Wextra -Wpedantic
 
 # Target
 TARGET = tonguetwister

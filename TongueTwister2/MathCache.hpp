@@ -1,5 +1,5 @@
-#ifndef MatrixMath_hpp
-#define MatrixMath_hpp
+#ifndef MathCache_hpp
+#define MathCache_hpp
 
 #include "Container.hpp"
 
