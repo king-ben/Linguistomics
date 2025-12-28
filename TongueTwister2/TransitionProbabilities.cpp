@@ -172,7 +172,6 @@ DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
                 {
                 if (p != t->getRoot() && count < 20)
                     {
-                    double bl = p->getBranchLength();
                     count++;
                     }
                 }

@@ -30,7 +30,7 @@ ParameterTree::~ParameterTree(void) {
         }
 }
 
-void ParameterTree::applyNniToSubtrees(Node* u, Node* v, Node* a, Node* c) {
+void ParameterTree::applyNniToSubtrees(void) {
     
     // After NNI on the full tree, we must reinitialize the full tree's postOrder
     // because the topology changed. Node offsets depend on postOrder position.
@@ -102,80 +102,6 @@ bool ParameterTree::checkTipToTipDistances(double threshhold) {
             return false;
         }
     return true;
-}
-
-Node* ParameterTree::findCorrespondingNode(Tree* srcTree, Tree* dstTree, Node* srcNode) {
-
-    // Find the node in dstTree that corresponds to srcNode in srcTree
-    // For leaf nodes, match by name; for internal nodes, match by descendant leaf sets
-    
-    if (srcNode == nullptr)
-        return nullptr;
-    
-    if (srcNode->getIsLeaf())
-        {
-        // Match leaf by name
-        return dstTree->getLeafNamed(srcNode->getName());
-        }
-    else
-        {
-        // For internal nodes, we need to find the node with the same set of descendant leaves
-        // This is complex; for now, use offset-based matching if trees have same structure
-        const std::vector<Node*>& dstPostOrder = dstTree->getPostOrder();
-        for (Node* dstNode : dstPostOrder)
-            {
-            if (dstNode->getIsLeaf() == false && dstNode->getOffset() == srcNode->getOffset())
-                return dstNode;
-            }
-        
-        // Fallback: try to match by descendant leaves
-        // Get leaves under srcNode
-        std::set<std::string> srcLeaves;
-        std::vector<Node*> stack;
-        stack.push_back(srcNode);
-        while (!stack.empty())
-            {
-            Node* n = stack.back();
-            stack.pop_back();
-            if (n->getIsLeaf())
-                srcLeaves.insert(n->getName());
-            else
-                {
-                std::set<Node*,NodeComparator>& des = n->getDescendants().getNodes();
-                for (Node* d : des)
-                    stack.push_back(d);
-                }
-            }
-        
-        // Find internal node in dstTree with same leaves
-        for (Node* dstNode : dstPostOrder)
-            {
-            if (dstNode->getIsLeaf())
-                continue;
-                
-            std::set<std::string> dstLeaves;
-            stack.clear();
-            stack.push_back(dstNode);
-            while (!stack.empty())
-                {
-                Node* n = stack.back();
-                stack.pop_back();
-                if (n->getIsLeaf())
-                    dstLeaves.insert(n->getName());
-                else
-                    {
-                    std::set<Node*,NodeComparator>& des = n->getDescendants().getNodes();
-                    for (Node* d : des)
-                        stack.push_back(d);
-                    }
-                }
-            
-            if (srcLeaves == dstLeaves)
-                return dstNode;
-            }
-        }
-    
-    return nullptr;
 }
 
 size_t ParameterTree::getNumTaxa(void) {

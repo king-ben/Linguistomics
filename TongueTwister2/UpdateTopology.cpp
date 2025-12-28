@@ -195,7 +195,7 @@ double UpdateTopology::update(void) {
         applyNni(u, v, a, c);
         
         // Apply NNI to all subtrees that contain both a and c
-        myParm->applyNniToSubtrees(u, v, a, c);
+        myParm->applyNniToSubtrees();
         
         // Rebuild branch mappings since topology changed
         myParm->initializeBranchMappings();
@@ -238,105 +238,5 @@ double UpdateTopology::update(double power) {
 
 double UpdateTopology::updateFromPrior(void) {
 
-    // For prior sampling, we do a similar LOCAL move but sample 
-    // the total path length from the prior (truncated exponential)
-    
-    Tree* t = myParm->getTree();
-    Node* root = t->getRoot();
-    double lambda = myParm->getBrlenLambda();
-    
-    // Find valid internal edges (same as in update())
-    const std::vector<Node*>& dp = t->getPostOrder();
-    std::vector<Node*> validNodes;
-    
-    for (Node* p : dp)
-        {
-        if (p->getIsLeaf() == true)
-            continue;
-        if (p == root)
-            continue;
-        if (p->numDescendants() != 2)
-            continue;
-            
-        Node* anc = p->getAncestor();
-        if (anc == nullptr)
-            continue;
-        if (anc == root)
-            continue;
-        if (anc->numDescendants() != 2)
-            continue;
-        
-        Node* ancAnc = anc->getAncestor();
-        if (ancAnc == nullptr)
-            continue;
-        if (ancAnc == root)
-            continue;
-            
-        validNodes.push_back(p);
-        }
-    
-    if (validNodes.empty())
-        {
-        setDependants();
-        Msg::error("Problem updating tree from prior");
-        }
-    
-    // Randomly select an internal edge
-    size_t idx = static_cast<size_t>(rng->uniformRv() * validNodes.size());
-    if (idx >= validNodes.size())
-        idx = validNodes.size() - 1;
-    Node* u = validNodes[idx];
-    Node* v = u->getAncestor();
-    
-    // Label nodes
-    Node* a = u->getDescendants()[0];
-    Node* b = u->getDescendants()[1];
-    if (rng->uniformRv() < 0.5)
-        std::swap(a, b);
-    
-    Node* c = nullptr;
-    std::set<Node*,NodeComparator>& vChildren = v->getDescendants().getNodes();
-    for (Node* child : vChildren)
-        {
-        if (child != u)
-            {
-            c = child;
-            break;
-            }
-        }
-    
-    if (c == nullptr)
-        {
-        setDependants();
-        Msg::error("Problem updating tree from prior");
-        }
-    
-    // Current values
-    double oldALen = a->getBranchLength();
-    double oldULen = u->getBranchLength();
-    double oldCLen = c->getBranchLength();
-    double m = oldALen + oldULen + oldCLen;
-    
-    // Sample three new branch lengths from truncated exponential prior
-    double newALen, newULen, newCLen;
-    do { newALen = Probability::Exponential::rv(rng, lambda); } while (newALen > maxBrlen);
-    do { newULen = Probability::Exponential::rv(rng, lambda); } while (newULen > maxBrlen);
-    do { newCLen = Probability::Exponential::rv(rng, lambda); } while (newCLen > maxBrlen);
-    
-    double mStar = newALen + newULen + newCLen;
-    
-    // Since we're sampling from prior, no topology change needed
-    // (topology changes would require more complex prior ratio calculation)
-    
-    myParm->setBranchLength(a, newALen);
-    myParm->setBranchLength(u, newULen);
-    myParm->setBranchLength(c, newCLen);
-    
-    setDependants();
-    
-    // Prior ratio for three independent truncated exponentials
-    double lnPriorRatio = -lambda * (newALen + newULen + newCLen - oldALen - oldULen - oldCLen);
-    
-    // Proposal ratio (sampling from prior means proposal ratio = 1/prior ratio for MH)
-    return -lnPriorRatio;
+    return 0.0;
 }

@@ -18,14 +18,14 @@ class UpdateTopology : public Update {
     public:
                                             UpdateTopology(void) = delete;
                                             UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<UpdateAlignment*>& alnVec);
-        std::string                         getUpdateName(void) { return "LOCAL Topology Update"; }
-        std::string                         parameterType(void) { return "ParameterTree"; }
-        void                                setDependants(void);
-        double                              update(void);
-        double                              update(double power);
-        double                              updateFromPrior(void);
+        std::string                         getUpdateName(void) override { return "LOCAL Topology Update"; }
+        std::string                         parameterType(void) override { return "ParameterTree"; }
+        void                                setDependants(void) override;
+        double                              update(void) override;
+        double                              update(double power) override;
+        double                              updateFromPrior(void) override;
         
-                                            // Override: alignments are also modified during topology updates
+                                            // alignments are also modified during topology updates
         std::vector<Parameter*>             getAdditionalModifiedParameters(void) override;
     
     private:

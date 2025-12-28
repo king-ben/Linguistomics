@@ -28,7 +28,7 @@ class ParameterTree : public Parameter {
                                                     ParameterTree(void) = delete;
                                                     ParameterTree(Model* m, RandomVariable* r, std::string n);
                                                    ~ParameterTree(void);
-        void                                        applyNniToSubtrees(Node* u, Node* v, Node* a, Node* c);
+        void                                        applyNniToSubtrees(void);
         double                                      getBrlenLambda(void) { return brlenLambda; }
         size_t                                      getNumTaxa(void);
         const std::vector<std::string>&             getCanonicalTaxonList(void) const { return canonicalTaxonList; }
@@ -48,7 +48,6 @@ class ParameterTree : public Parameter {
     
     private:
         bool                                        checkTipToTipDistances(double threshhold);
-        Node*                                       findCorrespondingNode(Tree* srcTree, Tree* dstTree, Node* srcNode);
         void                                        makeSubtree(Tree& t, const unsigned& taxonMask);
         void                                        rebuildSubtrees(void);
         void                                        restoreTopology(void);
