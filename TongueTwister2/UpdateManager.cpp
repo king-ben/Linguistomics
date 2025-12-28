@@ -66,9 +66,9 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             otherUpdates.push_back(updater1);
             
             // tree topology updater
-            //UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alignmentUpdates);
-            //updates.push_back(updater2);
-            //otherUpdates.push_back(updater2);
+//            UpdateTopology* updater2 = new UpdateTopology(model, rng, dynamic_cast<ParameterTree*>(parm), alignmentUpdates);
+//            updates.push_back(updater2);
+//            otherUpdates.push_back(updater2);
             }
         }
     

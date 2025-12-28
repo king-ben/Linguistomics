@@ -47,9 +47,9 @@ TransitionProbabilities::~TransitionProbabilities(void) {
 
     delete map;
     delete subModel;
-    for (size_t i = 0; i < calculatorPoolSize; i++)
+    for (size_t i=0; i<calculatorPoolCapacity; i++)
         delete calculatorPool[i];
-    delete[] calculatorPool;
+    delete [] calculatorPool;
 }
 
 void TransitionProbabilities::computeDirtyMatrices(void) {
@@ -104,7 +104,7 @@ void TransitionProbabilities::ensureCalculatorPoolCapacity(size_t n) {
         for (size_t i = 0; i < calculatorPoolSize; i++)
             newPool[i] = calculatorPool[i];
         
-        delete[] calculatorPool;
+        delete [] calculatorPool;
         calculatorPool = newPool;
         calculatorPoolCapacity = newCapacity;
         }
@@ -125,7 +125,7 @@ void TransitionProbabilities::shrinkCalculatorPoolIfNeeded(void) {
     
     calculatorShrinkCounter = 0;
     
-    // Determine target size based on recent usage with 2x headroom
+    // determine target size based on recent usage with 2x headroom
     size_t targetSize = maxCalculatorsUsedRecently * 2;
     if (targetSize < CALCULATOR_MIN_POOL_SIZE)
         targetSize = CALCULATOR_MIN_POOL_SIZE;
@@ -133,10 +133,10 @@ void TransitionProbabilities::shrinkCalculatorPoolIfNeeded(void) {
     // Reset usage tracking for next period
     maxCalculatorsUsedRecently = 0;
     
-    // Only shrink if we can reclaim significant memory (at least 25%)
+    // only shrink if we can reclaim significant memory (at least 25%)
     if (calculatorPoolSize > targetSize && calculatorPoolSize > targetSize + targetSize / 4)
         {
-        // Delete excess calculators (each has a MathCache with 16 matrices)
+        // delete excess calculators (each has a MathCache with 16 matrices)
         for (size_t i = targetSize; i < calculatorPoolSize; i++)
             {
             delete calculatorPool[i];
@@ -159,11 +159,7 @@ DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
     DoubleMatrix* m = map->find(v);
     if (m == nullptr)
         {
-        std::cerr << "DEBUG getTransitionProbability FAILED: looking for bl=" << v << std::endl;
-        std::cerr << "DEBUG   branchLengthToKey(bl)=" << branchLengthToKey(v) << std::endl;
-        
-        // Print what's in the map
-        std::cerr << "DEBUG   Map contents (first 20 entries):" << std::endl;
+        // print what's in the map
         int count = 0;
         std::vector<Tree*> allTrees;
         myTree->getTrees(allTrees);
@@ -176,13 +172,10 @@ DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
                     {
                     double bl = p->getBranchLength();
                     DoubleMatrix* existing = map->find(bl);
-                    std::cerr << "DEBUG     bl=" << bl << " key=" << branchLengthToKey(bl) 
-                              << " found=" << (existing != nullptr ? "YES" : "NO") << std::endl;
                     count++;
                     }
                 }
             }
-        
         Msg::error("Could not find transition probabilities for branch length");
         }
     return *m;
@@ -254,9 +247,7 @@ void TransitionProbabilities::restore(void) {
     
     // remove entries that were created during this proposal.
     for (uint64_t key : newEntriesThisProposal)
-        {
         map->erase(key);
-        }
     newEntriesThisProposal.clear();
 }
 
@@ -272,21 +263,16 @@ void TransitionProbabilities::updateAllBranches(void) {
     
     std::vector<Tree*> allTrees;
     myTree->getTrees(allTrees);
-    
-    std::cerr << "DEBUG updateAllBranches: scanning " << allTrees.size() << " trees" << std::endl;
-    
+        
     for (size_t treeIdx = 0; treeIdx < allTrees.size(); treeIdx++)
         {
         Tree* t = allTrees[treeIdx];
         const std::vector<Node*>& dp = t->getPostOrder();
-        std::cerr << "DEBUG   Tree " << treeIdx << " has " << dp.size() << " nodes in postOrder" << std::endl;
-        
         for (Node* p : dp)
             {
             if (p != t->getRoot())
                 {
                 double bl = p->getBranchLength();
-                std::cerr << "DEBUG     Node offset=" << p->getOffset() << " bl=" << bl << std::endl;
                 
                 // check if this branch length already has an entry
                 DoubleMatrix* matrix = map->find(bl);
@@ -296,7 +282,6 @@ void TransitionProbabilities::updateAllBranches(void) {
                     uint64_t key = branchLengthToKey(bl);
                     newEntriesThisProposal.push_back(key);
                     map->getOrCreate(bl);
-                    std::cerr << "DEBUG       -> CREATED new entry" << std::endl;
                     }
                 
                 // mark for update (entry now guaranteed to exist)
@@ -304,9 +289,7 @@ void TransitionProbabilities::updateAllBranches(void) {
                 }
             }
         }
-    
-    std::cerr << "DEBUG updateAllBranches: done, computing dirty matrices" << std::endl;
-    
+        
     // compute only the entries we marked
     computeDirtyMatrices();
 }

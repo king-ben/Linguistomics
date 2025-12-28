@@ -683,10 +683,10 @@ void UpdateAlignment::initializeTreeStructure(void) {
 double UpdateAlignment::propose(void) {
 
     // Default version uses the member extensionProb
-    return propose(extensionProb);
+    return propose(extensionProb, true);
 }
 
-double UpdateAlignment::propose(double extProb) {
+double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) {
 
     initializeTreeStructure();
     
@@ -942,7 +942,7 @@ double UpdateAlignment::propose(double extProb) {
         else
             foundDifferentAlignment = true;
             
-        } while (foundDifferentAlignment == false);
+        } while (foundDifferentAlignment == false && alignmentsMustBeDifferent == true);
     
     // calculate Hastings ratio components
     int cf1 = countPaths(curAlignment, pos, pos+len2-1);
@@ -1011,6 +1011,6 @@ double UpdateAlignment::realignFull(void) {
     // is responsible for managing dependencies since it's updating multiple
     // parameters together.
     
-    return propose(1.0);
+    return propose(1.0, false);
 }
 

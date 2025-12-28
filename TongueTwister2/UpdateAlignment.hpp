@@ -39,7 +39,7 @@ class UpdateAlignment : public Update {
         void                            getIndelMatrix(Alignment* aln, int startCol, int len);
         void                            initializeTreeStructure(void);
         double                          propose(void);
-        double                          propose(double extProb);  // overload that accepts extension probability
+        double                          propose(double extProb, bool alignmentsMustBeDifferent);  // overload that accepts extension probability
         
         ParameterAlignment*             myParm;
         ParameterFrequencies*           freqsParm;
