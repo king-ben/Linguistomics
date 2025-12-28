@@ -8,7 +8,7 @@
 #include "RateMatrix.hpp"
 #include "Threads.hpp"
 #include "TransitionMatrixMap.hpp"
-#include "TransitionProbabilitiesGPU.hpp"
+#include "TransitionProbabilitiesGpu.hpp"
 #include "TransitionProbabilityCalculator.hpp"
 #include "Tree.hpp"
 #include "GPUMatrixExponentialBatch.hpp"
@@ -18,7 +18,7 @@ static const size_t MAX_BATCH_SIZE = 512;
 
 
 
-TransitionProbabilitiesGPU::TransitionProbabilitiesGPU(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFreq) : 
+TransitionProbabilitiesGpu::TransitionProbabilitiesGpu(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFreq) : 
     pool(p),
     myTree(t),
     subModel(sm),
@@ -56,7 +56,7 @@ TransitionProbabilitiesGPU::TransitionProbabilitiesGPU(ThreadPool* p, ParameterT
     rebuildFromTree();
 }
 
-TransitionProbabilitiesGPU::~TransitionProbabilitiesGPU(void) {
+TransitionProbabilitiesGpu::~TransitionProbabilitiesGpu(void) {
 
     delete map;
     delete subModel;
@@ -65,7 +65,7 @@ TransitionProbabilitiesGPU::~TransitionProbabilitiesGPU(void) {
     delete [] calculatorPool;
 }
 
-void TransitionProbabilitiesGPU::computeDirtyMatrices(void) {
+void TransitionProbabilitiesGpu::computeDirtyMatrices(void) {
 
     const size_t n = map->getDirtyCount();
     if (n == 0)
@@ -97,7 +97,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatrices(void) {
         computeDirtyMatricesThreaded();
 }
 
-void TransitionProbabilitiesGPU::computeDirtyMatricesThreaded(void) {
+void TransitionProbabilitiesGpu::computeDirtyMatricesThreaded(void) {
 
     const size_t n = map->getDirtyCount();
     
@@ -124,7 +124,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatricesThreaded(void) {
         }
 }
 
-void TransitionProbabilitiesGPU::computeDirtyMatricesBatched(void) {
+void TransitionProbabilitiesGpu::computeDirtyMatricesBatched(void) {
 
     const size_t n = map->getDirtyCount();
     
@@ -159,7 +159,7 @@ void TransitionProbabilitiesGPU::computeDirtyMatricesBatched(void) {
         }
 }
 
-const double* TransitionProbabilitiesGPU::getRateMatrixData(void) const {
+const double* TransitionProbabilitiesGpu::getRateMatrixData(void) const {
 
     // try to get Q data from CtmcAccelerated 
     CtmcAccelerated* accModel = dynamic_cast<CtmcAccelerated*>(subModel);
@@ -170,7 +170,7 @@ const double* TransitionProbabilitiesGPU::getRateMatrixData(void) const {
     return nullptr;
 }
 
-void TransitionProbabilitiesGPU::ensureCalculatorPoolCapacity(size_t n) {
+void TransitionProbabilitiesGpu::ensureCalculatorPoolCapacity(size_t n) {
 
     if (n <= calculatorPoolSize)
         return;
@@ -199,7 +199,7 @@ void TransitionProbabilitiesGPU::ensureCalculatorPoolCapacity(size_t n) {
     calculatorPoolSize = n;
 }
 
-void TransitionProbabilitiesGPU::shrinkCalculatorPoolIfNeeded(void) {
+void TransitionProbabilitiesGpu::shrinkCalculatorPoolIfNeeded(void) {
 
     ++calculatorShrinkCounter;
     if (calculatorShrinkCounter < CALCULATOR_SHRINK_FREQUENCY)
@@ -224,12 +224,12 @@ void TransitionProbabilitiesGPU::shrinkCalculatorPoolIfNeeded(void) {
         }
 }
 
-DoubleMatrix* TransitionProbabilitiesGPU::find(double branchLength) {
+DoubleMatrix* TransitionProbabilitiesGpu::find(double branchLength) {
 
     return map->find(branchLength);
 }
 
-DoubleMatrix& TransitionProbabilitiesGPU::getTransitionProbability(double v) {
+DoubleMatrix& TransitionProbabilitiesGpu::getTransitionProbability(double v) {
 
     DoubleMatrix* m = map->find(v);
     if (m == nullptr)
@@ -237,7 +237,7 @@ DoubleMatrix& TransitionProbabilitiesGPU::getTransitionProbability(double v) {
     return *m;
 }
 
-void TransitionProbabilitiesGPU::keep(void) {
+void TransitionProbabilitiesGpu::keep(void) {
 
     map->keep();
     newEntriesThisProposal.clear();
@@ -255,7 +255,7 @@ void TransitionProbabilitiesGPU::keep(void) {
     shrinkCalculatorPoolIfNeeded();
 }
 
-void TransitionProbabilitiesGPU::restore(void) {
+void TransitionProbabilitiesGpu::restore(void) {
 
     map->restore();
     
@@ -265,7 +265,7 @@ void TransitionProbabilitiesGPU::restore(void) {
     newEntriesThisProposal.clear();
 }
 
-void TransitionProbabilitiesGPU::updateAllBranches(void) {
+void TransitionProbabilitiesGpu::updateAllBranches(void) {
 
     // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
@@ -306,7 +306,7 @@ void TransitionProbabilitiesGPU::updateAllBranches(void) {
     computeDirtyMatrices();
 }
 
-void TransitionProbabilitiesGPU::updateBranch(void) {
+void TransitionProbabilitiesGpu::updateBranch(void) {
 
     newEntriesThisProposal.clear();
     
@@ -335,7 +335,7 @@ void TransitionProbabilitiesGPU::updateBranch(void) {
         }
 }
 
-void TransitionProbabilitiesGPU::rebuildFromTree(void) {
+void TransitionProbabilitiesGpu::rebuildFromTree(void) {
 
     map->clear();
     newEntriesThisProposal.clear();
@@ -358,7 +358,7 @@ void TransitionProbabilitiesGPU::rebuildFromTree(void) {
     map->keep();
 }
 
-void TransitionProbabilitiesGPU::cleanupOrphanedEntries(void) {
+void TransitionProbabilitiesGpu::cleanupOrphanedEntries(void) {
 
     usedKeysBuffer.clear();
     keysToEraseBuffer.clear();
@@ -392,24 +392,24 @@ void TransitionProbabilitiesGPU::cleanupOrphanedEntries(void) {
         map->erase(key);
 }
 
-void TransitionProbabilitiesGPU::setComputeBackend(ComputeBackend backend) {
+void TransitionProbabilitiesGpu::setComputeBackend(ComputeBackend backend) {
 
     computeBackend = backend;
 }
 
-bool TransitionProbabilitiesGPU::isGPUAvailable(void) const {
+bool TransitionProbabilitiesGpu::isGPUAvailable(void) const {
 
     return gpuBatcher != nullptr && gpuBatcher->isAvailable();
 }
 
-const char* TransitionProbabilitiesGPU::getGPUDeviceName(void) const {
+const char* TransitionProbabilitiesGpu::getGPUDeviceName(void) const {
 
     if (gpuBatcher != nullptr)
         return gpuBatcher->getDeviceName();
     return "N/A";
 }
 
-void TransitionProbabilitiesGPU::print(void) const {
+void TransitionProbabilitiesGpu::print(void) const {
 
     std::cout << "TransitionProbabilitiesGPU:" << std::endl;
     std::cout << "  States: " << numStates << std::endl;

@@ -8,12 +8,12 @@
 #include "ParameterFrequencies.hpp"
 #include "ParameterIndelRates.hpp"
 #include "ParameterTree.hpp"
-#include "TransitionProbabilityManager.hpp"
+#include "TransitionProbabilitiesGpu.hpp"
 #include "Tree.hpp"
 
 
 
-LikelihoodCalculator::LikelihoodCalculator(TransitionProbabilityManager* tpc, ParameterAlignment* a, ParameterTree* t, ParameterIndelRates* r, ParameterFrequencies* f) : 
+LikelihoodCalculator::LikelihoodCalculator(TransitionProbabilities* tpc, ParameterAlignment* a, ParameterTree* t, ParameterIndelRates* r, ParameterFrequencies* f) : 
     tiProbs(tpc), myAlignment(a), myTree(t), myIndelRates(r), myFrequencies(f) {
 
     // set the alignment for this calculator

@@ -7,7 +7,7 @@
 #include "ParameterTree.hpp"
 #include "Threads.hpp"
 #include "TransitionMatrixMap.hpp"
-#include "TransitionProbabilities.hpp"
+#include "TransitionProbabilitiesCpu.hpp"
 #include "TransitionProbabilityCalculator.hpp"
 #include "Tree.hpp"
 
@@ -17,7 +17,7 @@ static const size_t MAX_BATCH_SIZE = 512;
 
 
 
-TransitionProbabilities::TransitionProbabilities(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFreq) : 
+TransitionProbabilitiesCpu::TransitionProbabilitiesCpu(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFreq) : 
     pool(p),
     myTree(t),
     subModel(sm),
@@ -45,7 +45,7 @@ TransitionProbabilities::TransitionProbabilities(ThreadPool* p, ParameterTree* t
     rebuildFromTree();
 }
 
-TransitionProbabilities::~TransitionProbabilities(void) {
+TransitionProbabilitiesCpu::~TransitionProbabilitiesCpu(void) {
 
     delete map;
     delete subModel;
@@ -54,7 +54,7 @@ TransitionProbabilities::~TransitionProbabilities(void) {
     delete [] calculatorPool;
 }
 
-void TransitionProbabilities::computeDirtyMatrices(void) {
+void TransitionProbabilitiesCpu::computeDirtyMatrices(void) {
 
     const size_t n = map->getDirtyCount();
     if (n == 0)
@@ -88,7 +88,7 @@ void TransitionProbabilities::computeDirtyMatrices(void) {
         }
 }
 
-void TransitionProbabilities::ensureCalculatorPoolCapacity(size_t n) {
+void TransitionProbabilitiesCpu::ensureCalculatorPoolCapacity(size_t n) {
 
     if (n <= calculatorPoolSize)
         return;
@@ -119,7 +119,7 @@ void TransitionProbabilities::ensureCalculatorPoolCapacity(size_t n) {
 
 // Each TransitionProbabilityCalculator contains a MathCache with 16 matrices,
 // so this can reclaim significant memory when dirty counts are low.
-void TransitionProbabilities::shrinkCalculatorPoolIfNeeded(void) {
+void TransitionProbabilitiesCpu::shrinkCalculatorPoolIfNeeded(void) {
 
     ++calculatorShrinkCounter;
     if (calculatorShrinkCounter < CALCULATOR_SHRINK_FREQUENCY)
@@ -151,12 +151,12 @@ void TransitionProbabilities::shrinkCalculatorPoolIfNeeded(void) {
         }
 }
 
-DoubleMatrix* TransitionProbabilities::find(double branchLength) {
+DoubleMatrix* TransitionProbabilitiesCpu::find(double branchLength) {
 
     return map->find(branchLength);
 }
 
-DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
+DoubleMatrix& TransitionProbabilitiesCpu::getTransitionProbability(double v) {
 
     DoubleMatrix* m = map->find(v);
     if (m == nullptr)
@@ -181,7 +181,7 @@ DoubleMatrix& TransitionProbabilities::getTransitionProbability(double v) {
     return *m;
 }
 
-void TransitionProbabilities::keep(void) {
+void TransitionProbabilitiesCpu::keep(void) {
 
     map->keep();
     
@@ -202,7 +202,7 @@ void TransitionProbabilities::keep(void) {
     shrinkCalculatorPoolIfNeeded();
 }
 
-void TransitionProbabilities::print(void) const {
+void TransitionProbabilitiesCpu::print(void) const {
 
     std::cout << "TransitionProbabilities:" << std::endl;
     std::cout << "  States: " << numStates << std::endl;
@@ -215,7 +215,7 @@ void TransitionProbabilities::print(void) const {
     map->print();
 }
 
-void TransitionProbabilities::rebuildFromTree(void) {
+void TransitionProbabilitiesCpu::rebuildFromTree(void) {
 
     map->clear();
     newEntriesThisProposal.clear();
@@ -241,7 +241,7 @@ void TransitionProbabilities::rebuildFromTree(void) {
     map->keep();
 }
 
-void TransitionProbabilities::restore(void) {
+void TransitionProbabilitiesCpu::restore(void) {
 
     map->restore();
     
@@ -251,7 +251,7 @@ void TransitionProbabilities::restore(void) {
     newEntriesThisProposal.clear();
 }
 
-void TransitionProbabilities::updateAllBranches(void) {
+void TransitionProbabilitiesCpu::updateAllBranches(void) {
 
     // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
@@ -294,7 +294,7 @@ void TransitionProbabilities::updateAllBranches(void) {
     computeDirtyMatrices();
 }
 
-void TransitionProbabilities::updateBranch(void) {
+void TransitionProbabilitiesCpu::updateBranch(void) {
 
     // clear tracking at start of new proposal
     newEntriesThisProposal.clear();
@@ -330,7 +330,7 @@ void TransitionProbabilities::updateBranch(void) {
         }
 }
 
-void TransitionProbabilities::cleanupOrphanedEntries(void) {
+void TransitionProbabilitiesCpu::cleanupOrphanedEntries(void) {
 
     // clear and reuse pre-allocated buffers
     usedKeysBuffer.clear();

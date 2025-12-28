@@ -4,7 +4,7 @@
 #include "Update.hpp"
 class Model;
 class ParameterTree;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 
 
 
@@ -22,7 +22,7 @@ class UpdateBranchLength : public Update {
     
     private:
         ParameterTree*                  myParm;
-        TransitionProbabilityManager*   tiProbs;
+        TransitionProbabilities*        tiProbs;
         double                          maxBrlen;
 };
 

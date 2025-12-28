@@ -6,7 +6,7 @@
 #include "ParameterFrequencies.hpp"
 #include "ParameterTree.hpp"
 #include "RandomVariable.hpp"
-#include "TransitionProbabilityManager.hpp"
+#include "TransitionProbabilities.hpp"
 #include "Tree.hpp"
 #include "UpdateAlignment.hpp"
 

@@ -9,7 +9,7 @@
 #include "ParameterTree.hpp"
 #include "Probability.hpp"
 #include "RandomVariable.hpp"
-#include "TransitionProbabilityManager.hpp"
+#include "TransitionProbabilities.hpp"
 #include "Tree.hpp"
 #include "UpdateAlignment.hpp"
 #include "UpdateTopology.hpp"

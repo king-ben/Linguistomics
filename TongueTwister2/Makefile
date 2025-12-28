@@ -48,7 +48,7 @@ ifeq ($(UNAME_S),Darwin)
     # macOS-specific source files
     MACOS_SRCS = MathCacheAccelerated.cpp \
                  CtmcAccelerated.cpp \
-                 TransitionProbabilitiesGPU.cpp
+                 TransitionProbabilitiesGpu.cpp
     
     # Objective-C++ source files (Metal compute shaders)
     OBJCXX_SRCS = GPUMatrixExponentialBatch.mm
@@ -130,7 +130,7 @@ CORE_SRCS = \
     Subset.cpp \
     Threads.cpp \
     TransitionMatrixMap.cpp \
-    TransitionProbabilities.cpp \
+    TransitionProbabilitiesCpu.cpp \
     TransitionProbabilityCalculator.cpp \
     Tree.cpp \
     Update.cpp \
@@ -172,7 +172,7 @@ CORE_HEADERS = \
     Container.hpp \
     MathCache.hpp \
     Threads.hpp \
-    TransitionProbabilityManager.hpp
+    TransitionProbabilities.hpp
 
 # =============================================================================
 # Build Rules
@@ -225,7 +225,6 @@ endif
 # Files that depend on Container.hpp (DoubleMatrix, DoubleArray)
 Container.o: Container.cpp Container.hpp
 MathCache.o: MathCache.cpp MathCache.hpp Container.hpp
-TransitionMatrixMap.o: TransitionMatrixMap.cpp TransitionMatrixMap.hpp Container.hpp
 
 # Files that depend on MathCache.hpp
 LikelihoodCalculator.o: LikelihoodCalculator.cpp LikelihoodCalculator.hpp MathCache.hpp
@@ -240,8 +239,13 @@ ifeq ($(PLATFORM),macos)
 MathCacheAccelerated.o: MathCacheAccelerated.cpp MathCacheAccelerated.hpp MathCache.hpp Container.hpp
 CtmcAccelerated.o: CtmcAccelerated.cpp CtmcAccelerated.hpp Ctmc.hpp
 GPUMatrixExponentialBatch.o: GPUMatrixExponentialBatch.mm GPUMatrixExponentialBatch.hpp Container.hpp
-TransitionProbabilitiesGPU.o: TransitionProbabilitiesGPU.cpp TransitionProbabilitiesGPU.hpp TransitionProbabilityManager.hpp
+TransitionProbabilitiesGpu.o: TransitionProbabilitiesGpu.cpp TransitionProbabilitiesGpu.hpp TransitionProbabilities.hpp MatrixPool.hpp
 endif
+
+# TransitionProbabilities dependencies
+TransitionProbabilitiesCpu.o: TransitionProbabilitiesCpu.cpp TransitionProbabilitiesCpu.hpp TransitionProbabilities.hpp MatrixPool.hpp
+MatrixPool.o: MatrixPool.cpp MatrixPool.hpp Container.hpp
+TransitionMatrixMap.o: TransitionMatrixMap.cpp TransitionMatrixMap.hpp Container.hpp MatrixPool.hpp
 
 # =============================================================================
 # Development/Debug Targets

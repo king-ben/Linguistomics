@@ -6,7 +6,7 @@ class Model;
 class ParameterAlignment;
 class ParameterFrequencies;
 class ParameterTree;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 
 
 
@@ -48,7 +48,7 @@ class UpdateAlignment : public Update {
         ParameterAlignment*             myParm;
         ParameterFrequencies*           freqsParm;
         ParameterTree*                  treeParm;
-        TransitionProbabilityManager*   tiProbs;
+        TransitionProbabilities*        tiProbs;
         
         Tree*                           tree;
         unsigned                        taxonMask;

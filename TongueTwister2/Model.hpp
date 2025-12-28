@@ -13,7 +13,7 @@ class RandomVariable;
 class RateMatrix;
 class States;
 class ThreadPool;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 
 
 
@@ -30,7 +30,7 @@ class Model {
         template <typename T>
         const std::vector<T*>               getParametersOfType(void) const;
         RateMatrix*                         getRateMatrix(void) { return rateMatrix; }
-        TransitionProbabilityManager*       getTiProbs(void) { return tiProbs; }
+        TransitionProbabilities*            getTiProbs(void) { return tiProbs; }
         double                              lnLikelihood(void);
         double                              lnPrior(void);
     
@@ -52,7 +52,7 @@ class Model {
         ThreadPool*                         pool;
         States*                             states;
         RateMatrix*                         rateMatrix;
-        TransitionProbabilityManager*       tiProbs;
+        TransitionProbabilities*            tiProbs;
         size_t                              numStates;
         size_t                              gapCode;
         std::vector<Parameter*>             parameters;

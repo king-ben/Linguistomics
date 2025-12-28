@@ -7,7 +7,7 @@ class Model;
 class Parameter;
 class RateMatrix;
 class RandomVariable;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 class Update;
 class UpdateAlignment;
 
@@ -33,7 +33,7 @@ class UpdateManager {
         Model*                          model;
         RandomVariable*                 rng;
         RateMatrix*                     rateMatrix;
-        TransitionProbabilityManager*   tiProbs;
+        TransitionProbabilities*        tiProbs;
         
         std::vector<Update*>            updates;
         std::vector<UpdateAlignment*>   alignmentUpdates;

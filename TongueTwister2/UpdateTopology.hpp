@@ -7,7 +7,7 @@ class Model;
 class Node;
 class ParameterAlignment;
 class ParameterTree;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 class Tree;
 class UpdateAlignment;
 
@@ -34,7 +34,7 @@ class UpdateTopology : public Update {
 
         ParameterTree*                      myParm;
         std::vector<UpdateAlignment*>       myAlignmentUpdates;
-        TransitionProbabilityManager*       tiProbs;
+        TransitionProbabilities*            tiProbs;
         double                              maxBrlen;
         double                              tuning;
 };

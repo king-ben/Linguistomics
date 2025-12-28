@@ -17,8 +17,8 @@
 #include "RateMatrix.hpp"
 #include "States.hpp"
 #include "Threads.hpp"
-#include "TransitionProbabilities.hpp"
-#include "TransitionProbabilitiesGPU.hpp"
+#include "TransitionProbabilitiesCpu.hpp"
+#include "TransitionProbabilitiesGpu.hpp"
 
 
 
@@ -313,13 +313,13 @@ bool Model::initializeSubstitutionModel(void) {
         {
         case cpuThreaded:
             std::cout << "   * Compute Backend: CPU Threaded (per-branch threading)" << std::endl;
-            tiProbs = new TransitionProbabilities(pool, t, subModel);
+            tiProbs = new TransitionProbabilitiesCpu(pool, t, subModel);
             break;
             
         case cpuBatched:
             std::cout << "   * Compute Backend: CPU Batched (Accelerate BLAS)" << std::endl;
             {
-            TransitionProbabilitiesGPU* gpuTiProbs = new TransitionProbabilitiesGPU(pool, t, subModel);
+            TransitionProbabilitiesGpu* gpuTiProbs = new TransitionProbabilitiesGpu(pool, t, subModel);
             gpuTiProbs->setComputeBackend(ComputeBackend::CPUBatched);
             tiProbs = gpuTiProbs;
             }
@@ -328,7 +328,7 @@ bool Model::initializeSubstitutionModel(void) {
         case gpuBatched:
             std::cout << "   * Compute Backend: GPU Batched" << std::endl;
             {
-            TransitionProbabilitiesGPU* gpuTiProbs = new TransitionProbabilitiesGPU(pool, t, subModel);
+            TransitionProbabilitiesGpu* gpuTiProbs = new TransitionProbabilitiesGpu(pool, t, subModel);
             gpuTiProbs->setComputeBackend(ComputeBackend::GPUBatched);
             if (gpuTiProbs->isGPUAvailable())
                 std::cout << "   * GPU Device: " << gpuTiProbs->getGPUDeviceName() << std::endl;
@@ -342,7 +342,7 @@ bool Model::initializeSubstitutionModel(void) {
         default:
             std::cout << "   * Compute Backend: Auto (adaptive)" << std::endl;
             {
-            TransitionProbabilitiesGPU* gpuTiProbs = new TransitionProbabilitiesGPU(pool, t, subModel);
+            TransitionProbabilitiesGpu* gpuTiProbs = new TransitionProbabilitiesGpu(pool, t, subModel);
             gpuTiProbs->setComputeBackend(ComputeBackend::Auto);
             tiProbs = gpuTiProbs;
             }

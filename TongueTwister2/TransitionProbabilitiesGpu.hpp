@@ -1,11 +1,11 @@
-#ifndef TransitionProbabilitiesGPU_hpp
-#define TransitionProbabilitiesGPU_hpp
+#ifndef TransitionProbabilitiesGpu_hpp
+#define TransitionProbabilitiesGpu_hpp
 
 #include <vector>
 #include "Container.hpp"
 #include "MathCache.hpp"
 #include "MatrixPool.hpp"
-#include "TransitionProbabilityManager.hpp"
+#include "TransitionProbabilities.hpp"
 class Ctmc;
 class ParameterTree;
 class ThreadPool;
@@ -24,12 +24,12 @@ enum class ComputeBackend {
 
 
 
-class TransitionProbabilitiesGPU : public TransitionProbabilityManager {
+class TransitionProbabilitiesGpu : public TransitionProbabilities {
 
     public:
-                                            TransitionProbabilitiesGPU(void) = delete;
-                                            TransitionProbabilitiesGPU(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFrequency = 100);
-                                           ~TransitionProbabilitiesGPU(void) override;
+                                            TransitionProbabilitiesGpu(void) = delete;
+                                            TransitionProbabilitiesGpu(ThreadPool* p, ParameterTree* t, Ctmc* sm, size_t cleanupFrequency = 100);
+                                           ~TransitionProbabilitiesGpu(void) override;
         
                                             // lookup transition matrix by branch length
         DoubleMatrix*                       find(double branchLength) override;

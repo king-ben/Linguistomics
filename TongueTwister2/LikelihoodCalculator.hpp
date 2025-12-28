@@ -9,7 +9,7 @@ class ParameterAlignment;
 class ParameterFrequencies;
 class ParameterIndelRates;
 class ParameterTree;
-class TransitionProbabilityManager;
+class TransitionProbabilities;
 class Tree;
 
 
@@ -40,7 +40,7 @@ class LikelihoodCalculator : public LikelihoodTask {
 
     public:
                                         LikelihoodCalculator(void) = delete;
-                                        LikelihoodCalculator(TransitionProbabilityManager* tpc, ParameterAlignment* a, ParameterTree* t, ParameterIndelRates* r, ParameterFrequencies* f);
+                                        LikelihoodCalculator(TransitionProbabilities* tpc, ParameterAlignment* a, ParameterTree* t, ParameterIndelRates* r, ParameterFrequencies* f);
                                        ~LikelihoodCalculator(void);
                             
     protected:
@@ -61,7 +61,7 @@ class LikelihoodCalculator : public LikelihoodTask {
         void                            initializeLeafIndices(void);
         void                            setBirthDeathProbabilities(void);
         void                            setStationaryFrequencies(void);
-        TransitionProbabilityManager*   tiProbs;
+        TransitionProbabilities*        tiProbs;
         ParameterAlignment*             myAlignment;
         ParameterTree*                  myTree;
         ParameterIndelRates*            myIndelRates;

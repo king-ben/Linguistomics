@@ -9,7 +9,7 @@
 #include "ParameterTree.hpp"
 #include "RandomVariable.hpp"
 #include "RateMatrix.hpp"
-#include "TransitionProbabilityManager.hpp"
+#include "TransitionProbabilities.hpp"
 #include "UpdateAlignment.hpp"
 #include "UpdateBranchLength.hpp"
 #include "UpdateExchangeabilities.hpp"
