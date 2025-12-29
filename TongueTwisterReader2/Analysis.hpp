@@ -1,6 +1,7 @@
 #ifndef Analysis_hpp
 #define Analysis_hpp
 
+#include <fstream>
 #include <string>
 #include <vector>
 class AlignmentDistribution;
@@ -21,9 +22,10 @@ class Analysis {
                                            ~Analysis(void);
         void                                print(void);
         void                                printSorted(void);
-        void                                writeNytril(std::string fn);
+        void                                writeNytril(std::string pathName);
     
     private:
+        void                                nytrilOutput(std::ofstream& file, int maxAlignment);
         RandomVariable*                     rng;
         ThreadPool*                         pool;
         Exchangeabilities*                  rates;
