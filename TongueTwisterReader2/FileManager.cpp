@@ -24,6 +24,7 @@ FileManager::FileManager(std::string dn) : directoryName(dn) {
         nameExt.second = fileExtension;
         directoryFileContents.push_back(nameExt);
         }
+    std::sort(directoryFileContents.begin(), directoryFileContents.end());
 }
 
 std::vector<std::string> FileManager::filesWithExtension(std::string extension) {

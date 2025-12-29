@@ -1,0 +1,33 @@
+
+The program requires the use of two libraries. The first is boost, which can
+be found here:
+
+    https://www.boost.org
+    
+I've had difficulties with boost on the MacOS in the past. I install it in my user
+account and point the compiler there. (I install it in /Users/johnh/Applications/boost. 
+Your location will obviously be different.)
+
+The other dependency is the Eigen library. Eigen can be downloaded here:
+
+    https://eigen.tuxfamily.org/index.php?title=Main_Page
+    
+It's a fantastic library for doing matrix computations in C++. I install it in the 
+same directory that I install boost, though you are free to do differently. 
+
+Here are other details of the settings I use in Xcode on the MacOS to get the 
+program to compile. 
+
+C++ language variant;
+	C++17
+
+Linker flags:
+	-lboost_program_options
+	-lboost_thread
+	
+Header search paths:
+
+	/usr/local/include/
+	/Users/johnh/Applications/boost/include
+	/Users/johnh/Applications/eigen-eigen-b3f3d4950030
+	

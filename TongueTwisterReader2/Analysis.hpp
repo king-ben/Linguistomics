@@ -11,6 +11,7 @@ class RandomVariable;
 class RateMatrix;
 class StateFrequencies;
 class ThreadPool;
+class TreeSamples;
 
 
 
@@ -32,6 +33,7 @@ class Analysis {
         Partition*                          part;
         RateMatrix*                         Q;
         StateFrequencies*                   freqs;
+        TreeSamples*                        trees;
         std::vector<AlignmentDistribution*> alignments;
 };
 

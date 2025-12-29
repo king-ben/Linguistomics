@@ -9,11 +9,12 @@
 #include "RateMatrixNaturalClass.hpp"
 #include "StateFrequencies.hpp"
 #include "Threads.hpp"
+#include "TreeSamples.hpp"
 
 
 
 Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName, double burnFraction) : 
-    rng(r), pool(tp), rates(nullptr), part(nullptr), Q(nullptr), freqs(nullptr) {
+    rng(r), pool(tp), rates(nullptr), part(nullptr), Q(nullptr), freqs(nullptr), trees(nullptr) {
 
     McmcSummary summary(pool, directoryName);
         
@@ -57,6 +58,9 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
         AlignmentDistribution* alnDist = new AlignmentDistribution(rng, summary.getAlignments(n), summary.getAlignmentName(n));
         alignments.push_back(alnDist);
         }
+        
+    if (summary.hasTrees() == true)
+        trees = new TreeSamples(summary, burnFraction);
 }
 
 Analysis::~Analysis(void) {
@@ -71,6 +75,8 @@ Analysis::~Analysis(void) {
         delete Q;
     for (AlignmentDistribution* ad : alignments)
         delete ad;
+    if (trees != nullptr)
+        delete trees;
 }
 
 void Analysis::print(void) {
@@ -93,6 +99,9 @@ void Analysis::print(void) {
     std::cout << "alignments.size()=" << alignments.size() << std::endl;
     for (AlignmentDistribution* ad : alignments)
         ad->print(false, part);
+        
+    if (trees != nullptr)
+        trees->print();
 }
 
 void Analysis::printSorted(void) {
@@ -133,6 +142,7 @@ void Analysis::printSorted(void) {
 void Analysis::writeNytril(std::string pathName) {
 
     // output the full set of alignments (and analyses) to the nytril file
+    std::cout << pathName + "/consensus.tre" << std::endl;
     auto file = new std::ofstream(pathName + "/consensus.tre", std::ios::out);
     //summary1.writeConsensusTree(*file);
     file->close();

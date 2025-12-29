@@ -11,6 +11,7 @@
 #include "Partition.hpp"
 #include "Statistics.hpp"
 #include "Threads.hpp"
+#include "Tree.hpp"
 
 
 
@@ -19,6 +20,7 @@ McmcSummary::McmcSummary(ThreadPool* tp, std::string dn) : pool(tp), fileManager
     readConfigurationFile();
     readParameterFile();
     readAlignmentFiles();
+    readTreeFile();
 }
 
 McmcSummary::~McmcSummary(void) {
@@ -34,6 +36,9 @@ McmcSummary::~McmcSummary(void) {
 
     if (statePartitions != nullptr)
         delete statePartitions;
+        
+    for (Tree* t : trees)
+        delete t;
 }
 
 ParameterStatistics* McmcSummary::operator[](size_t idx) {
@@ -48,6 +53,31 @@ ParameterStatistics* McmcSummary::operator[](size_t idx) const {
     if (idx >= stats.size())
         return nullptr;
     return stats[idx];
+}
+
+std::vector<std::string> McmcSummary::breakString(std::string str) {
+
+    std::vector<std::string> broken;
+    std::string word = "";
+    for (int i=0; i<str.length(); i++)
+        {
+        char c = str[i];
+        if (c == ',' || c == ';')
+            {
+            if (word != "")
+                broken.push_back(word);
+            broken.push_back( std::string(1,c) );
+            word = "";
+            }
+        else
+            {
+            word +=  c;
+            }
+        }
+    if (word != "")
+        broken.push_back(word);
+    
+    return broken;
 }
 
 bool McmcSummary::hasFrequencies(void) {
@@ -79,6 +109,76 @@ bool McmcSummary::hasPartition(void) {
     if (statePartitions != nullptr)
         return true;
     return false;
+}
+
+bool McmcSummary::hasSemicolon(std::string str) {
+
+    std::size_t found = str.find(';');
+    if (found != std::string::npos)
+        return true;
+    return false;
+}
+
+bool McmcSummary::hasTrees(void) {
+
+    if (trees.size() > 0)
+        return true;
+    return false;
+}
+
+std::map<int,std::string> McmcSummary::interpretTranslateString(std::vector<std::string> translateTokens) {
+
+    std::map<int,std::string> translateMap;
+    bool readingKey = true;
+    std::string key = "";
+    std::string val = "";
+    for (int i=0; i<translateTokens.size(); i++)
+        {
+        std::string token = translateTokens[i];
+        if (token == "," || token == ";")
+            {
+            readingKey = true;
+            int intKey = atoi(key.c_str());
+            translateMap.insert( std::make_pair(intKey,val) );
+            }
+        else
+            {
+            if (readingKey == true)
+                {
+                key = token;
+                readingKey = false;
+                }
+            else
+                val = token;
+            }
+        //std::cout << i << " " << token << std::endl;
+        }
+//    for (std::map<int,std::string>::iterator it = translateMap.begin(); it != translateMap.end(); it++)
+//        std::cout << it->first << " -> " << it->second << std::endl;
+        
+    return translateMap;
+}
+
+std::string McmcSummary::interpretTreeString(std::string str) {
+
+    std::string ns = "";
+    bool reading = false;
+    for (int i=0; i<str.length(); i++)
+        {
+        char c = str[i];
+        if (c == '(')
+            reading = true;
+            
+        if (reading == true)
+            {
+            ns += c;
+            }
+            
+        if (c == ';')
+            reading = false;
+        }
+    
+    return ns;
 }
 
 void McmcSummary::printParameterSummary(void) {
@@ -279,4 +379,93 @@ void McmcSummary::readParameterFile(void) {
 	
 	// close the file
 	fstrm.close();
+}
+
+void McmcSummary::readTreeFile(void) {
+
+    std::vector<std::string> treeFiles = fileManager.filesWithExtension("tre");
+    if (treeFiles.size() != 1)
+        Msg::warning("Expecting only one file with the extension \"tre\" but found " + std::to_string(treeFiles.size()) + " such files");
+    std::string fn = treeFiles[0];
+    
+	// open the file
+	std::ifstream fstrm(fn.c_str());
+	if (!fstrm)
+        Msg::error("Cannot open file \"" + fn + "\"");
+
+	std::string lineString = "";
+	int line = 0;
+    bool readingTranslateTable = false, readingTree = false;
+    std::vector<std::string> translateTokens;
+    std::string treeString = "";
+    std::map<int,std::string> translateMap;
+    int treeCount = 0;
+	while( getline(fstrm, lineString).good() )
+		{
+        //std::cout << line << " -- " << lineString << std::endl;
+		std::istringstream linestream(lineString);
+		int ch;
+		std::string word = "";
+		int wordNum = 0;
+		std::string cmdString = "";
+		do
+			{
+			word = "";
+			linestream >> word;
+            if (word == "")
+                continue;
+            if (word == "translate")
+                {
+                readingTranslateTable = true;
+                }
+            else if (word == "tree")
+                {
+                readingTree = true;
+                }
+            else
+                {
+                if (readingTranslateTable == true)
+                    {
+                    std::vector<std::string> brokenWord = breakString(word);
+                    if (hasSemicolon(word) == true)
+                        {
+                        for (int i=0; i<brokenWord.size(); i++)
+                            translateTokens.push_back(brokenWord[i]);
+                        readingTranslateTable = false;
+                        translateMap = interpretTranslateString(translateTokens);
+                        }
+                    else
+                        {
+                        for (int i=0; i<brokenWord.size(); i++)
+                            translateTokens.push_back(brokenWord[i]);
+                        }
+                    }
+                else if (readingTree == true)
+                    {
+                    if (hasSemicolon(word) == true)
+                        {
+                        treeString += word;
+                        readingTree = false;
+                        treeCount++;
+
+                        std::string newickStr = interpretTreeString(treeString);
+                        Tree* t = new Tree(newickStr, translateMap);
+                        trees.push_back(t);
+
+                        treeString = "";
+                        }
+                    else
+                        treeString += word;
+                    }
+                }
+
+			wordNum++;
+            } while ( (ch=linestream.get()) != EOF );
+						
+		line++;
+		}
+
+	// close the file
+	fstrm.close();
+ 
 }
