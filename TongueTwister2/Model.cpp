@@ -126,7 +126,7 @@ bool Model::initializeAlignments(void) {
         {
         nlohmann::json jw = jWords[i];
         std::string alnName = jw["Name"];
-        ParameterAlignment* aln = new ParameterAlignment(this, rng, "Alignment for cognate " + alnName);
+        ParameterAlignment* aln = new ParameterAlignment(this, rng, alnName);
         aln->initializeFromJson(jw, numStates, canonicalTaxonList);
         if (aln->getNumTaxa() != canonicalTaxonList.size() && onlyCompleteAlignments == true)
             {

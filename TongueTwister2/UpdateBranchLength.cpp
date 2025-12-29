@@ -82,7 +82,7 @@ double UpdateBranchLength::updateFromPrior(void) {
     // pick a branch length from the truncated exponential prior
     double lambda = myParm->getBrlenLambda();
     double oldV = p->getBranchLength();
-    double newV = 0;
+    double newV = 0.0;
     do {
         newV = Probability::Exponential::rv(rng, lambda);
     } while(newV > maxBrlen);
