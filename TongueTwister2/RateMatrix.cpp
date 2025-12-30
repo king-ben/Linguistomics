@@ -35,9 +35,9 @@ void RateMatrix::print(void) {
 
     std::cout << std::fixed << std::setprecision(5);
     DoubleMatrix& QM = *Q[activeMatrix];
-    for (size_t i = 0; i < numStates; i++)
+    for (size_t i=0; i<numStates; i++)
         {
-        for (size_t j = 0; j < numStates; j++)
+        for (size_t j=0; j<numStates; j++)
             std::cout << QM(i, j) << " ";
         std::cout << std::endl;
         }
@@ -65,9 +65,9 @@ void RateMatrixGTR::updateRateMatrix(void) {
     const double* f = freqParm->getFrequencies().data();
     const size_t n = numStates;
     
-    // single pass: fill off-diagonal and accumulate row sums simultaneously
+    // fill off-diagonal and accumulate row sums simultaneously
     double averageRate = 0.0;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
         double* qRow_i = qData + i * n;
         double rowSum = 0.0;
@@ -75,7 +75,7 @@ void RateMatrixGTR::updateRateMatrix(void) {
         
         // upper triangle: j > i
         size_t k = (i * (2 * n - i - 1)) / 2;  // index into symmetric rate array
-        for (size_t j = i + 1; j < n; j++, k++)
+        for (size_t j=i+1; j<n; j++, k++)
             {
             double rk = r[k];
             double qij = rk * f[j];
@@ -87,15 +87,15 @@ void RateMatrixGTR::updateRateMatrix(void) {
             rowSum += qij;
             }
         
-        // Lower triangle was filled when we processed earlier rows
+        // lower triangle was filled when we processed earlier rows
         // Just sum those values
-        for (size_t j = 0; j < i; j++)
+        for (size_t j=0; j<i; j++)
             rowSum += qRow_i[j];
         
-        // Set diagonal
+        // set diagonal
         qRow_i[i] = -rowSum;
         
-        // Accumulate average rate
+        // accumulate average rate
         averageRate += fi * rowSum;
         }
     

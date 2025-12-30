@@ -15,8 +15,8 @@ TransitionProbabilityTask::~TransitionProbabilityTask(void) {
 
 
 #if 1
-// Threaded version
 
+// Threaded version
 ThreadPool::ThreadPool(void) :
     queueHead(0),
     queueTail(0),
@@ -115,19 +115,35 @@ void ThreadPool::worker(void) {
         if (task)
             {
             // execute outside any lock -- this is where parallelism happens
-            task->run();
+            try
+                {
+                task->run();
+                }
+            catch (const std::exception& e)
+                {
+                std::cerr << "EXCEPTION in task: " << e.what() << std::endl;
+                }
+            catch (...)
+                {
+                std::cerr << "UNKNOWN EXCEPTION in task" << std::endl;
+                }
             
             // decrement in-flight count and potentially wake wait()
-            if (--tasksInFlight == 0)
+            // MUST hold mutex to synchronize with wait()
+            {
+            std::lock_guard<std::mutex> lock(mutex);
+            size_t remaining = --tasksInFlight;
+            if (remaining == 0)
                 allComplete.notify_all();
+            }
             }
         // no yield() here -- immediately try to get next task
         }
 }
 
 #else
-// Serial version (for debugging or single-threaded builds)
 
+// Serial version (for debugging or single-threaded builds)
 ThreadPool::ThreadPool(void):
     queueHead(0),
     queueTail(0),
@@ -145,8 +161,7 @@ ThreadPool::~ThreadPool(void) {
 void ThreadPool::pushTask(ThreadTask* task) {
 
     // execute immediately in serial mode
-    MathCache cache;
-    task->run(cache);
+    task->run();
 }
 
 ThreadTask* ThreadPool::popTask(void) {

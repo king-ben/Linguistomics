@@ -311,7 +311,7 @@ void McmcSummary::readAlignmentFiles(void) {
     
     // ensure we reach 100%
     for (int i=lastProgress; i<progressWidth; i++)
-        std::cout << "=";
+        std::cout << "*";
     std::cout << "] " << totalFiles << " files" << std::endl;
     
     // wait for all tasks to fully complete

@@ -5,6 +5,7 @@
 #include "McmcSummary.hpp"
 #include "Msg.hpp"
 #include "Partition.hpp"
+#include "RandomVariable.hpp"
 #include "RateMatrixF81.hpp"
 #include "RateMatrixGTR.hpp"
 #include "RateMatrixJC69.hpp"
@@ -84,6 +85,30 @@ Analysis::~Analysis(void) {
         delete trees;
 }
 
+std::string Analysis::modelName(void) {
+
+    if (freqs != nullptr && rates == nullptr)
+        {
+        return "F81";
+        }
+    else if (freqs != nullptr && rates != nullptr)
+        {
+        size_t numStates = freqs->getNumStates();
+        size_t numRates = rates->getNumRates();
+        if (numStates*(numStates-1)/2 == numRates)
+            {
+            return "GTR";
+            }
+        else
+            {
+            if (part == nullptr)
+                Msg::error("Must have partition to construct the Natural Class model");
+            return "Natural Class";
+            }
+        }
+    return "JC69";
+}
+
 void Analysis::print(void) {
 
     if (part)
@@ -142,6 +167,28 @@ void Analysis::printSorted(void) {
             std::cout << std::endl;
             }
         }
+}
+
+void Analysis::randomlyChooseFreqs(std::vector<float>& f) {
+
+    if (freqs == nullptr)
+        {
+        double x = static_cast<float>(1.0) / f.size();
+        for (size_t i=0; i<f.size(); i++)
+            f[i] = x;
+        }
+    else 
+        {
+        freqs->valuesAtIndex((size_t)(rng->uniformRv()*freqs->numSamples()), f);
+        }
+}
+
+DoubleMatrix* Analysis::randomlyChooseRateMatrix(void) {
+
+    std::vector<DoubleMatrix*>& rateMatrices = Q->getRateMatrices();
+    if (rateMatrices.size() == 0)
+        return nullptr;
+    return rateMatrices[(int)(rng->uniformRv()*rateMatrices.size())];
 }
 
 void Analysis::writeNytril(std::string pathName) {

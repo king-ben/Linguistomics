@@ -35,10 +35,12 @@ class Simplex {
         float                           getLowerCI(size_t idx) { return lowerCI[idx]; }
         float                           getUpperCI(size_t idx) { return upperCI[idx]; }
         const SampleVector&             getValues(void) const { return values; }
+        size_t                          numSamples(void) { return values[0].size(); }
         virtual void                    print(void) = 0;
         size_t                          size(void) { return values.size(); }
         size_t                          size(void) const { return values.size(); }
         std::map<float,StatInfo>        sortByKL(void);
+        void                            valuesAtIndex(size_t idx, std::vector<float>& vec);
     
     protected:
         std::pair<int,int>              parseBracketedNumbers(const std::string& s);

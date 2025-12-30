@@ -12,6 +12,7 @@ class RateMatrix {
                                     RateMatrix(void) = delete;
                                     RateMatrix(size_t ns);
         virtual                    ~RateMatrix(void);
+        std::vector<DoubleMatrix*>& getRateMatrices(void) { return matrices; }
         DoubleMatrix&               getMean(void) { return *mean; }
     
     protected:

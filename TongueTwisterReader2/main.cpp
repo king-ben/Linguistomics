@@ -5,6 +5,7 @@
 #include "Threads.hpp"
 #include "UserSettings.hpp"
 
+void compareAnalyses(std::vector<Analysis*>& analyses);
 void printHeader(void);
 
 
@@ -36,11 +37,30 @@ int main(int argc, char* argv[]) {
         analysis->writeNytril(settings.getNytrilOutputFileName());
         }
         
+    // compare analyses (if there are more than one)
+    compareAnalyses(analyses);
+        
     // clean up
     for (size_t i=0; i<analyses.size(); i++)
         delete analyses[i];
     
     return EXIT_SUCCESS;
+}
+
+void compareAnalyses(std::vector<Analysis*>& analyses) {
+
+    if (analyses.size() > 1)
+        {
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            Analysis* a1 = analyses[i];
+            for (size_t j=i+1; j<analyses.size(); j++)
+                {
+                Analysis* a2 = analyses[j];
+                AnalysisComparison::compare(a1, a2);
+                }
+            }
+        }
 }
 
 void printHeader(void) {

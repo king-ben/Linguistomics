@@ -52,6 +52,14 @@ std::map<float,StatInfo> Simplex::sortByKL(void) {
     return res;
 }
 
+void Simplex::valuesAtIndex(size_t idx, std::vector<float>& vec) {
+
+    for (size_t i=0; i<dimension; i++)
+        {
+        vec[i] = values[i][idx];
+        }
+}
+
 
 
 
