@@ -57,7 +57,7 @@ void compareAnalyses(std::vector<Analysis*>& analyses) {
             for (size_t j=i+1; j<analyses.size(); j++)
                 {
                 Analysis* a2 = analyses[j];
-                AnalysisComparison::compare(a1, a2);
+                AnalysisComparison::compare(a1, a2, a2->getNumStates(), 100);
                 }
             }
         }

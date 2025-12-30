@@ -33,7 +33,7 @@ double Beta::pdf(double a, double b, double x) noexcept {
 double Beta::lnPdf(double a, double b, double x) noexcept {
 
     return (Helper::lnGamma(a + b) - Helper::lnGamma(a) - Helper::lnGamma(b)) 
-           + (a - 1.0) * std::log(x) + (b - 1.0) * std::log(1.0 - x);
+    + (a - 1.0) * std::log(x) + (b - 1.0) * std::log(1.0 - x);
 }
 
 double Beta::cdf(double a, double b, double x) noexcept {
@@ -292,14 +292,12 @@ double Exponential::cdf(double lambda, double x) noexcept {
 
 double Gamma::pdf(double alpha, double beta, double x) noexcept {
 
-    return (std::pow(beta, alpha) / Helper::gamma(alpha)) 
-           * std::pow(x, alpha - 1.0) * std::exp(-x * beta);
+    return (std::pow(beta, alpha) / Helper::gamma(alpha)) * std::pow(x, alpha - 1.0) * std::exp(-x * beta);
 }
 
 double Gamma::lnPdf(double alpha, double beta, double x) noexcept {
 
-    return alpha * std::log(beta) - Helper::lnGamma(alpha) 
-           + (alpha - 1.0) * std::log(x) - x * beta;
+    return alpha * std::log(beta) - Helper::lnGamma(alpha) + (alpha - 1.0) * std::log(x) - x * beta;
 }
 
 double Gamma::rv(RandomVariable* rng, double alpha, double beta) {
@@ -508,7 +506,6 @@ double Helper::chebyshevEval(double x, const double* a, const int n) noexcept {
 
 double Helper::gamma(double x) noexcept {
 
-    // Use standard library for most cases
     return std::tgamma(x);
 }
 
@@ -551,7 +548,6 @@ double Helper::lnBeta(double a, double b) noexcept {
 
 double Helper::lnGamma(double a) noexcept {
 
-    // Use standard library
     return std::lgamma(a);
 }
 
@@ -672,7 +668,7 @@ double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noe
     
     if (x <= 1 || x < alpha)
         {
-        // Series expansion
+        // series expansion
         double gin = 1.0;
         double term = 1.0;
         double rn = alpha;
@@ -686,7 +682,7 @@ double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noe
         return gin * factor / alpha;
         }
     
-    // Continued fraction
+    // continued fraction
     double a = 1.0 - alpha;
     double b = a + x + 1.0;
     double pn[6] = { 1.0, x, x + 1.0, x * b, 0.0, 0.0 };
@@ -777,8 +773,7 @@ double Helper::pointNormal(double prob) noexcept {
         return -9999.0;
     
     double y = std::sqrt(std::log(1.0 / (p1 * p1)));
-    double z = y + ((((y * a4 + a3) * y + a2) * y + a1) * y + a0) 
-               / ((((y * b4 + b3) * y + b2) * y + b1) * y + b0);
+    double z = y + ((((y * a4 + a3) * y + a2) * y + a1) * y + a0) / ((((y * b4 + b3) * y + b2) * y + b1) * y + b0);
     
     return (prob < 0.5) ? -z : z;
 }
@@ -800,7 +795,7 @@ double Helper::rndGamma(RandomVariable* rng, double s, bool& err) {
 
 double Helper::rndGamma1(RandomVariable* rng, double s) {
 
-    // Thread-local static for caching shape parameter
+    // thread-local static for caching shape parameter
     thread_local double ss = -1.0;
     thread_local double a, p, uf, d;
     
@@ -848,7 +843,7 @@ double Helper::rndGamma1(RandomVariable* rng, double s) {
 
 double Helper::rndGamma2(RandomVariable* rng, double s) {
 
-    // Thread-local static for caching shape parameter
+    // thread-local static for caching shape parameter
     thread_local double ss = -1.0;
     thread_local double b, h;
     

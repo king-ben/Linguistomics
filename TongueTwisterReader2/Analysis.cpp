@@ -21,6 +21,8 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
     rng(r), pool(tp), rates(nullptr), part(nullptr), Q(nullptr), freqs(nullptr), trees(nullptr) {
 
     McmcSummary summary(pool, directoryName);
+    
+    numStates = summary.getNumStates();
         
     if (summary.hasPartition() == true)
         part = new Partition(*summary.getStatePartition());
@@ -193,7 +195,6 @@ DoubleMatrix* Analysis::randomlyChooseRateMatrix(void) {
 
 DoubleMatrix* Analysis::randomlyChooseRateMatrixAndFreqs(std::vector<float>& f) {
 
-    size_t numStates = freqs->getNumStates();
     f.resize(numStates); 
 
     std::vector<DoubleMatrix*>& rateMatrices = Q->getRateMatrices();

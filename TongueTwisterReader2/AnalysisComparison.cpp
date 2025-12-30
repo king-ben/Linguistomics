@@ -4,12 +4,11 @@
 
 
 
-void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t nSamples) {
+void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples) {
 
     std::vector<float> f1;
     std::vector<float> f2;
     double sumW = 0.0, sumF = 0.0;
-    size_t numStates = 0;
     
     for (size_t n = 0; n < nSamples; n++)
         {

@@ -18,19 +18,20 @@ class TreeSamples;
 class Analysis;
 namespace AnalysisComparison {
 
-    void compare(Analysis* a1, Analysis* a2, size_t nSamples=100);
+    void compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples=100);
 };
 
 
 
 class Analysis {
 
-    friend void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t nSamples);
+    friend void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples);
 
     public:
                                             Analysis(void) = delete;
                                             Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName, double burnFraction);
                                            ~Analysis(void);
+        size_t                              getNumStates(void) { return numStates; }
         std::string                         modelName(void);
         void                                print(void);
         void                                printSorted(void);
@@ -41,6 +42,7 @@ class Analysis {
     
     private:
         void                                nytrilOutput(std::ofstream& file, int maxAlignment);
+        size_t                              numStates;
         RandomVariable*                     rng;
         ThreadPool*                         pool;
         Exchangeabilities*                  rates;

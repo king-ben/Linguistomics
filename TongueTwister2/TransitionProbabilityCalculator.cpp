@@ -3,9 +3,9 @@
 
 
 
-TransitionProbabilityCalculator::TransitionProbabilityCalculator(Ctmc* m) : model(m) {
+TransitionProbabilityCalculator::TransitionProbabilityCalculator(Ctmc* m) : ctmc(m) {
 
-    cache = model->allocateMathCache();
+    cache = ctmc->allocateMathCache();
 }
 
 TransitionProbabilityCalculator::~TransitionProbabilityCalculator(void) {
@@ -16,7 +16,7 @@ TransitionProbabilityCalculator::~TransitionProbabilityCalculator(void) {
 
 void TransitionProbabilityCalculator::computeTransitionProbabilities(void) {
 
-    model->computeTransitionProbs(branchLength, output, cache);
+    ctmc->computeTransitionProbs(branchLength, output, cache);
 }
 
 void TransitionProbabilityCalculator::set(double bl, DoubleMatrix* out) {

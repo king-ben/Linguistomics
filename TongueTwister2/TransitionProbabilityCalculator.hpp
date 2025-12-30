@@ -19,7 +19,7 @@ class TransitionProbabilityCalculator : public TransitionProbabilityTask {
         void                    computeTransitionProbabilities(void);
         
     private:
-        Ctmc*                   model;
+        Ctmc*                   ctmc;
         MathCache*              cache;
         DoubleMatrix*           output;
         double                  branchLength;
