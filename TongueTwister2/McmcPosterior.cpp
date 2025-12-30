@@ -79,7 +79,7 @@ void McmcPosterior::run(void) {
             
         // sample chain
         if (n % sampleFrequency == 0)
-            output.sample(n);
+            output.sample(n, currentLnL, currentLnP);
         }
 
     timer.end();

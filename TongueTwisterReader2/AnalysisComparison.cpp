@@ -6,14 +6,15 @@
 
 void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t nSamples) {
 
+    std::vector<float> f1;
+    std::vector<float> f2;
+    double sumW = 0.0, sumF = 0.0;
     size_t numStates = 0;
     
-    // compare the rate matrices
-    double sum = 0.0;
-    for (size_t n=0; n<nSamples; n++)
+    for (size_t n = 0; n < nSamples; n++)
         {
-        DoubleMatrix* m1 = a1->randomlyChooseRateMatrix();
-        DoubleMatrix* m2 = a2->randomlyChooseRateMatrix();
+        DoubleMatrix* m1 = a1->randomlyChooseRateMatrixAndFreqs(f1);
+        DoubleMatrix* m2 = a2->randomlyChooseRateMatrixAndFreqs(f2);
         numStates = m1->getNumRows();
         
         double ss = 0.0;
@@ -21,32 +22,27 @@ void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t nSamples) {
             {
             for (size_t j=i+1; j<numStates; j++)
                 {
-                ss += std::pow((*m1)(i,j) - (*m2)(i,j), 2.0);
-                ss += std::pow((*m1)(j,i) - (*m2)(j,i), 2.0);
+                double x = f1[i] * (*m1)(i,j) - f2[i] * (*m2)(i,j);
+                double y = f1[j] * (*m1)(j,i) - f2[j] * (*m2)(j,i);
+                ss += (x*x + y*y);
                 }
             }
-        sum += ss;
-        }
-    double dQ = sum / nSamples;
+        sumW += ss;
         
-    // compare the state frequencies
-    std::vector<float> f1(numStates);
-    std::vector<float> f2(numStates);
-    sum = 0.0;
-    for (size_t n=0; n<nSamples; n++)
-        {
-        a1->randomlyChooseFreqs(f1);
-        a2->randomlyChooseFreqs(f2);
-        double ss = 0.0;
+        ss = 0.0;
         for (size_t i=0; i<numStates; i++)
-            ss += std::pow(f1[i] - f2[i], 2.0);
-        sum += ss;
+            ss += (f1[i] - f2[i]) * (f1[i] - f2[i]);
+        sumF += ss;
         }
-    double dF = sum / nSamples;
+    double dW = sumW / nSamples;
+    double dF = sumF / nSamples;
+        
     
-    // compare rates, if possible
+    // compare rates
     
     std::cout << "Model Comparison:   " << a1->modelName() << "-" << a2->modelName() << std::endl;
-    std::cout << "Average Q distance: " << dQ << std::endl;
+    std::cout << "Average W distance: " << dW << std::endl;
     std::cout << "Average F distance: " << dF << std::endl;
+    std::cout << "Average W distance: " << sqrt(dW) << std::endl;
+    std::cout << "Average F distance: " << sqrt(dF) << std::endl;
 }

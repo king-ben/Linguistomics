@@ -54,6 +54,10 @@ std::map<float,StatInfo> Simplex::sortByKL(void) {
 
 void Simplex::valuesAtIndex(size_t idx, std::vector<float>& vec) {
 
+    if (idx >= values[0].size())
+        Msg::error("Trying to access an out-of-range value");
+    if (dimension != values.size())
+        Msg::error("Dimensions issue");
     for (size_t i=0; i<dimension; i++)
         {
         vec[i] = values[i][idx];

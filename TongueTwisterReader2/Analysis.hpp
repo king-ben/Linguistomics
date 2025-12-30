@@ -36,6 +36,7 @@ class Analysis {
         void                                printSorted(void);
         void                                randomlyChooseFreqs(std::vector<float>& f);
         DoubleMatrix*                       randomlyChooseRateMatrix(void);
+        DoubleMatrix*                       randomlyChooseRateMatrixAndFreqs(std::vector<float>& f);
         void                                writeNytril(std::string pathName);
     
     private:

@@ -191,6 +191,33 @@ DoubleMatrix* Analysis::randomlyChooseRateMatrix(void) {
     return rateMatrices[(int)(rng->uniformRv()*rateMatrices.size())];
 }
 
+DoubleMatrix* Analysis::randomlyChooseRateMatrixAndFreqs(std::vector<float>& f) {
+
+    size_t numStates = freqs->getNumStates();
+    f.resize(numStates); 
+
+    std::vector<DoubleMatrix*>& rateMatrices = Q->getRateMatrices();
+    if (rateMatrices.size() == 0)
+        return nullptr;
+    size_t numSamples = rateMatrices.size();
+    
+    int idx = (int)(rng->uniformRv() * numSamples);
+    if (freqs == nullptr)
+        {
+        double x = static_cast<float>(1.0) / f.size();
+        for (size_t i=0; i<numStates; i++)
+            f[i] = x;
+        }
+    else 
+        {
+        if (freqs->numSamples() != numSamples)
+            Msg::error("Cannot match up rate matrices and stationary frequencies");
+        freqs->valuesAtIndex(idx, f);
+        }
+    
+    return rateMatrices[idx];
+}
+
 void Analysis::writeNytril(std::string pathName) {
 
     // output the full set of alignments (and analyses) to the nytril file

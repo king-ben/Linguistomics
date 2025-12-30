@@ -10,6 +10,7 @@ class ParameterAlignment;
 class ParameterTree;
 class RateMatrix;
 class Tree;
+typedef std::vector<std::list<int>::iterator> AlignmentLruIterator;
 
 
 
@@ -21,27 +22,31 @@ class McmcOutput {
                                ~McmcOutput(void);
         void                    open(void);
         void                    close(void);
-        void                    sample(int generation);
+        void                    sample(int generation, double lnL, double lnP);
         
     private:
-        void                    openStandardFiles(void);
         void                    closeStandardFiles(void);
+        void                    openStandardFiles(void);
         
+                                // .config
         void                    writeConfigurationFile(void);
         
+                                // scalar variables
         void                    writeScalarHeader(void);
-        void                    writeScalarSample(int gen);
-        void                    writeTreeSample(int gen);
-        void                    writeAlignmentSample(int alnIdx);
+        void                    writeScalarSample(int gen, double lnL, double lnP);
         
+                                // tree
         void                    writeNewick(FILE* f, Tree* t);
         void                    writeNewickNode(FILE* f, Node* p, Node* root);
+        void                    writeTreeSample(int gen);
 
-                                // alignment file descriptor management
-        FILE*                   ensureAlignmentFileOpen(int alnIdx);
-        void                    touchAlignmentFileLRU(int alnIdx);
-        void                    evictAlignmentFileIfNeeded(void);
+                                // alignments
         void                    closeAlignmentFile(int alnIdx);
+        FILE*                   ensureAlignmentFileOpen(int alnIdx);
+        void                    evictAlignmentFileIfNeeded(void);
+        void                    touchAlignmentFileLRU(int alnIdx);
+        void                    writeAlignmentSample(int alnIdx);
+        
         bool                    reopenJsonArrayForAppend(FILE* f);
         
         Model*                  model;
@@ -53,7 +58,7 @@ class McmcOutput {
 
         FILE**                  alignmentFiles;
         std::list<int>          alignmentLRU;      // most-recently-used at front
-        std::vector<std::list<int>::iterator> alignmentLRUIter;
+        AlignmentLruIterator    alignmentLRUIter;
         size_t                  alignmentCacheCapacity;
         bool*                   alignmentFirstSample;
         int                     numAlignments;

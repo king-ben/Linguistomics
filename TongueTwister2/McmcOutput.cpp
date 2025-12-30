@@ -91,6 +91,28 @@ void McmcOutput::close(void) {
     filesOpen = false;
 }
 
+void McmcOutput::closeAlignmentFile(int alnIdx) {
+
+    if (alnIdx < 0 || alnIdx >= numAlignments)
+        return;
+
+    // Remove from LRU list if present
+    if (alignmentLRUIter[alnIdx] != alignmentLRU.end())
+        {
+        alignmentLRU.erase(alignmentLRUIter[alnIdx]);
+        alignmentLRUIter[alnIdx] = alignmentLRU.end();
+        }
+
+    FILE* f = alignmentFiles[alnIdx];
+    if (f != nullptr)
+        {
+        // finalize the JSON array for this file before closing
+        fprintf(f, "\n]\n");
+        fclose(f);
+        alignmentFiles[alnIdx] = nullptr;
+        }
+}
+
 void McmcOutput::closeStandardFiles(void) {
 
     if (scalarFile != nullptr)
@@ -110,108 +132,6 @@ void McmcOutput::closeStandardFiles(void) {
     // (We finalize each JSON array with a closing bracket.)
     while (!alignmentLRU.empty())
         closeAlignmentFile(alignmentLRU.back());
-}
-
-void McmcOutput::open(void) {
-
-    if (filesOpen)
-        return;
-    openStandardFiles();
-    filesOpen = true;
-}
-
-void McmcOutput::openStandardFiles(void) {
-
-    char fileName[512];
-    
-    // open scalar file and write header
-    snprintf(fileName, 512, "%s.tsv", baseName);
-    scalarFile = fopen(fileName, "w");
-    if (scalarFile == nullptr)
-        Msg::error("Could not open scalar output file");
-    writeScalarHeader();
-    
-    // open tree file
-    snprintf(fileName, 512, "%s.tre", baseName);
-    treeFile = fopen(fileName, "w");
-    if (treeFile == nullptr)
-        Msg::error("Could not open tree output file");
-    fprintf(treeFile, "begin trees;\n");
-    fprintf(treeFile, "   translate\n");
-    const std::vector<std::string>& taxonNames = treeParm->getCanonicalTaxonList();
-    for (size_t i=0; i<taxonNames.size(); i++)
-        {
-        fprintf(treeFile, "      %2zu %s", i+1, taxonNames[i].c_str());
-        if (i == taxonNames.size() - 1)
-            fprintf(treeFile, ";\n");
-        else 
-            fprintf(treeFile, ",\n");
-        }
-    
-    // Alignment files: do NOT open hundreds of files up front.
-    // We lazily open them on demand using an LRU cache.
-    alignmentLRU.clear();
-    std::fill(alignmentLRUIter.begin(), alignmentLRUIter.end(), alignmentLRU.end());
-    for (int i=0; i<numAlignments; i++)
-        {
-        alignmentFiles[i] = nullptr;
-        alignmentFirstSample[i] = true;
-        }
-}
-
-void McmcOutput::sample(int generation) {
-
-    writeScalarSample(generation);
-    writeTreeSample(generation);
-    for (int i=0; i<numAlignments; i++)
-        writeAlignmentSample(i);
-}
-
-void McmcOutput::writeAlignmentSample(int alnIdx) {
-
-    FILE* f = ensureAlignmentFileOpen(alnIdx);
-    ParameterAlignment* aln = alignmentParms[alnIdx];
-    
-    if (alignmentFirstSample[alnIdx] == false)
-        fprintf(f, ",\n");
-    alignmentFirstSample[alnIdx] = false;
-    
-    Alignment* a = aln->getAlignment(0);
-    int numTaxa = static_cast<int>(a->getNumTaxa());
-    int numSites = static_cast<int>(a->getNumSites());
-    int gapCode = static_cast<int>(aln->getNumStates());
-    const std::vector<std::string>& taxonNames = aln->getTaxonNames();
-    size_t longestName = 0;
-    for (size_t i=0; i<taxonNames.size(); i++)
-        {
-        if (taxonNames[i].length() > longestName)
-            longestName = taxonNames[i].length();
-        }
-    
-    fprintf(f, "{\"Name\": \"%s\", \"Data\": [\n", aln->getName().c_str());
-    for (int i=0; i<numTaxa; i++)
-        {
-        fprintf(f, "{\"Taxon\": \"%s\", ", taxonNames[i].c_str());
-        for (size_t j=0; j<longestName-taxonNames[i].length(); j++)
-            fprintf(f, " ");
-        fprintf(f, "\"Segments\": [");
-        for (int j=0; j<numSites; j++)
-            {
-            if (j > 0)
-                fprintf(f, ", ");
-            int c = (*a)(i, j);
-            if (c == gapCode)
-                fprintf(f, "%2d", -1);
-            else
-                fprintf(f, "%2d", c);
-            }
-        if (i == numTaxa-1)
-            fprintf(f, "]}\n");
-        else 
-            fprintf(f, "]},\n");
-        }
-    
-    fprintf(f, "]}");
 }
 
 FILE* McmcOutput::ensureAlignmentFileOpen(int alnIdx) {
@@ -258,16 +178,6 @@ FILE* McmcOutput::ensureAlignmentFileOpen(int alnIdx) {
     return f;
 }
 
-void McmcOutput::touchAlignmentFileLRU(int alnIdx) {
-
-    // Remove if present
-    if (alignmentLRUIter[alnIdx] != alignmentLRU.end())
-        alignmentLRU.erase(alignmentLRUIter[alnIdx]);
-
-    alignmentLRU.push_front(alnIdx);
-    alignmentLRUIter[alnIdx] = alignmentLRU.begin();
-}
-
 void McmcOutput::evictAlignmentFileIfNeeded(void) {
 
     while (alignmentLRU.size() >= alignmentCacheCapacity)
@@ -277,25 +187,50 @@ void McmcOutput::evictAlignmentFileIfNeeded(void) {
         }
 }
 
-void McmcOutput::closeAlignmentFile(int alnIdx) {
+void McmcOutput::open(void) {
 
-    if (alnIdx < 0 || alnIdx >= numAlignments)
+    if (filesOpen)
         return;
+    openStandardFiles();
+    filesOpen = true;
+}
 
-    // Remove from LRU list if present
-    if (alignmentLRUIter[alnIdx] != alignmentLRU.end())
+void McmcOutput::openStandardFiles(void) {
+
+    char fileName[512];
+    
+    // open scalar file and write header
+    snprintf(fileName, 512, "%s.tsv", baseName);
+    scalarFile = fopen(fileName, "w");
+    if (scalarFile == nullptr)
+        Msg::error("Could not open scalar output file");
+    writeScalarHeader();
+    
+    // open tree file
+    snprintf(fileName, 512, "%s.tre", baseName);
+    treeFile = fopen(fileName, "w");
+    if (treeFile == nullptr)
+        Msg::error("Could not open tree output file");
+    fprintf(treeFile, "begin trees;\n");
+    fprintf(treeFile, "   translate\n");
+    const std::vector<std::string>& taxonNames = treeParm->getCanonicalTaxonList();
+    for (size_t i=0; i<taxonNames.size(); i++)
         {
-        alignmentLRU.erase(alignmentLRUIter[alnIdx]);
-        alignmentLRUIter[alnIdx] = alignmentLRU.end();
+        fprintf(treeFile, "      %2zu %s", i+1, taxonNames[i].c_str());
+        if (i == taxonNames.size() - 1)
+            fprintf(treeFile, ";\n");
+        else 
+            fprintf(treeFile, ",\n");
         }
-
-    FILE* f = alignmentFiles[alnIdx];
-    if (f != nullptr)
+    
+    // Alignment files: do NOT open hundreds of files up front.
+    // We lazily open them on demand using an LRU cache.
+    alignmentLRU.clear();
+    std::fill(alignmentLRUIter.begin(), alignmentLRUIter.end(), alignmentLRU.end());
+    for (int i=0; i<numAlignments; i++)
         {
-        // finalize the JSON array for this file before closing
-        fprintf(f, "\n]\n");
-        fclose(f);
-        alignmentFiles[alnIdx] = nullptr;
+        alignmentFiles[i] = nullptr;
+        alignmentFirstSample[i] = true;
         }
 }
 
@@ -349,6 +284,71 @@ bool McmcOutput::reopenJsonArrayForAppend(FILE* f) {
     return true;
 }
 
+void McmcOutput::sample(int generation, double lnL, double lnP) {
+
+    writeScalarSample(generation, lnL, lnP);
+    writeTreeSample(generation);
+    for (int i=0; i<numAlignments; i++)
+        writeAlignmentSample(i);
+}
+
+void McmcOutput::touchAlignmentFileLRU(int alnIdx) {
+
+    // Remove if present
+    if (alignmentLRUIter[alnIdx] != alignmentLRU.end())
+        alignmentLRU.erase(alignmentLRUIter[alnIdx]);
+
+    alignmentLRU.push_front(alnIdx);
+    alignmentLRUIter[alnIdx] = alignmentLRU.begin();
+}
+
+void McmcOutput::writeAlignmentSample(int alnIdx) {
+
+    FILE* f = ensureAlignmentFileOpen(alnIdx);
+    ParameterAlignment* aln = alignmentParms[alnIdx];
+    
+    if (alignmentFirstSample[alnIdx] == false)
+        fprintf(f, ",\n");
+    alignmentFirstSample[alnIdx] = false;
+    
+    Alignment* a = aln->getAlignment(0);
+    int numTaxa = static_cast<int>(a->getNumTaxa());
+    int numSites = static_cast<int>(a->getNumSites());
+    int gapCode = static_cast<int>(aln->getNumStates());
+    const std::vector<std::string>& taxonNames = aln->getTaxonNames();
+    size_t longestName = 0;
+    for (size_t i=0; i<taxonNames.size(); i++)
+        {
+        if (taxonNames[i].length() > longestName)
+            longestName = taxonNames[i].length();
+        }
+    
+    fprintf(f, "{\"Name\": \"%s\", \"Data\": [\n", aln->getName().c_str());
+    for (int i=0; i<numTaxa; i++)
+        {
+        fprintf(f, "{\"Taxon\": \"%s\", ", taxonNames[i].c_str());
+        for (size_t j=0; j<longestName-taxonNames[i].length(); j++)
+            fprintf(f, " ");
+        fprintf(f, "\"Segments\": [");
+        for (int j=0; j<numSites; j++)
+            {
+            if (j > 0)
+                fprintf(f, ", ");
+            int c = (*a)(i, j);
+            if (c == gapCode)
+                fprintf(f, "%2d", -1);
+            else
+                fprintf(f, "%2d", c);
+            }
+        if (i == numTaxa-1)
+            fprintf(f, "]}\n");
+        else 
+            fprintf(f, "]},\n");
+        }
+    
+    fprintf(f, "]}");
+}
+
 void McmcOutput::writeConfigurationFile(void) {
 
     // write the configuration file
@@ -399,6 +399,8 @@ void McmcOutput::writeNewickNode(FILE* f, Node* p, Node* root) {
 void McmcOutput::writeScalarHeader(void) {
 
     fprintf(scalarFile, "Gen");
+    fprintf(scalarFile, "lnL");
+    fprintf(scalarFile, "lnP");
     
     // print the insertion/deletion rates header
     ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();
@@ -447,9 +449,11 @@ void McmcOutput::writeScalarHeader(void) {
     fprintf(scalarFile, "\n");
 }
 
-void McmcOutput::writeScalarSample(int gen) {
+void McmcOutput::writeScalarSample(int gen, double lnL, double lnP) {
 
     fprintf(scalarFile, "%d", gen);
+    fprintf(scalarFile, "%.2lf", lnL);
+    fprintf(scalarFile, "%.2lf", lnP);
     
     // print the insertion/deletion rates
     ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();
