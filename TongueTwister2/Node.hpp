@@ -49,10 +49,10 @@ class Node {
                             // Note: The total size should be 112 bytes, with the most frequently
                             // used data in the first 48 bytes, which shold fit into a single
                             // cache line with some room to spare.
-        Node*               ancestor;               // 8 bytes - parent pointer
-        Node*               left;                   // 8 bytes - first child (replaces NodeSet)
-        Node*               right;                  // 8 bytes - second child
-        double              length;                 // 8 bytes - branch length (used in likelihood calc)
+        Node*               ancestor;               // 8 bytes - ancestor pointer
+        Node*               left;                   // 8 bytes - first descendant
+        Node*               right;                  // 8 bytes - second descendant
+        double              length;                 // 8 bytes - branch length (used in likelihood calculation)
         int                 offset;                 // 4 bytes - position in node array
         int                 index;                  // 4 bytes - logical index
         bool                isLeaf;                 // 1 byte  - frequently checked
