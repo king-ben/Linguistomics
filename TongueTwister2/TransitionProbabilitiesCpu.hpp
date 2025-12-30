@@ -47,37 +47,36 @@ class TransitionProbabilitiesCpu : public TransitionProbabilities {
         void                                computeDirtyMatrices(void);
         void                                cleanupOrphanedEntries(void);
         
-        size_t                              numStates;
+                                            // pointers accessed every update cycle
         ThreadPool*                         pool;
         ParameterTree*                      myTree;
         Ctmc*                               subModel;
-        
-                                            // matrix pool (owned) - must be declared before map
-        MatrixPool                          matrixPool;
-        
-                                            // transition matrix map (uses matrixPool)
         TransitionMatrixMap*                map;
-        
-                                            // calculator pool with shrinking support
         TransitionProbabilityCalculator**   calculatorPool;
+        
+                                            // size values used in computation
+        size_t                              numStates;
         size_t                              calculatorPoolCapacity;
         size_t                              calculatorPoolSize;
         size_t                              maxCalculatorsUsedRecently;
         size_t                              calculatorShrinkCounter;
-        static const size_t                 CALCULATOR_SHRINK_FREQUENCY = 100;
-        static const size_t                 CALCULATOR_MIN_POOL_SIZE = 16;
+        size_t                              cleanupFrequency;
+        size_t                              cleanupCounter;
+        
+                                            // matrix pool (large object)
+        MatrixPool                          matrixPool;
         
                                             // single-threaded cache for single branch updates
         MathCache                           singleCache;
         
-                                            // automatic cleanup of orphaned entries
-        size_t                              cleanupFrequency;
-        size_t                              cleanupCounter;
+                                            // vectors for cleanup operations
         std::vector<uint64_t>               newEntriesThisProposal;
-        
-                                            // avoids repeated allocations during cleanup
         std::vector<uint64_t>               usedKeysBuffer;
         std::vector<uint64_t>               keysToEraseBuffer;
+        
+                                            // static constants
+        static const size_t                 CALCULATOR_SHRINK_FREQUENCY = 100;
+        static const size_t                 CALCULATOR_MIN_POOL_SIZE = 16;
 };
 
 #endif

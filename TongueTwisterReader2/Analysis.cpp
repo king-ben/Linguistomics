@@ -1,3 +1,4 @@
+#include <sstream>
 #include "AlignmentDistribution.hpp"
 #include "Analysis.hpp"
 #include "Exchangeabilities.hpp"
@@ -9,6 +10,7 @@
 #include "RateMatrixNaturalClass.hpp"
 #include "StateFrequencies.hpp"
 #include "Threads.hpp"
+#include "Tree.hpp"
 #include "TreeSamples.hpp"
 
 
@@ -142,19 +144,20 @@ void Analysis::printSorted(void) {
 void Analysis::writeNytril(std::string pathName) {
 
     // output the full set of alignments (and analyses) to the nytril file
-    std::cout << pathName + "/consensus.tre" << std::endl;
     auto file = new std::ofstream(pathName + "/consensus.tre", std::ios::out);
-    //summary1.writeConsensusTree(*file);
+    ConsensusTree* ct = trees->getConsensusTree();
+    std::string newickStr = ct->getNewick(5);
+    *file << newickStr << std::endl;
     file->close();
     delete file;
 
     file = new std::ofstream(pathName + "/alignments_full.nytril", std::ios::out);
-    //summary1.output(*file, 1000); // Sanity limit
+    nytrilOutput(*file, 1000); // Sanity limit
     file->close();
     delete file;
  
     file = new std::ofstream(pathName + "/alignments.nytril", std::ios::out);
-    //summary1.output(*file, 20);   // Display limit for papers and presentations
+    nytrilOutput(*file, 20);   // Display limit for papers and presentations
     file->close();
     delete file;
 }
@@ -173,10 +176,10 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
     if (part != nullptr)
         json["state_part"] = part->toJson();
 
-#   if 0
     // output the consensus tree
+    ConsensusTree* conTree = trees->getConsensusTree();
     json["consensus"]["tree"]   = conTree->getNewick(4);
-    json["consensus"]["n_taxa"] = conTree->numTaxa;
+    json["consensus"]["n_taxa"] = conTree->getNumTaxa();
     
     // output information on mean and credible interval for all real-valued parameters
     auto jStats = nlohmann::json::array();
@@ -187,6 +190,7 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
         jStats.push_back(cogStats);
         }
     json["stats"] = jStats;
+#   if 0
     
     for (int i=0; i< jStats.size(); i++)
         {

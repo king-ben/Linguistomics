@@ -84,26 +84,29 @@ class TransitionMatrixMap {
         size_t              hash(uint64_t key) const;
         void                removeFromEntryList(size_t slot);
         
-                            // hash table
+                            // lookup path (find operations)
+                            // group together for cache locality during hash table probe
         uint64_t*           keys;
         DoubleMatrix**      values;
-        DoubleMatrix**      backupValues;   // parallel array for MCMC backup
         bool*               occupied;
         size_t              tableCapacity;
         size_t              numEntries;
         
-                            // dense entry list for O(n) iteration
+                            // iteration path
         size_t*             entrySlots;
         size_t*             slotToEntry;
-        
-                            // external matrix pool (not owned)
-        MatrixPool*         matrixPool;
         size_t              numStates;
         
-                            // dirty tracking
-        bool*               dirty;          // dirty[entryIndex] = true if modified
-        size_t*             dirtyList;      // indices of dirty entries
+                            // dirty tracking (accessed during update cycles)
+        bool*               dirty;
+        size_t*             dirtyList;
         size_t              dirtyCount;
+        
+                            // MCMC backup (accessed on keep/restore)
+        DoubleMatrix**      backupValues;
+        
+                            // external reference (rarely dereferenced after init)
+        MatrixPool*         matrixPool;
 };
 
 #endif

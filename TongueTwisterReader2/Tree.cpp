@@ -1,30 +1,47 @@
+#include <algorithm>
 #include <iomanip>
 #include <iostream>
 #include "Msg.hpp"
 #include "Node.hpp"
 #include "ParameterStatistics.hpp"
+#include "Statistics.hpp"
 #include "Tree.hpp"
 
 
 
-Tree::Tree(const Tree& t) {
+Tree::Tree(void) : root(nullptr), numTaxa(0) {
+
+}
+
+Tree::~Tree(void) {
+
+    deleteAllNodes();
+}
+
+Tree::Tree(const Tree& t) : root(nullptr), numTaxa(0) {
 
     clone(t);
 }
 
-Tree::Tree(std::string newickString, std::map<int,std::string> translateMap) {
+Tree& Tree::operator=(const Tree& t) {
+
+    if (this != &t)
+        clone(t);
+    return *this;
+}
+
+Tree::Tree(std::string newickString, std::map<int,std::string> translateMap) : root(nullptr), numTaxa(0) {
 
     std::vector<std::string> tokens = parseNewickString(newickString);
     
-    Node* p = NULL;
+    Node* p = nullptr;
     bool readingBrlen = false;
-    numTaxa = 0;
     for (int i=0; i<tokens.size(); i++)
         {
         std::string token = tokens[i];
         if (token == "(")
             {
-            if (p == NULL)
+            if (p == nullptr)
                 {
                 root = addNode();
                 p = root;
@@ -41,7 +58,7 @@ Tree::Tree(std::string newickString, std::map<int,std::string> translateMap) {
             }
         else if (token == ")" || token == ",")
             {
-            if (p->getAncestor() == NULL)
+            if (p->getAncestor() == nullptr)
                 Msg::error("Expecting non null ancestor");
             p = p->getAncestor();
             readingBrlen = false;
@@ -74,7 +91,8 @@ Tree::Tree(std::string newickString, std::map<int,std::string> translateMap) {
                     }
                 else
                     {
-                    
+                    newNode->setIndex(numTaxa-1);
+                    newNode->setName(token);
                     }
                 p->addNeighbor(newNode);
                 newNode->addNeighbor(p);
@@ -97,155 +115,18 @@ Tree::Tree(std::string newickString, std::map<int,std::string> translateMap) {
         {
         Node* pd = downPassSequence[i];
         if (pd->getIsLeaf() == false)
-            {
             pd->setIndex(intIdx++);
-            }
         }
 }
 
-Tree::Tree(std::map<BitSet,ParameterStatistics*>& partitions, std::map<int,std::string> translateMap) {
+Node* Tree::allocateNode(void) {
 
-#   if 0
-    // get the number of samples, which should be equal to the maximum number of partitions sampled
-    int num = 0;
-    numTaxa = -1;
-    for (std::map<BitSet,ParameterStatistics*>::iterator it = partitions.begin(); it != partitions.end(); it++)
-        {
-        int n = it->second->size();
-        if (n > num)
-            num = n;
-        if (numTaxa < 0)
-            numTaxa = (int)it->first.size();
-        }
-
-    std::map<BitSet,double,CompBitSet> sortedParts;
-    for (std::map<BitSet,ParameterStatistics*>::iterator it = partitions.begin(); it != partitions.end(); it++)
-        {
-        double prob = (double)it->second->size()/num;
-        if (prob >= 0.5)
-            sortedParts.insert( std::make_pair(BitSet(it->first),prob) );
-        }
-        
-    for (std::map<BitSet,double,CompBitSet>::iterator it = sortedParts.begin(); it != sortedParts.end(); it++)
-        {
-        std::cout << it->first << " " << it->second << std::endl;
-        }
-
-
-
-    // add the tips
-    for (int i=0; i<numTaxa; i++)
-        {
-        Node* newTip = addNode();
-        newTip->setIndex(i);
-        newTip->setIsLeaf(true);
-
-        if (translateMap.size() > 0)
-            {
-            int key = i + 1;
-            std::map<int,std::string>::iterator it = translateMap.find(key);
-            if (it == translateMap.end())
-                Msg::error("Could not find " + std::to_string(key) + " in the translate table");
-            newTip->setName(it->second);
-            }
-
-
-        }
-    root = NULL;
-    int intIdx = numTaxa;
-    for (std::map<BitSet,double,CompBitSet>::iterator it = sortedParts.begin(); it != sortedParts.end(); it++)
-        {
-        
-        std::map<BitSet,ParameterStatistics*>::iterator pit = partitions.find(it->first);
-        if (pit == partitions.end())
-            Msg::error("Could not find partition");
-        double v = pit->second->getMean();
-        CredibleInterval ci = pit->second->getCredibleInterval();
-        
-        if (it->first.getNumberSetBits() >= 2)
-            {
-            Node* newInt = addNode();
-            newInt->setIndex(intIdx++);
-            newInt->setBrlen(v);
-            newInt->setLowerCi(ci.lower);
-            newInt->setUpperCi(ci.upper);
-            newInt->setProb(it->second);
-            if (root == NULL)
-                root = newInt;
-            for (int i=0; i<numTaxa; i++)
-                {
-                if (it->first.isSet(i) == true)
-                    {
-                    newInt->addNeighbor(nodes[i]);
-                    nodes[i]->addNeighbor(newInt);
-                    Node* a = nodes[i]->getAncestor();
-                    nodes[i]->setAncestor(newInt);
-                    if (a != NULL)
-                        {
-                        a->removeNeighbor(nodes[i]);
-                        nodes[i]->removeNeighbor(a);
-                        a->addNeighbor(newInt);
-                        newInt->addNeighbor(a);
-                        newInt->setAncestor(a);
-                        }
-                    }
-                }
-                
-            }
-        else
-            {
-            size_t idx = it->first.getFirstSetBit();
-            nodes[idx]->setBrlen(v);
-            nodes[idx]->setLowerCi(ci.lower);
-            nodes[idx]->setUpperCi(ci.upper);
-            nodes[idx]->setProb(it->second);
-            }
-            
-        }
-
-    initializeDownPassSequence();
-    
-    // assign probabilitie to the branches
-    std::vector<BitSet> tempPartitions(downPassSequence.size());
-    for (Node* p : downPassSequence)
-        {
-        BitSet& bs = tempPartitions[p->getIndex()];
-        bs.resize(numTaxa);
-        bs.unset();
-        if (p->getIsLeaf() == true)
-            {
-            bs.set(p->getIndex());
-            p->setCladeProbability(1.0);
-            }
-        else
-            {
-            std::vector<Node*> pDesc = p->getDescendants();
-            for (Node* d : pDesc)
-                bs |= tempPartitions[d->getIndex()];
-            
-            std::map<BitSet,ParameterStatistics*>::iterator it = partitions.find(bs);
-            double prob = 0.0;
-            if (it == partitions.end())
-                {
-                BitSet bs2 = bs;
-                bs2.flip();
-                it = partitions.find(bs2);
-                if (it == partitions.end())
-                    Msg::error("Could not find branch partition in list of partitions");
-                prob = (double)it->second->size()/num;
-                p->setCladeProbability(prob);
-                }
-            prob = (double)it->second->size()/num;
-            p->setCladeProbability(prob);
-            
-            }
-        }
-#   endif
+    return new Node;
 }
 
 Node* Tree::addNode(void) {
 
-    Node* newNode = new Node;
+    Node* newNode = allocateNode();
     newNode->setOffset(nodes.size());
     nodes.push_back(newNode);
     return newNode;
@@ -256,7 +137,7 @@ void Tree::clone(const Tree& t) {
     // copy some instance variables
     numTaxa = t.numTaxa;
     
-    // make certain we have the saame number of nodes in each tree
+    // make certain we have the same number of nodes in each tree
     if (nodes.size() != t.nodes.size())
         {
         deleteAllNodes();
@@ -276,10 +157,10 @@ void Tree::clone(const Tree& t) {
         pLft->setName( pRht->getName() );
         pLft->setBrlen( pRht->getBrlen() );
         
-        if (pRht->getAncestor() != NULL)
+        if (pRht->getAncestor() != nullptr)
             pLft->setAncestor( nodes[pRht->getAncestor()->getOffset()] );
         else
-            pLft->setAncestor(NULL);
+            pLft->setAncestor(nullptr);
             
         pLft->removeAllNeighbors();
         std::set<Node*>& rhtNeighbors = pRht->getNeighbors();
@@ -298,13 +179,8 @@ void Tree::deleteAllNodes(void) {
     for (Node* p : nodes)
         delete p;
     nodes.clear();
-}
-
-std::string Tree::getNewick(int brlenPrecision, std::map<BitSet,ParameterStatistics*>&) {
-
-    
-
-    return getNewick(brlenPrecision);
+    downPassSequence.clear();
+    root = nullptr;
 }
 
 std::string Tree::getNewick(int brlenPrecision) {
@@ -319,13 +195,13 @@ std::string Tree::getNewick(int brlenPrecision) {
         Node* newRoot = nbs[0];
         root->setAncestor(newRoot);
         oldRoot->setAncestor(newRoot);
-        newRoot->setAncestor(NULL);
+        newRoot->setAncestor(nullptr);
         root = newRoot;
 
         writeTree(root, ss, brlenPrecision);
 
         newRoot->setAncestor(oldRoot);
-        oldRoot->setAncestor(NULL);
+        oldRoot->setAncestor(nullptr);
         root = oldRoot;
         }
     else
@@ -339,11 +215,11 @@ std::string Tree::getNewick(int brlenPrecision) {
 std::map<BitSet,double> Tree::getPartitions(void) {
 
     std::map<BitSet,double> parts;
-    std::vector<BitSet> taxonBipartitiions;
+    std::vector<BitSet> taxonBipartitions;
     for (int i=0; i<nodes.size(); i++)
-        taxonBipartitiions.push_back(BitSet(numTaxa));
+        taxonBipartitions.push_back(BitSet(numTaxa));
     for (int i=0; i<numTaxa; i++)
-        taxonBipartitiions[i].set(i);
+        taxonBipartitions[i].set(i);
     for (int i=0; i<downPassSequence.size(); i++)
         {
         Node* p = downPassSequence[i];
@@ -351,13 +227,10 @@ std::map<BitSet,double> Tree::getPartitions(void) {
             {
             std::vector<Node*> pDes = p->getDescendants();
             for (Node* n : pDes)
-                taxonBipartitiions[p->getIndex()] |= taxonBipartitiions[n->getIndex()];
+                taxonBipartitions[p->getIndex()] |= taxonBipartitions[n->getIndex()];
             }
-        parts.insert( std::make_pair(taxonBipartitiions[p->getIndex()],p->getBrlen()) );
+        parts.insert( std::make_pair(taxonBipartitions[p->getIndex()], p->getBrlen()) );
         }
-    
-//    for (std::map<RbBitSet,double>::iterator it = parts.begin(); it != parts.end(); it++)
-//        std::cout << it->first << " " << it->second << std::endl;
     
     return parts;
 }
@@ -370,7 +243,7 @@ void Tree::initializeDownPassSequence(void) {
 
 void Tree::listNode(Node* p, int indent) {
 
-    if (p != NULL)
+    if (p != nullptr)
         {
         std::set<Node*>& neighbors = p->getNeighbors();
         
@@ -383,14 +256,7 @@ void Tree::listNode(Node* p, int indent) {
                 std::cout << "a_";
             std::cout << n->getIndex() << " ";
             }
-        //std::cout << ") " << p->getProb() << " ";
-        std::cout << p->getBrlen() << " ";
-        
-//        if (p->getUpperCi() - p->getLowerCi() > 0.00001)
-//            {
-//            std::cout << "(" << p->getLowerCi() << ", " << p->getUpperCi() << ") ";
-//            }
-        
+        std::cout << ") " << p->getBrlen() << " ";
         std::cout << p->getName() << " ";
         std::cout << std::endl;
         for (Node* n : neighbors)
@@ -427,7 +293,7 @@ std::vector<std::string> Tree::parseNewickString(std::string ns) {
 
 void Tree::passDown(Node* p) {
 
-    if (p != NULL)
+    if (p != nullptr)
         {
         std::set<Node*>& neighbors = p->getNeighbors();
         for (Node* n : neighbors)
@@ -440,18 +306,19 @@ void Tree::passDown(Node* p) {
 }
 
 void Tree::print(void) {
-    std::cout << "print" << std::endl;
+
+    std::cout << "Tree (" << numTaxa << " taxa, " << nodes.size() << " nodes):" << std::endl;
     listNode(root, 3);
 }
 
 void Tree::writeData(Node* p, std::stringstream& ss, int brlenPrecision) {
 
-    //ss << "[&Probability=" << p->getCladeProbability() << "]:" << std::fixed << std::setprecision(brlenPrecision) << p->getBrlen();
+    ss << ":" << std::fixed << std::setprecision(brlenPrecision) << p->getBrlen();
 }
 
 void Tree::writeTree(Node* p, std::stringstream& ss, int brlenPrecision) {
 
-    if (p != NULL)
+    if (p != nullptr)
         {
         if (p->getIsLeaf() == true)
             {
@@ -474,7 +341,164 @@ void Tree::writeTree(Node* p, std::stringstream& ss, int brlenPrecision) {
             {
             ss << ")";
             if (p != root)
-              writeData(p, ss, brlenPrecision);
+                writeData(p, ss, brlenPrecision);
             }
         }
+}
+
+
+// ConsensusTree implementation
+
+ConsensusTree::ConsensusTree(void) : Tree() {
+
+}
+
+ConsensusTree::ConsensusTree(std::map<BitSet,ParameterStatistics*>& partitions, int numSamples, std::map<int,std::string>& translateMap) : Tree() {
+
+    // determine the number of taxa from the first partition
+    if (partitions.empty())
+        Msg::error("No partitions provided for consensus tree");
+    numTaxa = static_cast<int>(partitions.begin()->first.size());
+    
+    // sort partitions by probability (descending) and then by number of bits (descending)
+    // this ensures we process larger clades first for proper tree building
+    std::vector<std::pair<BitSet, double>> sortedParts;
+    for (auto& kv : partitions)
+        {
+        double prob = static_cast<double>(kv.second->size()) / numSamples;
+        if (prob >= 0.5)
+            sortedParts.push_back(std::make_pair(kv.first, prob));
+        }
+    
+    // sort by number of set bits descending (larger clades first)
+    std::sort(sortedParts.begin(), sortedParts.end(),
+        [](const std::pair<BitSet,double>& a, const std::pair<BitSet,double>& b) {
+            return a.first.getNumberSetBits() > b.first.getNumberSetBits();
+        });
+
+    // add the tip nodes first
+    for (int i=0; i<numTaxa; i++)
+        {
+        NodeConTree* newTip = static_cast<NodeConTree*>(addNode());
+        newTip->setIndex(i);
+        newTip->setIsLeaf(true);
+        newTip->setProb(1.0f);
+        if (translateMap.size() > 0)
+            {
+            int key = i + 1;
+            auto it = translateMap.find(key);
+            if (it == translateMap.end())
+                Msg::error("Could not find " + std::to_string(key) + " in the translate table");
+            newTip->setName(it->second);
+            }
+        }
+
+    // build the tree by adding internal nodes for each partition
+    root = nullptr;
+    int intIdx = numTaxa;
+    
+    for (auto& part : sortedParts)
+        {
+        const BitSet& bs = part.first;
+        double prob = part.second;
+        
+        // Get the statistics for this partition
+        auto pit = partitions.find(bs);
+        if (pit == partitions.end())
+            Msg::error("Could not find partition in map");
+        
+        ParameterStatistics* stats = pit->second;
+        std::pair<float,float> mv = Statistics::getMeanAndVariance(stats->getValues());
+        double meanBrlen = mv.first;
+        CredibleInterval ci = Statistics::getCredibleInterval(stats->getValues());
+        
+        size_t numBits = bs.getNumberSetBits();
+        
+        if (numBits >= 2)
+            {
+            // This is an internal node (clade)
+            NodeConTree* newInt = static_cast<NodeConTree*>(addNode());
+            newInt->setIndex(intIdx++);
+            newInt->setBrlen(static_cast<float>(meanBrlen));
+            newInt->setLowerCi(static_cast<float>(ci.lower));
+            newInt->setUpperCi(static_cast<float>(ci.upper));
+            newInt->setProb(static_cast<float>(prob));
+            
+            if (root == nullptr)
+                root = newInt;
+            
+            // Find all taxa in this clade and connect them
+            for (int i=0; i<numTaxa; i++)
+                {
+                if (bs.isSet(i) == true)
+                    {
+                    Node* taxonNode = nodes[i];
+                    Node* currentAncestor = taxonNode->getAncestor();
+                    
+                    // Disconnect from current ancestor if it exists
+                    if (currentAncestor != nullptr)
+                        {
+                        currentAncestor->removeNeighbor(taxonNode);
+                        taxonNode->removeNeighbor(currentAncestor);
+                        
+                        // Connect current ancestor to new internal node if not already connected
+                        if (currentAncestor != newInt)
+                            {
+                            bool alreadyConnected = false;
+                            for (Node* n : newInt->getNeighbors())
+                                {
+                                if (n == currentAncestor)
+                                    {
+                                    alreadyConnected = true;
+                                    break;
+                                    }
+                                }
+                            if (!alreadyConnected)
+                                {
+                                currentAncestor->addNeighbor(newInt);
+                                newInt->addNeighbor(currentAncestor);
+                                newInt->setAncestor(currentAncestor);
+                                }
+                            }
+                        }
+                    
+                    // Connect taxon to new internal node
+                    newInt->addNeighbor(taxonNode);
+                    taxonNode->addNeighbor(newInt);
+                    taxonNode->setAncestor(newInt);
+                    }
+                }
+            }
+        else if (numBits == 1)
+            {
+            // This is a tip branch - set its branch length and stats
+            size_t idx = bs.getFirstSetBit();
+            NodeConTree* tipNode = static_cast<NodeConTree*>(nodes[idx]);
+            tipNode->setBrlen(static_cast<float>(meanBrlen));
+            tipNode->setLowerCi(static_cast<float>(ci.lower));
+            tipNode->setUpperCi(static_cast<float>(ci.upper));
+            }
+        }
+
+    initializeDownPassSequence();
+}
+
+Node* ConsensusTree::allocateNode(void) {
+
+    return new NodeConTree;
+}
+
+std::string ConsensusTree::getNewick(int brlenPrecision) {
+
+    // Use the parent's getNewick but it will call our writeData
+    return Tree::getNewick(brlenPrecision);
+}
+
+void ConsensusTree::writeData(Node* p, std::stringstream& ss, int brlenPrecision) {
+
+    NodeConTree* pCon = static_cast<NodeConTree*>(p);
+    ss << "[&prob=" << std::fixed << std::setprecision(3) << pCon->getProb();
+    ss << ",CI={" << std::setprecision(brlenPrecision) << pCon->getLowerCi() 
+       << "," << pCon->getUpperCi() << "}]";
+    ss << ":" << std::setprecision(brlenPrecision) << p->getBrlen();
 }

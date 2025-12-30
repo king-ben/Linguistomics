@@ -54,13 +54,19 @@ class ParameterTree : public Parameter {
         void                                        saveTopology(void);
         size_t                                      taxonIndex(const std::string& tName);
         constexpr static const double               MAX_BRLEN = 2.0;
-        double                                      lnProbLessMax;
-        double                                      brlenLambda;
-        bool                                        topologyChanged;
-        TreePair                                    fullTree;
+
+                                                    // accessed frequently during MCMC updates
+        TreePair                                    fullTree;         // 16 bytes
+        double                                      brlenLambda;      // 8 bytes
+        double                                      lnProbLessMax;    // 8 bytes
+        
+                                                    // containers accessed during tree operations
         std::unordered_map<unsigned,TreePair>       subTrees;
-        std::vector<std::string>                    canonicalTaxonList;
         std::unordered_map<unsigned,BranchMapping>  branchMappings;
+        std::vector<std::string>                    canonicalTaxonList;
+        
+                                                    // flag checked only for LOCAL move, which is currently off
+        bool                                        topologyChanged;
 };
 
 #endif

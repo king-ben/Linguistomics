@@ -24,11 +24,13 @@ class ParameterIndelRates : public Parameter {
         void        setInsertionRate(double x) { insertionRate[0] = x; }
         
     protected:
-        double      insertionLambda;
-        double      deletionLambda;
-        double      insertionRate[2];
-        double      deletionRate[2];
-    
+                    // current values accessed during likelihood calculation
+        double      insertionRate[2];      // 16 bytes
+        double      deletionRate[2];       // 16 bytes
+        
+                    // exponential parameter values for prior calculation
+        double      insertionLambda;       // 8 bytes
+        double      deletionLambda;        // 8 bytes
 };
 
 #endif

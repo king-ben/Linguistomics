@@ -49,11 +49,17 @@ class RateMatrixHelper {
         
     private:
         void                                    initialize(Partition* part);
-        IntMatrix                               m;
+
+                                                // accessed during rate matrix construction
         size_t                                  numStates;
-        std::vector<std::set<int> >             stateGroupings;
-        std::vector<std::string>                stateGroupingsNames;
         size_t                                  numGroups;
+        
+                                                // matrix accessed for lookups
+        IntMatrix                               m;
+        
+                                                // containers (keep together, all are 24-56 bytes each)
+        std::vector<std::set<int>>              stateGroupings;
+        std::vector<std::string>                stateGroupingsNames;
         std::map<GroupPair,int, CompGroupPair>  groupIndices;
 };
 

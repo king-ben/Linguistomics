@@ -25,6 +25,7 @@ class McmcSummary {
         size_t                                  getNumStates(void) { return numStates; }
         Partition*                              getStatePartition(void) { return statePartitions; }
         const std::vector<Tree*>&               getTrees(void) const { return trees; }
+        std::map<int,std::string>&              getTranslateMap(void) { return translateMap; }
         bool                                    hasFrequencies(void);
         bool                                    hasExchangeabilities(void);
         bool                                    hasPartition(void);
@@ -54,6 +55,7 @@ class McmcSummary {
         std::vector<std::string>                alignmentNames;
         Partition*                              statePartitions;
         std::vector<Tree*>                      trees;
+        std::map<int,std::string>               translateMap;
 };
 
 #endif 

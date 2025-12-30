@@ -57,21 +57,34 @@ class ThreadPool {
         int                     getThreadCount(void) const { return threadCount; }
 
     private:
+        void                    worker(void);
+        ThreadTask*             popTask(void);
         static constexpr size_t queueCapacity = 1024;           // cache-friendly circular buffer for tasks
         static constexpr size_t queueMask = queueCapacity - 1;  // note the size must be power of 2 for fast modulo via bitwise AND
-        ThreadTask*             taskQueue[queueCapacity];
+
+                                // accessed on every push/pop operation
+                                // group atomics together for cache coherence
+        std::atomic<size_t>     tasksInFlight;                  // tasks queued + tasks being executed
+        std::atomic<bool>       running;                        // 1 byte
+        char                    padding1_[7];                   // explicit padding to next 8-byte boundary
+        
+                                // queue management (accessed under lock)
         size_t                  queueHead;                      // next slot to read from
         size_t                  queueTail;                      // next slot to write to
         size_t                  queueSize;                      // current number of tasks in queue
-        int                     threadCount;
-        std::atomic<size_t>     tasksInFlight;                  // tasks queued + tasks being executed
-        std::atomic<bool>       running;
-        std::mutex              mutex;                          // single mutex protects the queue; condition variables share it
+        
+                                // accessed occasionally
+        int                     threadCount;                    // 4 bytes
+        char                    padding2_[4];                   // explicit padding
+        std::thread*            threads;
+        
+                                // synchronization primitives
+        std::mutex              mutex;                          // single mutex protects the queue
         std::condition_variable taskAvailable;                  // signaled when queue non-empty
         std::condition_variable allComplete;                    // signaled when tasksInFlight hits 0
-        std::thread*            threads;
-        void                    worker(void);
-        ThreadTask*             popTask(void);
+        
+                                // large array at end (8KB)
+        ThreadTask*             taskQueue[queueCapacity];
 };
 
 

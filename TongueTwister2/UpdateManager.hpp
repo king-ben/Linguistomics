@@ -30,28 +30,33 @@ class UpdateManager {
         void                            buildAliasTable(void);
         void                            setProposalProbabilities(void);
         
-        Model*                          model;
+                                        // accessed on every MCMC cycle
         RandomVariable*                 rng;
-        RateMatrix*                     rateMatrix;
-        TransitionProbabilities*        tiProbs;
         
+                                        // Walker's alias method tables for O(1) selection
+                                        // accessed on every randomlyChooseUpdate() call
+        std::vector<double>             aliasProbability;
+        std::vector<size_t>             aliasIndex;
+        
+                                        // update vectors (accessed after selection)
         std::vector<Update*>            updates;
+        
+                                        // statistics vectors (accessed on accept/reject)
+        std::vector<int>                numTries;
+        std::vector<int>                numAcceptances;
+        std::vector<double>             proposalProbabilities;
+        
+                                        // lookup map (accessed for index lookup)
+        std::unordered_map<Update*, size_t> updateIndex;
+        
+                                        // specialized update vectors
         std::vector<UpdateAlignment*>   alignmentUpdates;
         std::vector<Update*>            otherUpdates;
         
-                                        // map from Update pointer to index (for O(1) lookup)
-        std::unordered_map<Update*, size_t> updateIndex;
-        
-                                        // proposal probability management (decoupled from Update objects)
-        std::vector<double>             proposalProbabilities;
-        
-                                        // acceptance statistics (decoupled from Update objects)
-        std::vector<int>                numTries;
-        std::vector<int>                numAcceptances;
-        
-                                        // Walker's alias method tables for O(1) selection
-        std::vector<double>             aliasProbability;
-        std::vector<size_t>             aliasIndex;
+                                        // model references (rarely dereferenced after init)
+        Model*                          model;
+        RateMatrix*                     rateMatrix;
+        TransitionProbabilities*        tiProbs;
 };
 
 #endif

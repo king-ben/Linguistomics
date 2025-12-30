@@ -41,10 +41,14 @@ class Tree {
         void                        listNodes(Node* p, size_t indent);
         void                        passDown(Node* p);
         void                        tokenizeTreeString(std::string& newickString, std::vector<std::string>& tokens);
-        size_t                      numTaxa;
+
+                                    // accessed during tree traversal
         Node*                       root;
-        std::vector<Node*>          nodes;
-        std::vector<Node*>          postOrder;
+        size_t                      numTaxa;
+        
+                                    // vectors accessed for iteration
+        std::vector<Node*>          postOrder;      // traversal order - accessed frequently
+        std::vector<Node*>          nodes;          // all nodes - accessed less often
 };
 
 #endif

@@ -24,11 +24,16 @@ class ParameterExchangeabilities : public Parameter {
         void                        restore(void);
     
     private:
-        size_t                      numStates;
-        size_t                      numRates;
-        std::vector<double>         rates[2];
-        std::vector<double>         alpha;
-        bool                        isPriorFlat;
+                                    // accessed during rate matrix construction
+        size_t                      numStates;         // 8 bytes
+        size_t                      numRates;          // 8 bytes
+        
+                                    // vectors (24 bytes each)
+        std::vector<double>         rates[2];          // 48 bytes
+        std::vector<double>         alpha;             // 24 bytes
+        
+                                    // flag checked rarely
+        bool                        isPriorFlat;       // 1 byte + 7 padding (acceptable at end)
 };
 
 #endif

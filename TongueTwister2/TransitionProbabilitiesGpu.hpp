@@ -64,44 +64,43 @@ class TransitionProbabilitiesGpu : public TransitionProbabilities {
         void                                cleanupOrphanedEntries(void);
         const double*                       getRateMatrixData(void) const;
         
-        size_t                              numStates;
+                                            // accessed frequently during MCMC
         ThreadPool*                         pool;
         ParameterTree*                      myTree;
         Ctmc*                               subModel;
-        
-                                            // matrix pool (owned) - must be declared before map
-        MatrixPool                          matrixPool;
-        
-                                            // transition matrix map (uses matrixPool)
         TransitionMatrixMap*                map;
-        
-                                            // compute backend selection
-        ComputeBackend                      computeBackend;
-        size_t                              batchThreshold;
         GPUMatrixExponentialBatch*          gpuBatcher;
-        
-                                            // calculator pool with shrinking support
         TransitionProbabilityCalculator**   calculatorPool;
+        
+                                            // size values used in loops
+        size_t                              numStates;
+        size_t                              batchThreshold;
         size_t                              calculatorPoolCapacity;
         size_t                              calculatorPoolSize;
         size_t                              maxCalculatorsUsedRecently;
         size_t                              calculatorShrinkCounter;
-        static const size_t                 CALCULATOR_SHRINK_FREQUENCY = 100;
-        static const size_t                 CALCULATOR_MIN_POOL_SIZE = 16;
-        
-                                            // single-threaded cache for single branch updates
-        MathCache                           singleCache;
-        
-                                            // automatic cleanup of orphaned entries
         size_t                              cleanupFrequency;
         size_t                              cleanupCounter;
-        std::vector<uint64_t>               newEntriesThisProposal;
         
-                                            // avoids repeated allocations
+                                            // matrix pool (large object, keep together)
+        MatrixPool                          matrixPool;
+        
+                                            // single-threaded cache
+        MathCache                           singleCache;
+        
+                                            // vectors for batch operations
+        std::vector<uint64_t>               newEntriesThisProposal;
         std::vector<uint64_t>               usedKeysBuffer;
         std::vector<uint64_t>               keysToEraseBuffer;
         std::vector<double>                 batchBranchLengths;
         std::vector<DoubleMatrix*>          batchOutputs;
+        
+                                            // enum at end (4 bytes, padding acceptable at end)
+        ComputeBackend                      computeBackend;
+        
+                                            // static constants
+        static const size_t                 CALCULATOR_SHRINK_FREQUENCY = 100;
+        static const size_t                 CALCULATOR_MIN_POOL_SIZE = 16;
 };
 
 #endif

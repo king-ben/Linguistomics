@@ -5,12 +5,6 @@
 #include <string>
 #include <vector>
 
-struct BranchStatistics {
-
-    float prob;
-    float lowerCi;
-    float upperCi;
-};
 
 
 class Node {
@@ -18,6 +12,7 @@ class Node {
     public:
                             Node(void);
         virtual            ~Node(void);
+        virtual Node*       clone(void) const;
         void                addNeighbor(Node* p) { neighbors.insert(p); }
         Node*               getAncestor(void) { return ancestor; }
         float               getBrlen(void) { return brlen; }
@@ -50,15 +45,19 @@ class NodeConTree : public Node {
 
     public:
                             NodeConTree(void);
-        float               getProb(void) { return branchStats.prob; }
-        float               getLowerCi(void) { return branchStats.lowerCi; }
-        float               getUpperCi(void) { return branchStats.upperCi; }
-        void                setLowerCi(float x) { branchStats.lowerCi = x; }
-        void                setUpperCi(float x) { branchStats.upperCi = x; }
-        void                setProb(float x) { branchStats.prob = x; }
+        virtual            ~NodeConTree(void) {}
+        Node*               clone(void) const override;
+        float               getProb(void) { return prob; }
+        float               getLowerCi(void) { return lowerCi; }
+        float               getUpperCi(void) { return upperCi; }
+        void                setLowerCi(float x) { lowerCi = x; }
+        void                setUpperCi(float x) { upperCi = x; }
+        void                setProb(float x) { prob = x; }
     
     private:
-        BranchStatistics    branchStats;
+        float               prob;
+        float               lowerCi;
+        float               upperCi;
 };
 
 #endif

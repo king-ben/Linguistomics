@@ -61,29 +61,38 @@ class LikelihoodCalculator : public LikelihoodTask {
         void                            initializeLeafIndices(void);
         void                            setBirthDeathProbabilities(void);
         void                            setStationaryFrequencies(void);
+        
+                                        // group pointers and size_t together (all 8-byte aligned)
+        Tree*                           tree;
+        Alignment*                      alignment;
+        double**                        cachedTiMatrices;          // raw pointers to matrix data for each node
+        double**                        fH;                        // fH[nodeIdx][state] for homologous contributions
+        double**                        fI;                        // fI[nodeIdx][state] for state 0..numStates-1
+        double*                         equilibriumFrequencies;
+        int*                            signature;
+        
+                                        // loop bounds, accessed every iteration
+        size_t                          numTaxa;
+        size_t                          numNodes;
+        size_t                          numStates;
+        size_t                          numSites;
+        
+                                        // parameter access (pointer dereference to get actual values)
         TransitionProbabilities*        tiProbs;
         ParameterAlignment*             myAlignment;
         ParameterTree*                  myTree;
         ParameterIndelRates*            myIndelRates;
         ParameterFrequencies*           myFrequencies;
-        unsigned                        taxonMask;
-        Tree*                           tree;
-        Alignment*                      alignment;
-        size_t                          numTaxa;
-        size_t                          numNodes;
-        size_t                          numStates;
-        size_t                          numSites;
+        
+                                        // accessed but not in tightest loops
+        std::vector<int>                leafIndexMap;              // maps node index to sequence index
+        
+                                        // structs are accessed less frequently
         TKF91Probabilities              tkf91Probs;
         TKF91Combinatorics              tkf91Combos;
-        std::vector<int>                leafIndexMap;              // maps node index to sequence index
-        double**                        fH;                        // fH[nodeIdx][state] for homologous contributions (inherited from ancestor)
-        double**                        fI;                        // fI[nodeIdx][state] for state 0..numStates-1, fI[nodeIdx][numStates] for gap
-        double*                         equilibriumFrequencies;
-        int*                            signature;
         
-        // cached transition probability matrix pointers (indexed by node index)
-        // avoids repeated map lookups in inner loops
-        double**                        cachedTiMatrices;          // raw pointers to matrix data for each node
+                                        // rarely accessed after initialization
+        unsigned                        taxonMask;
 };
 
 #endif

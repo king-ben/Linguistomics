@@ -48,15 +48,23 @@ class Node {
         void                setOffset(int x) { offset = x; }
 
     private:
-        NodeSet             descendants;
+                            // accessed in inner loops (tree traversal, likelihood calculation)
         Node*               ancestor;
-        char                name[MAX_NAME_LENGTH];
         double              length;
+        NodeSet             descendants;
+        
+                            // accessed frequently but not in tightest loops
         int                 offset;
         int                 index;
+        
+                            // rarely accessed during computation, group bools together
         bool                isLeaf;
         bool                flag;
         bool                isOutgroup;
+        char                padding[1];          // padding
+        
+                            // name is rarely accessed
+        char                name[MAX_NAME_LENGTH];
 };
 
 #endif

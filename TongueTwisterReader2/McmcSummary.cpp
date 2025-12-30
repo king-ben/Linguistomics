@@ -398,7 +398,6 @@ void McmcSummary::readTreeFile(void) {
     bool readingTranslateTable = false, readingTree = false;
     std::vector<std::string> translateTokens;
     std::string treeString = "";
-    std::map<int,std::string> translateMap;
     int treeCount = 0;
 	while( getline(fstrm, lineString).good() )
 		{

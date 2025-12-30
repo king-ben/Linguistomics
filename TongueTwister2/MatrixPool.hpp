@@ -45,17 +45,16 @@ class MatrixPool {
     private:
         void                            grow(size_t count);
         
+                                        // freeList is accessed most frequently (push_back/pop_back)
+        std::vector<DoubleMatrix*>      freeList;
+        
+                                        // dimensions checked occasionally
         size_t                          numRows;
         size_t                          numCols;
         
-                                        // all matrices ever allocated (pool owns these)
+                                        // only accessed for diagnostics or cleanup
         std::vector<DoubleMatrix*>      allMatrices;
         
-                                        // free list - matrices available for acquisition
-                                        // stored as raw pointers for O(1) push/pop
-        std::vector<DoubleMatrix*>      freeList;
-        
-                                        // growth policy
         static constexpr size_t         minGrowth = 16;
         static constexpr double         growthFactor = 1.5;
 };

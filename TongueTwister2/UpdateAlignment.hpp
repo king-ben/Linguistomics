@@ -45,45 +45,47 @@ class UpdateAlignment : public Update {
         static constexpr double         gapPenalty = -5.0;
         static constexpr double         extensionProb = 0.5;
         
+                                        // pointers accessed frequently (all 8-byte aligned)
         ParameterAlignment*             myParm;
         ParameterFrequencies*           freqsParm;
         ParameterTree*                  treeParm;
         TransitionProbabilities*        tiProbs;
-        
         Tree*                           tree;
-        unsigned                        taxonMask;
         
-        int                             numTaxa;
-        int                             numNodes;
-        int                             numStates;
-        int                             gapCode;
-        
-        int                             maxLength;
-        int                             maxUnalignDimension;
-        
+                                        // array pointers used in inner loops
         int***                          profile;
         int*                            xProfile;
         int*                            yProfile;
         double**                        dp;
         double**                        scoring;
-        
         int**                           indelMatrix;
         int*                            profileNumber;
         int**                           tempProfile;
-        
         Node**                          lftDescendants;
         Node**                          rhtDescendants;
         int*                            sorter;
-        
         int*                            possibles;
         int*                            state;
         int*                            pathPos;
         int*                            pathNewPos;
         int*                            pathMask;
         int*                            pathFinalPos;
+        
+                                        // containers
         std::vector<int>                pathKey;
         std::map<std::vector<int>, int> dpTable;
         
+                                        // int values grouped together (each 4 bytes, pack efficiently)
+        int                             numTaxa;
+        int                             numNodes;
+        int                             numStates;
+        int                             gapCode;
+        int                             maxLength;
+        int                             maxUnalignDimension;
+        
+                                        // unsigned at end to avoid mid-struct padding
+        unsigned                        taxonMask;
+                
         enum StateLabels { freeToUse, possible, edgeUsed, used };
 };
 
