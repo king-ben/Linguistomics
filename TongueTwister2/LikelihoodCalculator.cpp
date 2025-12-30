@@ -3,7 +3,6 @@
 #include "LikelihoodCalculator.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
-#include "NodeSet.hpp"
 #include "ParameterAlignment.hpp"
 #include "ParameterFrequencies.hpp"
 #include "ParameterIndelRates.hpp"
@@ -141,14 +140,13 @@ void LikelihoodCalculator::cacheTransitionMatrices(void) {
 void LikelihoodCalculator::computeFForInternalNode(Node* p) {
 
     // get descendant nodes
-    const NodeSet& descendants = p->getDescendants();
-    Node* lftChild = descendants[0];
-    Node* rhtChild = descendants[1];
-    if (lftChild == nullptr || rhtChild == nullptr)
+    Node* lftDescendant = p->getDescendant(0);
+    Node* rhtDescendant = p->getDescendant(1);
+    if (lftDescendant == nullptr || rhtDescendant == nullptr)
         Msg::error("Did not find descendants of node indexed " + std::to_string(p->getIndex()));
     const int pIdx = p->getIndex();
-    const int lftChildIdx = lftChild->getIndex();
-    const int rhtChildIdx = rhtChild->getIndex();
+    const int lftChildIdx = lftDescendant->getIndex();
+    const int rhtChildIdx = rhtDescendant->getIndex();
     
     // get homology class for this node and children
     const int nodeHomologyI = tkf91Combos.nodeHomology[pIdx];

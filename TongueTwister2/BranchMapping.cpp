@@ -4,7 +4,6 @@
 #include "BranchMapping.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
-#include "NodeComparator.hpp"
 #include "Tree.hpp"
 
 // Minimum allowed branch length to prevent numerical issues
@@ -178,9 +177,11 @@ void BranchMapping::getDescendantLeaves(Node* p, std::vector<std::string>& leave
         }
     else
         {
-        std::set<Node*,NodeComparator>& desc = p->getDescendants().getNodes();
-        for (Node* d : desc)
+        for (int i=0; i<p->numDescendants(); i++) 
+            { 
+            Node* d = p->getDescendant(i); 
             getDescendantLeaves(d, leaves);
+            }
         }
 }
 
@@ -211,9 +212,11 @@ Node* BranchMapping::findMRCA(Tree* t, std::vector<std::string>& taxa) {
         else
             {
             int count = 0;
-            std::set<Node*,NodeComparator>& desc = p->getDescendants().getNodes();
-            for (Node* d : desc)
+            for (int i=0; i<p->numDescendants(); i++) 
+                { 
+                Node* d = p->getDescendant(i); 
                 count += taxaCount[d];
+                }
             taxaCount[p] = count;
             }
         }

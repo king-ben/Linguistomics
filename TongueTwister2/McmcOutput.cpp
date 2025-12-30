@@ -10,7 +10,6 @@
 #include "Model.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
-#include "NodeSet.hpp"
 #include "ParameterAlignment.hpp"
 #include "ParameterExchangeabilities.hpp"
 #include "ParameterFrequencies.hpp"
@@ -382,10 +381,10 @@ void McmcOutput::writeNewickNode(FILE* f, Node* p, Node* root) {
     else
         {
         fprintf(f, "(");
-        std::set<Node*,NodeComparator>& des = p->getDescendants().getNodes();
         bool first = true;
-        for (Node* d : des)
+        for (int i=0; i<p->numDescendants(); i++)
             {
+            Node* d = p->getDescendant(i);
             if (first == false)
                 fprintf(f, ",");
             writeNewickNode(f, d, root);

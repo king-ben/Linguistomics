@@ -110,9 +110,7 @@ CORE_SRCS = \
     Model.cpp \
     Msg.cpp \
     Node.cpp \
-    NodeComparator.cpp \
     NodeFactory.cpp \
-    NodeSet.cpp \
     Parameter.cpp \
     ParameterAlignment.cpp \
     ParameterExchangeabilities.cpp \

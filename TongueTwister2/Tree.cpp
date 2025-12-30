@@ -135,8 +135,8 @@ Tree::Tree(RandomVariable* rng, std::string newickString, std::vector<std::strin
     // taxon is 0.0 in length. The other branch, then, is identifiable.
     if (root->numDescendants() != 2)
         Msg::error("Expecting two descendants of the root node");
-    Node* d0 = root->getDescendants()[0];
-    Node* d1 = root->getDescendants()[1];
+    Node* d0 = root->getDescendant(0);
+    Node* d1 = root->getDescendant(1);
     if (d0->getIsOutgroup() == true)
         d0->setBranchLength(0.0);
     else if (d1->getIsOutgroup() == true)
@@ -198,9 +198,11 @@ void Tree::clone(Tree& t) {
             pLft->setAncestor(NULL);
             
         pLft->removeDescendants();
-        std::set<Node*,NodeComparator>& rhtNeighbors = pRht->getDescendants().getNodes();
-        for (Node* n : rhtNeighbors)
-            pLft->addDescendant( nodes[n->getOffset()] );
+        for (int j=0; j<pRht->numDescendants(); j++)
+            {
+            Node* rightDesc = pRht->getDescendant(j);
+            pLft->addDescendant( nodes[rightDesc->getOffset()] );
+            }
         }
             
     // copy the down pass sequence
@@ -270,7 +272,7 @@ void Tree::listNodes(Node* p, size_t indent) {
 
     if (p != NULL)
         {
-        std::set<Node*,NodeComparator> des = p->getDescendants().getNodes();
+        p->orderDescendantsByOffset();
         
         std::cout << "  ";
         for (size_t i=0; i<indent; i++)
@@ -281,8 +283,9 @@ void Tree::listNodes(Node* p, size_t indent) {
             std::cout << "a_" << p->getAncestor()->getIndex() << " ";
         else
         std::cout << "a_NULL ";
-        for (Node* n : des)
+        for (int i=0; i<p->numDescendants(); i++)
             {
+            Node* n = p->getDescendant(i);
             std::cout << n->getIndex() << " ";
             }
         std::cout << ") " << std::fixed << std::setprecision(5) << p->getBranchLength() << " ";
@@ -295,9 +298,10 @@ void Tree::listNodes(Node* p, size_t indent) {
             
         std::cout << std::endl;
 
-        for (std::set<Node*>::iterator it = des.begin(); it != des.end(); it++)
+        for (int i=0; i<p->numDescendants(); i++)
             {
-            listNodes( (*it), indent+3 );
+            Node* n = p->getDescendant(i);
+            listNodes( n, indent+3 );
             }
         }
 }
@@ -381,11 +385,8 @@ void Tree::passDown(Node* p) {
 
     if (p != NULL)
         {
-        std::set<Node*,NodeComparator>& des = p->getDescendants().getNodes();
-        for (std::set<Node*>::iterator it = des.begin(); it != des.end(); it++)
-            {
-            passDown( (*it) );
-            }
+        for (int i=0; i<p->numDescendants(); i++)
+            passDown( p->getDescendant(i) );
         postOrder.push_back(p);
         }
 }

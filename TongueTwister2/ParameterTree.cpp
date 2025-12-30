@@ -5,7 +5,6 @@
 #include "JsonData.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
-#include "NodeComparator.hpp"
 #include "ParameterTree.hpp"
 #include "Probability.hpp"
 #include "Tree.hpp"
@@ -227,8 +226,12 @@ double ParameterTree::lnPriorProbability(void) {
     Node* r = t->getRoot();
     
     // root branch probability
-    const NodeSet& rootDescendants = r->getDescendants();
-    double rootV = rootDescendants[0]->getBranchLength() + rootDescendants[1]->getBranchLength();
+    double rootV = 0.0;
+    for (int i=0; i<r->numDescendants(); i++)
+        {
+        Node* d = r->getDescendant(i);
+        rootV += d->getBranchLength();
+        }
     double lnP = Probability::Exponential::lnPdf(brlenLambda, rootV) - lnProbLessMax;
     
     // now deal with all of the non-root branches
@@ -288,7 +291,7 @@ void ParameterTree::makeSubtree(Tree& t, const unsigned& taxonMask) {
             {
             if (p->numDescendants() == 1)
                 {
-                Node* d = p->getDescendants()[0];
+                Node* d = p->getDescendant(0);
                 if (d == nullptr)
                     Msg::error("Could not find first descendant");
                 Node* a = p->getAncestor();

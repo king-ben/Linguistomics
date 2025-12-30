@@ -627,15 +627,20 @@ void UpdateAlignment::initializeTreeStructure(void) {
         if (p->getIsLeaf() == false)
             {
             int idx = p->getIndex();
-            std::set<Node*,NodeComparator>& des = p->getDescendants().getNodes();
-            auto it = des.begin();
-            if (it != des.end())
-                {
-                lftDescendants[idx] = *it;
-                ++it;
-                }
-            if (it != des.end())
-                rhtDescendants[idx] = *it;
+            p->orderDescendantsByOffset();
+            if (p->getDescendant(0) != nullptr)
+                lftDescendants[idx] = p->getDescendant(0);
+            if (p->getDescendant(1) != nullptr)
+                rhtDescendants[idx] = p->getDescendant(1);
+//            std::set<Node*,NodeComparator>& des = p->getDescendants().getNodes();
+//            auto it = des.begin();
+//            if (it != des.end())
+//                {
+//                lftDescendants[idx] = *it;
+//                ++it;
+//                }
+//            if (it != des.end())
+//                rhtDescendants[idx] = *it;
             }
         }
     

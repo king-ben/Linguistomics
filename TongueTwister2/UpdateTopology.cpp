@@ -4,7 +4,6 @@
 #include "Model.hpp"
 #include "Msg.hpp"
 #include "Node.hpp"
-#include "NodeComparator.hpp"
 #include "ParameterAlignment.hpp"
 #include "ParameterTree.hpp"
 #include "Probability.hpp"
@@ -63,7 +62,7 @@ Node* UpdateTopology::randomlyChooseInternalBranch(Tree* t) {
             p = nullptr;
             continue;
             }
-        if (p == rootNode->getDescendants()[0] || p == rootNode->getDescendants()[1])
+        if (p == rootNode->getDescendant(0) || p == rootNode->getDescendant(1))
             {
             p = nullptr;
             continue;
@@ -94,25 +93,25 @@ double UpdateTopology::update(void) {
         Msg::error("Can only update topology on trees with more than three taxa");
             
     // Find valid internal edges
-    // An internal edge connects two internal nodes (neither is a leaf)
-    // We exclude: root, children of root (to keep root structure unchanged)
+    // An internal branch connects two internal nodes (neither is a leaf)
+    // We exclude: root, descendants of root (to keep root structure unchanged)
     Node* u = randomlyChooseInternalBranch(t);
     Node* v = u->getAncestor();
     
-    // label u's children as a and b (randomly choose which is a)
-    Node* a = u->getDescendants()[0];
-    Node* b = u->getDescendants()[1];
+    // label u's descendants as a and b (randomly choose which is a)
+    Node* a = u->getDescendant(0);
+    Node* b = u->getDescendant(1);
     if (rng->uniformRv() < 0.5)
         std::swap(a, b);
     
-    // find c: v's other child (not u)
+    // find c: v's other descendant (not u)
     Node* c = nullptr;
-    std::set<Node*,NodeComparator>& vChildren = v->getDescendants().getNodes();
-    for (Node* child : vChildren)
+    for (int i=0; i<v->numDescendants(); i++)
         {
-        if (child != u)
+        Node* des = v->getDescendant(i);
+        if (des != u)
             {
-            c = child;
+            c = des;
             break;
             }
         }
