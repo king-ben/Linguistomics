@@ -3,6 +3,7 @@
 #include "Analysis.hpp"
 #include "Exchangeabilities.hpp"
 #include "McmcSummary.hpp"
+#include "Msg.hpp"
 #include "Partition.hpp"
 #include "RateMatrixF81.hpp"
 #include "RateMatrixGTR.hpp"
@@ -46,7 +47,9 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
         else
             {
             std::cout << "   * Constructing Natural Class rate matrix" << std::endl;
-            Q = new RateMatrixNaturalClass(*freqs, *rates);
+            if (part == nullptr)
+                Msg::error("Must have partition to construct the Natural Class model");
+            Q = new RateMatrixNaturalClass(*freqs, *rates, part);
             }
         }
     else 
@@ -181,6 +184,7 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
     json["consensus"]["tree"]   = conTree->getNewick(4);
     json["consensus"]["n_taxa"] = conTree->getNumTaxa();
     
+#   if 0
     // output information on mean and credible interval for all real-valued parameters
     auto jStats = nlohmann::json::array();
     for (int i=0; i<stats.size(); i++)
@@ -190,7 +194,6 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
         jStats.push_back(cogStats);
         }
     json["stats"] = jStats;
-#   if 0
     
     for (int i=0; i< jStats.size(); i++)
         {

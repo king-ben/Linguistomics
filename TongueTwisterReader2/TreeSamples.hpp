@@ -22,7 +22,6 @@ class TreeSamples {
         ConsensusTree*                              getConsensusTree(void);
         size_t                                      getNumTrees(void) { return trees.size(); }
         Tree*                                       getTree(size_t idx) { return trees[idx]; }
-        ConsensusTree*                              getConsensusTree(void) { return consensusTree; }
         void                                        print(void);
         void                                        printPartitionSummary(void);
    

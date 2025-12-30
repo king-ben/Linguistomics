@@ -14,6 +14,7 @@ class Exchangeabilities : public Simplex {
         size_t                              getFirstIndex(size_t idx) { return fromTo[idx].first; }
         size_t                              getSecondIndex(size_t idx) { return fromTo[idx].second; }
         size_t                              getNumRates(void) { return dimension; }
+        size_t                              getNumRates(void) const { return dimension; }
         void                                print(void);
         
     private:

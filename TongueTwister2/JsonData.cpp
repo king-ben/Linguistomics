@@ -66,6 +66,7 @@ void JsonData::readJsonFile(std::string fn) {
     std::ifstream ifs(fn);
     if (!ifs)
         Msg::error("Could not find file \"" + fn + "\"");
+
     try
         {
         j = nlohmann::json::parse(ifs);

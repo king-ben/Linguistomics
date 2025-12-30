@@ -9,6 +9,7 @@ class Partition;
 class RateMatrixHelper;
 
 
+
 class RateMatrix {
 
     public:
@@ -17,6 +18,7 @@ class RateMatrix {
         virtual                    ~RateMatrix(void);
         virtual RateMatrixHelper*   getHelper(void) = 0;
         DoubleMatrix&               getQ(void) { return *Q[activeMatrix]; }
+        size_t                      getNumStates(void) const { return numStates; }
         void                        flipActiveValues(void);
         void                        keep(void);
         void                        print(void);
@@ -29,6 +31,8 @@ class RateMatrix {
         size_t                      numStates;
         size_t                      activeMatrix;
 };
+
+
 
 class RateMatrixGTR : public RateMatrix {
 
@@ -43,6 +47,8 @@ class RateMatrixGTR : public RateMatrix {
         ParameterFrequencies*       freqParm;
 };
 
+
+
 class RateMatrixCustom : public RateMatrix {
 
     public:
@@ -50,13 +56,15 @@ class RateMatrixCustom : public RateMatrix {
                                     RateMatrixCustom(size_t ns, ParameterExchangeabilities* e, ParameterFrequencies* f, Partition* p);
                                    ~RateMatrixCustom(void);
         RateMatrixHelper*           getHelper(void) { return rateMatrixHelper; }
-        void                        initialize(size_t d, RateMatrixHelper* h);
         void                        updateRateMatrix(void);
     
     private:
         ParameterExchangeabilities* exchParm;
         ParameterFrequencies*       freqParm;
         RateMatrixHelper*           rateMatrixHelper;
+        
+                                    // cached pointers for inner loop (avoid repeated vector access)
+        const int*                  rateIndexMap;       // points into helper
 };
 
 #endif

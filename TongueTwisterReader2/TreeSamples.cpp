@@ -22,9 +22,6 @@ TreeSamples::TreeSamples(McmcSummary& samples, double burnFraction) :
     
     // get translate map from McmcSummary
     translateMap = samples.getTranslateMap();
-    
-    getConsensusTree();
-    consensusTree->print();
 }
 
 TreeSamples::~TreeSamples(void) {
@@ -92,7 +89,8 @@ ConsensusTree* TreeSamples::getConsensusTree(void) {
 void TreeSamples::print(void) {
 
     std::cout << "Consensus Tree:" << std::endl;
-    consensusTree->print();
+    ConsensusTree* t = getConsensusTree();
+    t->print();
     
 //    std::cout << "TreeSamples: " << trees.size() << " trees" << std::endl;
 //    for (size_t i=0; i<trees.size(); i++)

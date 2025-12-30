@@ -1,7 +1,10 @@
+#include <atomic>
+#include <chrono>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <thread>
 #include "Alignment.hpp"
 #include "FileManager.hpp"
 #include "json.hpp"
@@ -151,10 +154,7 @@ std::map<int,std::string> McmcSummary::interpretTranslateString(std::vector<std:
             else
                 val = token;
             }
-        //std::cout << i << " " << token << std::endl;
         }
-//    for (std::map<int,std::string>::iterator it = translateMap.begin(); it != translateMap.end(); it++)
-//        std::cout << it->first << " -> " << it->second << std::endl;
         
     return translateMap;
 }
@@ -251,33 +251,75 @@ void McmcSummary::readAlignmentFiles(void) {
 
     std::vector<std::string> alignmentFiles = fileManager.filesWithExtension("json");
     if (alignmentFiles.size() == 0)
+        {
         Msg::warning("Did not find any alignment files");
+        return;
+        }
 
+    int progressWidth = 50;
     std::cout << "   Reading Alignment Files" << std::endl;
+    std::cout << "   [";
+    for (size_t i=0; i<progressWidth; i++)
+        {
+        if (i % 10 == 0 && i != 0)
+            std::cout << "|";
+        else
+            std::cout << "-";
+        }
+    std::cout << "]" << std::endl;
+    std::cout << "   [";
+    std::cout.flush();
 
-#   if 0
-    alignments.resize(alignmentFiles.size());
-    alignmentNames.resize(alignmentFiles.size());
-    for (size_t i=0; i<alignmentFiles.size(); i++)
-        readAlnFile(alignmentFiles[i], i, alignmentFiles.size());
-    std::cout << std::endl;
-#   else  
+    // shared atomic counter for progress tracking
+    std::atomic<int> completedCount(0);
+    int totalFiles = static_cast<int>(alignmentFiles.size());
 
     // set up the reading tasks
     alignments.resize(alignmentFiles.size());
     alignmentNames.resize(alignmentFiles.size());
     std::vector<ReadAlignmentTask*> readTasks(alignmentFiles.size());
+    
     for (size_t i=0; i<alignmentFiles.size(); i++)
         {
-        ReadAlignmentTask* task = new ReadAlignmentTask(alignmentFiles[i], i, &alignments, &alignmentNames);
+        ReadAlignmentTask* task = new ReadAlignmentTask(
+            alignmentFiles[i], i, &alignments, &alignmentNames, &completedCount);
         readTasks[i] = task;
         }
         
+    // push all tasks to the thread pool
     for (ReadAlignmentTask* task : readTasks)
         pool->pushTask(task);
+    
+    // progress bar in main thread
+    int lastProgress = 0;
+    
+    while (completedCount < totalFiles)
+        {
+        int completed = completedCount.load();
+        int progress = (completed * progressWidth) / totalFiles;
+        
+        // print new progress characters
+        for (int i = lastProgress; i < progress; i++)
+            std::cout << "*";
+        std::cout.flush();
+        
+        lastProgress = progress;
+        
+        // small sleep to avoid busy-waiting
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        }
+    
+    // ensure we reach 100%
+    for (int i=lastProgress; i<progressWidth; i++)
+        std::cout << "=";
+    std::cout << "] " << totalFiles << " files" << std::endl;
+    
+    // wait for all tasks to fully complete
     pool->wait();
     
-#   endif
+    // clean up tasks
+    for (ReadAlignmentTask* task : readTasks)
+        delete task;
 }
 
 void McmcSummary::readConfigurationFile(void) {
@@ -347,7 +389,6 @@ void McmcSummary::readParameterFile(void) {
 	int line = 0;
 	while( getline(fstrm, lineString).good() )
 		{
-        //std::cout << line << " -- " << lineString << std::endl;
 		std::istringstream linestream(lineString);
 		int ch;
 		std::string word = "";
@@ -401,7 +442,6 @@ void McmcSummary::readTreeFile(void) {
     int treeCount = 0;
 	while( getline(fstrm, lineString).good() )
 		{
-        //std::cout << line << " -- " << lineString << std::endl;
 		std::istringstream linestream(lineString);
 		int ch;
 		std::string word = "";

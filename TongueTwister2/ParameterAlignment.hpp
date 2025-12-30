@@ -37,7 +37,7 @@ class ParameterAlignment: public Parameter {
         size_t                          gapCode;                   // 8 bytes
         size_t                          numStates;                 // 8 bytes
         
-                                        // containers (24 bytes each due to std::vector internals)
+                                        // containers (24 bytes each due to std::vector guts)
         std::vector<std::string>        canonicalTaxonList;
         std::vector<std::string>        taxonNames;
         
