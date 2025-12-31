@@ -20,6 +20,7 @@ class AlignmentDistribution {
         AlignmentDistribution&                  operator+=(const AlignmentDistribution& rhs);
         void                                    addAlignment(Alignment* aln);
         void                                    addAlignmentCopy(Alignment* aln);
+        const std::map<Alignment*,int>&         getAlignmentSamples(void) const { return samples; }
         int                                     ciSize(void);
         std::string                             getName(void) { return name; }
         Alignment*                              getMapAlignment(void);

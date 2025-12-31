@@ -19,7 +19,9 @@ class TreeSamples;
 class Analysis;
 namespace AnalysisComparison {
 
-    void compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples=100);
+    void                        compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples=100);
+    double                      compareAlignments(Analysis* a1, Analysis* a2);
+    std::pair<double,double>    compareQ(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples);
 };
 
 
@@ -29,33 +31,34 @@ class Analysis {
     friend void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples);
 
     public:
-                                            Analysis(void) = delete;
-                                            Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName, double burnFraction);
-                                           ~Analysis(void);
-        size_t                              getNumStates(void) { return numStates; }
-        std::string                         modelName(void);
-        void                                print(void);
-        void                                printSorted(void);
-        void                                randomlyChooseFreqs(std::vector<float>& f);
-        DoubleMatrix*                       randomlyChooseRateMatrix(void);
-        DoubleMatrix*                       randomlyChooseRateMatrixAndFreqs(std::vector<float>& f);
-        void                                writeNytril(std::string pathName);
+                                                    Analysis(void) = delete;
+                                                    Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName, double burnFraction);
+                                                   ~Analysis(void);
+        size_t                                      getNumStates(void) { return numStates; }
+        const std::vector<AlignmentDistribution*>   getAlignments(void) const { return alignments; }
+        std::string                                 modelName(void);
+        void                                        print(void);
+        void                                        printSorted(void);
+        void                                        randomlyChooseFreqs(std::vector<float>& f);
+        DoubleMatrix*                               randomlyChooseRateMatrix(void);
+        DoubleMatrix*                               randomlyChooseRateMatrixAndFreqs(std::vector<float>& f);
+        void                                        writeNytril(std::string pathName);
     
     private:
-        void                                nytrilOutput(std::ofstream& file, int maxAlignment);
-        void                                writeMatrix(std::ofstream& file, DoubleMatrix &m, std::string name);
-        size_t                              numStates;
-        RandomVariable*                     rng;
-        ThreadPool*                         pool;
-        IndelRates*                         indelRates;
-        Exchangeabilities*                  rates;
-        Partition*                          part;
-        RateMatrix*                         Q;
-        RateMatrix*                         aveQ;
-        StateFrequencies*                   freqs;
-        StateFrequencies*                   ncFreqs;
-        TreeSamples*                        trees;
-        std::vector<AlignmentDistribution*> alignments;
+        void                                        nytrilOutput(std::ofstream& file, int maxAlignment);
+        void                                        writeMatrix(std::ofstream& file, DoubleMatrix &m, std::string name);
+        size_t                                      numStates;
+        RandomVariable*                             rng;
+        ThreadPool*                                 pool;
+        IndelRates*                                 indelRates;
+        Exchangeabilities*                          rates;
+        Partition*                                  part;
+        RateMatrix*                                 Q;
+        RateMatrix*                                 aveQ;
+        StateFrequencies*                           freqs;
+        StateFrequencies*                           ncFreqs;
+        TreeSamples*                                trees;
+        std::vector<AlignmentDistribution*>         alignments;
 };
 
 #endif
