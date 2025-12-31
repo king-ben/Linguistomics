@@ -1,7 +1,9 @@
 #ifndef Exchangeabilities_hpp
 #define Exchangeabilities_hpp
 
+#include "json.hpp"
 #include "Simplex.hpp"
+#include "Statistics.hpp"
 class McmcSummary;
 
 
@@ -16,6 +18,7 @@ class Exchangeabilities : public Simplex {
         size_t                              getNumRates(void) { return dimension; }
         size_t                              getNumRates(void) const { return dimension; }
         void                                print(void);
+        nlohmann::json                      toJson(void);
         
     private:
         std::vector<std::pair<int,int>>     fromTo;

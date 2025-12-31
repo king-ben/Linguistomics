@@ -39,5 +39,18 @@ RateMatrixJC69::RateMatrixJC69(size_t ns) : RateMatrix(ns) {
             
     matrices.push_back(m);
 
-    calculateMeanAndVariance();
+    mean = new DoubleMatrix(numStates,numStates);
+    variance = new DoubleMatrix(numStates,numStates);
+    lowerCI = new DoubleMatrix(numStates,numStates);
+    upperCI = new DoubleMatrix(numStates,numStates);
+    for (size_t i=0; i<numStates; i++)
+        {
+        for (size_t j=0; j<numStates; j++)
+            {
+            (*mean)(i,j) = (*m)(i,j);
+            (*variance)(i,j) = 0.0;
+            (*lowerCI)(i,j) = (*m)(i,j);
+            (*upperCI)(i,j) = (*m)(i,j);
+            }
+        }
 }

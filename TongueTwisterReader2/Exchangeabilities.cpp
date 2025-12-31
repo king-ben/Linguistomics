@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Container.hpp"
 #include "Exchangeabilities.hpp"
 #include "McmcSummary.hpp"
 #include "Msg.hpp"
@@ -65,8 +66,8 @@ Exchangeabilities::Exchangeabilities(McmcSummary& samples, double bf) : Simplex(
     for (size_t n=0; n<dimension; n++)
         {
         double d = Statistics::calcKlToPrior(values[n], 1, dimension);
-        std::pair<double,double> mv = Statistics::getMeanAndVariance(values[n], burnFraction);
-        CredibleInterval ci = Statistics::getCredibleInterval(values[n], burnFraction);
+        std::pair<double,double> mv = Statistics::getMeanAndVariance(values[n], 0.0);
+        CredibleInterval ci = Statistics::getCredibleInterval(values[n], 0.0);
         
         mean[n] = mv.first;
         priorMean[n] = 1.0 / dimension;
@@ -86,4 +87,20 @@ void Exchangeabilities::print(void) {
         std::cout << mean[i] << " (" << lowerCI[i] << ", " << upperCI[i] << ") KL=";
         std::cout << kl[i] << " N=" << values[i].size() << std::endl;
         }
+}
+
+nlohmann::json Exchangeabilities::toJson(void) {
+
+    nlohmann::json j = nlohmann::json::object();
+    
+    for (size_t i=0; i<dimension; i++)
+        {
+        std::string name = "R[" + std::to_string(i) + "]";
+        j["statname"] = name;
+        j["mean"] = mean[i];
+        j["lower"] = lowerCI[i];
+        j["upper"] = upperCI[i];
+        }
+
+    return j;
 }

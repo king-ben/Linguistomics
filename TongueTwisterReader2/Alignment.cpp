@@ -44,13 +44,6 @@ bool Alignment::operator==(const Alignment& aln) const {
     return true;
 }
 
-void Alignment::from_json(const nlohmann::json& /*j*/) {
-
-    //j.at("name").get_to(p.name);
-    //j.at("address").get_to(p.address);
-    //j.at("age").get_to(p.age);
-}
-
 std::map<double,double> Alignment::gapInfo(void) {
 
     std::map<double,double> info;
@@ -164,4 +157,43 @@ void Alignment::print(void) {
             }
         std::cout << std::endl;
         }
+}
+
+nlohmann::json Alignment::toFile(std::ostream& file) {
+
+    nlohmann::json j = nlohmann::json::array();
+
+    // json
+    for (int i=0; i<numTaxa; i++)
+        {
+        Sequence& m = matrix[i];
+        nlohmann::json sj;
+        sj["language"] = m.getName();
+        sj["sequence"] = m.getSequence();
+        j.push_back(sj);
+        }
+
+    // file output
+    bool com = false;
+    for (int i=0; i<numTaxa; i++)
+        {
+        Sequence& m = matrix[i];
+        if (com)
+            file << ",";
+
+        file << "[";
+        bool comma = false;
+        for (auto si : m.getSequence())
+            {
+            if (comma)
+                file << ",";
+            file << si;
+            comma = true;
+            }
+        file << "]";
+
+        com = true;
+        }
+
+    return j;
 }

@@ -41,7 +41,7 @@ void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, s
     
     std::cout << "Model Comparison:   " << a1->modelName() << "-" << a2->modelName() << std::endl;
     std::cout << "Average W distance: " << dW << std::endl;
-    std::cout << "Average F distance: " << dF << std::endl;
     std::cout << "Average W distance: " << sqrt(dW) << std::endl;
+    std::cout << "Average F distance: " << dF << std::endl;
     std::cout << "Average F distance: " << sqrt(dF) << std::endl;
 }

@@ -49,8 +49,6 @@ nlohmann::json ParameterStatistics::toJson(float burnFraction) {
 
     if (burnFraction < 0.0 || burnFraction > 0.95)
         Msg::error("Burn fraction must be between 0 and 0.95");
-    if (values.size() * (1.0 - burnFraction) < 3)
-        Msg::error("Can only calclate statistics for at least three samples");
 
     double m = Statistics::getMeanAndVariance(values, burnFraction).first;
     CredibleInterval i = Statistics::getCredibleInterval(values, burnFraction);

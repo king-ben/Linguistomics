@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include "Sequence.hpp"
 #include "McmcSummary.hpp"
+#include <fstream>
 #include <map>
 #include <string>
 #include <vector>
@@ -18,7 +19,6 @@ class Alignment {
         Sequence&               operator[](size_t i) { return matrix[i]; }
         const Sequence&         operator[](size_t i) const { return matrix[i]; };
         bool                    operator==(const Alignment& aln) const;
-        void                    from_json(const nlohmann::json& j);
         int                     getCharCode(int tIdx, int cIdx) { return matrix[tIdx][cIdx]; }
         int                     getNumChar(void) { return numChar; }
         int                     getNumTaxa(void) { return numTaxa; }
@@ -29,6 +29,7 @@ class Alignment {
         void                    print(std::string h);
         size_t                  size(void) { return matrix.size(); }
         size_t                  size(void) const { return matrix.size(); }
+    nlohmann::json              toFile(std::ostream& file);
     
     private:
         static int              max_int8;

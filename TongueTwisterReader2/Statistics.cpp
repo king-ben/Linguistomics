@@ -12,8 +12,6 @@ CredibleInterval Statistics::getCredibleInterval(const std::vector<float>& vals,
 
     if (burnFraction < 0.0 || burnFraction > 0.95)
         Msg::error("Burn fraction must be between 0 and 0.95");
-    if (vals.size() * (1.0 - burnFraction) < 3)
-        Msg::error("Can only calclate statistics for at least three samples");
         
     CredibleInterval ci(0.0, 0.0, 0.0);
     if (vals.size() == 0)

@@ -36,6 +36,7 @@ class Simplex {
         float                           getUpperCI(size_t idx) { return upperCI[idx]; }
         const SampleVector&             getValues(void) const { return values; }
         size_t                          numSamples(void) { return values[0].size(); }
+        size_t                          numSamples(void) const { return values[0].size(); }
         virtual void                    print(void) = 0;
         size_t                          size(void) { return values.size(); }
         size_t                          size(void) const { return values.size(); }

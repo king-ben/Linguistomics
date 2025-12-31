@@ -107,6 +107,24 @@ bool McmcSummary::hasExchangeabilities(void) {
     return false;
 }
 
+bool McmcSummary::hasIndelRates(void) {
+
+    bool foundLambda = false;
+    bool foundMu = false;
+    for (size_t i=0; i<size(); i++)
+        {
+        ParameterStatistics* stat = stats[i];
+        std::string parmName = stat->getName();
+        if (parmName == "Lambda")
+            foundLambda = true;
+        if (parmName == "Mu")
+            foundMu = true;
+        }
+    if (foundLambda == true && foundMu == true)
+        return true;
+    return false;
+}
+
 bool McmcSummary::hasPartition(void) {
 
     if (statePartitions != nullptr)

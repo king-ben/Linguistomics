@@ -67,8 +67,69 @@ StateFrequencies::StateFrequencies(McmcSummary& samples, double bf) : Simplex(bf
     for (size_t n=0; n<dimension; n++)
         {
         double d = Statistics::calcKlToPrior(values[n], 1, dimension);
-        std::pair<double,double> mv = Statistics::getMeanAndVariance(values[n], burnFraction);
-        CredibleInterval ci = Statistics::getCredibleInterval(values[n], burnFraction);
+        std::pair<double,double> mv = Statistics::getMeanAndVariance(values[n], 0.0);
+        CredibleInterval ci = Statistics::getCredibleInterval(values[n], 0.0);
+        
+        mean[n] = mv.first;
+        priorMean[n] = 1.0 / dimension;
+        variance[n] = mv.second;
+        lowerCI[n] = ci.lower;
+        upperCI[n] = ci.upper;
+        kl[n] = d;
+        }
+}
+
+StateFrequencies::StateFrequencies(const StateFrequencies& f, Partition* part) : Simplex(0.0) {
+
+    const SampleVector& fValues = f.getValues();
+
+    dimension = part->numSubsets();
+    size_t numSamples = f.numSamples();
+
+    values.resize(dimension);
+    for (size_t i=0; i<dimension; i++)
+        values[i].resize(numSamples);
+    for (size_t i=0; i<dimension; i++)
+        for (size_t j=0; j<numSamples; j++)
+            values[i][j] = 0.0;
+ 
+    stateValue.resize(dimension);
+    for (int i=0; i<dimension; i++)
+        stateValue[i] = i+1;
+        
+    for (int i=0; i<part->numSubsets(); i++)
+        {
+        Subset* ss = part->findSubsetIndexed(i+1);
+        std::set<int>& states = ss->getValues();
+        for (int idx : states)
+            {
+            for (size_t n=0; n<numSamples; n++)
+                values[i][n] += fValues[idx][n];
+            }
+        }
+
+    // check that each row sums to 1.0
+    for (size_t j=0; j<numSamples; j++)
+        {
+        double sum = 0.0;
+        for (size_t i=0; i<dimension; i++)
+            sum += values[i][j];
+        if (fabs(1.0-sum) > 0.0001)
+            Msg::error("Row sum is not 1.0: " + std::to_string(sum));
+        }
+        
+    // precalculate the mean, variance, anc CI
+    mean.resize(dimension);
+    priorMean.resize(dimension);
+    variance.resize(dimension);
+    lowerCI.resize(dimension);
+    upperCI.resize(dimension);
+    kl.resize(dimension);
+    for (size_t n=0; n<dimension; n++)
+        {
+        double d = Statistics::calcKlToPrior(values[n], 1, dimension);
+        std::pair<double,double> mv = Statistics::getMeanAndVariance(values[n], 0.0);
+        CredibleInterval ci = Statistics::getCredibleInterval(values[n], 0.0);
         
         mean[n] = mv.first;
         priorMean[n] = 1.0 / dimension;
@@ -93,47 +154,18 @@ void StateFrequencies::print(void) {
     std::cout << std::endl;
 }
 
-void StateFrequencies::print(Partition* part) {
+nlohmann::json StateFrequencies::toJson(void) {
 
-    if (part == nullptr)
-        print();
-
-    std::cout << "   * Natural Class Frequencies" << std::endl;
+    nlohmann::json j = nlohmann::json::object();
     
-    // fill in the new samples
-    size_t numSamples = values[0].size();
-    std::vector<std::vector<float>> f;
-    f.resize(part->numSubsets());
-    for (size_t i=0; i<f.size(); i++)
+    for (size_t i=0; i<dimension; i++)
         {
-        f[i].resize(numSamples);
-        for (size_t j=0; j<numSamples; j++)
-            f[i][j] = 0.0;
+        std::string name = "F[" + std::to_string(i) + "]";
+        j["statname"] = name;
+        j["mean"] = mean[i];
+        j["lower"] = lowerCI[i];
+        j["upper"] = upperCI[i];
         }
-    for (size_t n=0; n<numSamples; n++)
-        {
-        for (int i=0; i<dimension; i++)
-            {
-            int subsetIdx = part->indexOfSubsetWithValue(i);
-            f[subsetIdx-1][n] += values[i][n];
-            }
-        }
-    
-    size_t len = part->longestLabelLength();
-    for (int i=0; i<f.size(); i++)
-        {
-        Subset* ss = part->findSubsetIndexed(i+1);
-        double d = Statistics::calcKlToPrior(f[i], ss->getNumElements(), dimension);
-        std::pair<double,double> mv = Statistics::getMeanAndVariance(f[i], burnFraction);
-        CredibleInterval ci = Statistics::getCredibleInterval(f[i], burnFraction);
 
-        std::cout << "      " << std::setw(2) << i+1 << " " << ss->getLabel();
-        for (size_t j=0; j<len-ss->getLabel().length(); j++)
-            std::cout << " ";
-        std::cout << " -- ";
-        std::cout << std::fixed << std::setprecision(6);
-        std::cout << (double)ss->getNumElements() / dimension << " -> " << mv.first << " (" << ci.lower << ", " << ci.upper << ") KL=";
-        std::cout << d << " N=" << f[i].size() << std::endl;
-        }
-    std::cout << std::endl;
+    return j;
 }

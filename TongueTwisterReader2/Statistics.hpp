@@ -8,25 +8,27 @@ struct BetaFitResult {
 
     float   alpha;
     float   beta;
-    int    iterations;
-    bool   converged;
+    int     iterations;
+    bool    converged;
 };
 
 struct CredibleInterval {
-    double lower;
-    double upper;
-    double median;
 
-     CredibleInterval(void) {
-        lower = 0.0;
-        upper = 0.0;
-        median = 0.0;
-    }
-   CredibleInterval(double low, double up, double med) {
-        lower = low;
-        upper = up;
-        median = med;
-    }
+    double  lower;
+    double  upper;
+    double  median;
+
+            CredibleInterval(void) {
+                lower = 0.0;
+                upper = 0.0;
+                median = 0.0;
+            }
+    
+            CredibleInterval(double low, double up, double med) {
+                lower = low;
+                upper = up;
+                median = med;
+            }
 };
 
 

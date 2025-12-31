@@ -28,6 +28,7 @@ class McmcSummary {
         std::map<int,std::string>&              getTranslateMap(void) { return translateMap; }
         bool                                    hasFrequencies(void);
         bool                                    hasExchangeabilities(void);
+        bool                                    hasIndelRates(void);
         bool                                    hasPartition(void);
         bool                                    hasTrees(void);
         size_t                                  numParameterStatistics(void) { return stats.size(); }

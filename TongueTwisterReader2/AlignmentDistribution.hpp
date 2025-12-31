@@ -1,6 +1,7 @@
 #ifndef AlignmentDistribution_hpp
 #define AlignmentDistribution_hpp
 
+#include <fstream>
 #include <map>
 #include <string>
 #include <iostream>
@@ -28,6 +29,7 @@ class AlignmentDistribution {
         void                                    print(bool showAlignments, Partition* part);
         void                                    setName(std::string s) { name = s; }
         size_t                                  size(void) { return samples.size(); }
+        nlohmann::json                          toJson(double credibleSetSize, int maxAlignment, std::ostream& file);
 
     private:
         void                                    print(Alignment* aln, Partition* part);

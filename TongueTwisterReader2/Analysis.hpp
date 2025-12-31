@@ -7,6 +7,7 @@
 #include "Container.hpp"
 class AlignmentDistribution;
 class Exchangeabilities;
+class IndelRates;
 class Partition;
 class RandomVariable;
 class RateMatrix;
@@ -42,13 +43,17 @@ class Analysis {
     
     private:
         void                                nytrilOutput(std::ofstream& file, int maxAlignment);
+        void                                writeMatrix(std::ofstream& file, DoubleMatrix &m, std::string name);
         size_t                              numStates;
         RandomVariable*                     rng;
         ThreadPool*                         pool;
+        IndelRates*                         indelRates;
         Exchangeabilities*                  rates;
         Partition*                          part;
         RateMatrix*                         Q;
+        RateMatrix*                         aveQ;
         StateFrequencies*                   freqs;
+        StateFrequencies*                   ncFreqs;
         TreeSamples*                        trees;
         std::vector<AlignmentDistribution*> alignments;
 };
