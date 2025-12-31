@@ -36,6 +36,8 @@ class Analysis {
                                                    ~Analysis(void);
         size_t                                      getNumStates(void) { return numStates; }
         const std::vector<AlignmentDistribution*>   getAlignments(void) const { return alignments; }
+        RateMatrix*                                 getRateMatrix(void) { return Q; }
+        RateMatrix*                                 getWeightMatrix(void) { return aveQ; }
         std::string                                 modelName(void);
         void                                        print(void);
         void                                        printSorted(void);

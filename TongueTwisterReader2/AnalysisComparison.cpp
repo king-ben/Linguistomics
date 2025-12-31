@@ -4,6 +4,7 @@
 #include "AnalysisComparison.hpp"
 #include "Container.hpp"
 #include "Msg.hpp"
+#include "RateMatrix.hpp"
 
 
 
@@ -102,42 +103,38 @@ double AnalysisComparison::compareAlignments(Analysis* a1, Analysis* a2) {
 
 std::pair<double,double> AnalysisComparison::compareQ(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples) {
 
-    std::vector<float> f1;
-    std::vector<float> f2;
-    double sumW = 0.0, sumQ = 0.0;
+    RateMatrix* Q1 = a1->getRateMatrix();
+    RateMatrix* Q2 = a2->getRateMatrix();
+    RateMatrix* W1 = a1->getWeightMatrix();
+    RateMatrix* W2 = a2->getWeightMatrix();
+
+    DoubleMatrix& meanQ1 = Q1->getMean();
+    DoubleMatrix& meanQ2 = Q2->getMean();
+    DoubleMatrix& meanW1 = W1->getMean();
+    DoubleMatrix& meanW2 = W2->getMean();
     
-    for (size_t n = 0; n < nSamples; n++)
+    double sumW = 0.0;
+    for (size_t i=0; i<numStates; i++)
         {
-        DoubleMatrix* m1 = a1->randomlyChooseRateMatrixAndFreqs(f1);
-        DoubleMatrix* m2 = a2->randomlyChooseRateMatrixAndFreqs(f2);
-        numStates = m1->getNumRows();
-        
-        double ss = 0.0;
-        for (size_t i=0; i<numStates; i++)
+        for (size_t j=i+1; j<numStates; j++)
             {
-            for (size_t j=i+1; j<numStates; j++)
-                {
-                double x = f1[i] * (*m1)(i,j) - f2[i] * (*m2)(i,j);
-                double y = f1[j] * (*m1)(j,i) - f2[j] * (*m2)(j,i);
-                ss += (x*x + y*y);
-                }
+            double x = meanW1(i,j) - meanW2(i,j);
+            double y = meanW1(j,i) - meanW2(j,i);
+            sumW += (x*x + y*y);
             }
-        sumW += ss;
-        
-        ss = 0.0;
-        for (size_t i=0; i<numStates; i++)
-            {
-            for (size_t j=i+1; j<numStates; j++)
-                {
-                double x = (*m1)(i,j) - (*m2)(i,j);
-                double y = (*m1)(j,i) - (*m2)(j,i);
-                ss += (x*x + y*y);
-                }
-            }
-        sumQ += ss;
         }
-    double dW = sumW / nSamples;
-    double dQ = sumQ / nSamples;
-    std::pair<double,double> d = std::make_pair(dW,dQ);
+        
+    double sumQ = 0.0;
+    for (size_t i=0; i<numStates; i++)
+        {
+        for (size_t j=i+1; j<numStates; j++)
+            {
+            double x = meanQ1(i,j) - meanQ2(i,j);
+            double y = meanQ1(j,i) - meanQ2(j,i);
+            sumQ += (x*x + y*y);
+            }
+        }
+
+    std::pair<double,double> d = std::make_pair(sumW,sumQ);
     return d;
 }
