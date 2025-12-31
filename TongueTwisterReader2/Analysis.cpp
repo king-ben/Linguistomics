@@ -24,25 +24,33 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
     rng(r), pool(tp), indelRates(nullptr), rates(nullptr), part(nullptr), Q(nullptr), 
     aveQ(nullptr), freqs(nullptr), ncFreqs(nullptr), trees(nullptr) {
 
+    // read the MCMC output files in the directory directoryName
     McmcSummary summary(pool, directoryName);
     
+    // initialize the number of model states
     numStates = summary.getNumStates();
     
+    // post-burn insertion and deletion rate samples
     if (summary.hasIndelRates() == true)
         indelRates = new IndelRates(summary, burnFraction);
         
+    // instantiate the partition object, if the definitiion exists in the config file
     if (summary.hasPartition() == true)
         part = new Partition(*summary.getStatePartition());
         
+    // post-burn stationary frequencies of states (not present for JC69)
     if (summary.hasFrequencies() == true)
         freqs = new StateFrequencies(summary, burnFraction);
         
+    // post-burn stationary frequencies of subset categories of partition
     if (freqs != nullptr && part != nullptr)
         ncFreqs = new StateFrequencies(*freqs, part);
         
+    // post-burn rate parameters for GTR and Natural Class models
     if (summary.hasExchangeabilities() == true)
         rates = new Exchangeabilities(summary, burnFraction);
     
+    // post-burn rate matrices (q_ij) and average rate (f_i X q_ij)
     if (freqs != nullptr && rates == nullptr)
         {
         std::cout << "   * Constructing F81 rate matrix" << std::endl;
@@ -75,12 +83,14 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
         aveQ = new RateMatrixAverage(summary.getNumStates());
         }
     
+    // post-burn alignment samples
     for (size_t n=0; n<summary.numAlignments(); n++)
         {
         AlignmentDistribution* alnDist = new AlignmentDistribution(rng, summary.getAlignments(n), summary.getAlignmentName(n));
         alignments.push_back(alnDist);
         }
         
+    //post-burn tree samples
     if (summary.hasTrees() == true)
         trees = new TreeSamples(summary, burnFraction);
 }
