@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
@@ -5,32 +6,35 @@
 
 
 
-FileManager::FileManager(std::string dn) : directoryName(dn) {
+FileManager::FileManager(std::string dn) : directoryName(std::move(dn)) {
 
     for (const auto& entry : std::filesystem::directory_iterator(directoryName))
         {
         std::filesystem::path fp = entry.path();
-        #ifdef _CONSOLE
-        auto filePath      = fp.string();
-        auto fileExtension = fp.extension();
-        #else
-        std::string filePath      = fp;
-        std::string fileExtension = fp.extension();
-        #endif
+        std::string filePath = fp.string();
+        std::string fileExtension = fp.extension().string();
         
-        std::erase(fileExtension, '.');
-        std::pair<std::string,std::string> nameExt;
-        nameExt.first = filePath;
-        nameExt.second = fileExtension;
-        directoryFileContents.push_back(nameExt);
+        // Remove leading dot from extension
+        if (!fileExtension.empty() && fileExtension[0] == '.')
+            fileExtension.erase(0, 1);
+        
+        directoryFileContents.emplace_back(filePath, fileExtension);
         }
     std::sort(directoryFileContents.begin(), directoryFileContents.end());
 }
 
-std::vector<std::string> FileManager::filesWithExtension(std::string extension) {
+std::string FileManager::getDirectoryBaseName(void) const {
+
+    std::filesystem::path p(directoryName);
+    if (p.filename().empty())
+        p = p.parent_path();
+    return p.filename().string();
+}
+
+std::vector<std::string> FileManager::filesWithExtension(const std::string& extension) const {
 
     std::vector<std::string> fileList;
-    for (auto f : directoryFileContents)
+    for (const auto& f : directoryFileContents)
         {
         if (f.second == extension)
             fileList.push_back(f.first);
@@ -38,20 +42,20 @@ std::vector<std::string> FileManager::filesWithExtension(std::string extension) 
     return fileList;
 }
 
-void FileManager::print(void) {
+void FileManager::print(void) const {
 
     size_t len = 0;
-    for (auto f : directoryFileContents)
+    for (const auto& f : directoryFileContents)
         {
         if (f.first.length() > len)
             len = f.first.length();
         }
 
     int n = 0;
-    for (auto f : directoryFileContents)
+    for (const auto& f : directoryFileContents)
         {
         std::cout << std::setw(4) << ++n << " -- " << f.first << " ";
-        for (size_t i=0; i<len-f.first.length(); i++)
+        for (size_t i = 0; i < len - f.first.length(); i++)
             std::cout << " ";
         std::cout << f.second << std::endl;
         }

@@ -8,7 +8,7 @@
 
 
 
-void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples) {
+Distances AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples) {
 
     // compare Q and W
     std::pair<double,double> d = compareQ(a1, a2, numStates, nSamples);
@@ -26,6 +26,12 @@ void AnalysisComparison::compare(Analysis* a1, Analysis* a2, size_t numStates, s
     std::cout << "Average alignment distance: " << dA << std::endl;
     std::cout << "Average alignment distance: " << sqrt(dA) << std::endl;
     std::cout << std::endl;
+    
+    Distances dist;
+    dist.qD = dQ;
+    dist.wD = dW;
+    dist.aD = dA;
+    return dist;
 }
 
 double AnalysisComparison::compareAlignments(Analysis* a1, Analysis* a2) {
@@ -100,6 +106,122 @@ double AnalysisComparison::compareAlignments(Analysis* a1, Analysis* a2) {
         
     return sumSquares;
 }
+
+void AnalysisComparison::compareAnalyses(std::string fileName, std::vector<Analysis*>& analyses) {
+
+    DoubleMatrix dRateMatrix(analyses.size(),analyses.size());
+    DoubleMatrix dWeightMatrix(analyses.size(),analyses.size());
+    DoubleMatrix dAlignment(analyses.size(),analyses.size());
+    
+    if (analyses.size() > 1)
+        {
+        // the JC69 model has idential rate matrices, so sensible to look
+        // at only one of that model
+        int numJC69 = 0;
+        int excludeIdx = -1;
+        for (int i=0; i<analyses.size(); i++)
+            {
+            if (analyses[i]->modelName() == "JC69")
+                {
+                numJC69++;
+                if (numJC69 == 2)
+                    {
+                    excludeIdx = i;
+                    break;
+                    }
+                }
+            }
+            
+        // compare analyses
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            Analysis* a1 = analyses[i];
+            for (size_t j=i+1; j<analyses.size(); j++)
+                {
+                Analysis* a2 = analyses[j];
+                std::cout << i+1 << " - " << j+1 << std::endl;
+                Distances d = AnalysisComparison::compare(a1, a2, a2->getNumStates(), 100);
+                dRateMatrix(i,j)   = std::sqrt(d.qD);
+                dRateMatrix(j,i)   = std::sqrt(d.qD);
+                dWeightMatrix(i,j) = std::sqrt(d.wD);
+                dWeightMatrix(j,i) = std::sqrt(d.wD);
+                dAlignment(i,j)    = std::sqrt(d.aD);
+                dAlignment(j,i)    = std::sqrt(d.aD);
+                }
+            }
+            
+        // print W distance matrix
+        std::string fn = fileName + "distances_w.csv";
+        std::ofstream file(fn, std::ios::out);
+        bool first = true;
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            if (i == excludeIdx)
+                continue;
+            Analysis* a1 = analyses[i];
+            if (first == false)
+                file << ", ";
+            first = false;
+            file << a1->getName();
+            }
+        file << std::endl;
+        
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            if (i == excludeIdx)
+                continue;
+            Analysis* a1 = analyses[i];
+            file << a1->getName() << ", ";
+            first = true;
+            for (size_t j=0; j<analyses.size(); j++)
+                {
+                if (j == excludeIdx)
+                    continue;
+                if (first == false)
+                    file << ", ";
+                first = false;
+                if (i == j)
+                    file << 0.0;
+                else
+                    file << dWeightMatrix(i,j);
+                }
+            file << std::endl;
+            }
+        file << std::endl;
+        file.close();
+           
+        // print alignment distance matrix
+        fn = fileName + "distances_aln.csv";
+        file.open(fn, std::ios::out);
+
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            Analysis* a1 = analyses[i];
+            if (i != 0)
+                file << ", ";
+            file << a1->getName();
+            }
+        file << std::endl;
+        for (size_t i=0; i<analyses.size(); i++)
+            {
+            Analysis* a1 = analyses[i];
+            file << a1->getName() << ", ";
+            for (size_t j=0; j<analyses.size(); j++)
+                {
+                if (j != 0)
+                    file << ", ";
+                if (i == j)
+                    file<< 0.0;
+                else
+                    file << dAlignment(i,j);
+                }
+            file << std::endl;
+            }
+
+        file.close();
+        }
+}
+
 
 std::pair<double,double> AnalysisComparison::compareQ(Analysis* a1, Analysis* a2, size_t numStates, size_t nSamples) {
 

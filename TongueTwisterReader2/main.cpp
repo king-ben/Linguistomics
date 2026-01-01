@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
 #include "Analysis.hpp"
+#include "AnalysisComparison.hpp"
+#include "Container.hpp"
 #include "RandomVariable.hpp"
 #include "Threads.hpp"
 #include "UserSettings.hpp"
@@ -35,33 +37,17 @@ int main(int argc, char* argv[]) {
         analysis->print();
         analysis->printSorted();
         analysis->writeNytril(settings.getNytrilOutputFileName());
+        analysis->writeR(settings.getROutFile(), analysis->getName(), analysis->modelName(), (int)i);
         }
         
     // compare analyses (if there are more than one)
-    compareAnalyses(analyses);
+    AnalysisComparison::compareAnalyses(settings.getROutFile(), analyses);
         
     // clean up
     for (size_t i=0; i<analyses.size(); i++)
         delete analyses[i];
     
     return EXIT_SUCCESS;
-}
-
-void compareAnalyses(std::vector<Analysis*>& analyses) {
-
-    if (analyses.size() > 1)
-        {
-        for (size_t i=0; i<analyses.size(); i++)
-            {
-            Analysis* a1 = analyses[i];
-            for (size_t j=i+1; j<analyses.size(); j++)
-                {
-                Analysis* a2 = analyses[j];
-                std::cout << i+1 << " - " << j+1 << std::endl;
-                AnalysisComparison::compare(a1, a2, a2->getNumStates(), 100);
-                }
-            }
-        }
 }
 
 void printHeader(void) {

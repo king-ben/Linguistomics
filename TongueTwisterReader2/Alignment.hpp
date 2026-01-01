@@ -43,10 +43,10 @@ struct HashAlignment {
     size_t operator()(const Alignment& aln) const {
         
         size_t hash = 0;
-        for (size_t i = 0; i < aln.size(); i++)
+        for (size_t i=0; i<aln.size(); i++)
             {
             const Sequence& seq = aln[i];
-            for (size_t j = 0; j < seq.size(); j++)
+            for (size_t j=0; j<seq.size(); j++)
                 {
                 // boost::hash_combine approach
                 hash ^= std::hash<int8_t>{}(seq[j]) + 0x9e3779b9 + (hash << 6) + (hash >> 2);
@@ -90,9 +90,9 @@ struct CompAlignment {
         if (a1[0].size() != a2[0].size())
             return a1[0].size() > a2[0].size();
         
-        for (size_t i = 0; i < a1.size(); i++)
+        for (size_t i=0; i<a1.size(); i++)
             {
-            for (size_t j = 0; j < a1[i].size(); j++)
+            for (size_t j=0; j<a1[i].size(); j++)
                 {
                 if (a1[i][j] != a2[i][j])
                     return a1[i][j] > a2[i][j];

@@ -27,6 +27,9 @@ Analysis::Analysis(RandomVariable* r, ThreadPool* tp, std::string directoryName,
     // read the MCMC output files in the directory directoryName
     McmcSummary summary(pool, directoryName);
     
+    // set the name
+    analysisName = summary.getName();
+    
     // initialize the number of model states
     numStates = summary.getNumStates();
     
@@ -565,3 +568,105 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
         }
 }
 
+void Analysis::writeR(std::string pathName, std::string fileName, std::string modelName, int idx) {
+
+    // output the average rate matrix
+    if (aveQ != nullptr)
+        {
+        std::string fn = pathName + "/" + analysisName + "_w_matrix_" + modelName + "_" + std::to_string(idx) + ".csv";
+        std::ofstream file(fn, std::ios::out);
+
+        DoubleMatrix& W = aveQ->getMean();
+        std::string matrixId = modelName + "_" + std::to_string(idx);
+        size_t nStates = W.getNumRows();
+        file << "matrix_id,from_state,to_state,rate" << std::endl;
+        for (size_t i=0; i<nStates; i++)
+            {
+            for (size_t j=0; j<nStates; j++)
+                {
+                file << "W_" << matrixId << "," << std::to_string(i) << "," << std::to_string(j) << "," << W(i,j) << std::endl;
+                }
+            }
+    
+        file.close();
+        }
+
+    // output the stationary frequencies
+    if (freqs != nullptr)
+        {
+        std::string fn = pathName + "/" + analysisName + "_freqs_" + modelName + "_" + std::to_string(idx) + ".csv";
+        std::ofstream file(fn, std::ios::out);
+        
+        file << "param_id,param_group,param_index,value_mean,kl_to_prior,q025,q975" << std::endl;
+        size_t nStates = freqs->getNumStates();
+        for (size_t i=0; i<nStates; i++)
+            {
+            file << "pi[" << i << "],";
+            file << "pi,";
+            file << i << ",";
+            file << freqs->getMean(i) << ",";
+            file << freqs->getKullbackLiebler(i) << ",";
+            file << freqs->getLowerCI(i) << ",";
+            file << freqs->getUpperCI(i) << std::endl;
+            }
+        
+        file.close();
+        }
+
+    // output th exchangeability parameters
+    if (rates != nullptr)
+        {
+        std::string fn = pathName + "/" + analysisName + "_rates_" + modelName + "_" + std::to_string(idx) + ".csv";
+        std::ofstream file(fn, std::ios::out);
+        
+        file << "param_id,param_group,param_index,param_index_from,param_index_to,value_mean,kl_to_prior,q025,q975" << std::endl;
+        size_t nRates = rates->getNumRates();
+        for (size_t i=0; i<nRates; i++)
+            {
+            size_t from = rates->getFirstIndex(i);
+            size_t to = rates->getSecondIndex(i);
+            file << "R[" << i << "],";
+            file << "R,";
+            file << i+1 << "," << from << "," << to << ",";
+            file << rates->getMean(i) << ",";
+            file << rates->getKullbackLiebler(i) << ",";
+            file << rates->getLowerCI(i) << ",";
+            file << rates->getUpperCI(i) << std::endl;
+            }
+        
+        file.close();
+        }
+        
+    // output alignment distributions
+    {
+    std::string fn = pathName + "/" + analysisName + "_alns_" + modelName + "_" + std::to_string(idx) + ".csv";
+    std::ofstream file(fn, std::ios::out);
+
+    file << "dist_id,align_id,rank,prob" << std::endl;
+    HashAlignment hasher;
+    for (size_t i=0; i<alignments.size(); i++)
+        {
+        AlignmentDistribution* alnDist = alignments[i];
+        std::string alnName = alnDist->getName();
+        std::replace(alnName.begin(), alnName.end(), ' ', '_');
+        std::replace(alnName.begin(), alnName.end(), '-', '_');
+        if (alnName.starts_with("Alignment_for_cognate_"))
+            alnName.erase(0, std::string("Alignment_for_cognate_").size());
+        std::map<int,std::pair<Alignment*,float>> sortedAlns = alnDist->getSortedAlignments();
+        
+        int alnNum = 0;
+        for (auto& [key,val] : sortedAlns)
+            {
+            alnNum++;
+            size_t h = hasher(val.first);
+            file << alnName << ",";
+            file << h << ",";
+            file << key << ",";
+            file << val.second << std::endl;
+            }
+        }
+ 
+    file.close();
+    }
+
+}

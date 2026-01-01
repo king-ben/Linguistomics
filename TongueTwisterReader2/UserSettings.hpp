@@ -18,6 +18,7 @@ class UserSettings {
         std::vector<std::string>    getInputDirectoryName(void) { return inFile; }
         std::string                 getOutFile(void) { return outFile; }
         std::string                 getNytrilOutputFileName(void) { return nytrilOutFile; }
+        std::string                 getROutFile(void) { return rOutFile; }
         double                      getBurnFraction(void) { return burnFraction; }
         void                        print(void);
         void                        readCommandLineArguments(int argc, char* argv[]);
@@ -29,6 +30,7 @@ class UserSettings {
         std::vector<std::string>    inFile;
         std::string                 outFile;
         std::string                 nytrilOutFile;
+        std::string                 rOutFile;
         double                      burnFraction;
         bool                        fullOutput;
 };

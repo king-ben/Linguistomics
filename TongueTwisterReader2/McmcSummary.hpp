@@ -22,6 +22,7 @@ class McmcSummary {
         ParameterStatistics*                    operator[](size_t idx) const;
         std::vector<Alignment*>&                getAlignments(size_t idx) { return alignments[idx]; }
         std::string                             getAlignmentName(size_t idx) { return alignmentNames[idx]; }
+        std::string                             getName(void) { return name; }
         size_t                                  getNumStates(void) { return numStates; }
         Partition*                              getStatePartition(void) { return statePartitions; }
         const std::vector<Tree*>&               getTrees(void) const { return trees; }
@@ -57,6 +58,7 @@ class McmcSummary {
         Partition*                              statePartitions;
         std::vector<Tree*>                      trees;
         std::map<int,std::string>               translateMap;
+        std::string                             name;
 };
 
 #endif 

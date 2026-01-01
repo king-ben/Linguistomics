@@ -13,8 +13,11 @@ class FileManager {
     public:
                                     FileManager(void) = delete;
                                     FileManager(std::string dn);
-        std::vector<std::string>    filesWithExtension(std::string extension);
-        void                        print(void);
+        std::string                 getDirectoryBaseName(void) const;
+        std::string                 getDirectoryPath(void) const { return directoryName; }
+        std::vector<std::string>    filesWithExtension(const std::string& extension) const;
+        size_t                      numFiles(void) const { return directoryFileContents.size(); }
+        void                        print(void) const;
     
     private:
         std::string                 directoryName;

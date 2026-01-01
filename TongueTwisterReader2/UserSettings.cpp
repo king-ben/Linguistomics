@@ -12,6 +12,7 @@ UserSettings::UserSettings(void) {
     // dafault values
     outFile       = "";
     nytrilOutFile = "";
+    rOutFile      = "";
     burnFraction  = 0.0;
     fullOutput    = true;
 }
@@ -47,6 +48,8 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
                 outFile = cmd;
             else if (arg == "-n")
                 nytrilOutFile = cmd;
+            else if (arg == "-p")
+                rOutFile = cmd;
             else if (arg == "-b")
                 burnFraction = atof(cmd.c_str());
             else if (arg == "-f")
@@ -81,7 +84,8 @@ void UserSettings::print(void) {
     for (size_t i=0; i<inFile.size(); i++)
         std::cout << "   * Input path name         = \"" << inFile[i] << "\"" << std::endl;
     std::cout << "   * Output file name        = \"" << outFile << "\"" << std::endl;
-    std::cout << "   * Nytril Output file name = \"" << outFile << "\"" << std::endl;
+    std::cout << "   * Nytril Output file name = \"" << nytrilOutFile << "\"" << std::endl;
+    std::cout << "   * R Output file name      = \"" << rOutFile << "\"" << std::endl;
     std::cout << "   * Burn in fraction        = " << burnFraction << std::endl;
     std::cout << std::endl;
 }

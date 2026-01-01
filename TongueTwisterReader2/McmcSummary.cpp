@@ -20,6 +20,7 @@
 
 McmcSummary::McmcSummary(ThreadPool* tp, std::string dn) : pool(tp), fileManager(dn), statePartitions(nullptr) {
 
+    name = fileManager.getDirectoryBaseName();
     readConfigurationFile();
     readParameterFile();
     readAlignmentFiles();

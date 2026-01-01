@@ -133,6 +133,38 @@ Alignment* AlignmentDistribution::getMapAlignment(void) {
     return v[0].first;
 }
 
+std::map<int,std::pair<Alignment*,float>> AlignmentDistribution::getSortedAlignments(void) {
+
+    std::vector<std::pair<Alignment*, int> > v;
+    for (auto& it : samples)
+        v.push_back(it);
+    sort(v.begin(), v.end(), cmp);
+
+    std::map<int,std::pair<Alignment*,float>> sortedAlns;
+    int n = numSamples();
+    double cumulativeProb = 0.0;
+    int rank = 0;
+    for (auto& it : v)
+        {
+        rank++;
+        float prob = (float)it.second / n;
+        cumulativeProb += prob;
+        if (cumulativeProb < 0.95)
+            {
+            sortedAlns.insert( std::make_pair(rank,std::make_pair(it.first,prob)) );
+            }
+        else
+            {
+            double lowerVal = cumulativeProb - prob;
+            double u = rv->uniformRv();
+            if (u < (0.95-lowerVal)/(cumulativeProb-lowerVal))
+                sortedAlns.insert( std::make_pair(rank,std::make_pair(it.first,prob)) );
+            break;
+            }
+        }
+    return sortedAlns;
+}
+
 void AlignmentDistribution::print(void) {
 
     print(true, nullptr);

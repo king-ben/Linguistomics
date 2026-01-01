@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
     // instantiate the tread pool
     ThreadPool threadPool;
     
-    // read the user settings and the JSON data object
+    // initialize the user settings and the JSON data object
     initialize(argc, argv);
     
     // instantiate the random number generator (32-bit Mersenne Twister)
@@ -37,7 +37,7 @@ int main(int argc, char* argv[]) {
     // print a farewell message
     printFarewell(&rng);
     
-    return 0;
+    return EXIT_SUCCESS;
 }
 
 void initialize(int argc, char* argv[]) {
