@@ -8,23 +8,66 @@ readonly namespace<Person> Reviewers {}
 
 // Use these functions
 // For example
-// #2025-12-19# ReviewComment(Comments.C5);
-//  ReviewNew {
-//    "new text"
-//  };
-//  ReviewOld {
-//    "old text";
-//  };
+// Paragraph {
+//   ReviewComment(Comments.C5);
+//   ReviewNew {
+//     "new text"
+//   };
+//   ReviewOld {
+//     "old text";
+//   };
+// };
 
-AssignedTo(Person p)     = {LinkTypes.Link to p};
-ReviewComment(Comment c) = {DocFields.Anchor(c.FactId); LinkTypes.Link to c; Span {TextColor: Colors.Blue; Icons.comment; c.Number; Space; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
-ReviewOld                = Span {/*TextHidden: not ShowReviewOld; */TextColor: Colors.Red; TextStrike: TextStrikes.Single};
-ReviewNew                = Span {TextColor: Colors.Blue};
 
-readonly Comment[] CommentList {
-  foreach (var c in attribute(Comments).Children)
-    c.Value.Init(c);
-   return Comments.ToSortedArray(false, @Comment.CompareName);
+AssignedTo(Person p) = {LinkTypes.Link to p};
+
+ReviewComment(Comment c) {
+  switch (System.ReviewMode) {
+    case ReviewModes.MarkupAll:
+    case ReviewModes.MarkupOriginal:
+    case ReviewModes.MarkupRevised:
+      return {DocFields.Anchor(c.FactId); Span {TextColor: Colors.Blue; Icons.comment; c.Number; Space; Tip: c; Action: new Action(ToSource, c, c.FactId)}};
+  }
+  return null;
+}
+
+ReviewOld {
+  switch (System.ReviewMode) {
+    case ReviewModes.Original:
+      return {};
+
+    case ReviewModes.Revised:
+      return null;
+
+    case ReviewModes.MarkupAll:
+    case ReviewModes.MarkupOriginal:
+      return Span {TextColor: Colors.Red; TextStrike: TextStrikes.Single};
+  }
+  return null;
+}
+
+ReviewNew {
+  switch (System.ReviewMode) {
+    case ReviewModes.Revised:
+      return {};
+
+    case ReviewModes.MarkupAll:
+    case ReviewModes.MarkupRevised:
+      return Span {TextColor: Colors.Blue};
+  }
+  return null;
+}
+
+ReviewNewBlock {
+  switch (System.ReviewMode) {
+    case ReviewModes.Revised:
+      return {};
+
+    case ReviewModes.MarkupAll:
+    case ReviewModes.MarkupRevised:
+      return Block {ParBackground: #F2F4FF#};
+  }
+  return null;
 }
 
 //======================================================================
@@ -155,15 +198,29 @@ class Comment: Fact {
     };
 
     if (HasAnchor) {
-      Paragraph {
-        Span {
-          TextColor: Colors.Blue;
-          "In paper";
-          Action: new Action(Actions.ToAnchor, FactId);
-        };
-      };
+      switch (System.ReviewMode) {
+        case ReviewModes.MarkupAll:
+        case ReviewModes.MarkupRevised:
+        case ReviewModes.MarkupOriginal:
+          Paragraph {
+            Span {
+              TextColor: Colors.Blue;
+              "In paper";
+              Action: new Action(Actions.ToAnchor, FactId);
+            };
+          };
+          break;
+      }
     }
   };
+}
+
+//======================================================================
+
+readonly Comment[] CommentList {
+  foreach (var c in attribute(Comments).Children)
+    c.Value.Init(c);
+   return Comments.ToSortedArray(false, @Comment.CompareName);
 }
 
 //======================================================================
@@ -184,32 +241,38 @@ class ReviewDocument: DocumentEntry {
       Name;
     };
 
-    foreach (var comment in CommentList)
-      comment.ShowReview(Style);
+    foreach (var comment in CommentList) {
+      if (not comment.NoAction)
+        comment.ShowReview(Style);
+    }    
   };
 }
 
 //======================================================================
 
 class RevisedDocument: StyleDocument {
-  var StyleDocument Manuscript;
-
-  Constructor(Guid id, name, StyleDocument doc) {
-    super.Constructor(id, name, doc.Content, doc.Style);
-    Manuscript = doc;
+  Constructor(Guid id, name, AuthoredContent content, ContentStyle style) {
+    super.Constructor(id, name, content, style);
   }
 
-  override GetDocument = super.GetDocument {
-    SectionNextPage;
-    Style.Heading1 {
-      "Comments and Responses";
-    };
+  override GetDocument {
+    var old = System.ReviewMode;
+    System.SetReviewMode(ReviewModes.MarkupAll);
+    var d = super.GetDocument;
+    System.SetReviewMode(old);
 
-    foreach (var c in CommentList) {
-      if (!c.NoAction)
-        c.ShowRevised(Style);
-    }
-  };
+    return d {
+      SectionNextPage;
+      Style.Heading1 {
+        "Comments and Responses";
+      };
+
+      foreach (var c in CommentList) {
+        if (!c.NoAction)
+          c.ShowRevised(Style);
+      }
+    };
+  }
 }
 
 //======================================================================

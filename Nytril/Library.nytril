@@ -1,4 +1,4 @@
-using Format, Units, Math, IO, LinkTypes, WorldLanguages;
+using Format, Units, IO, LinkTypes, WorldLanguages;
 
 //======================================================================
 
@@ -1074,8 +1074,8 @@ class ExperimentData {
 //======================================================================
 
 abstract class CountBase {
-  var                VFlags,
-                     MaxDigits;
+  var               VFlags,
+                    MaxDigits;
   var SegmentPart[] LegendSegments;
 
   Constructor(ExperimentData data) {
@@ -1231,7 +1231,7 @@ class PriorCount: CountBase {
         for (var j = 0; j < length; ++j) {
           if (i != j) {
             var pj = cognate.Words[j].Padded;
-            var ml = Min(pi.Length, pj.Length);
+            var ml = Math.Min(pi.Length, pj.Length);
             for (var index = 0; index < ml; ++index) {
               var si = pi[index];
               var sj = pj[index];
