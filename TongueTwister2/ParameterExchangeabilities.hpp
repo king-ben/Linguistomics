@@ -31,9 +31,6 @@ class ParameterExchangeabilities : public Parameter {
                                     // vectors (24 bytes each)
         std::vector<double>         rates[2];          // 48 bytes
         std::vector<double>         alpha;             // 24 bytes
-        
-                                    // flag checked rarely
-        bool                        isPriorFlat;       // 1 byte + 7 padding (acceptable at end)
 };
 
 #endif

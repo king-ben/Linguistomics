@@ -28,9 +28,6 @@ class ParameterFrequencies : public Parameter {
                                     // vectors (24 bytes each)
         std::vector<double>         freqs[2];          // 48 bytes
         std::vector<double>         alpha;             // 24 bytes
-        
-                                    // flag checked rarely
-        bool                        isPriorFlat;       // 1 byte (maybe add 7 bytes of padding?)
 };
 
 #endif

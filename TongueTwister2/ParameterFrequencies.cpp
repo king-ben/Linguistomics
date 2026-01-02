@@ -10,7 +10,6 @@ ParameterFrequencies::ParameterFrequencies(Model* m, RandomVariable* r, std::str
     alpha.resize(numStates);
     for (size_t i=0; i<numStates; i++)
         alpha[i] = 1.0;
-    isPriorFlat = true;
     
     freqs[0].resize(numStates);
     freqs[1].resize(numStates);
@@ -29,8 +28,6 @@ void ParameterFrequencies::keep(void) {
 
 double ParameterFrequencies::lnPriorProbability(void) {
 
-    if (isPriorFlat == true)
-        return 0.0;
     return Probability::Dirichlet::lnPdf(alpha, freqs[0]);
 }
 

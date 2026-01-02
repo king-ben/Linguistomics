@@ -12,7 +12,6 @@ ParameterExchangeabilities::ParameterExchangeabilities(Model* m, RandomVariable*
     alpha.resize(numRates);
     for (size_t i=0; i<numRates; i++)
         alpha[i] = 1.0;
-    isPriorFlat = true;
     
     rates[0].resize(numRates);
     rates[1].resize(numRates);
@@ -46,8 +45,6 @@ void ParameterExchangeabilities::keep(void) {
 
 double ParameterExchangeabilities::lnPriorProbability(void) {
 
-    if (isPriorFlat == true)
-        return 0.0;
     return Probability::Dirichlet::lnPdf(alpha, rates[0]);
 }
 
