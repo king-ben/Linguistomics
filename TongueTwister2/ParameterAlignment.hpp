@@ -4,6 +4,7 @@
 #include "json.hpp"
 #include "Parameter.hpp"
 class Alignment;
+class ParameterIndelRates;
 
 
 
@@ -31,6 +32,7 @@ class ParameterAlignment: public Parameter {
         size_t                          longestNameLength(void);
         
                                         // pointers accessed frequently (8-byte aligned)
+        ParameterIndelRates*            indelRates;
         Alignment*                      alignment[2];              // 16 bytes
         
                                         // size_t values (8-byte aligned)

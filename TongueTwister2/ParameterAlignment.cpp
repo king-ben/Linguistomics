@@ -1,12 +1,17 @@
 #include "Alignment.hpp"
 #include "BitMask.hpp"
+#include "Model.hpp"
 #include "Msg.hpp"
 #include "ParameterAlignment.hpp"
+#include "ParameterIndelRates.hpp"
 
 
 
-ParameterAlignment::ParameterAlignment(Model* m, RandomVariable* r, std::string n) : Parameter(m, r, n) {
+ParameterAlignment::ParameterAlignment(Model* m, RandomVariable* r, std::string n) : Parameter(m, r, n), indelRates(nullptr) {
 
+    indelRates = modelPtr->findParameter<ParameterIndelRates>();
+    if (indelRates == nullptr)
+        Msg::error("Could not find insertion/deletion parameter when instantiating alignment");
 }
 
 ParameterAlignment::~ParameterAlignment(void) {
@@ -178,7 +183,12 @@ void ParameterAlignment::keep(void) {
 
 double ParameterAlignment::lnPriorProbability(void) {
 
-    return 0.0;
+    int len = static_cast<int>(alignment[0]->getNumSites());
+    double lambda = indelRates->getInsertionRate();
+    double mu = indelRates->getDeletionRate();
+    double prob = lambda / mu;
+    double lnP = (len-1) * log(prob) + log(1.0-prob);
+    return lnP;
 }
 
 size_t ParameterAlignment::longestNameLength(void) {

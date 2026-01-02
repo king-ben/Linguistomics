@@ -28,17 +28,17 @@ Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p) : rng(r), m
     if (initializeStates() == false)
         Msg::error("Problem initializing the model states");
         
-    // initialize the alignment parameters
+    // initialize the insertion/deletion rates
+    if (initializeIndelRates() == false)
+        Msg::error("Problem initializing the indel rates");
+        
+    // initialize the alignment parameters (indel rates must be instantiated first)
     if (initializeAlignments() == false)
         Msg::error("Problem initializing the alignments");
         
     // initialize the tree parameter
     if (initializeTree() == false)
         Msg::error("Problem initalizing the tree");
-        
-    // initialize the insertion/deletion rates
-    if (initializeIndelRates() == false)
-        Msg::error("Problem initializing the indel rates");
         
     // initialize the substitution parameters and machinery for calculating transition probabilities
     if (initializeSubstitutionModel() == false)
