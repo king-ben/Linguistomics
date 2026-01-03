@@ -144,7 +144,7 @@ bool ParameterAlignment::initializeFromJson(nlohmann::json jsonObj, size_t ns, s
                 (*alignment[0])(n,j) = segInfo[j];
             }
         }
-    alignment[0]->setNumSites(numChar);
+    alignment[0]->setNumSegments(numChar);
     
     // check if the alignment is complete and if the taxa are in the correct order
     bool isCompletelySampled = true;
@@ -183,7 +183,7 @@ void ParameterAlignment::keep(void) {
 
 double ParameterAlignment::lnPriorProbability(void) {
 
-    int len = static_cast<int>(alignment[0]->getNumSites());
+    int len = static_cast<int>(alignment[0]->getNumSegments());
     double lambda = indelRates->getInsertionRate();
     double mu = indelRates->getDeletionRate();
     double prob = lambda / mu;
@@ -207,17 +207,17 @@ void ParameterAlignment::print(void) {
     std::cout << "   * " << name << std::endl;
     for (int idx=0; idx<1; idx++)
         {
-        std::cout << "     Address:         " << alignment[idx] << std::endl;
-        std::cout << "     Num. Taxa:       " << alignment[idx]->getNumTaxa() << std::endl;
-        std::cout << "     Num. Sites:      " << alignment[idx]->getNumSites() << std::endl;
-        std::cout << "     Max. Num. Sites: " << alignment[idx]->getMaximumNumberOfSites()-1 << std::endl;
+        std::cout << "     Address:            " << alignment[idx] << std::endl;
+        std::cout << "     Num. Taxa:          " << alignment[idx]->getNumTaxa() << std::endl;
+        std::cout << "     Num. Segments:      " << alignment[idx]->getNumSegments() << std::endl;
+        std::cout << "     Max. Num. Segments: " << alignment[idx]->getMaximumNumberOfSegments()-1 << std::endl;
         size_t longLen = longestNameLength();
         for (size_t i=0; i<alignment[idx]->getNumTaxa(); i++)
             {
             std::cout << "     " << taxonNames[i] << " ";
             for (size_t j=0; j<longLen-taxonNames[i].length(); j++)
                 std::cout << " ";
-            for (size_t j=0; j<alignment[idx]->getNumSites(); j++)
+            for (size_t j=0; j<alignment[idx]->getNumSegments(); j++)
                 {
                 if (static_cast<size_t>((*alignment[idx])(i,j)) == numStates)
                     std::cout << std::setw(3) << "-";

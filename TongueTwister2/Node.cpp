@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Msg.hpp"
 #include "Node.hpp"
 
 
@@ -25,10 +26,7 @@ void Node::addDescendant(Node* p) {
     else if (right == nullptr)
         right = p;
     else
-        {
-        // Error: trying to add more than 2 children to a binary tree node
-        std::cerr << "Error: Node::addDescendant - node already has 2 children" << std::endl;
-        }
+        Msg::error("Error: Node::addDescendant - node already has 2 children");
 }
 
 void Node::clean(void) {

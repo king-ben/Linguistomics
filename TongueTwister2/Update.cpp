@@ -21,8 +21,8 @@ void Update::clearDependencyFlags(void) {
 
 double Update::priorSampleProb(double power) {
 
-    // Hill, A. V. 1910. The possible effects of the aggregation of the molecules of 
-    //   hæmoglobin on its dissociation curves. Journal of Physiology, 40, iv–vii.
+    /* Hill, A. V. 1910. The possible effects of the aggregation of the molecules of 
+          hæmoglobin on its dissociation curves. Journal of Physiology, 40, iv–vii. */
 
     double h = 4.0;       // cliffiness (large h -> steeper cliff)
     double beta50 = 0.02; // cliff position (at what power is the probability 50/50)

@@ -177,7 +177,7 @@ void BranchMapping::getDescendantLeaves(Node* p, std::vector<std::string>& leave
         }
     else
         {
-        for (int i=0; i<p->numDescendants(); i++) 
+        for (size_t i=0; i<p->numDescendants(); i++) 
             { 
             Node* d = p->getDescendant(i); 
             getDescendantLeaves(d, leaves);
@@ -212,7 +212,7 @@ Node* BranchMapping::findMRCA(Tree* t, std::vector<std::string>& taxa) {
         else
             {
             int count = 0;
-            for (int i=0; i<p->numDescendants(); i++) 
+            for (size_t i=0; i<p->numDescendants(); i++) 
                 { 
                 Node* d = p->getDescendant(i); 
                 count += taxaCount[d];

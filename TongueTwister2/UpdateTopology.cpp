@@ -106,7 +106,7 @@ double UpdateTopology::update(void) {
     
     // find c: v's other descendant (not u)
     Node* c = nullptr;
-    for (int i=0; i<v->numDescendants(); i++)
+    for (size_t i=0; i<v->numDescendants(); i++)
         {
         Node* des = v->getDescendant(i);
         if (des != u)

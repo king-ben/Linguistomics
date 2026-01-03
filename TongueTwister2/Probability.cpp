@@ -32,8 +32,7 @@ double Beta::pdf(double a, double b, double x) noexcept {
 
 double Beta::lnPdf(double a, double b, double x) noexcept {
 
-    return (Helper::lnGamma(a + b) - Helper::lnGamma(a) - Helper::lnGamma(b)) 
-    + (a - 1.0) * std::log(x) + (b - 1.0) * std::log(1.0 - x);
+    return (Helper::lnGamma(a + b) - Helper::lnGamma(a) - Helper::lnGamma(b)) + (a - 1.0) * std::log(x) + (b - 1.0) * std::log(1.0 - x);
 }
 
 double Beta::cdf(double a, double b, double x) noexcept {
@@ -53,7 +52,7 @@ double Beta::quantile(double alpha, double beta, double x) noexcept {
     bool directionUp = (curFraction <= x);
     int nswitches = 0;
     
-    for (int i = 0; i < 1000 && nswitches <= 20; i++)
+    for (int i=0; i<1000 && nswitches<=20; i++)
         {
         curFraction = Helper::incompleteBeta(alpha, beta, curPos);
         
@@ -100,7 +99,7 @@ double ChiSquare::rv(RandomVariable* rng, double v) {
         {
         // generate via sum of squared standard normals
         double x2 = 0.0;
-        for (int i = 0; i < n; i++)
+        for (int i=0; i<n; i++)
             {
             double x = Normal::rv(rng);
             x2 += x * x;
@@ -195,8 +194,7 @@ double ChiSquare::quantile(double prob, double v) noexcept {
         double s5 = (84.0 + 264.0 * a + c * (175.0 + 606.0 * a)) / 2520.0;
         double s6 = (120.0 + c * (346.0 + 127.0 * c)) / 5040.0;
         ch += t * (1 + 0.5 * t * s1 - b * c * (s1 - b * (s2 - b * (s3 - b * (s4 - b * (s5 - b * s6))))));
-        }
-    while (std::fabs(q / ch - 1.0) > e);
+        } while (std::fabs(q / ch - 1.0) > e);
     
     return ch;
 }
@@ -218,15 +216,15 @@ double Dirichlet::pdf(const std::vector<double>& a, const std::vector<double>& z
         }
     
     double aSum = 0.0;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         aSum += a[i];
     
     double aProd = 1.0;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         aProd *= Helper::gamma(a[i]);
     
     double pdf = Helper::gamma(aSum) / aProd;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         pdf *= std::pow(z[i], a[i] - 1.0);
     
     return pdf;
@@ -237,13 +235,13 @@ double Dirichlet::lnPdf(const std::vector<double>& a, const std::vector<double>&
     size_t n = a.size();
     
     double alpha0 = 0.0;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         alpha0 += a[i];
     
     double lnP = Helper::lnGamma(alpha0);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         lnP -= Helper::lnGamma(a[i]);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         lnP += (a[i] - 1.0) * std::log(z[i]);
     
     return lnP;
@@ -255,12 +253,12 @@ bool Dirichlet::rv(RandomVariable* rng, const std::vector<double>& a, std::vecto
     size_t n = a.size();
     double sum = 0.0;
     
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
         z[i] = Helper::rndGamma(rng, a[i], err);
         sum += z[i];
         }
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         z[i] /= sum;
     
     return err;
@@ -321,25 +319,25 @@ void Gamma::discretization(std::vector<double>& catRate, double a, double b, siz
     if (median)
         {
         double interval = 1.0 / (2.0 * nCats);
-        for (size_t i = 0; i < nCats; i++)
+        for (size_t i=0; i<nCats; i++)
             catRate[i] = ChiSquare::quantile((i * 2.0 + 1.0) * interval, 2.0 * a) / (2.0 * b);
         double t = 0.0;
-        for (size_t i = 0; i < nCats; i++)
+        for (size_t i=0; i<nCats; i++)
             t += catRate[i];
-        for (size_t i = 0; i < nCats; i++)
+        for (size_t i=0; i<nCats; i++)
             catRate[i] *= factor / t;
         }
     else
         {
-        for (size_t i = 0; i < nCats - 1; i++)
+        for (size_t i=0; i<nCats-1; i++)
             catRate[i] = ChiSquare::quantile((i + 1.0) / nCats, 2.0 * a) / (2.0 * b);
         double lnGammaValue = Helper::lnGamma(a + 1.0);
-        for (size_t i = 0; i < nCats - 1; i++)
+        for (size_t i=0; i<nCats-1; i++)
             catRate[i] = Helper::incompleteGamma(catRate[i] * b, a + 1.0, lnGammaValue);
-        catRate[nCats - 1] = 1.0;
-        for (int i = static_cast<int>(nCats - 1); i > 0; i--)
+        catRate[nCats-1] = 1.0;
+        for (int i=static_cast<int>(nCats-1); i>0; i--)
             {
-            catRate[i] -= catRate[i - 1];
+            catRate[i] -= catRate[i-1];
             catRate[i] *= factor;
             }
         catRate[0] *= factor;
@@ -494,7 +492,7 @@ double Helper::chebyshevEval(double x, const double* a, const int n) noexcept {
     double twox = x * 2.0;
     double b0 = 0.0, b1 = 0.0, b2 = 0.0;
     
-    for (int i = 1; i <= n; i++)
+    for (int i=1; i<=n; i++)
         {
         b2 = b1;
         b1 = b0;
@@ -677,8 +675,7 @@ double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noe
             rn += 1.0;
             term *= x / rn;
             gin += term;
-            }
-        while (term > accurate);
+            } while (term > accurate);
         return gin * factor / alpha;
         }
     
@@ -708,12 +705,12 @@ double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noe
             gin = rn;
             }
         
-        for (int i = 0; i < 4; i++)
+        for (int i=0; i<4; i++)
             pn[i] = pn[i + 2];
         
         if (std::fabs(pn[4]) >= overflow)
             {
-            for (int i = 0; i < 4; i++)
+            for (int i=0; i<4; i++)
                 pn[i] /= overflow;
             }
         }
@@ -722,13 +719,13 @@ double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noe
 void Helper::normalize(std::vector<double>& vec) {
 
     double sum = 0.0;
-    for (size_t i = 0; i < vec.size(); i++)
+    for (size_t i=0; i<vec.size(); i++)
         {
         if (vec[i] < 0.0)
             Msg::error("Cannot normalize a vector with negative elements");
         sum += vec[i];
         }
-    for (size_t i = 0; i < vec.size(); i++)
+    for (size_t i=0; i<vec.size(); i++)
         vec[i] /= sum;
 }
 
@@ -737,7 +734,7 @@ void Helper::normalize(std::vector<double>& vec, double min) {
     int numTooSmall = 0;
     double sum = 0.0;
     
-    for (size_t i = 0; i < vec.size(); i++)
+    for (size_t i=0; i<vec.size(); i++)
         {
         if (vec[i] < min)
             numTooSmall++;
@@ -746,7 +743,7 @@ void Helper::normalize(std::vector<double>& vec, double min) {
         }
     
     double factor = (1.0 - numTooSmall * min) / sum;
-    for (size_t i = 0; i < vec.size(); i++)
+    for (size_t i=0; i<vec.size(); i++)
         {
         if (vec[i] < min)
             vec[i] = min;

@@ -61,7 +61,7 @@ void MathCache::backSubstitutionRow(DoubleMatrix& U, double* b) {
     *bp-- /= *u;
 
 
-    for (int i = n - 2; i >= 0; i--)
+    for (int i=n-2; i>=0; i--)
         {
         u     -= n;
         urow  -= n;
@@ -88,7 +88,7 @@ void MathCache::forwardSubstitutionRow(DoubleMatrix& L, double* const b) {
     auto bp     = b;
 
     *bp++ /= *lrow;
-    for (size_t i = 1; i < lrows; i++)
+    for (size_t i=1; i<lrows; i++)
         {
         lrow  += lcols;
         ldiag += lcols1;
@@ -111,15 +111,15 @@ void MathCache::computeLandU(DoubleMatrix& A, DoubleMatrix& L, DoubleMatrix& U) 
     auto ajj    = abegin;
     auto akj0   = abegin;
 
-    for (size_t j = 0; j < n; j++)
+    for (size_t j=0; j<n; j++)
         {
         auto akj = akj0;
-        for (size_t k = 0; k < j; k++, akj += n)
+        for (size_t k=0; k<j; k++, akj += n)
             {
             auto k1  = k + 1;
             auto aij = A.getPointer(k1, j);
             auto aik = A.getPointer(k1, k);
-            for (size_t i = k1; i < j; i++)
+            for (size_t i=k1; i<j; i++)
                 {
                 *aij -= *aik * *akj;
                 aij  += n;
@@ -128,11 +128,11 @@ void MathCache::computeLandU(DoubleMatrix& A, DoubleMatrix& L, DoubleMatrix& U) 
             }
 
         akj = akj0;
-        for (size_t k = 0; k < j; k++, akj += n)
+        for (size_t k=0; k<j; k++, akj += n)
             {   
             auto aij = ajj;
             auto aik = A.getPointer(j, k);
-            for (size_t i = j; i < n; i++)
+            for (size_t i=j; i<n; i++)
                 {
                 *aij -= *aik * *akj;
                 aij  += n;
@@ -154,9 +154,9 @@ void MathCache::computeLandU(DoubleMatrix& A, DoubleMatrix& L, DoubleMatrix& U) 
     auto u = U.begin();
     auto l = L.begin();
     auto a = abegin;
-    for (size_t row = 0; row < n; row++)
+    for (size_t row=0; row<n; row++)
         {
-        for (size_t col = 0; col < n; col++)
+        for (size_t col=0; col<n; col++)
             {
             if (row <= col)
                 {
@@ -190,7 +190,7 @@ void MathCache::gaussianElimination(DoubleMatrix& A, DoubleMatrix& B, DoubleMatr
 
     for (auto xrow = X.begin(), brow = B.begin(), xend = xrow + n; xrow < xend; ++xrow, ++brow)
         {
-        for (auto bp = b, br = brow; bp < bend; ++bp, br += n)
+        for (auto bp=b, br=brow; bp<bend; ++bp, br += n)
             *bp = *br;
 
         // Answer of Ly = b (which is solving for y) is copied into b.
@@ -200,7 +200,7 @@ void MathCache::gaussianElimination(DoubleMatrix& A, DoubleMatrix& B, DoubleMatr
         //   is also copied into b.
         backSubstitutionRow(*s, b);
 
-        for (auto bp = b, xr = xrow; bp < bend; ++bp, xr += n)
+        for (auto bp=b, xr=xrow; bp<bend; ++bp, xr += n)
             *xr = *bp;
         }
 
@@ -296,7 +296,6 @@ void MathCache::power(DoubleMatrix& m, int power) {
 
           popMatrix(2);
           break;
-
         }
     }
 }

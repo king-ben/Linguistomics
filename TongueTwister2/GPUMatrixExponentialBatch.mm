@@ -40,6 +40,7 @@ struct WorkingBuffers {
     std::atomic<bool> inUse{false};
     
     void resize(size_t nn, size_t n) {
+    
         if (lastSize != nn) 
             {
             A.resize(nn);
@@ -65,33 +66,32 @@ class BufferPool {
     
     public:
         WorkingBuffers* acquire(void) {
+        
             // try to find a free buffer
-            for (size_t i = 0; i < MAX_BUFFERS; i++) 
+            for (size_t i=0; i<MAX_BUFFERS; i++) 
                 {
                 bool expected = false;
                 if (buffers[i].inUse.compare_exchange_strong(expected, true, std::memory_order_acquire, std::memory_order_relaxed)) 
-                    {
                     return &buffers[i];
-                    }
                 }
             // all buffers in use - spin on first buffer
             while (true) 
                 {
                 bool expected = false;
                 if (buffers[0].inUse.compare_exchange_strong(expected, true, std::memory_order_acquire, std::memory_order_relaxed)) 
-                    {
                     return &buffers[0];
-                    }
                 std::this_thread::yield();
                 }
         }
         
         void release(WorkingBuffers* buf) {
+        
             buf->inUse.store(false, std::memory_order_release);
         }
 };
 
 static BufferPool& getBufferPool(void) {
+
     static BufferPool pool;
     return pool;
 }
@@ -118,15 +118,15 @@ static void computeSingleExponentialAccelerate(const double* Q, size_t n, double
     std::vector<__LAPACK_int>& ipiv = buf->ipiv;
     
     // A = Q * t 
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         A[i] = Q[i] * t;
     
     // compute infinity norm
     double normA = 0.0;
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
         double rowSum = 0.0;
-        for (size_t j = 0; j < n; j++)
+        for (size_t j=0; j<n; j++)
             rowSum += std::fabs(A[i * n + j]);
         if (rowSum > normA)
             normA = rowSum;
@@ -148,36 +148,36 @@ static void computeSingleExponentialAccelerate(const double* Q, size_t n, double
     
     // build U polynomial
     std::fill(temp1.begin(), temp1.end(), 0.0);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         temp1[i * n + i] = PADE_B[7];
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         temp1[i] += PADE_B[9] * A2[i] + PADE_B[11] * A4[i] + PADE_B[13] * A6[i];
     
     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, N, N, N, 1.0, A6.data(), N, temp1.data(), N, 0.0, temp2.data(), N);
     
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         temp2[i] += PADE_B[5] * A4[i] + PADE_B[3] * A2[i];
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         temp2[i * n + i] += PADE_B[1];
     
     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, N, N, N, 1.0, A.data(), N, temp2.data(), N, 0.0, U.data(), N);
     
     // build V polynomial 
     std::fill(temp1.begin(), temp1.end(), 0.0);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         temp1[i * n + i] = PADE_B[6];
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         temp1[i] += PADE_B[8] * A2[i] + PADE_B[10] * A4[i] + PADE_B[12] * A6[i];
     
     cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, N, N, N, 1.0, A6.data(), N, temp1.data(), N, 0.0, V.data(), N);
     
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         V[i] += PADE_B[4] * A4[i] + PADE_B[2] * A2[i];
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         V[i * n + i] += PADE_B[0];
     
     // solve (V - U) * P = (V + U) using LAPACK
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         {
         temp1[i] = V[i] - U[i];
         temp2[i] = V[i] + U[i];
@@ -187,8 +187,8 @@ static void computeSingleExponentialAccelerate(const double* Q, size_t n, double
     __LAPACK_int LN = static_cast<__LAPACK_int>(n);
     
     // transpose for column-major LAPACK
-    for (size_t i = 0; i < n; i++)
-        for (size_t j = 0; j < n; j++)
+    for (size_t i=0; i<n; i++)
+        for (size_t j=0; j<n; j++)
             {
             temp1T[j * n + i] = temp1[i * n + j];
             temp2T[j * n + i] = temp2[i * n + j];
@@ -199,12 +199,12 @@ static void computeSingleExponentialAccelerate(const double* Q, size_t n, double
         dgetrs_("N", &LN, &LN, temp1T.data(), &LN, ipiv.data(), temp2T.data(), &LN, &info);
     
     // transpose back to row-major
-    for (size_t i = 0; i < n; i++)
-        for (size_t j = 0; j < n; j++)
+    for (size_t i=0; i<n; i++)
+        for (size_t j=0; j<n; j++)
             P[i * n + j] = temp2T[j * n + i];
     
     // squaring phase
-    for (int sq = 0; sq < s; sq++)
+    for (int sq=0; sq<s; sq++)
         {
         cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
                     N, N, N, 1.0, P, N, P, N, 0.0, temp1.data(), N);
@@ -212,7 +212,7 @@ static void computeSingleExponentialAccelerate(const double* Q, size_t n, double
         }
     
     // absolute value cleanup
-    for (size_t i = 0; i < nn; i++)
+    for (size_t i=0; i<nn; i++)
         P[i] = std::fabs(P[i]);
 }
 
@@ -225,6 +225,7 @@ class MatrixExponentialTask : public ThreadTask {
                             MatrixExponentialTask(void) : Q(nullptr), n(0), t(0), P(nullptr) {}
         
         void                set(const double* qMatrix, size_t dim, double branchLength, double* output) {
+        
                                 Q = qMatrix;
                                 n = dim;
                                 t = branchLength;
@@ -232,6 +233,7 @@ class MatrixExponentialTask : public ThreadTask {
                             }
         
         void                run(void) override {
+        
                                 BufferPool& pool = getBufferPool();
                                 WorkingBuffers* buf = pool.acquire();
                                 computeSingleExponentialAccelerate(Q, n, t, P, buf);
@@ -245,8 +247,8 @@ class MatrixExponentialTask : public ThreadTask {
         double*             P;
 };
 
-/* Pool of reusable MatrixExponentialTask objects.
-   Avoids allocating new task objects for every matrix exponential. */
+/* Pool of reusable MatrixExponentialTask objects, which avoids
+   allocating new task objects for every matrix exponential. */
 class TaskPool {
 
     static constexpr size_t MAX_TASKS = 1024;
@@ -255,10 +257,12 @@ class TaskPool {
     
     public:
         void reset(void) {
+        
             nextIndex.store(0, std::memory_order_relaxed);
         }
         
-        MatrixExponentialTask* getTask() {
+        MatrixExponentialTask* getTask(void) {
+        
             size_t idx = nextIndex.fetch_add(1, std::memory_order_relaxed);
             if (idx >= MAX_TASKS) {
                 // overflow - this shouldn't happen with reasonable batch sizes
@@ -269,6 +273,7 @@ class TaskPool {
 };
 
 static TaskPool& getTaskPool(void) {
+
     static TaskPool pool;
     return pool;
 }
@@ -346,7 +351,6 @@ void GPUMatrixExponentialBatch::initialize(void) {
         commandQueue = (__bridge_retained void*)queue;
         
         // GPU is available for future use
-        // currently using optimized CPU path which is excellent on Apple Silicon 
         gpuAvailable = true;
         
         std::cout << "   * GPU batch: Initialized with device " <<  deviceName << std::endl;
@@ -381,11 +385,7 @@ void GPUMatrixExponentialBatch::computeBatch(const DoubleMatrix& Q, const std::v
     size_t n = Q.getNumRows();
     const double* qData = Q.begin();
     
-    /* Use the existing ThreadPool for parallel computation.
-       This avoids creating/destroying threads on every call,
-       which was causing heap fragmentation on Intel Macs.
-       
-       Each task acquires a working buffer from the static pool,
+    /* Each task acquires a working buffer from the static pool,
        computes one matrix exponential, and releases the buffer. */
     
     if (pool == nullptr || count < 4)
@@ -400,7 +400,7 @@ void GPUMatrixExponentialBatch::computeBatch(const DoubleMatrix& Q, const std::v
     taskPool.reset();
     
     // create and submit tasks
-    for (size_t i = 0; i < count; i++)
+    for (size_t i=0; i<count; i++)
         {
         MatrixExponentialTask* task = taskPool.getTask();
         task->set(qData, n, branchLengths[i], outputs[i]->begin());
@@ -413,7 +413,7 @@ void GPUMatrixExponentialBatch::computeBatch(const DoubleMatrix& Q, const std::v
 
 void GPUMatrixExponentialBatch::computeBatch(const DoubleMatrix& Q, const std::vector<double>& branchLengths, std::vector<DoubleMatrix*>& outputs) {
 
-    // legacy interface - single-threaded
+    // single-threaded
     size_t n = Q.getNumRows();
     computeSingleThreaded(Q.begin(), n, branchLengths, outputs);
 }
@@ -423,7 +423,7 @@ void GPUMatrixExponentialBatch::computeSingleThreaded(const double* Q, size_t n,
     BufferPool& pool = getBufferPool();
     WorkingBuffers* buf = pool.acquire();
     
-    for (size_t i = 0; i < branchLengths.size(); i++)
+    for (size_t i=0; i<branchLengths.size(); i++)
         computeSingleExponentialAccelerate(Q, n, branchLengths[i], outputs[i]->begin(), buf);
     
     pool.release(buf);

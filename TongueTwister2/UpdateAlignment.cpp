@@ -35,7 +35,7 @@ UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment
     
     // set maximum dimensions
     Alignment* aln = myParm->getAlignment(0);
-    maxLength = static_cast<int>(aln->getMaximumNumberOfSites());
+    maxLength = static_cast<int>(aln->getMaximumNumberOfSegments());
     maxUnalignDimension = 17;
     
     // allocate profile array: profile[nodeIndex][taxonInProfile][site]
@@ -687,7 +687,7 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
     // get alignments
     Alignment* curAlignment = myParm->getAlignment(0);
     Alignment* oldAlignment = myParm->getAlignment(1);
-    int numSites = static_cast<int>(curAlignment->getNumSites());
+    int numSegments = static_cast<int>(curAlignment->getNumSegments());
     
     tree = treeParm->getTree(taxonMask);
     const std::vector<Node*>& postOrder = tree->getPostOrder();
@@ -706,10 +706,10 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
         
         // choose region to realign using geometric distribution
         len = 1;
-        while (len < numSites && rng->uniformRv() < extProb)
+        while (len < numSegments && rng->uniformRv() < extProb)
             len++;
-        //pos = rv->uniformRvInt(numSites - len + 1);
-        pos = static_cast<int>(rng->uniformRv() * (numSites - len + 1));
+        //pos = rv->uniformRvInt(numSegments - len + 1);
+        pos = static_cast<int>(rng->uniformRv() * (numSegments - len + 1));
         
         // reset profile dimensions
         for (int i=0; i<numNodes; i++)
@@ -903,23 +903,23 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
         len2 = xProfile[rootIdx];
         
         // build new alignment
-        int newNumSites = numSites + len2 - len;
+        int newNumSegments = numSegments + len2 - len;
         
         // shift suffix if needed
         if (len2 < len)
             {
-            for (int i=pos+len; i<numSites; i++)
+            for (int i=pos+len; i<numSegments; i++)
                 for (int j=0; j<numTaxa; j++)
                     (*curAlignment)(j, i+len2-len) = (*curAlignment)(j, i);
             }
         else if (len2 > len)
             {
-            for (int i=numSites-1; i>=pos+len; i--)
+            for (int i=numSegments-1; i>=pos+len; i--)
                 for (int j=0; j<numTaxa; j++)
                     (*curAlignment)(j, i+len2-len) = (*curAlignment)(j, i);
             }
         
-        curAlignment->setNumSites(newNumSites);
+        curAlignment->setNumSegments(newNumSegments);
         
         // copy new aligned region from root profile
         for (int i=pos; i<pos+len2; i++)
@@ -997,14 +997,14 @@ double UpdateAlignment::updateFromPrior(void) {
 
 double UpdateAlignment::realignFull(void) {
 
-    // Realign the entire alignment by using extensionProb = 1.0
-    // This ensures len = numSites and pos = 0, so all sites are realigned.
-    // This method is intended for use by UpdateTopology to jointly update
-    // the tree topology and all alignments together.
-    // 
-    // Note: This does NOT call setDependants() - the caller (UpdateTopology)
-    // is responsible for managing dependencies since it's updating multiple
-    // parameters together.
+    /* Realign the entire alignment by using extensionProb = 1.0
+       This ensures len = numSegments and pos = 0, so all segments are realigned.
+       This method is intended for use by UpdateTopology to jointly update
+       the tree topology and all alignments together.
+      
+       Note: This does NOT call setDependants() - the caller (UpdateTopology)
+       is responsible for managing dependencies since it's updating multiple
+       parameters together. */
     
     return propose(1.0, false);
 }

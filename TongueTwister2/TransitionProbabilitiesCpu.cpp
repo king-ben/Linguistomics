@@ -21,8 +21,8 @@ TransitionProbabilitiesCpu::TransitionProbabilitiesCpu(ThreadPool* p, ParameterT
     pool(p),
     myTree(t),
     subModel(sm),
-    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     map(nullptr),
+    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     calculatorPool(nullptr),
     calculatorPoolCapacity(0),
     calculatorPoolSize(0),
@@ -74,7 +74,7 @@ void TransitionProbabilitiesCpu::computeDirtyMatrices(void) {
         if (batchSize > MAX_BATCH_SIZE)
             batchSize = MAX_BATCH_SIZE;
         
-        for (size_t i = 0; i < batchSize; i++)
+        for (size_t i=0; i<batchSize; i++)
             {
             size_t idx = processed + i;
             double branchLength = map->getDirtyBranchLength(idx);
@@ -111,7 +111,7 @@ void TransitionProbabilitiesCpu::ensureCalculatorPoolCapacity(size_t n) {
         calculatorPoolCapacity = newCapacity;
         }
     
-    for (size_t i = calculatorPoolSize; i < n; i++)
+    for (size_t i=calculatorPoolSize; i<n; i++)
         calculatorPool[i] = new TransitionProbabilityCalculator(subModel);
     
     calculatorPoolSize = n;
@@ -139,15 +139,12 @@ void TransitionProbabilitiesCpu::shrinkCalculatorPoolIfNeeded(void) {
     if (calculatorPoolSize > targetSize && calculatorPoolSize > targetSize + targetSize / 4)
         {
         // delete excess calculators (each has a MathCache with 16 matrices)
-        for (size_t i = targetSize; i < calculatorPoolSize; i++)
+        for (size_t i=targetSize; i<calculatorPoolSize; i++)
             {
             delete calculatorPool[i];
             calculatorPool[i] = nullptr;
             }
         calculatorPoolSize = targetSize;
-        
-        // Note: We keep the pointer array at current capacity to avoid reallocation.
-        // The memory savings come from deleting the calculators and their MathCaches.
         }
 }
 
@@ -264,7 +261,7 @@ void TransitionProbabilitiesCpu::updateAllBranches(void) {
     std::vector<Tree*> allTrees;
     myTree->getTrees(allTrees);
         
-    for (size_t treeIdx = 0; treeIdx < allTrees.size(); treeIdx++)
+    for (size_t treeIdx=0; treeIdx<allTrees.size(); treeIdx++)
         {
         Tree* t = allTrees[treeIdx];
         const std::vector<Node*>& dp = t->getPostOrder();

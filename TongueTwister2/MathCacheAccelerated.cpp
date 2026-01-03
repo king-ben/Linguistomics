@@ -23,8 +23,7 @@ MathCacheAccelerated::~MathCacheAccelerated(void) {
 void MathCacheAccelerated::blasMultiply(DoubleMatrix& A, DoubleMatrix& B, DoubleMatrix& C) {
 
     int n = static_cast<int>(A.getNumRows());
-    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                n, n, n, 1.0, A.begin(), n, B.begin(), n, 0.0, C.begin(), n);
+    cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans, n, n, n, 1.0, A.begin(), n, B.begin(), n, 0.0, C.begin(), n);
 }
 
 double MathCacheAccelerated::infinityNorm(DoubleMatrix& A) {
@@ -32,10 +31,10 @@ double MathCacheAccelerated::infinityNorm(DoubleMatrix& A) {
     size_t n = A.getNumRows();
     double maxSum = 0.0;
     
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
         double rowSum = 0.0;
-        for (size_t j = 0; j < n; j++)
+        for (size_t j=0; j<n; j++)
             rowSum += std::fabs(A(i, j));
         if (rowSum > maxSum)
             maxSum = rowSum;
@@ -78,9 +77,9 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
     // temp1 = b13*A6 + b11*A4 + b9*A2 + b7*I
     temp1->setIdentity();
     temp1->multiply(PADE_B[7]);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
+        for (size_t j=0; j<n; j++)
             {
             (*temp1)(i,j) += PADE_B[9] * (*A2)(i,j) + PADE_B[11] * (*A4)(i,j) + PADE_B[13] * (*A6)(i,j);
             }
@@ -90,9 +89,9 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
     blasMultiply(*A6, *temp1, *temp2);
     
     // temp2 += b5*A4 + b3*A2 + b1*I
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
+        for (size_t j=0; j<n; j++)
             {
             (*temp2)(i,j) += PADE_B[5] * (*A4)(i,j) + PADE_B[3] * (*A2)(i,j);
             }
@@ -105,31 +104,27 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
     // temp1 = b12*A6 + b10*A4 + b8*A2 + b6*I
     temp1->setIdentity();
     temp1->multiply(PADE_B[6]);
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
-            {
+        for (size_t j=0; j<n; j++)
             (*temp1)(i,j) += PADE_B[8] * (*A2)(i,j) + PADE_B[10] * (*A4)(i,j) + PADE_B[12] * (*A6)(i,j);
-            }
         }
     
     // V = A6 * temp1
     blasMultiply(*A6, *temp1, *V);
     
     // V += b4*A4 + b2*A2 + b0*I
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
-            {
+        for (size_t j=0; j<n; j++)
             (*V)(i,j) += PADE_B[4] * (*A4)(i,j) + PADE_B[2] * (*A2)(i,j);
-            }
         (*V)(i,i) += PADE_B[0];
         }
     
     // compute V-U and V+U for solve
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
+        for (size_t j=0; j<n; j++)
             {
             double u = (*U)(i,j);
             double v = (*V)(i,j);
@@ -142,19 +137,17 @@ void MathCacheAccelerated::computeMatrixExponential(const DoubleMatrix& Q, doubl
     gaussianElimination(*temp1, *temp2, P);
     
     // squaring phase: P = P^(2^s) 
-    for (int sq = 0; sq < s; sq++)
+    for (int sq=0; sq<s; sq++)
         {
         blasMultiply(P, P, *temp1);
         P.copy(*temp1);
         }
     
     // absolute value cleanup
-    for (size_t i = 0; i < n; i++)
+    for (size_t i=0; i<n; i++)
         {
-        for (size_t j = 0; j < n; j++)
-            {
+        for (size_t j=0; j<n; j++)
             P(i,j) = std::fabs(P(i,j));
-            }
         }
     
     // release working matrices

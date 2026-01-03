@@ -313,7 +313,7 @@ void McmcOutput::writeAlignmentSample(int alnIdx) {
     
     Alignment* a = aln->getAlignment(0);
     int numTaxa = static_cast<int>(a->getNumTaxa());
-    int numSites = static_cast<int>(a->getNumSites());
+    int numSegments = static_cast<int>(a->getNumSegments());
     int gapCode = static_cast<int>(aln->getNumStates());
     const std::vector<std::string>& taxonNames = aln->getTaxonNames();
     size_t longestName = 0;
@@ -330,7 +330,7 @@ void McmcOutput::writeAlignmentSample(int alnIdx) {
         for (size_t j=0; j<longestName-taxonNames[i].length(); j++)
             fprintf(f, " ");
         fprintf(f, "\"Segments\": [");
-        for (int j=0; j<numSites; j++)
+        for (int j=0; j<numSegments; j++)
             {
             if (j > 0)
                 fprintf(f, ", ");
@@ -382,7 +382,7 @@ void McmcOutput::writeNewickNode(FILE* f, Node* p, Node* root) {
         {
         fprintf(f, "(");
         bool first = true;
-        for (int i=0; i<p->numDescendants(); i++)
+        for (size_t i=0; i<p->numDescendants(); i++)
             {
             Node* d = p->getDescendant(i);
             if (first == false)

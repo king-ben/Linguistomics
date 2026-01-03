@@ -4,19 +4,19 @@
 
 
 
-Alignment::Alignment(const Alignment& a) : IntMatrix(a.numTaxa, a.maxNumSites) {
+Alignment::Alignment(const Alignment& a) : IntMatrix(a.numTaxa, a.maxNumSegments) {
 
     this->numTaxa = a.numTaxa;
-    this->numSites = a.numSites;
-    this->maxNumSites = a.maxNumSites;
+    this->numSegments = a.numSegments;
+    this->maxNumSegments = a.maxNumSegments;
     IntMatrix::copy(a);
 }
 
 Alignment::Alignment(size_t nr, size_t maxNs) : IntMatrix(nr, maxNs) {
 
     numTaxa = nr;
-    numSites = 0;
-    maxNumSites = maxNs;
+    numSegments = 0;
+    maxNumSegments = maxNs;
 }
 
 Alignment& Alignment::operator=(const Alignment& rhs) {
@@ -24,8 +24,8 @@ Alignment& Alignment::operator=(const Alignment& rhs) {
     if (this != &rhs)
         {
         numTaxa = rhs.numTaxa;
-        numSites = rhs.numSites;
-        maxNumSites = rhs.maxNumSites;
+        numSegments = rhs.numSegments;
+        maxNumSegments = rhs.maxNumSegments;
         IntMatrix::copy(rhs);
         }
     return *this;
@@ -33,27 +33,27 @@ Alignment& Alignment::operator=(const Alignment& rhs) {
 
 bool Alignment::operator==(const Alignment& m) const {
 
-    if (numRows != m.numRows || numCols != m.numCols || numSites != m.numSites)
+    if (numRows != m.numRows || numCols != m.numCols || numSegments != m.numSegments)
         return false;
     return IntMatrix::operator==(m);
 }
 
 void Alignment::print(void) {
 
-    std::cout << "Address:    " << this << std::endl;
-    std::cout << "Num. Taxa:  " << numRows << std::endl;
-    std::cout << "Num. Sites: " << numSites << std::endl;
+    std::cout << "Address:       " << this << std::endl;
+    std::cout << "Num. Taxa:     " << numRows << std::endl;
+    std::cout << "Num. Segments: " << numSegments << std::endl;
     for (size_t i=0; i<numRows; i++)
         {
-        for (size_t j=0; j<numSites; j++)
+        for (size_t j=0; j<numSegments; j++)
             std::cout << std::setw(3) << (*this)(i,j);
         std::cout << std::endl;
         }
 }
 
-void Alignment::setNumSites(size_t ns) {
+void Alignment::setNumSegments(size_t ns) {
 
-    if (ns >= maxNumSites)
+    if (ns >= maxNumSegments)
         Msg::error("Exceeding maximum alignment length");
-    numSites = ns;
+    numSegments = ns;
 }

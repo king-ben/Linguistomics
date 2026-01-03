@@ -198,7 +198,7 @@ void Tree::clone(Tree& t) {
             pLft->setAncestor(NULL);
             
         pLft->removeDescendants();
-        for (int j=0; j<pRht->numDescendants(); j++)
+        for (size_t j=0; j<pRht->numDescendants(); j++)
             {
             Node* rightDesc = pRht->getDescendant(j);
             pLft->addDescendant( nodes[rightDesc->getOffset()] );
@@ -283,7 +283,7 @@ void Tree::listNodes(Node* p, size_t indent) {
             std::cout << "a_" << p->getAncestor()->getIndex() << " ";
         else
         std::cout << "a_NULL ";
-        for (int i=0; i<p->numDescendants(); i++)
+        for (size_t i=0; i<p->numDescendants(); i++)
             {
             Node* n = p->getDescendant(i);
             std::cout << n->getIndex() << " ";
@@ -298,7 +298,7 @@ void Tree::listNodes(Node* p, size_t indent) {
             
         std::cout << std::endl;
 
-        for (int i=0; i<p->numDescendants(); i++)
+        for (size_t i=0; i<p->numDescendants(); i++)
             {
             Node* n = p->getDescendant(i);
             listNodes( n, indent+3 );
@@ -385,7 +385,7 @@ void Tree::passDown(Node* p) {
 
     if (p != NULL)
         {
-        for (int i=0; i<p->numDescendants(); i++)
+        for (size_t i=0; i<p->numDescendants(); i++)
             passDown( p->getDescendant(i) );
         postOrder.push_back(p);
         }

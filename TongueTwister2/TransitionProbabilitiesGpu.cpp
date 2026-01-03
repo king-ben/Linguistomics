@@ -60,7 +60,7 @@ TransitionProbabilitiesGpu::~TransitionProbabilitiesGpu(void) {
 
     delete map;
     delete subModel;
-    for (size_t i = 0; i < calculatorPoolSize; i++)
+    for (size_t i=0; i<calculatorPoolSize; i++)
         delete calculatorPool[i];
     delete [] calculatorPool;
 }
@@ -215,7 +215,7 @@ void TransitionProbabilitiesGpu::shrinkCalculatorPoolIfNeeded(void) {
     
     if (calculatorPoolSize > targetSize && calculatorPoolSize > targetSize + targetSize / 4)
         {
-        for (size_t i = targetSize; i < calculatorPoolSize; i++)
+        for (size_t i=targetSize; i<calculatorPoolSize; i++)
             {
             delete calculatorPool[i];
             calculatorPool[i] = nullptr;
@@ -381,7 +381,7 @@ void TransitionProbabilitiesGpu::cleanupOrphanedEntries(void) {
     usedKeysBuffer.erase(last, usedKeysBuffer.end());
     
     size_t numEntries = map->size();
-    for (size_t i = 0; i < numEntries; ++i)
+    for (size_t i=0; i<numEntries; ++i)
         {
         uint64_t key = map->getEntryKey(i);
         if (!std::binary_search(usedKeysBuffer.begin(), usedKeysBuffer.end(), key))

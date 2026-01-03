@@ -20,7 +20,7 @@
 
 
 
-UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
+UpdateManager::UpdateManager(Model* m, RandomVariable* r) : rng(r), model(m) {
     
     tiProbs = model->getTiProbs();
     rateMatrix = model->getRateMatrix();
@@ -72,8 +72,8 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
             }
         }
     
-    // build index map for O(1) lookup from Update* to index
-    for (size_t i = 0; i < updates.size(); i++)
+    // build index map for quick lookup from Update* to index
+    for (size_t i=0; i<updates.size(); i++)
         updateIndex[updates[i]] = i;
     
     // initialize acceptance statistics
@@ -114,9 +114,9 @@ void UpdateManager::accept(Update* u) {
 
 void UpdateManager::buildAliasTable(void) {
 
-    // Walker, A. J. 1977. An efficient method for generating 
-    //    discrete random variables with general distributions.
-    //    ACM Transactions on Mathematical Software, 3(3):253-256
+    /* Walker, A. J. 1977. An efficient method for generating 
+          discrete random variables with general distributions.
+          ACM Transactions on Mathematical Software, 3(3):253-256 */
     
     const size_t n = proposalProbabilities.size();
     if (n == 0)

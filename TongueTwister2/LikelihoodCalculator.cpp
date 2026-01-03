@@ -36,8 +36,8 @@ LikelihoodCalculator::LikelihoodCalculator(TransitionProbabilities* tpc, Paramet
     if (tree->isBinary() == false)
         Msg::error("Expecting a rooted and binary tree");
 
-    // determine number of taxa, sites, and states from alignment
-    numSites = alignment->getNumSites();
+    // determine number of taxa, segments, and states from alignment
+    numSegments = alignment->getNumSegments();
     if (alignment->getNumTaxa() != numTaxa)
         {
         tree->print();
@@ -352,8 +352,8 @@ void LikelihoodCalculator::computeFForLeafNode(Node* p, int* sig, size_t site) {
 double LikelihoodCalculator::computeLnLikelihood(void) {
 
     // get the number of columns in the alignment
-    numSites = alignment->getNumSites();
-    if (numSites == 0)
+    numSegments = alignment->getNumSegments();
+    if (numSegments == 0)
         return 0.0;
 
     // set TKF91 parameters
@@ -387,17 +387,17 @@ double LikelihoodCalculator::computeLnLikelihood(void) {
     
     // process each column of the alignment
     // P(K) = P(K-v) * (-G^v(r,-)) / G^0(r,-)
-    for (size_t site=0; site<numSites; site++)
+    for (size_t segment=0; segment<numSegments; segment++)
         {
         // build signature for this column (1 if character, 0 if gap)
-        for (size_t i = 0; i < numTaxa; i++)
+        for (size_t i=0; i<numTaxa; i++)
             {
-            const size_t charState = (*alignment)(i, site);
+            const size_t charState = (*alignment)(i, segment);
             signature[i] = (charState == numStates) ? 0 : 1;
             }
         
         // compute emission factor for this column
-        const double Gv = computeRootFI(signature, site);
+        const double Gv = computeRootFI(signature, segment);
         
         // update probability: P(K) = P(K-v) * (-G^v) / G^0
         const double factor = -Gv / nullFactor;

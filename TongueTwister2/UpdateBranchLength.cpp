@@ -36,14 +36,14 @@ double UpdateBranchLength::update(void) {
     Node* p = nullptr;
     do {
         p = dp[static_cast<int>(rng->uniformRv() * dp.size())];
-    } while (p == t->getRoot() || p->getIsOutgroup() == true);
+        } while (p == t->getRoot() || p->getIsOutgroup() == true);
             
     // propose a valid branch length using rejection
     double oldV = p->getBranchLength();
     double randomFactor = 1.0;
     do {
         randomFactor = exp(tuning * (rng->uniformRv() - 0.5));
-    } while (oldV * randomFactor > maxBrlen);
+        } while (oldV * randomFactor > maxBrlen);
     double newV = oldV * randomFactor;
     
     // update the length of the branch (this will also update
@@ -77,7 +77,7 @@ double UpdateBranchLength::updateFromPrior(void) {
     Node* p = nullptr;
     do {
         p = dp[static_cast<int>(rng->uniformRv() * dp.size())];
-    } while (p == t->getRoot() || p->getIsOutgroup() == true);
+        } while (p == t->getRoot() || p->getIsOutgroup() == true);
             
     // pick a branch length from the truncated exponential prior
     double lambda = myParm->getBrlenLambda();
@@ -85,7 +85,7 @@ double UpdateBranchLength::updateFromPrior(void) {
     double newV = 0.0;
     do {
         newV = Probability::Exponential::rv(rng, lambda);
-    } while(newV > maxBrlen);
+        } while(newV > maxBrlen);
     
     // update the length of the branch (this will also update
     // the length of the branches of all of the subtrees of this tree)

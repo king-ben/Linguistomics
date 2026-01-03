@@ -227,7 +227,7 @@ double ParameterTree::lnPriorProbability(void) {
     
     // root branch probability
     double rootV = 0.0;
-    for (int i=0; i<r->numDescendants(); i++)
+    for (size_t i=0; i<r->numDescendants(); i++)
         {
         Node* d = r->getDescendant(i);
         rootV += d->getBranchLength();

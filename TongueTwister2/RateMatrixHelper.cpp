@@ -66,8 +66,8 @@ void RateMatrixHelper::initialize(Partition* part) {
             Msg::error("Could not find state " + std::to_string(i) + " in state groups");
         }
     
-    // Build groupPairToRate mapping
-    // First pass: discover unique group pairs and assign rate indices
+    // build groupPairToRate mapping
+    // first, discover unique group pairs and assign rate indices
     std::map<std::pair<int,int>, int> tempGroupPairs;
     for (size_t i=0; i<numStates; i++)
         {

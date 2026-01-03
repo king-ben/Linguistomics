@@ -9,17 +9,17 @@
 TransitionMatrixMap::TransitionMatrixMap(size_t ns, size_t initialCapacity, MatrixPool* pool) : 
     keys(nullptr),
     values(nullptr),
-    backupValues(nullptr),
     occupied(nullptr),
     tableCapacity(0),
     numEntries(0),
     entrySlots(nullptr),
     slotToEntry(nullptr),
-    matrixPool(pool),
     numStates(ns),
     dirty(nullptr),
     dirtyList(nullptr),
-    dirtyCount(0) {
+    dirtyCount(0),
+    backupValues(nullptr),
+    matrixPool(pool) {
 
     reserve(initialCapacity);
 }
@@ -80,7 +80,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
     std::memset(dirty, 0, newCapacity * sizeof(bool));
     std::memset(values, 0, newCapacity * sizeof(DoubleMatrix*));
     std::memset(backupValues, 0, newCapacity * sizeof(DoubleMatrix*));
-    for (size_t i = 0; i < newCapacity; i++)
+    for (size_t i=0; i<newCapacity; i++)
         slotToEntry[i] = SIZE_MAX;
     numEntries = 0;
     dirtyCount = 0;
@@ -90,7 +90,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
         // build mapping from old entry index to new entry index
         size_t* oldToNew = new size_t[oldNumEntries];
         
-        for (size_t i = 0; i < oldNumEntries; i++)
+        for (size_t i=0; i<oldNumEntries; i++)
             {
             size_t oldSlot = oldEntrySlots[i];
             uint64_t key = oldKeys[oldSlot];
@@ -111,7 +111,7 @@ void TransitionMatrixMap::reserve(size_t requestedCapacity) {
             }
         
         // rebuild dirty list with new indices
-        for (size_t i = 0; i < oldDirtyCount; i++)
+        for (size_t i=0; i<oldDirtyCount; i++)
             {
             size_t oldEntryIdx = oldDirtyList[i];
             size_t newEntryIdx = oldToNew[oldEntryIdx];
@@ -144,7 +144,7 @@ void TransitionMatrixMap::removeFromEntryList(size_t slot) {
     // if this entry was dirty, remove from dirty list
     if (dirty[entryIdx])
         {
-        for (size_t i = 0; i < dirtyCount; i++)
+        for (size_t i=0; i<dirtyCount; i++)
             {
             if (dirtyList[i] == entryIdx)
                 {
@@ -184,7 +184,7 @@ void TransitionMatrixMap::removeFromEntryList(size_t slot) {
 
 void TransitionMatrixMap::clear(void) {
 
-    for (size_t i = 0; i < numEntries; i++)
+    for (size_t i=0; i<numEntries; i++)
         {
         size_t slot = entrySlots[i];
         
@@ -253,7 +253,7 @@ DoubleMatrix* TransitionMatrixMap::getOrCreate(uint64_t key) {
             if (keys[idx] == key)
                 return values[idx];
             idx = (idx + 1) & (tableCapacity - 1);
-        } while (idx != startIdx);
+            } while (idx != startIdx);
         }
     
     // need to create new entry
@@ -318,7 +318,7 @@ DoubleMatrix* TransitionMatrixMap::getForModification(uint64_t key) {
             return values[idx];
             }
         idx = (idx + 1) & (tableCapacity - 1);
-    } while (idx != startIdx);
+        } while (idx != startIdx);
     
     return nullptr;
 }
@@ -345,7 +345,7 @@ void TransitionMatrixMap::markForUpdate(uint64_t key) {
             return;
             }
         idx = (idx + 1) & (tableCapacity - 1);
-    } while (idx != startIdx);
+        } while (idx != startIdx);
 }
 
 void TransitionMatrixMap::markForUpdate(double branchLength) {
@@ -361,16 +361,16 @@ void TransitionMatrixMap::markAllForUpdate(void) {
 
 void TransitionMatrixMap::keep(void) {
 
-    // accept: clear dirty flags (backup becomes stale, that's fine)
-    for (size_t i = 0; i < dirtyCount; i++)
+    // clear dirty flags (backup becomes stale, that's fine)
+    for (size_t i=0; i<dirtyCount; i++)
         dirty[dirtyList[i]] = false;
     dirtyCount = 0;
 }
 
 void TransitionMatrixMap::restore(void) {
 
-    // reject: restore dirty entries from backup
-    for (size_t i = 0; i < dirtyCount; i++)
+    // restore dirty entries from backup
+    for (size_t i=0; i<dirtyCount; i++)
         {
         size_t entryIdx = dirtyList[i];
         size_t slot = entrySlots[entryIdx];
@@ -492,7 +492,7 @@ void TransitionMatrixMap::print(void) const {
         return;
     
     std::cout << "  Contents:" << std::endl;
-    for (size_t i = 0; i < numEntries; i++)
+    for (size_t i=0; i<numEntries; i++)
         {
         double bl = keyToBranchLength(keys[entrySlots[i]]);
         std::cout << "    [" << i << "] bl=" << std::fixed << std::setprecision(6) << bl

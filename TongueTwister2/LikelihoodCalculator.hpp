@@ -75,7 +75,7 @@ class LikelihoodCalculator : public LikelihoodTask {
         size_t                          numTaxa;
         size_t                          numNodes;
         size_t                          numStates;
-        size_t                          numSites;
+        size_t                          numSegments;
         
                                         // parameter access (pointer dereference to get actual values)
         TransitionProbabilities*        tiProbs;

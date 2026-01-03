@@ -15,14 +15,13 @@ class GPUMatrixExponentialBatch {
         bool                isAvailable(void) const;
         const char*         getDeviceName(void) const;
         
-                            // compute exp(Q * t_i) for each branch length t_i
-                            // Uses ThreadPool for parallel computation
+                            // compute exp(Q * t_i) for each branch length t_i using ThreadPool
         void                computeBatch(const DoubleMatrix& Q,
                                          const std::vector<double>& branchLengths,
                                          std::vector<DoubleMatrix*>& outputs,
                                          ThreadPool* pool);
         
-                            // Legacy interface without ThreadPool (single-threaded)
+                            // single-threaded
         void                computeBatch(const DoubleMatrix& Q,
                                          const std::vector<double>& branchLengths,
                                          std::vector<DoubleMatrix*>& outputs);
@@ -51,7 +50,7 @@ class GPUMatrixExponentialBatch {
         void*               device;
         void*               commandQueue;
         
-                            // unused - reserved for Metal compute pipelines 
+                            // reserved for Metal compute pipelines 
         void*               scaleMatrixPipeline;
         void*               matrixMultiplyPipeline;
         void*               matrixAddPipeline;

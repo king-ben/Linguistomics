@@ -44,6 +44,7 @@ CtmcJC69::~CtmcJC69(void) {
 
 void CtmcJC69::computeTransitionProbs(double branchLength, DoubleMatrix* output, MathCache*) const {
 
+    // the transition probabilities for models isomorphic to the JC69 are known analytically
     const double n = static_cast<double>(numStates);
     const double oneOverN = 1.0 / n;
     const double expTerm = std::exp(-n * branchLength / (n - 1.0));
@@ -79,6 +80,7 @@ CtmcF81::~CtmcF81(void) {
 
 void CtmcF81::computeTransitionProbs(double branchLength, DoubleMatrix* output, MathCache*) const {
 
+    // the transition probabilities for models isomorphic to the F81 are known analytically
     std::vector<double>& freqs = freqsParm->getFrequencies();
     double* f = freqs.data();
     double sumSq = 0.0;
@@ -164,9 +166,7 @@ void CtmcGeneral::computeTransitionProbs(double branchLength, DoubleMatrix* outp
     n->setIdentity();
     x->setIdentity();
 
-    // Compute the infinity norm (maximum absolute row sum) for proper scaling.
-    // This replaces the incorrect maxDiagonal() which returns 0 for rate matrices
-    // because all diagonal elements are negative.
+    // compute the infinity norm (maximum absolute row sum) for proper scaling
     double infinityNorm = 0.0;
     for (size_t i = 0; i < size; i++)
         {
@@ -183,7 +183,7 @@ void CtmcGeneral::computeTransitionProbs(double branchLength, DoubleMatrix* outp
     a->divideByPowerOfTwo(j);
     
     double c = 1.0;
-    int qValue = setQvalue(1e-7);  // Note: using 1e-7 for better accuracy
+    int qValue = setQvalue(1e-7);  // using 1e-7 for better accuracy
     for (int k=1; k<=qValue; k++)
         {
         c = c * (qValue - k + 1.0) / ((2.0 * qValue - k + 1.0) * k);
@@ -204,8 +204,8 @@ void CtmcGeneral::computeTransitionProbs(double branchLength, DoubleMatrix* outp
 
     cache->gaussianElimination(*d, *n, *output);
     
-    // Square the result j times to get exp(A) = R^(2^j)
-    // Note: The original code incorrectly used (j+1) instead of 2^j
+    // square the result j times to get exp(A) = R^(2^j) (the original 
+    // code incorrectly used (j+1) instead of 2^j)
     if (j > 0)
         cache->power(*output, 1 << j);
 
