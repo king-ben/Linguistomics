@@ -16,23 +16,23 @@
 class BufferAllocator {
 
     public:
-        explicit BufferAllocator();
-        virtual ~BufferAllocator();
-        void setZero();
-        bool operator==(const BufferAllocator &b) const;
-        bool operator!=(const BufferAllocator &b) const;
+        explicit        BufferAllocator(void);
+        virtual        ~BufferAllocator(void);
+        void            setZero(void);
+        bool            operator==(const BufferAllocator &b) const;
+        bool            operator!=(const BufferAllocator &b) const;
 
     protected:
-        virtual void deallocate();
-        void allocate(size_t size);
-        void copy(const BufferAllocator& b);
-        const void* getBuffer() const {return buffer;}
-        void* getBuffer() { return buffer; }
+        virtual void    deallocate(void);
+        void            allocate(size_t size);
+        void            copy(const BufferAllocator& b);
+        const void*     getBuffer(void) const {return buffer;}
+        void*           getBuffer(void) { return buffer; }
 
     private:
-        void*  buffer;
-        size_t maxSize,
-               currentSize;
+        void*           buffer;
+        size_t          maxSize;
+        size_t          currentSize;
 };
 
 

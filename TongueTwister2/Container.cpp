@@ -55,7 +55,7 @@ bool BufferAllocator::operator==(const BufferAllocator& b) const {
 
 bool BufferAllocator::operator!=(const BufferAllocator& b) const {
 
-    return currentSize != b.currentSize ||memcmp(buffer, b.buffer, currentSize) != 0;
+    return currentSize != b.currentSize || memcmp(buffer, b.buffer, currentSize) != 0;
 }
 
 

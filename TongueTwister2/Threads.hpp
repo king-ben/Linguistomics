@@ -60,9 +60,8 @@ class ThreadPool {
         void                    worker(void);
         ThreadTask*             popTask(void);
         static constexpr size_t queueCapacity = 1024;           // cache-friendly circular buffer for tasks
-        static constexpr size_t queueMask = queueCapacity - 1;  // note the size must be power of 2 for fast modulo via bitwise AND
+        static constexpr size_t queueMask = queueCapacity - 1;  // note the queueCapacity size must be power of 2 for fast modulo via bitwise AND
 
-                                // accessed on every push/pop operation
                                 // group atomics together for cache coherence
         std::atomic<size_t>     tasksInFlight;                  // tasks queued + tasks being executed
         std::atomic<bool>       running;                        // 1 byte
