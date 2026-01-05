@@ -25,6 +25,7 @@ class NodeFactory {
                             NodeFactory(void);
                            ~NodeFactory(void);
                             NodeFactory(const NodeFactory& tp) = delete;
+        size_t              initialSize;
         std::vector<Node*>  pool;
         std::set<Node*>     allocated;
 };

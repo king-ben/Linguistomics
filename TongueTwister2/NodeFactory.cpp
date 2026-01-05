@@ -3,8 +3,15 @@
 
 
 
-NodeFactory::NodeFactory(void) {
+NodeFactory::NodeFactory(void) : initialSize(4096) {
 
+    Node* initialNodeVector = new Node[initialSize]; // makes certain that most of the nodes are contiguous
+    for (size_t i=0; i<initialSize; i++)
+        {
+        Node* n = &initialNodeVector[i];
+        allocated.insert(n);
+        pool.push_back(n);
+        }
 }
 
 NodeFactory::~NodeFactory(void) {
@@ -26,8 +33,8 @@ Node* NodeFactory::getNode(void) {
 
     if (pool.empty() == true)
         {
-        // If the node pool is empty, we allocate a new node and return it. We
-        // do not need to add it to the node pool.
+        /* If the node pool is empty, we allocate a new node and return it. We
+           do not need to add it to the node pool. */
         Node* n = new Node;
         allocated.insert( n );
         return n;
