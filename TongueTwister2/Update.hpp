@@ -46,10 +46,11 @@ class Update {
         Parameter*                      updatedParameter;
         
                                         // dependency flags
+        double                          changedBranchLength;        // the new branch length (if singleBranchChanged)
         bool                            rateMatrixNeedsUpdate;
-        bool                            allTiprobsNeedUpdate;     // model changed -> recompute all matrices
-        bool                            singleBranchChanged;      // one branch length changed -> recompute one matrix
-        double                          changedBranchLength;      // the new branch length (if singleBranchChanged)
+        bool                            allTiprobsNeedUpdate;       // model changed -> recompute all matrices
+        bool                            singleBranchChanged;        // one branch length changed -> recompute one matrix
+        [[maybe_unused]] char           padding2[1];                // explicit padding
 };
 
 #endif

@@ -34,11 +34,11 @@ McmcMarginal::~McmcMarginal(void) {
 
 int McmcMarginal::calculateNumCycles(void) {
 
-    // numCycles isn't used to control the chain length as it is in the
-    // McmcPosterior class. Here, numCycles is used to simply inform the
-    // user how many MCMC cycles have passed. Note, however, that we have
-    // to calculate numCycles from the MCMC phase information and the number
-    // of stones in the path sampling algorithm.
+    /* numCycles isn't used to control the chain length as it is in the
+       McmcPosterior class. Here, numCycles is used to simply inform the
+       user how many MCMC cycles have passed. Note, however, that we have
+       to calculate numCycles from the MCMC phase information and the number
+       of stones in the path sampling algorithm. */
     int nc = 0;
     std::vector<std::string>& phases = mcmcPhases->getPhases();
     for (std::string phase : phases)
