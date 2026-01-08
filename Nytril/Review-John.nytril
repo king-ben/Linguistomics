@@ -25,16 +25,77 @@ C7 = new(#bba1563a-d9e3-4583-a553-5c144d26ee9c#, Reviewers.R1) {
     "Or is it only because you select from three highly likely phylogenies.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  Response: Paragraph {
-    "TBD";
+
+Response: Paragraph {
+
+  "We interpret the reviewer’s comment/concern as, \"How does your probabilistic model encode the linguistic assumption of regular sound change? ";
+  "Does that regularity emerge naturally through shared parameters and repeated evidence, or are the good results mainly due to large data size or conditioning on already-likely trees?\" ";
+  "\n\n";
+
+  "We thank the reviewer for raising this point, which touches on the notion of regular sound change and how it is represented in a probabilistic framework. ";
+  "\n\n";
+
+  "In our model, regularity is not imposed as an explicit constraint but emerges naturally through parameter sharing in the likelihood. ";
+  "Segmental substitutions are governed by a single rate matrix that applies across all words, all alignment columns, and all branches of the tree. ";
+  "As a consequence, systematic correspondences—such as a recurrent /a/ to /e/ change between two lineages—are not treated as independent coincidences. ";
+  "Instead, repeated evidence for the same correspondence increases the posterior support for the corresponding substitution rate, which in turn increases the likelihood of trees that place those languages closer together. ";
+  "In this sense, regularity arises statistically through the accumulation of shared signal across many words. ";
+  "\n\n";
+
+  "If such systematic correspondences were absent, or if changes were genuinely irregular, the model would be unable to explain them parsimoniously with a small number of rate parameters, and the inferred distance between the languages would indeed be larger. ";
+  "Thus, the likelihood calculation directly rewards regular, repeated patterns of change, rather than assuming them a priori. ";
+  "\n\n";
+
+  "Regarding the role of dataset size, we agree that having multiple cognate sets is essential for identifying regularity in a probabilistic model. ";
+  "This is not a weakness specific to our approach but a general feature of statistical inference: regularity can only be inferred when sufficient repeated evidence is available. ";
+  "With very small datasets, any method—probabilistic or otherwise—will have limited power to distinguish systematic change from noise. ";
+  "\n\n";
+
+  "Finally, our results are not driven by the restriction to three highly likely phylogenies. ";
+  "Rather, conditioning on a small set of plausible trees was a pragmatic choice to make the computational problem tractable, given the problems we encountered with the MCMC procedure jointly exploring alignment and tree space. ";
+  "Within this set, the likelihood still discriminates strongly among models based on how well they explain the observed segmental correspondences. ";
+  "The superior performance of the Natural Class model reflects its ability to capture systematic patterns of change in the data, not the prior selection of tree topologies. ";
+  "\n\n";
+
+  "We added the following sentence to section 5.2 of the manuscript to clarify this point: ";
+  "\n\n";
+
+  "In this framework, regular sound change is not enforced a priori but arises statistically, since repeated segmental correspondences across many words increase the posterior support for the corresponding substitution rates and, consequently, for trees that place those languages closer together.";
   };
+
 };
+
 
 C8 = new(#83492b5e-b204-4774-90f8-dfd2b7bd0fe6#, Reviewers.R1) {
   Text: Paragraph {
     "Another model that would be interesting to compare are the ”phylogenies” inferred using Levenshtein distances, as your model corresponds to a weighted levenshtein distance by some aspects.";
   };
   AssignedTo(People.Huelsenbeck_John);
+
+  Response: Paragraph {
+
+    "We thank the reviewer for the suggestion. ";
+    "While our model involves insertion, deletion, and substitution processes at the segmental level, it is quite different from Levenshtein-distance-based approaches. ";
+    "\n\n";
+
+    "Levenshtein distance is a pairwise measure based on the single minimum-cost sequence of edits required to transform one string into another. ";
+    "By contrast, our framework defines a probabilistic model of sequence evolution along a phylogenetic tree, in which the likelihood integrates over all possible alignments, ancestral sequences, and histories of insertion, deletion, and substitution, weighting each by its probability under the model. ";
+    "As a result, our method is not equivalent to a weighted edit distance, nor does it reduce to a distance-based inference procedure. ";
+    "\n\n";
+
+    "Moreover, Levenshtein-distance approaches require additional ad hoc choices, such as how to combine the distances in a tree, how to normalize the distances for word length, and how to handle uncertainty in homology. ";
+    "Our goal is not to approximate string similarity, but to perform likelihood-based inference under an explicit event-based model of word evolution. ";
+    "\n\n";
+
+    "For these reasons, we view Levenshtein-based phylogenies as addressing a different class of problems and not as a directly comparable alternative to the approach presented in this paper. ";
+    "\n\n";
+
+    "We added the following sentence to clarify this point to the reader. ";
+    "\n\n";
+
+    "Despite its use of insertion, deletion, and substitution processes, the model is not equivalent to a weighted edit distance, as it marginalizes over all possible evolutionary histories rather than optimizing a single edit sequence. ";
+    };
+
 };
 
 C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
@@ -43,9 +104,40 @@ C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
     "Are there possibilities to infer fully the topology of the tree?";
   };
   AssignedTo(People.Huelsenbeck_John);
+
   Response: Paragraph {
-    "TBD";
+
+  "We agree with the reviewer that conditioning on a small set of topologies is justified for the Romance example, but is not a general solution. ";
+  "Our choice to restrict attention to three plausible Romance topologies was motivated by computational considerations rather than conceptual ones. ";
+  "\n\n";
+
+  "In principle, the framework we introduce does allow for full inference of tree topology. ";
+  "In practice, however, we have found that joint inference of tree topology and segmental alignments under the TKF91 model is extremely challenging. ";
+  "In our experiments, Markov chain Monte Carlo chains reliably converged to high-likelihood trees, but then exhibited very poor mixing over tree space. ";
+  "Independent runs would become trapped on different, but similarly good, topologies. ";
+  "This behavior reflects a strong coupling between tree topology and alignment. ";
+  "Once a tree is fixed, the alignments rapidly adapt to it, creating high barriers in the probabilities that make moves to alternative trees unlikely. ";
+  "\n\n";
+
+  "We have explored several strategies to address this issue. ";
+  "One approach is to propose joint moves that modify both the tree topology and the alignments simultaneously, with the goal of reducing this coupling. ";
+  "While conceptually appealing, our initial experiments suggest that designing such proposals with reasonable acceptance rates is nontrivial, and this remains an area of ongoing investigation. ";
+  "A second, not yet implemented, possibility is to use multiple chains associated with different tree topologies, together with a higher-level MCMC variable that switches between them. ";
+  "In this scheme, the relative time spent in each topology would approximate its posterior probability. ";
+  "Such an approach would be substantially more computationally expensive and would require restricting the explored tree space to a manageable subset. ";
+  "\n\n";
+
+  "In short, while full topology inference is conceptually possible within our framework, making it practical under a segment-level indel model is an open computational problem. ";
+  "We view the present work as a proof of principle, demonstrating that likelihood-based inference under a fully historical word-evolution model is feasible. ";
+  "Improving tree-space exploration under this model is an active area of our ongoing research. ";
+  "\n\n";
+
+  "We added the following sentence to clarify this point to the reader. ";
+  "\n\n";
+
+  "Although the framework in principle supports full Bayesian inference of tree topology, in practice the strong coupling between topology and segmental alignment under the TKF91 model makes efficient exploration of tree space computationally challenging, and improving this aspect of the method remains an active area of ongoing work. ";
   };
+
 };
 
 C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
@@ -54,9 +146,26 @@ C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
     "What happens if the ancestral language contains sounds that have never been preserved but explains the strange patterns observed in the data?";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD - Add text about how the model can be extended...";
+
+  "The reviewer raises the interesting issue of unobserved or extinct segmental states in ancestral languages. ";
+  "\n\n";
+
+  "In our framework, ancestral segmental states are not restricted to those observed in the modern languages. ";
+  "When computing the likelihood, the model marginalizes over all possible ancestral states and evolutionary histories consistent with the specified state space. ";
+  "Consequently, a segment may appear with nonzero posterior probability at internal nodes of the tree even if it is never preserved in any extant language, for example because it is systematically deleted or transformed along all descendant branches. ";
+  "\n\n";
+
+  "That said, the flexibility of the model is constrained by the choice of state space, which must be specified in advance. ";
+  "The model cannot, in its current form, infer entirely novel sound categories that lie outside this predefined inventory. ";
+  "However, one could in principle expand the state space to include hypothesized ancestral segments and allow different substitution and deletion processes to apply to different parts of the tree. ";
+  "Such nonhomogeneous, or lineage-specific, models are well established in molecular phylogenetics and provide a natural way to accommodate ancestral states that are present only in early lineages and later lost. ";
+  "\n\n";
+
+  "Exploring such extensions in a linguistic setting would be an interesting direction for future work, but beyond the scope of the present study. ";
   };
+
 };
 
 C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
@@ -66,9 +175,27 @@ C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
     "Note also that these models are event based as well.";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "It is correct that the stochastic models typically applied in historical linguistics are event-based. ";
+  "In practice, these are k-state models, where k is determined during the prior step of cognate coding. ";
+  "For example, Figure 11.1 of Greenhill et al. (2020) outlines the Comparative Method as beginning with the assignment of discrete cognate states to languages. ";
+  "In their illustration, a single cognate set is coded with k equals 3 abstract states, which would then be analyzed using a three-state continuous-time Markov model, as implemented in tools such as MrBayes or BEAST. ";
+  "\n\n";
+
+  "While such models are formally event-based, the point raised in our conclusion concerns the interpretation of those events. ";
+  "The states themselves are abstractions produced by the coding process, rather than empirically observable linguistic forms. ";
+  "Consequently, when a transition occurs along a branch, for example from state B to state C, it is unclear what concrete linguistic change this event corresponds to. ";
+  "Does it represent a specific phonological or lexical transformation, or does it stand for a change involving forms that are not directly attested in the sampled languages? ";
+  "More generally, what linguistic entities are being gained, lost, or transformed by such a transition? ";
+  "\n\n";
+
+  "This is the sense in which we wrote that when applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. ";
+  "Our comment is not intended to deny that these models are event-based, but rather to highlight that the nature of the events depends critically on how cognacy classes are defined and abstracted from the original data. ";
+  "In contrast to models that explicitly specify the linguistic units undergoing change, the connection between model transitions and underlying linguistic processes is indirect, and in some cases, ambiguous. ";
   };
+
 };
 
 C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
@@ -77,9 +204,36 @@ C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
     "The sentence “model is a historical model with well-defined events that can transform a word” is also somewhat misleading, as the “event-based” model corresponds to a continuous time overall (and reciprocally on a probabilistic perspective).";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "We believe the reviewer may be conflating two different modeling distinctions, which is the source of the apparent disagreement. ";
+  "\n\n";
+
+  "First, regarding Bouchard-Côté et al. (2013), we agree that their method allows cognacy classes to be unknown a priori and inferred during analysis. ";
+  "However, this does not change the nature of the observations in their likelihood. ";
+  "In their framework, the observed data are still the surface word forms, or segments thereof, at the tips. ";
+  "Cognacy is treated as a latent structure linking these observed strings, not as an additional type of observation. ";
+  "In this sense, our statement that they treat cognate word-forms as observations was meant to contrast surface linguistic forms with abstract cognate states, not to deny that cognacy itself can be inferred. ";
+  "\n\n";
+
+  "Second, we respectfully disagree that their transducer-based model is a historical model in the same sense as models such as TKF91. ";
+  "The string transducer used by Bouchard-Côté et al. defines a probability distribution over pairs of strings via weighted edit operations, but it does not explicitly represent a sequence of evolutionary events unfolding along branches of a phylogenetic tree. ";
+  "That is, it assigns probabilities directly to string transformations, rather than integrating over explicit insertion, deletion, and substitution histories occurring through time. ";
+  "In this sense, it is not a historical model, even though it is motivated by diachronic considerations. ";
+  "\n\n";
+
+  "By contrast, the TKF91 model is explicitly historical. ";
+  "When computing the likelihood of the observed word forms at the tips of a tree, the model integrates over all possible sequences of insertion and deletion events along each branch, governed by a continuous-time birth–death process. ";
+  "The events are not merely a probabilistic abstraction but correspond to well-defined operations acting on evolving sequences through time. ";
+  "\n\n";
+
+  "Regarding the reviewer’s second point, we agree that event-based models such as TKF91 operate in continuous time and that events are not observed individually. ";
+  "However, this does not undermine our claim that the model has well-defined events. ";
+  "Rather, it is precisely the explicit specification of those events and their rates that distinguishes historical sequence-evolution models from abstract state-based or transducer-based approaches. ";
+  "Our intent was to emphasize this distinction, not to suggest that events are discretely observed or temporally localized in the data. ";
   };
+
 };
 
 C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
@@ -88,9 +242,40 @@ C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
     "Is that because it is easier to align in some way if the rates are different between the classes (in particular deleting a /k/?).";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "In our framework, the alignment itself is part of the inference. ";
+  "Each alignment column represents a hypothesis about homology, that is, which word segments in different languages descend from a single ancestral segment. ";
+  "We therefore treat the alignment as a random variable and use Markov chain Monte Carlo to sample alignments in proportion to their posterior probability under a given evolutionary model. ";
+  "\n\n";
+
+  "It is therefore both expected and informative that the posterior distribution of alignments differs across models. ";
+  "The reason is that the probability of any proposed alignment depends directly on the substitution and indel processes assumed by the model. ";
+  "Different models assign different probabilities to the same homology hypotheses. ";
+  "\n\n";
+
+  "To make this concrete, consider an alignment column in which two segment states, say 0 and 1, are observed across languages. ";
+  "Such a column necessarily implies at least one historical change along the tree, either a direct substitution between 0 and 1 or a sequence of changes through intermediate states. ";
+  "The probability of that column is therefore sensitive to the rate matrix of the continuous-time Markov model governing substitutions. ";
+  "If transitions between the relevant states, or via intermediates, are relatively frequent, the alignment column will be more probable. ";
+  "If they require rare changes, it will be less probable. ";
+  "\n\n";
+
+  "The same logic applies to deletions. ";
+  "If a model assigns a relatively high deletion rate to a particular segment, such as /k/, alignments in which that segment is absent in some languages become more probable under that model. ";
+  "Conversely, models in which such deletions are rare will favor different alignment structures. ";
+  "Thus, alignments that appear easier under one model are simply those that are more probable given that model’s assumptions about rates of substitution and deletion. ";
+  "\n\n";
+
+  "In Figure 11, the differences in inferred alignments therefore reflect differences in the underlying rate assumptions. ";
+  "The simplest model, isomorphic to JC69, assigns equal rates to all changes, whereas the more complex models allow rates to vary across segment types and transitions. ";
+  "These assumptions propagate naturally into the posterior over alignments, leading to the observed differences. ";
+  "\n\n";
+
+  "In short, the alignment differs between models precisely because the alignment is being inferred jointly with the evolutionary process, and different models encode different notions of what kinds of historical changes are likely. ";
   };
+
 };
 
 C16 = new(#e1d990c4-c441-44b6-b224-51c376b3d2e2#, Reviewers.R1) {
@@ -98,9 +283,12 @@ C16 = new(#e1d990c4-c441-44b6-b224-51c376b3d2e2#, Reviewers.R1) {
     "I would have liked to see some examples on simulated dataset, or even on another real family of languages (which is much more work so I understand to only focus on a single family).";
   };
   AssignedTo(People.Huelsenbeck_John);
+
   Response: Paragraph {
-    "TBD";
+
+  "We address the issue of a simulation study in C30, below. ";
   };
+
 };
 
 C18 = new(#282a37be-a39c-465a-b47d-83c21659b522#, Reviewers.R1) {
@@ -121,9 +309,37 @@ C19 = new(#d461c4c4-e6b1-4931-9ff3-febca0c96767#, Reviewers.R1) {
     "(p7 appendix) Please add some detail on that, as it might also explain why you observe more deletions and additions.";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "The reviewer is absolutely right that, from a generative perspective, the prior on the homology structure H should depend on the insertion and deletion rates lambda and mu. ";
+  "Under an explicit indel process, these parameters determine the expected sequence length and, consequently, the prior distribution over alignment lengths and homology patterns. ";
+  "In particular, when insertion rates are low relative to deletion rates, shorter and more compact alignments should indeed receive higher prior probability than very long alignments. ";
+  "\n\n";
+
+  "Upon re-examining our implementation of the TKF91 model, we realized that our prior on H is not uniform, as implied by the manuscript text. ";
+  "Instead, the prior probability of an alignment length follows a geometric distribution with parameter lambda divided by mu, corresponding to the equilibrium length distribution of the TKF91 model. ";
+  "Thus, alignments with many columns are already down-weighted a priori, and the prior on H does depend on lambda and mu in an important and meaningful way. ";
+  "In this sense, the current implementation is closer to a generative indel-based prior than our description suggested. ";
+  "\n\n";
+
+  "That said, the prior is still not fully generative in the strongest sense, because it does not explicitly model the full homology structure H as a realization of a TKF91 process conditional on lambda and mu. ";
+  "Rather, it captures the equilibrium length distribution implied by the model, while remaining agnostic about finer-grained dependencies among homology patterns. ";
+  "We agree that a prior constructed by explicitly generating H under the TKF91 process would be more coherent. ";
+  "However, implementing such a prior in a computationally tractable way, particularly in the context of joint inference over trees, alignments, and substitution parameters, remains challenging. ";
+  "\n\n";
+
+  "We will revise the manuscript to correct the description of the prior on H and to clarify that alignment lengths are geometrically distributed with parameter lambda divided by mu, as implied by the equilibrium behavior of the TKF91 model. ";
+  "We will also clarify that developing fully generative priors on homology structures conditional on indel parameters is an important direction for future work. ";
+  "\n\n";
+
+  "We have added the following sentence to the manuscript. ";
+  "\n\n";
+
+  "A more coherent alternative would be to define a fully generative prior on H conditional on lambda and mu, building directly on the TKF91 process itself. ";
+  "Developing such priors for segmental homology structures remains an important direction for future work. ";
   };
+
 };
 
 C20 = new(#c349a5f9-2263-4c11-8475-9fd5b938c92a#, Reviewers.R1) {
@@ -143,9 +359,37 @@ C21 = new(#8c6f45b5-fdd1-4c93-be2c-f96a92e2b4a4#, Reviewers.R1) {
     "If it accounted for all the additions and deletion possible, I think the number of possible H 3 would be infinite, as the ancestral state can have any number of deleted characters. There is an approximation here somewhere (which is fine but would be interesting to understand exactly).";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "The reviewer is correct that, if considered naively, the space of possible insertion–deletion histories is infinite. ";
+  "An ancestral sequence could in principle contain arbitrarily many characters that are later deleted. ";
+  "However, this does not invalidate our statement. ";
+  "The likelihood we compute does indeed account for all possible histories of insertion, deletion, and substitution, weighting each by its probability under the model. ";
+  "This is not an approximation, but a standard consequence of marginalization in continuous-time stochastic processes. ";
+  "\n\n";
+
+  "Formally, the likelihood marginalizes over all unobserved evolutionary histories. ";
+  "Although the set of such histories is infinite, their total contribution is finite because histories with many insertion and deletion events have vanishingly small probability under the model. ";
+  "This is entirely analogous to other continuous-time Markov processes, where infinitely many event sequences are possible over any positive time interval, yet transition probabilities remain well defined. ";
+  "\n\n";
+
+  "This is the same principle that underlies likelihood calculations in simpler substitution-only models. ";
+  "In programs such as MrBayes or BEAST, the likelihood integrates over all possible assignments of ancestral states at internal nodes via the Felsenstein pruning algorithm, and all possible numbers and timings of substitution events along each branch via matrix exponentiation. ";
+  "Even in these models, the likelihood implicitly accounts for infinitely many substitution histories, despite the fact that only a finite state space is observed. ";
+  "\n\n";
+
+  "For models with insertions and deletions, such as TKF91, the situation is conceptually identical but computationally more challenging. ";
+  "The TKF91 process defines a continuous-time birth–death model on sequence length, coupled with substitution on surviving characters. ";
+  "Although an ancestral sequence may be arbitrarily long, the equilibrium length distribution is proper, and the probability of extremely long ancestral sequences decays rapidly. ";
+  "The dynamic programming algorithm of Lunter et al. (2003) exploits this structure to marginalize analytically over all possible indel histories without enumerating them explicitly. ";
+  "The poor scaling of the algorithm reflects the difficulty of performing this marginalization exactly, not the presence of an approximation. ";
+  "\n\n";
+
+  "Thus, while the reviewer’s intuition that there must be infinitely many histories is correct, this does not imply that the likelihood is ill-defined or approximate. ";
+  "On the contrary, the likelihood is precisely defined as a sum or integral over all such histories, and this is exactly what our statement in Section 5.1 was meant to convey. ";
   };
+
 };
 
 C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
@@ -153,9 +397,20 @@ C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
     "I don’t think Ψ is an amazing notation for a tree.";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD";
+
+  "We appreciate the reviewer’s comment regarding notation. ";
+  "Our use of the symbol Ψ to denote a tree is not intended to be aesthetic, but conventional. ";
+  "In the phylogenetics literature, it is common to represent a phylogenetic tree as the combination of a topology, typically denoted by tau, and a set of branch lengths, often denoted by v. ";
+  "The pair is then written compactly as Ψ =(t,v). ";
+  "This notation is used, for example, to distinguish between the discrete combinatorial structure of the tree and its continuous branch-length parameters. ";
+  "\n\n";
+
+  "We adopted this convention to make the distinction between topology and branch lengths explicit and to remain consistent with existing usage in Bayesian phylogenetic modeling. ";
+  "That said, we are not wedded to this choice of symbol and would be happy to change the notation if the editor or reviewer strongly prefers an alternative. ";
   };
+
 };
 
 C26 = new(#5ce04d50-ce4a-4f51-9b28-0014edbbdc54#, Reviewers.R1) {
@@ -176,9 +431,23 @@ C27 = new(#8dcfb5bc-4e1e-411e-9981-3bd0e57b458e#, Reviewers.R1) {
     "If you want a more accurate name for Metropolis-Hastings, you can use the full name Hastings-Metropolis-Rosenbluth-Teller (which has the advantage of giving back credit to the original authors).";
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "TBD - Perhaps put the other name in parenthesis?";
+
+  "We appreciate the reviewer’s comment and agree that proper attribution is important. ";
+  "The original 1953 paper indeed involved multiple contributors. ";
+  "Metropolis introduced the core idea of simulating a physical system via a Markov process with a desired stationary distribution. ";
+  "The Rosenbluths and Teller contributed substantially to the mathematical formulation and practical implementation of the method. ";
+  "Hastings later generalized the original algorithm in a probabilistic framework, leading to what is now widely known as the Metropolis–Hastings algorithm. ";
+  "\n\n";
+
+  "That said, while the longer name Hastings–Metropolis–Rosenbluth–Teller more fully reflects the authorship of the original work, the term Metropolis–Hastings is overwhelmingly standard in the statistics, physics, and computational biology literature. ";
+  "Using a nonstandard name would likely cause confusion for readers rather than clarify attribution. ";
+  "\n\n";
+
+  "For these reasons, we have retained the conventional terminology, while fully acknowledging the broader historical contributions underlying the method. ";
   };
+
 };
 
 C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
@@ -199,9 +468,38 @@ C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
     };
   };
   AssignedTo(People.Huelsenbeck_John);
+  
   Response: Paragraph {
-    "Thanks for the compliment";
+  
+  "We thank the reviewer for this clear and accurate summary of our work and for the positive assessment of the motivation and results. ";
+  "We are particularly pleased that the reviewer finds the framing of the limitations of existing comparative approaches convincing, and that the empirical findings, especially the distinction between vowels and consonants and the relative stability of diphthongs and long vowels, are consistent with established results in the linguistic literature. ";
+  "\n\n";
+
+  "With respect to a simulation study, we fully agree that simulation-based validation, such as Simulation-Based Calibration, is a powerful and principled way to assess the behavior of Bayesian inference procedures, particularly for novel models. ";
+  "In an ideal setting, such a study would indeed be desirable. ";
+  "\n\n";
+
+  "In the present case, however, a comprehensive simulation study is not practically feasible. ";
+  "Each full Markov chain Monte Carlo analysis under the TKF91-based framework requires multiple days of computation on a modern desktop computer. ";
+  "A properly designed simulation-based calibration analysis would require on the order of thousands to tens of thousands of independent simulations, each followed by a full MCMC run to convergence. ";
+  "At current computational costs, this would translate into months or even years of compute time, well beyond what is realistic for this study. ";
+  "\n\n";
+
+  "That said, the absence of a large-scale simulation study does not imply a lack of theoretical grounding. ";
+  "The inference framework we employ is standard Bayesian likelihood-based inference, applied to a new class of data rather than a new inferential paradigm. ";
+  "Under the assumed model, Bayesian posterior distributions have well-understood and desirable theoretical properties, including correct uncertainty quantification and asymptotic calibration. ";
+  "In particular, when the model is correctly specified and the posterior is adequately explored, Bayesian credible intervals contain the true parameter values with their nominal probabilities in repeated sampling. ";
+  "\n\n";
+
+  "Moreover, the likelihood calculations themselves are exact under the TKF91 model, in the sense that they marginalize analytically over all unobserved histories of insertion, deletion, and substitution, rather than relying on approximations or heuristic scoring schemes. ";
+  "The computational burden arises precisely because of this exactness. ";
+  "The tradeoff between computational tractability and model realism is a familiar one in phylogenetics, and our work deliberately prioritizes model fidelity over speed. ";
+  "\n\n";
+
+  "We view the present study as a proof of principle demonstrating that fully historical, segment-level evolutionary models can be applied directly to linguistic data within a Bayesian phylogenetic framework. ";
+  "We agree that future work, benefiting from algorithmic improvements, parallelization, or approximate inference schemes, should include extensive simulation-based validation, and we see this as a natural and important direction for further research. ";
   };
+
 };
 
 C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
