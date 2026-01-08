@@ -11,7 +11,7 @@ MatrixPool::MatrixPool(size_t nRows, size_t nCols, size_t initialCapacity) :
     // pre-allocate storage for pointers
     allMatrices.reserve(initialCapacity);
     freeList.reserve(initialCapacity);
-    
+        
     // allocate initial matrices
     if (initialCapacity > 0)
         grow(initialCapacity);
@@ -41,14 +41,6 @@ DoubleMatrix* MatrixPool::acquire(void) {
     return m;
 }
 
-void MatrixPool::release(DoubleMatrix* m) {
-
-    // no validation for speed - caller is responsible for only
-    // releasing matrices that came from this pool
-    // no zeroing - caller can zero if needed before use
-    freeList.push_back(m);
-}
-
 void MatrixPool::acquireBatch(std::vector<DoubleMatrix*>& out, size_t count) {
 
     // ensure we have enough matrices
@@ -70,6 +62,50 @@ void MatrixPool::acquireBatch(std::vector<DoubleMatrix*>& out, size_t count) {
         out.push_back(freeList.back());
         freeList.pop_back();
         }
+}
+
+void MatrixPool::clear(void) {
+
+    // delete all matrices and reset
+    for (DoubleMatrix* m : allMatrices)
+        delete m;
+    allMatrices.clear();
+    freeList.clear();
+}
+
+void MatrixPool::grow(size_t count) {
+
+    allMatrices.reserve(allMatrices.size() + count);
+    freeList.reserve(freeList.size() + count);
+    for (size_t i = 0; i < count; ++i)
+        {
+        DoubleMatrix* m = new DoubleMatrix(numRows, numCols);
+        allMatrices.push_back(m);
+        freeList.push_back(m);
+        }
+}
+
+void MatrixPool::printStatistics(void) const {
+
+    size_t matrixBytes = numRows * numCols * sizeof(double);
+    size_t totalBytes = allMatrices.size() * matrixBytes;
+    size_t freeBytes = freeList.size() * matrixBytes;
+    size_t inUseBytes = totalBytes - freeBytes;
+    
+    std::cout << "MatrixPool Statistics:" << std::endl;
+    std::cout << "  Matrix dimensions: " << numRows << " x " << numCols << std::endl;
+    std::cout << "  Bytes per matrix:  " << matrixBytes << std::endl;
+    std::cout << "  Total allocated:   " << allMatrices.size() << " (" << totalBytes / 1024 << " KB)" << std::endl;
+    std::cout << "  In use:            " << numInUse() << " (" << inUseBytes / 1024 << " KB)" << std::endl;
+    std::cout << "  Free:              " << numFree() << " (" << freeBytes / 1024 << " KB)" << std::endl;
+}
+
+void MatrixPool::release(DoubleMatrix* m) {
+
+    // no validation for speed - caller is responsible for only
+    // releasing matrices that came from this pool
+    // no zeroing - caller can zero if needed before use
+    freeList.push_back(m);
 }
 
 void MatrixPool::releaseBatch(DoubleMatrix* const* matrices, size_t count) {
@@ -118,39 +154,3 @@ void MatrixPool::shrinkToFit(size_t targetFreeCount) {
         }
 }
 
-void MatrixPool::clear(void) {
-
-    // delete all matrices and reset
-    for (DoubleMatrix* m : allMatrices)
-        delete m;
-    allMatrices.clear();
-    freeList.clear();
-}
-
-void MatrixPool::grow(size_t count) {
-
-    allMatrices.reserve(allMatrices.size() + count);
-    freeList.reserve(freeList.size() + count);
-    
-    for (size_t i = 0; i < count; ++i)
-        {
-        DoubleMatrix* m = new DoubleMatrix(numRows, numCols);
-        allMatrices.push_back(m);
-        freeList.push_back(m);
-        }
-}
-
-void MatrixPool::printStatistics(void) const {
-
-    size_t matrixBytes = numRows * numCols * sizeof(double);
-    size_t totalBytes = allMatrices.size() * matrixBytes;
-    size_t freeBytes = freeList.size() * matrixBytes;
-    size_t inUseBytes = totalBytes - freeBytes;
-    
-    std::cout << "MatrixPool Statistics:" << std::endl;
-    std::cout << "  Matrix dimensions: " << numRows << " x " << numCols << std::endl;
-    std::cout << "  Bytes per matrix:  " << matrixBytes << std::endl;
-    std::cout << "  Total allocated:   " << allMatrices.size() << " (" << totalBytes / 1024 << " KB)" << std::endl;
-    std::cout << "  In use:            " << numInUse() << " (" << inUseBytes / 1024 << " KB)" << std::endl;
-    std::cout << "  Free:              " << numFree() << " (" << freeBytes / 1024 << " KB)" << std::endl;
-}

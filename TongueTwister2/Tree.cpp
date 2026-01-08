@@ -192,10 +192,10 @@ void Tree::clone(Tree& t) {
         pLft->setName( pRht->getName() );
         pLft->setBranchLength( pRht->getBranchLength() );
         
-        if (pRht->getAncestor() != NULL)
+        if (pRht->getAncestor() != nullptr)
             pLft->setAncestor( nodes[pRht->getAncestor()->getOffset()] );
         else
-            pLft->setAncestor(NULL);
+            pLft->setAncestor(nullptr);
             
         pLft->removeDescendants();
         for (size_t j=0; j<pRht->numDescendants(); j++)
@@ -270,7 +270,7 @@ bool Tree::isBinary(void) {
 
 void Tree::listNodes(Node* p, size_t indent) {
 
-    if (p != NULL)
+    if (p != nullptr)
         {
         p->orderDescendantsByOffset();
         
@@ -279,7 +279,7 @@ void Tree::listNodes(Node* p, size_t indent) {
             std::cout << " ";
         std::cout << p->getIndex() << " ";
         std::cout << "( ";
-        if (p->getAncestor() != NULL)
+        if (p->getAncestor() != nullptr)
             std::cout << "a_" << p->getAncestor()->getIndex() << " ";
         else
         std::cout << "a_NULL ";
@@ -383,7 +383,7 @@ dMap Tree::pairwiseDistances(void) {
 
 void Tree::passDown(Node* p) {
 
-    if (p != NULL)
+    if (p != nullptr)
         {
         for (size_t i=0; i<p->numDescendants(); i++)
             passDown( p->getDescendant(i) );

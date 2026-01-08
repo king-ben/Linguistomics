@@ -42,7 +42,7 @@ class BufferTemplate: public BufferAllocator {
     public:
         BufferTemplate(void) {
         
-            endBuffer = NULL;
+            endBuffer = nullptr;
             numElements = 0;
         }
 
@@ -55,7 +55,7 @@ class BufferTemplate: public BufferAllocator {
         
             create(elements);
         }
-
+        
         void create(size_t elements) {
         
             allocate(elements * sizeof(T));
@@ -202,7 +202,7 @@ class MatrixTemplate : public BufferTemplate<T> {
             numCols = nc;
             this->setZero();
         }
-
+        
         explicit MatrixTemplate(const MatrixTemplate<T>& m) : BufferTemplate<T>::BufferTemplate(m) {
 
             numRows = m.numRows;

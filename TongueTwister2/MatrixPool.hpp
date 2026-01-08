@@ -13,13 +13,13 @@ class MatrixPool {
                                         MatrixPool(size_t nRows, size_t nCols, size_t initialCapacity = 64);
                                        ~MatrixPool(void);
         
-                                        // non-copyable, non-movable (owns resources)
+                                        // non-copyable
                                         MatrixPool(const MatrixPool&) = delete;
                                         MatrixPool& operator=(const MatrixPool&) = delete;
                                         MatrixPool(MatrixPool&&) = delete;
                                         MatrixPool& operator=(MatrixPool&&) = delete;
         
-                                        // core operations - O(1) amortized
+                                        // core operations
         DoubleMatrix*                   acquire(void);
         void                            release(DoubleMatrix* m);
         
@@ -44,17 +44,10 @@ class MatrixPool {
     
     private:
         void                            grow(size_t count);
-        
-                                        // freeList is accessed most frequently (push_back/pop_back)
-        std::vector<DoubleMatrix*>      freeList;
-        
-                                        // dimensions checked occasionally
         size_t                          numRows;
         size_t                          numCols;
-        
-                                        // only accessed for diagnostics or cleanup
-        std::vector<DoubleMatrix*>      allMatrices;
-        
+        std::vector<DoubleMatrix*>      freeList;    // freeList is accessed most frequently (push_back/pop_back)
+        std::vector<DoubleMatrix*>      allMatrices; // only accessed for diagnostics or cleanup
         static constexpr size_t         minGrowth = 16;
         static constexpr double         growthFactor = 1.5;
 };

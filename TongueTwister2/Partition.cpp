@@ -19,7 +19,7 @@ Partition::Partition(nlohmann::json js) {
     for (int i=0; i<maxValue(); i++)
         {
         Subset* s = findSubsetWithValue(i);
-        if (s != NULL)
+        if (s != nullptr)
             {
             if (s->getIndex() == -1)
                 s->setIndex(++rgfIdx);
@@ -47,7 +47,7 @@ Subset* Partition::findSubsetIndexed(int x) {
         if (s->getIndex() == x)
             return s;
         }
-    return NULL;
+    return nullptr;
 }
 
 Subset* Partition::findSubsetWithValue(int x) {
@@ -57,13 +57,13 @@ Subset* Partition::findSubsetWithValue(int x) {
         if (s->containsValue(x) == true)
             return s;
         }
-    return NULL;
+    return nullptr;
 }
 
 int Partition::indexOfSubsetWithValue(int x) {
 
     Subset* s = findSubsetWithValue(x);
-    if (s == NULL)
+    if (s == nullptr)
         Msg::error("Could not find subset with value " + std::to_string(x));
     return s->getIndex();
 }
