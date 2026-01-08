@@ -1988,6 +1988,8 @@ class ModelInferenceSection: Content {
 
   InsertionLessThanDeletion = PaperStyle.EqSpan {InsertionRate; Tex.lt; DeletionRate};
 
+ InsertionDividedByDeletion = PaperStyle.EqSpan {InsertionRate; "/"; DeletionRate};
+
   override GetBody(ContentStyle style, title) = Block {
     var rule = MainResults.Data.Rule;
 
@@ -2017,6 +2019,15 @@ class ModelInferenceSection: Content {
       ", is calculated using the algorithm of Lunter "; textit{"et al."}; Cite {Lunter2003}; DotSpace;
       "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
       "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionLessThanDeletion; DotSpace;
+      ReviewNew {
+        "An alignment of length "; textit{"L"}; " receives a prior probability that is geometric with probability "; InsertionDividedByDeletion; DotSpace; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter "; InsertionDividedByDeletion; ".)"; Space;
+
+      "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
+  "Developing such priors for segmental homology structures remains an important direction for future work. ";
+}
+};
+
+style.BodyPar {
       "We numerically approximate the posterior distribution of the parameters using MCMC. ";
       "Specifically, we constructed a Markov chain that has as its states the parameters of the model and a stationary distribution that is the posterior distribution of interest. ";
       "Samples from this chain when at stationarity are valid, albeit dependent, samples from the posterior distribution. ";

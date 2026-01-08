@@ -146,7 +146,7 @@ C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
     "What happens if the ancestral language contains sounds that have never been preserved but explains the strange patterns observed in the data?";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "The reviewer raises the interesting issue of unobserved or extinct segmental states in ancestral languages. ";
@@ -175,7 +175,7 @@ C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
     "Note also that these models are event based as well.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "It is correct that the stochastic models typically applied in historical linguistics are event-based. ";
@@ -204,7 +204,7 @@ C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
     "The sentence “model is a historical model with well-defined events that can transform a word” is also somewhat misleading, as the “event-based” model corresponds to a continuous time overall (and reciprocally on a probabilistic perspective).";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "We believe the reviewer may be conflating two different modeling distinctions, which is the source of the apparent disagreement. ";
@@ -242,7 +242,7 @@ C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
     "Is that because it is easier to align in some way if the rates are different between the classes (in particular deleting a /k/?).";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "In our framework, the alignment itself is part of the inference. ";
@@ -309,7 +309,7 @@ C19 = new(#d461c4c4-e6b1-4931-9ff3-febca0c96767#, Reviewers.R1) {
     "(p7 appendix) Please add some detail on that, as it might also explain why you observe more deletions and additions.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "The reviewer is absolutely right that, from a generative perspective, the prior on the homology structure H should depend on the insertion and deletion rates lambda and mu. ";
@@ -337,7 +337,10 @@ C19 = new(#d461c4c4-e6b1-4931-9ff3-febca0c96767#, Reviewers.R1) {
   "\n\n";
 
   "A more coherent alternative would be to define a fully generative prior on H conditional on lambda and mu, building directly on the TKF91 process itself. ";
-  "Developing such priors for segmental homology structures remains an important direction for future work. ";
+  "Developing such priors for segmental homology structures remains an important direction for future work.\n\n ";
+
+ "We also added a sentence clarifying the prior on the alignment:\n\n";
+          "An alignment of length L receives a prior probability that is geometric with probability λ / μ. "; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter λ/μ.)"; 
   };
 
 };
@@ -359,7 +362,7 @@ C21 = new(#8c6f45b5-fdd1-4c93-be2c-f96a92e2b4a4#, Reviewers.R1) {
     "If it accounted for all the additions and deletion possible, I think the number of possible H 3 would be infinite, as the ancestral state can have any number of deleted characters. There is an approximation here somewhere (which is fine but would be interesting to understand exactly).";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "The reviewer is correct that, if considered naively, the space of possible insertion–deletion histories is infinite. ";
@@ -397,7 +400,7 @@ C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
     "I don’t think Ψ is an amazing notation for a tree.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "We appreciate the reviewer’s comment regarding notation. ";
@@ -431,7 +434,7 @@ C27 = new(#8dcfb5bc-4e1e-411e-9981-3bd0e57b458e#, Reviewers.R1) {
     "If you want a more accurate name for Metropolis-Hastings, you can use the full name Hastings-Metropolis-Rosenbluth-Teller (which has the advantage of giving back credit to the original authors).";
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
 
   "We appreciate the reviewer’s comment and agree that proper attribution is important. ";
@@ -468,9 +471,9 @@ C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
     };
   };
   AssignedTo(People.Huelsenbeck_John);
-  
+
   Response: Paragraph {
-  
+
   "We thank the reviewer for this clear and accurate summary of our work and for the positive assessment of the motivation and results. ";
   "We are particularly pleased that the reviewer finds the framing of the limitations of existing comparative approaches convincing, and that the empirical findings, especially the distinction between vowels and consonants and the relative stability of diphthongs and long vowels, are consistent with established results in the linguistic literature. ";
   "\n\n";

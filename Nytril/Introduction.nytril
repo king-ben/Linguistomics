@@ -152,7 +152,7 @@ class TKF91ApproachSection: Content {
     };
 
        style.BodyPar {
-     "Although the TKF91 model can be used to infer phylogenies, we focus in this study on its ability to estimate rates of changes among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
+     "Although the TKF91 model can be used to, in principle, infer phylogenies, we focus in this study on its ability to estimate rates of changes among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
      "There are a variety of methods for estimating the diachronic stability of segments";
      Cite {Wichmann2009; Moran2018; Moran2021};
      ", but none is phylogenetically based or uses models of segmental transitions. ";
