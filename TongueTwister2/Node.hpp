@@ -58,7 +58,6 @@ class Node {
         bool                    isLeaf;                 //  1 byte  -  41 bytes - frequently checked
         bool                    flag;                   //  1 byte  -  42 bytes - traversal flag
         bool                    isOutgroup;             //  1 byte  -  43 bytes 
-        [[maybe_unused]] char   padding[5];             //  5 bytes -  48 bytes - pad to 48 bytes
         char                    name[MAX_NAME_LENGTH];  // 64 bytes - 112 bytes
 };
 

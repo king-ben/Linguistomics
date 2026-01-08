@@ -9,24 +9,16 @@ NodeFactory::NodeFactory(void) : initialSize(4096) {
     for (size_t i=0; i<initialSize; i++)
         {
         Node* n = &initialNodeVector[i];
-        allocated.insert(n);
+        allocated.push_back(n);
         pool.push_back(n);
         }
 }
 
 NodeFactory::~NodeFactory(void) {
 
-    for (std::set<Node*>::iterator n=allocated.begin(); n != allocated.end(); n++)
-        delete (*n);
-}
-
-void NodeFactory::drainPool(void) {
-
-    for (std::vector<Node*>::iterator n=pool.begin(); n != pool.end(); n++)
-        {
-        allocated.erase(*n);
-        delete (*n);
-        }
+    delete [] allocated[0];
+    for (size_t i=initialSize; i<allocated.size(); i++)
+        delete allocated[i];
 }
 
 Node* NodeFactory::getNode(void) {
@@ -36,7 +28,7 @@ Node* NodeFactory::getNode(void) {
         /* If the node pool is empty, we allocate a new node and return it. We
            do not need to add it to the node pool. */
         Node* n = new Node;
-        allocated.insert( n );
+        allocated.push_back(n);
         return n;
         }
     

@@ -52,7 +52,6 @@ class UpdateAlignment : public Update {
         TransitionProbabilities*        tiProbs;
         Tree*                           tree;
         
-                                        // array pointers used in inner loops
         int***                          profile;
         int*                            xProfile;
         int*                            yProfile;
@@ -71,21 +70,17 @@ class UpdateAlignment : public Update {
         int*                            pathMask;
         int*                            pathFinalPos;
         
-                                        // containers
-        std::vector<int>                pathKey;
-        std::map<std::vector<int>, int> dpTable;
-        
-                                        // int values grouped together (each 4 bytes, pack efficiently)
         int                             numTaxa;
         int                             numNodes;
         int                             numStates;
         int                             gapCode;
         int                             maxLength;
         int                             maxUnalignDimension;
-        
-                                        // unsigned at end to avoid mid-struct padding
         unsigned                        taxonMask;
-                
+
+        std::vector<int>                pathKey;
+        std::map<std::vector<int>, int> dpTable;
+                        
         enum StateLabels { freeToUse, possible, edgeUsed, used };
 };
 

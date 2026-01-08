@@ -95,7 +95,6 @@ class TransitionProbabilitiesGpu : public TransitionProbabilities {
         std::vector<double>                 batchBranchLengths;
         std::vector<DoubleMatrix*>          batchOutputs;
         
-                                            // enum at end (4 bytes, padding acceptable at end)
         ComputeBackend                      computeBackend;
         
                                             // static constants

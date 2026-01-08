@@ -62,25 +62,18 @@ class ThreadPool {
         static constexpr size_t queueCapacity = 1024;           // cache-friendly circular buffer for tasks
         static constexpr size_t queueMask = queueCapacity - 1;  // note the queueCapacity size must be power of 2 for fast modulo via bitwise AND
 
-                                // group atomics together for cache coherence
         std::atomic<size_t>     tasksInFlight;                  // tasks queued + tasks being executed
-        std::atomic<bool>       running;                        // 1 byte
-        [[maybe_unused]] char   padding1[7];                    // explicit padding to next 8-byte boundary
-        
-                                // queue management (accessed under lock)
         size_t                  queueHead;                      // next slot to read from
         size_t                  queueTail;                      // next slot to write to
         size_t                  queueSize;                      // current number of tasks in queue
         
-                                // accessed occasionally
-        int                     threadCount;                    // 4 bytes
-        [[maybe_unused]] char   padding2[4];                    // explicit padding
         std::thread*            threads;
+        int                     threadCount;                    // 4 bytes
         
-                                // synchronization primitives
         std::mutex              mutex;                          // single mutex protects the queue
         std::condition_variable taskAvailable;                  // signaled when queue non-empty
         std::condition_variable allComplete;                    // signaled when tasksInFlight hits 0
+        std::atomic<bool>       running;                        // 1 byte
         
                                 // large array at end (8KB)
         ThreadTask*             taskQueue[queueCapacity];

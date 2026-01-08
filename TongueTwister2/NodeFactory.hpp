@@ -1,7 +1,6 @@
 #ifndef NodeFactory_hpp
 #define NodeFactory_hpp
 
-#include <set>
 #include <vector>
 class Node;
 
@@ -15,7 +14,6 @@ class NodeFactory {
                                 static NodeFactory tp;
                                 return tp;
                                 }
-        void                drainPool(void);
         Node*               getNode(void);
         int                 getNumAllocated(void) { return static_cast<int>(allocated.size()); }
         int                 getNumInPool(void) { return static_cast<int>(pool.size()); }
@@ -27,7 +25,7 @@ class NodeFactory {
                             NodeFactory(const NodeFactory& tp) = delete;
         size_t              initialSize;
         std::vector<Node*>  pool;
-        std::set<Node*>     allocated;
+        std::vector<Node*>  allocated;
 };
 
 #endif

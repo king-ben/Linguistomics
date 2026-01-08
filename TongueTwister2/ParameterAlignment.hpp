@@ -31,20 +31,13 @@ class ParameterAlignment: public Parameter {
         size_t                          calculateMaximumAlignmentLength(nlohmann::json j);
         size_t                          longestNameLength(void);
         
-                                        // pointers accessed frequently (8-byte aligned)
-        ParameterIndelRates*            indelRates;
-        Alignment*                      alignment[2];              // 16 bytes
-        
-                                        // size_t values (8-byte aligned)
+        ParameterIndelRates*            indelRates;                // 8 bytes
+        Alignment*                      alignment[2];              // 8 bytes
         size_t                          gapCode;                   // 8 bytes
         size_t                          numStates;                 // 8 bytes
-        
-                                        // containers (24 bytes each due to std::vector guts)
-        std::vector<std::string>        canonicalTaxonList;
+        unsigned                        taxonMask;                 // 4 bytes
+        std::vector<std::string>        canonicalTaxonList;        // containers (24 bytes each due to std::vector guts)
         std::vector<std::string>        taxonNames;
-        
-                                        // place smaller types at end to minimize internal padding
-        unsigned                        taxonMask;                 // 4 bytes (padding at end is acceptable)
 };
 
 #endif
