@@ -226,7 +226,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
 
 readonly namespace<Equation> Equations {
   LikelihoodComplexity = new(#0eef75c7-cb5a-4fd9-9c47-26a32dbfe7bc#, "Complexity of likelihood calculation") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionO;
       SpanParens {
         2 sup NumTreeLeaves; GMLength sup NumTreeLeaves;
@@ -236,21 +236,21 @@ readonly namespace<Equation> Equations {
   };
 
   OverallInsertionRate = new(#0a2b44d5-3187-4315-ae87-fca61377eafd#, "Insertion Rate") {
-    Formula: Span {
+    Formula: EqSpan {
       InsertionRate; SpanParens {WordLength; Plus; 1};
     };
     EquationLink to [InsertionRate, WordLength];
   };
 
   TypicalWordLength = new(#84ed78e5-a235-462d-9e7c-7d6bfbfc498a#, "Typical word length") {
-    Formula: Span {
+    Formula: EqSpan {
       1; leq; WordLength; leq; 10;
     };
     EquationLink to [WordLength];
   };
 
   UnknownTree = new(#c070ccfe-ee29-41be-9064-6dc6ccaa5995#, "Unknown Tree") {
-    Formula: Span {
+    Formula: EqSpan {
        Phylogeny;
        Equals;
        Arguments {
@@ -263,7 +263,7 @@ readonly namespace<Equation> Equations {
   };
 
   LiklihoodFunction = new(#4a58876a-8295-4ea2-830a-bc1f39cd1634#, "Liklihood Function") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionF;
       Arguments {
         Condition(SegmentalInfo, Phylogeny);
@@ -276,7 +276,7 @@ readonly namespace<Equation> Equations {
   };
 
   MarginalLiklihood = new(#311eaf7f-7d9e-4569-868f-eda0cc0ac959#, "Marginal Liklihood") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionF;
       Arguments {
         SegmentalInfo;
@@ -286,7 +286,7 @@ readonly namespace<Equation> Equations {
   };
 
   MarginalLiklihoodI = new(#56fc4857-f5a4-46cc-b06d-201d94366163#, "Marginal Liklihood for model i") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionF;
       Arguments {
         Condition(SegmentalInfo, ModelI);
@@ -296,7 +296,7 @@ readonly namespace<Equation> Equations {
   };
 
   MarginalLiklihoodJ = new(#8dd2838c-3cfa-4c04-8c74-d91f8407f0b4#, "Marginal Liklihood for model j") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionF;
       Arguments {
         Condition(SegmentalInfo, ModelJ);
@@ -306,7 +306,7 @@ readonly namespace<Equation> Equations {
   };
 
   BayesFactorEq = new(#ae8721e4-ab4e-4dd0-922f-6cd0de12fa46#, "Bayes Factor comparing models i and j") {
-    Formula: Span {
+    Formula: EqSpan {
       BayesFactor;
       Equals;
       Fraction {
@@ -319,7 +319,7 @@ readonly namespace<Equation> Equations {
   };
 
   BayesianEstimation = new(#a6660b63-6222-4967-93f4-589f47b986ce#, "Bayesian Estimation") {
-    Formula: Span {
+    Formula: EqSpan {
       FunctionF;
       Arguments {
         Phylogeny;
@@ -347,7 +347,7 @@ readonly namespace<Equation> Equations {
   };
 
   ExpectedEventsPerBranch = new(#64e8f644-cd4b-45f6-ba4a-8c947a356458#, "Expected Events per Branch") {
-    Formula: Span {
+    Formula: EqSpan {
       ExpectedEvents;
       Equals;
       SpanParens {
@@ -363,7 +363,7 @@ readonly namespace<Equation> Equations {
   };
 
   PossibleTrees = new(#38134545-1719-4b8b-9af4-cb18eab9d09e#, "Possible Rooted Trees") {
-    Formula: Span {
+    Formula: EqSpan {
       BN;
       Equals;
       SpanParens {MaxBranch};
@@ -377,7 +377,7 @@ readonly namespace<Equation> Equations {
   };
 
   OffDiagonalComponents = new(#d9a505a2-118d-4ec9-add8-0374707c9932#, "Off-diagonal Components") {
-    Formula: Span {
+    Formula: EqSpan {
       qii;
       Equals;
       Negative;
@@ -391,7 +391,7 @@ readonly namespace<Equation> Equations {
   };
 
   AverageRateElement = new(#30d89e17-902a-459d-b9fa-afb5d1db44b2#, "Average Rate Matrix Element") {
-    Formula: Span {
+    Formula: EqSpan {
       mij;
       Equals;
       Probability sub sym.i;
@@ -422,7 +422,7 @@ readonly namespace<Equation> Equations {
   };
 
   InDelProbability = new(#01728f12-67b4-4bd0-ab13-e4124d4ac7ae#, "In-Del Probability") {
-    Formula: Span {
+    Formula: EqSpan {
       Negative;
       Summation {
         Lower: sym.i;
@@ -435,7 +435,7 @@ readonly namespace<Equation> Equations {
   };
 
   ProbOfAcceptingProposal = new(#f85ca0eb-aa0b-49ac-a97c-58f95f15b181#, "Probability of accepting the proposed value") {
-    Formula: Span {
+    Formula: EqSpan {
       ProbOfAccepting;
       Equals;
       min;
@@ -470,7 +470,7 @@ readonly namespace<Equation> Equations {
   };
 
   ModelComparison = new(#99c4daca-c075-42c3-beb8-d89b4148d9a4#, "Model Comparison") {
-    Formula: Span {
+    Formula: EqSpan {
       BayesFactor sub 12;
       Equals;
       Fraction {
@@ -482,7 +482,7 @@ readonly namespace<Equation> Equations {
   };
 
   MarginalLikelihoodParameters = new(#a25bcd04-7841-4a0d-9859-acf4ea460c71#, "Marginal Likelihood") {
-    Formula: Span {
+    Formula: EqSpan {
       Prob(SegmentalInfo);
       Equals;
       Summation {Lower: Topology};
@@ -502,7 +502,7 @@ readonly namespace<Equation> Equations {
   };
 
   MarginalizationOverAlignments = new(#666bdb91-49be-408a-af3e-fe7ca5c7aebb#, "Marginalization Over Alignments") {
-    Formula: Span {
+    Formula: EqSpan {
       ProbVar(SegmentalInfo);
       Equals;
       Summation {
@@ -516,7 +516,7 @@ readonly namespace<Equation> Equations {
   };
 
   PosteriorProbabilityDistribution = new(#5294924e-b618-4073-adf4-bf782cc45e65#, "Posterior Probability Distribution") {
-    Formula: Span {
+    Formula: EqSpan {
       Prob(CommaList {
         Topology;
         ExpectedEvents;
@@ -538,7 +538,7 @@ readonly namespace<Equation> Equations {
   };
 
   GTR4 = new(#c593d288-f338-484d-9fca-b7d93e3c55be#, "4-State GTR Model") {
-    Formula: Span {
+    Formula: EqSpan {
       RateMatrix;
       Equals;
 
@@ -566,7 +566,7 @@ readonly namespace<Equation> Equations {
   };
 
   BayesTheorem = new(#7a57afd3-1293-4a75-8518-9ce32bbe9fa8#, "Bayes’ Theorem") {
-    Formula: Span {
+    Formula: EqSpan {
       PPO;
       Equals;
       Fraction {
@@ -582,7 +582,7 @@ readonly namespace<Equation> Equations {
   };
 
   RateChange = new(#f7a964f6-414b-4e40-9d31-e63eadf32f8f#, "Rate change") {
-    Formula: Span {
+    Formula: EqSpan {
       qij;
       geq;
       0;
@@ -597,7 +597,7 @@ readonly namespace<Equation> Equations {
   };
 
   RatesOfChangeBetweenStates = new(#a7b02873-4fe5-47b8-9e3f-b594aef21fc3#, "Rates of change between all pairs of states") {
-    Formula: Span {
+    Formula: EqSpan {
       RateMatrix;
       Equals;
       "{"; qij; "}";
@@ -611,7 +611,7 @@ readonly namespace<Equation> Equations {
   };
 
   DiagonalElements = new(#49b4a095-118d-4bbe-9fe3-80a5e13ddf28#, "The diagonal elements of the rate matrix") {
-    Formula: Span {
+    Formula: EqSpan {
       qii;
       Equals;
       Negative;
@@ -625,7 +625,7 @@ readonly namespace<Equation> Equations {
   };
 
   ExponentiationOfRateMatrix = new(#05e99790-f121-4640-86a9-3a818e4a6b6e#, "Exponentiation of the rate matrix") {
-    Formula: Span {
+    Formula: EqSpan {
       StateProbability;
       SpanParens {ExpectedEvents};
       Equals;
@@ -635,7 +635,7 @@ readonly namespace<Equation> Equations {
   };
 
   RateMatrixSolution = new(#7c820a26-5656-499b-93ea-047ad3513826#, "Rate matrix solution") {
-    Formula: Span {
+    Formula: EqSpan {
       EquilibriumDistribution;
       RateMatrix;
       Equals;
@@ -645,7 +645,7 @@ readonly namespace<Equation> Equations {
   };
 
   EventInsertionProbability = new(#d2cd0ffe-34e5-4fab-a160-a03131651bca#, "Event insertion probability") {
-    Formula: Span {
+    Formula: EqSpan {
       WordLength;
       InsertionRate;
       Divide;
@@ -655,7 +655,7 @@ readonly namespace<Equation> Equations {
   };
 
   EventDeletionProbability = new(#6b805317-a4b0-4f59-919c-0c2e21cc6bcd#, "Event deletion probability") {
-    Formula: Span {
+    Formula: EqSpan {
       SpanParens {
         WordLength;
         Minus;
