@@ -18,6 +18,8 @@ class UpdateTopology : public Update {
     public:
                                             UpdateTopology(void) = delete;
                                             UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<UpdateAlignment*>& alnVec);
+        double                              getTuningParameter(void) { return tuningParameter; }
+        uint64_t                            getUpdateId(void) { return updateId; }
         std::string                         getUpdateName(void) override { return "LOCAL Topology Update"; }
         std::string                         parameterType(void) override { return "ParameterTree"; }
         void                                setDependants(void) override;
@@ -36,7 +38,6 @@ class UpdateTopology : public Update {
         std::vector<UpdateAlignment*>       myAlignmentUpdates;
         TransitionProbabilities*            tiProbs;
         double                              maxBrlen;
-        double                              tuning;
 };
 
 #endif

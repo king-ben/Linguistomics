@@ -16,6 +16,8 @@ class UpdateAlignment : public Update {
                                         UpdateAlignment(void) = delete;
                                         UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p);
                                        ~UpdateAlignment(void);
+        uint64_t                        getUpdateId(void) { return updateId; }
+        double                          getTuningParameter(void) { return tuningParameter; }
         std::string                     getUpdateName(void);
         std::string                     parameterType(void) { return "ParameterAlignment"; }
         void                            setDependants(void);
@@ -43,7 +45,8 @@ class UpdateAlignment : public Update {
 
         static constexpr double         basis = 1.5; 
         static constexpr double         gapPenalty = -5.0;
-        static constexpr double         extensionProb = 0.5;
+        //static constexpr double         extensionProb = 0.5;
+        double                          extensionProb;
         
                                         // pointers accessed frequently (all 8-byte aligned)
         ParameterAlignment*             myParm;

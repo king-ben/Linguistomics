@@ -8,6 +8,8 @@
 
 UpdateIndelRates::UpdateIndelRates(Model* m, RandomVariable* r, ParameterIndelRates* p) : Update(m, r), myParm(p) {
 
+    updateId = hashUpdateName(getUpdateName());
+    tuningParameter = 0.03;
 }
 
 void UpdateIndelRates::setDependants(void) {
@@ -23,7 +25,7 @@ void UpdateIndelRates::setDependants(void) {
 double UpdateIndelRates::update(void) {
 
     // initialize some variables
-    double window = 0.03;
+    double window = tuningParameter;
     double theta1 = myParm->getInsertionRate();
     double theta2 = myParm->getDeletionRate();
     double lowerLimit = 0.0;

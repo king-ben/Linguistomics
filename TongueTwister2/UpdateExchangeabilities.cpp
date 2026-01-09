@@ -13,6 +13,22 @@ double UpdateExchangeabilities::minVal = 0.000001;
 UpdateExchangeabilities::UpdateExchangeabilities(Model* m, RandomVariable* r, ParameterExchangeabilities* p) : Update(m, r), myParm(p) {
 
     numRates = myParm->getNumRates();
+
+    updateNames[0] = "Exchangeabilities: Dirichlet k=1";
+    updateNames[1] = "Exchangeabilities: Mass Transfer";
+    updateNames[2] = "Exchangeabilities: ALR MVN";
+    updateNames[3] = "Exchangeabilities: Prior";
+    tuningValues[0] = 200.0;
+    tuningValues[1] = 200.0;
+    tuningValues[2] = 0.001;
+    tuningValues[3] = 0.0;
+    for (size_t i=0; i<4; i++)
+        updateHashes[i] = hashUpdateName(updateNames[i]);
+}
+
+uint64_t UpdateExchangeabilities::getUpdateId(void) {
+
+    return updateHashes[lastUpdate];
 }
 
 void UpdateExchangeabilities::setDependants(void) {
@@ -27,6 +43,8 @@ void UpdateExchangeabilities::setDependants(void) {
 
 double UpdateExchangeabilities::update(void) {
     
+    lastUpdate = 0;
+
     double bounce = 1.0;
     std::vector<double>& rates = myParm->getRates();
     
@@ -53,7 +71,7 @@ double UpdateExchangeabilities::update(void) {
         alphaReverse.resize(2, 0.0);
 
         // parameterize dirichlet for forward move
-        double alpha0 = 200.0;
+        double alpha0 = tuningValues[0];
         int indexToUpdate = static_cast<int>(rng->uniformRv()*numRates);
         oldValues[0] = rates[indexToUpdate];
         oldValues[1] = 1.0 - oldValues[0];
@@ -205,6 +223,8 @@ double UpdateExchangeabilities::update(double power) {
 }
 
 double UpdateExchangeabilities::updateFromPrior(void) {
+
+    lastUpdate = 3;
 
     // draw from the prior distribution, which is a flat Dirichlet distribution
     std::vector<double>& rates = myParm->getRates();

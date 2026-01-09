@@ -15,6 +15,8 @@ class ParameterFrequencies : public Parameter {
         std::vector<double>&        getAlpha(void) { return alpha; }
         std::vector<double>&        getFrequencies(void) { return freqs[0]; }
         const std::vector<double>&  getFrequencies(void) const { return freqs[0]; }
+        std::vector<double>&        getFrequencies(size_t idx) { return freqs[idx]; }
+        const std::vector<double>&  getFrequencies(size_t idx) const { return freqs[idx]; }
         size_t                      getNumStates(void) { return numStates; }
         void                        keep(void);
         double                      lnPriorProbability(void);

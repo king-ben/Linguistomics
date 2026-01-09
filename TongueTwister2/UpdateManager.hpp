@@ -3,6 +3,7 @@
 
 #include <unordered_map>
 #include <vector>
+#include "UpdateStatistics.hpp"
 class Model;
 class Parameter;
 class RateMatrix;
@@ -42,9 +43,8 @@ class UpdateManager {
         std::vector<Update*>            updates;
         
                                         // statistics vectors (accessed on accept/reject)
-        std::vector<int>                numTries;
-        std::vector<int>                numAcceptances;
         std::vector<double>             proposalProbabilities;
+        UpdateStatistics                updateInfo;
         
                                         // lookup map (accessed for index lookup)
         std::unordered_map<Update*, size_t> updateIndex;

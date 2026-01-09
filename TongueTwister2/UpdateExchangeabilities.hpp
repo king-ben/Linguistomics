@@ -12,7 +12,9 @@ class UpdateExchangeabilities : public Update {
     public:
                                     UpdateExchangeabilities(void) = delete;
                                     UpdateExchangeabilities(Model* m, RandomVariable* r, ParameterExchangeabilities* p);
-        std::string                 getUpdateName(void) { return "Exchangeability Rates Update"; }
+        double                      getTuningParameter(void) { return tuningValues[lastUpdate]; }
+        uint64_t                    getUpdateId(void);
+        std::string                 getUpdateName(void) { return updateNames[lastUpdate]; }
         std::string                 parameterType(void) { return "ParameterExchangeabilities"; }
         void                        setDependants(void);
         double                      update(void);
@@ -27,6 +29,10 @@ class UpdateExchangeabilities : public Update {
         std::vector<double>         newValues;
         std::vector<double>         alphaForward;
         std::vector<double>         alphaReverse;
+        size_t                      lastUpdate;
+        std::string                 updateNames[4];
+        uint64_t                    updateHashes[4];
+        double                      tuningValues[4];
 };
 
 #endif

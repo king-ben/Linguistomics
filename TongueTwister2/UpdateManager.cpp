@@ -76,10 +76,6 @@ UpdateManager::UpdateManager(Model* m, RandomVariable* r) : rng(r), model(m) {
     for (size_t i=0; i<updates.size(); i++)
         updateIndex[updates[i]] = i;
     
-    // initialize acceptance statistics
-    numTries.resize(updates.size(), 0);
-    numAcceptances.resize(updates.size(), 0);
-        
     setProposalProbabilities();
     buildAliasTable();
 }
@@ -93,8 +89,7 @@ UpdateManager::~UpdateManager(void) {
 void UpdateManager::accept(Update* u) {
 
     // increment acceptance count
-    size_t idx = updateIndex[u];
-    numAcceptances[idx]++;
+    updateInfo.accept(u);
 
     // keep the primary updated parameter
     Parameter* parm = u->getUpdatedParameter();
@@ -208,14 +203,13 @@ Update* UpdateManager::randomlyChooseUpdate(void) {
     // flip biased coin to decide: original or alias
     double v = rng->uniformRv();
     size_t chosenIdx = (v < aliasProbability[bin]) ? bin : aliasIndex[bin];
-    
-    // increment try count for chosen update
-    numTries[chosenIdx]++;
-    
+        
     return updates[chosenIdx];
 }
 
 void UpdateManager::reject(Update* u) {
+
+    updateInfo.reject(u);
 
     // restore the primary updated parameter
     Parameter* parm = u->getUpdatedParameter();
@@ -267,33 +261,7 @@ void UpdateManager::setProposalProbabilities(void) {
 
 void UpdateManager::summary(void) {
 
-    size_t longestNameLength = 0;
-    for (Update* u : updates)
-        {
-        std::string name = u->getUpdateName();
-        if (name.length() > longestNameLength)
-            longestNameLength = name.length();
-        }
-        
-    std::cout << "   MCMC Update Summary" << std::endl;
-    for (Update* u : updates)
-        {
-        size_t idx = updateIndex[u];
-        std::cout << "   * ";
-        std::string name = u->getUpdateName();
-        std::cout << name << " ";
-        for (size_t i=0; i<longestNameLength-name.length(); i++)
-            std::cout << " ";
-        std::cout << std::setw(4) << numTries[idx] << " ";
-        std::cout << std::setw(4) << numAcceptances[idx] << " ";
-        if (numTries[idx] > 0)
-            std::cout << std::fixed << std::setprecision(1) << std::setw(5) << (double)(numAcceptances[idx] * 100.0) / numTries[idx] << "% ";
-        else 
-            std::cout << std::setw(5) << "N/A" << " ";
-        std::cout << std::fixed << std::setprecision(4) << std::setw(6) << proposalProbabilities[idx];
-        std::cout << std::endl;
-        }
-    std::cout << std::endl;
+    updateInfo.print();
 }
 
 void UpdateManager::updateDependants(Update* u) {

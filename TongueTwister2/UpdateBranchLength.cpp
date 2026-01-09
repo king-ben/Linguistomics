@@ -11,6 +11,8 @@
 
 UpdateBranchLength::UpdateBranchLength(Model* m, RandomVariable* r, ParameterTree* p) : Update(m, r), myParm(p) {
 
+    updateId = hashUpdateName(getUpdateName());
+    tuningParameter = log(4.0);
     tiProbs = model->getTiProbs();
     maxBrlen = myParm->getMaximumBrlen();
 }
@@ -29,7 +31,7 @@ void UpdateBranchLength::setDependants(void) {
 double UpdateBranchLength::update(void) {
 
     Tree* t = myParm->getTree();
-    double tuning = log(4.0);
+    double tuning = tuningParameter;
     
     // pick a branch at random (not the root)
     const std::vector<Node*>& dp = t->getPostOrder();

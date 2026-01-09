@@ -37,4 +37,5 @@ void States::print(void) {
     std::cout << "   * Number of states: " << numStates << std::endl;
     if (statePartitions != nullptr)
         statePartitions->print();
+    std::cout << std::endl;
 }

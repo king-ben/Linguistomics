@@ -21,7 +21,7 @@ McmcPosterior::~McmcPosterior(void) {
 
 void McmcPosterior::printStatus(int cycle, double lnL1, double lnL2, McmcTimer* timer) {
 
-    std::cout << "   " << std::setw(numDigits) << cycle << " -- ";
+    std::cout << "   * " << std::setw(numDigits) << cycle << " -- ";
     std::cout << std::fixed << std::setprecision(2) << lnL1 << " -> " << lnL2 << " -- ";
     timer->printStatus(cycle, numCycles);
     std::cout << std::endl; 

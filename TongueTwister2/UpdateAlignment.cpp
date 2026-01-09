@@ -14,6 +14,10 @@
 
 UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p) : 
     Update(m, r), myParm(p) {
+    
+    updateId = hashUpdateName(getUpdateName());
+    tuningParameter = 0.5;
+    extensionProb = tuningParameter;
 
     freqsParm = model->findParameter<ParameterFrequencies>(); // OK if this is NULL
 
@@ -600,7 +604,7 @@ void UpdateAlignment::getIndelMatrix(Alignment* aln, int startCol, int len) {
 
 std::string UpdateAlignment::getUpdateName(void) {
 
-    return myParm->getName() + " Update";
+    return "Alignment Update: " + myParm->getName();
 }
 
 void UpdateAlignment::initializeTreeStructure(void) {
