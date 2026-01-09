@@ -107,6 +107,16 @@ class Comment: Fact {
     ShowText;
   };
 
+  ShowResponse = Block {
+    ParAlignment: Justify;
+//    ParBackground: 98%;
+    LeftIndent: 16pt;
+    RightIndent: 16pt;
+    FirstIndent: 24pt;
+    SpaceAfter: 8pt;
+    Response;
+  };
+
   ShowText = Block {
     Block {
       ParAlignment: Justify;
@@ -124,12 +134,7 @@ class Comment: Fact {
 
     if (Response is valid) Block {
       Bold "Response";
-      Paragraph(BorderLR(new(1, 5, Colors.LightGray))) {
-        ParBackground: 98%;
-        LeftIndent: 16pt;
-        RightIndent: 16pt;
-        Response;
-      }
+      ShowResponse;
     };
 
   };
@@ -190,11 +195,7 @@ class Comment: Fact {
         SpaceBefore: 4pt;
         "Author's Response";
       };
-      Paragraph(BorderLR(new(1, 5, Colors.LightGray))) {
-        LeftIndent: 16pt;
-        RightIndent: 16pt;
-        Response;
-      }
+      ShowResponse;
     };
 
     if (HasAnchor) {
@@ -244,7 +245,7 @@ class ReviewDocument: DocumentEntry {
     foreach (var comment in CommentList) {
       if (not comment.NoAction)
         comment.ShowReview(Style);
-    }    
+    }
   };
 }
 
