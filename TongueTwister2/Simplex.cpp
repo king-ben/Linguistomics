@@ -86,15 +86,15 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
     std::vector<double> y;
     alrForward(oldVec, y);
 
-    // MVN random walk in ALR space (isotropic sigma^2 I)
+    // MVN random walk in ALR space (sigma^2 I)
     for (size_t i=0; i<y.size(); i++)
         y[i] += sigma * Probability::Normal::rv(rng);
 
     // inverse transform
     alrInverse(y, newVec);
 
-    // For this kernel, do NOT "normalize-with-floor" (that changes the mapping).
-    // Instead, hard-reject if any component violates minVal.
+    /* Do NOT "normalize-with-floor" (that changes the mapping).
+       Instead, hard-reject if any component violates minVal. */
     if (minVal > 0.0)
         {
         for (size_t i=0; i<newVec.size(); i++)
@@ -110,8 +110,8 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
     if (!isValidSimplex(newVec, 1e-10))
         Msg::error("updateSimplexALRMVN: newVec not valid simplex");
 
-    // Hastings/Jacobian correction:
-    // proposal symmetric in ALR space => only Jacobian ratio remains
+    /* Hastings/Jacobian correction:
+       proposal symmetric in ALR space => only Jacobian ratio remains */
     return sumLogVec(newVec) - sumLogVec(oldVec);
 }
 
@@ -164,7 +164,7 @@ double Simplex::updateMassTransfer(RandomVariable* rng, std::vector<double>& old
     newVec[i] = s * uProp;
     newVec[j] = s * (1.0 - uProp);
 
-    // (tiny numerical safety) renormalize in case of roundoff
+    // renormalize in case of roundoff
     Probability::Helper::normalize(newVec, minVal);
 
     // reverse proposal is Beta centered at u_prop (from the proposed state)
@@ -174,9 +174,9 @@ double Simplex::updateMassTransfer(RandomVariable* rng, std::vector<double>& old
     double aRev = alpha0 * uRevClamped;
     double bRev = alpha0 * (1.0 - uRevClamped);
 
-    // Hastings ratio (reverse - forward)
-    // Forward density: u_prop ~ Beta(a,b)
-    // Reverse density: u ~ Beta(a_rev, b_rev)
+    /* Hastings ratio (reverse - forward)
+       forward density: u_prop ~ Beta(a,b)
+       reverse density: u ~ Beta(a_rev, b_rev) */
     double log_q_fwd = Probability::Beta::lnPdf(a, b, uProp);
     double log_q_rev = Probability::Beta::lnPdf(aRev, bRev, u);
     double lnHastings = log_q_rev - log_q_fwd;
@@ -238,7 +238,7 @@ double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>
     std::vector<double> newValues(k+1);
     Probability::Dirichlet::rv(rng, alphaForward, newValues);
     
-    // FIX 1: normalize newValues (the k+1 element vector), NOT newVec (the full n-element vector)
+    // normalize newValues (the k+1 element vector)
     Probability::Helper::normalize(newValues, minVal);
     
     // construct the reverse Dirichlet parameters
@@ -250,7 +250,7 @@ double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>
     // The non-selected elements are scaled by the ratio of remainders
     double factor = newValues[k] / oldValues[k];
     
-    // FIX 2: Initialize newVec from oldVec explicitly, then scale
+    // initialize newVec from oldVec explicitly, then scale
     for (size_t j=0, m=newVec.size(); j<m; j++)
         newVec[j] = oldVec[j] * factor;
     
@@ -259,8 +259,7 @@ double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>
     for (size_t idx : indices)
         newVec[idx] = newValues[i++];
 
-    // FIX 3: Compute Hastings ratio using oldValues and newValues (both size k+1),
-    // NOT oldVec and newVec (which are size n and would cause dimension mismatch)
+    // compute Hastings ratio using oldValues and newValues (both size k+1),
     double lnProposalProb = Probability::Dirichlet::lnPdf(alphaReverse, oldValues) - Probability::Dirichlet::lnPdf(alphaForward, newValues);
     lnProposalProb += (n - k - 1) * log(factor);
     return lnProposalProb;

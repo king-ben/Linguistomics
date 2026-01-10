@@ -11,8 +11,8 @@
 #include "TransitionProbabilityCalculator.hpp"
 #include "Tree.hpp"
 
-// Maximum batch size for parallel task processing.
-// Must be less than ThreadPool::queueCapacity (1024) to avoid overflow.
+/* Maximum batch size for parallel task processing, which
+   must be less than ThreadPool::queueCapacity (1024) to avoid overflow. */
 static const size_t MAX_BATCH_SIZE = 512;
 
 
