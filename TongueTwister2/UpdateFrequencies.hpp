@@ -20,11 +20,8 @@ class UpdateFrequencies : public Update {
         void                        setDependants(void);
         double                      update(void);
         double                      update(double power);
-        double                      updateFromPrior(void);
     
     private:
-        double                      updateDirichlet(int k);
-        double                      updateMassTransfer(double alpha0);
         ParameterFrequencies*       myParm;
         static double               minVal;
         size_t                      numStates;

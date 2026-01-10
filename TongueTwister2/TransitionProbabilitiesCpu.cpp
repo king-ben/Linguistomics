@@ -22,14 +22,14 @@ TransitionProbabilitiesCpu::TransitionProbabilitiesCpu(ThreadPool* p, ParameterT
     myTree(t),
     subModel(sm),
     map(nullptr),
-    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     calculatorPool(nullptr),
     calculatorPoolCapacity(0),
     calculatorPoolSize(0),
     maxCalculatorsUsedRecently(0),
     calculatorShrinkCounter(0),
     cleanupFrequency(cleanupFreq),
-    cleanupCounter(0) {
+    cleanupCounter(0),
+    matrixPool(sm->getNumStates(), sm->getNumStates(), 128) {
 
     numStates = subModel->getNumStates();
     map = new TransitionMatrixMap(numStates, 128, &matrixPool);

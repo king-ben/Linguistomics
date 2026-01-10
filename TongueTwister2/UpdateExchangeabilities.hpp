@@ -19,7 +19,6 @@ class UpdateExchangeabilities : public Update {
         void                        setDependants(void);
         double                      update(void);
         double                      update(double power);
-        double                      updateFromPrior(void);
     
     private:
         ParameterExchangeabilities* myParm;

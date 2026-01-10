@@ -22,7 +22,6 @@ TransitionProbabilitiesGpu::TransitionProbabilitiesGpu(ThreadPool* p, ParameterT
     pool(p),
     myTree(t),
     subModel(sm),
-    matrixPool(sm->getNumStates(), sm->getNumStates(), 128),  // initialize pool first
     map(nullptr),
     calculatorPool(nullptr),
     calculatorPoolCapacity(0),
@@ -30,7 +29,8 @@ TransitionProbabilitiesGpu::TransitionProbabilitiesGpu(ThreadPool* p, ParameterT
     maxCalculatorsUsedRecently(0),
     calculatorShrinkCounter(0),
     cleanupFrequency(cleanupFreq),
-    cleanupCounter(0) {
+    cleanupCounter(0),
+    matrixPool(sm->getNumStates(), sm->getNumStates(), 128) {
 
     numStates = subModel->getNumStates();
     map = new TransitionMatrixMap(numStates, 128, &matrixPool);

@@ -37,7 +37,6 @@ class Update {
         virtual void                    setDependants(void) = 0;
         virtual double                  update(void) = 0;
         virtual double                  update(double power) = 0;
-        virtual double                  updateFromPrior(void) = 0;
         
     protected:
         void                            clearDependencyFlags(void);

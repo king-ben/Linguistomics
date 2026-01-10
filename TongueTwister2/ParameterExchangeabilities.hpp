@@ -18,6 +18,8 @@ class ParameterExchangeabilities : public Parameter {
         size_t                      getNumStates(void) { return numStates; }
         std::vector<double>&        getRates(void) { return rates[0]; }
         const std::vector<double>&  getRates(void) const { return rates[0]; }
+        std::vector<double>&        getRates(size_t idx) { return rates[idx]; }
+        const std::vector<double>&  getRates(size_t idx) const { return rates[idx]; }
         void                        keep(void);
         double                      lnPriorProbability(void);
         void                        print(void);

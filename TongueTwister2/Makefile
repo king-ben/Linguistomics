@@ -122,6 +122,7 @@ CORE_SRCS = \
     RandomVariable.cpp \
     RateMatrix.cpp \
     RateMatrixHelper.cpp \
+    Simplex.cpp \
     States.cpp \
     SteppingStones.cpp \
     Stone.cpp \
@@ -138,6 +139,7 @@ CORE_SRCS = \
     UpdateFrequencies.cpp \
     UpdateIndelRates.cpp \
     UpdateManager.cpp \
+    UpdateStatistics.cpp \
     UpdateTopology.cpp \
     UserSettings.cpp \
     main.cpp

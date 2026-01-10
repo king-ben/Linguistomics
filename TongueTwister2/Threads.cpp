@@ -19,13 +19,14 @@ TransitionProbabilityTask::~TransitionProbabilityTask(void) {
 // Threaded version
 ThreadPool::ThreadPool(void) :
     tasksInFlight(0),
-    running(true),
     queueHead(0),
     queueTail(0),
     queueSize(0),
     threadCount(std::thread::hardware_concurrency()),
-    threads(new std::thread[threadCount]) {
+    running(true) {
 
+    threads = new std::thread[threadCount];
+    
     // spawn worker threads
     for (int i = 0; i < threadCount; i++)
         threads[i] = std::thread(&ThreadPool::worker, this);
