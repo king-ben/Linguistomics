@@ -6,7 +6,16 @@
 class Model;
 class Parameter;
 class RandomVariable;
+enum UpdateType { undef, window, probability, simplex, factor };
 
+struct UpdateParameters {
+
+    size_t      updateIdx;
+    std::string updateName;
+    uint64_t    updateHash;
+    UpdateType  updateType;
+    double      tuningParameter;
+};
 
 
 class Update {
@@ -19,7 +28,10 @@ class Update {
         virtual double                  getTuningParameter(void) = 0;      
                                         // accessors for dependency flags
         Parameter*                      getUpdatedParameter(void) { return updatedParameter; }
+        virtual size_t                  getUpdateIdx(void) = 0;
         virtual uint64_t                getUpdateId(void) = 0;
+        virtual UpdateType              getUpdateType(void) = 0;
+        void                            setUpdateTuningParameter(size_t idx, double x) { updateInfo[idx].tuningParameter = x; }
         bool                            getRateMatrixNeedsUpdate(void) { return rateMatrixNeedsUpdate; }
         
                                         // transition probability update types
@@ -51,9 +63,7 @@ class Update {
         Model*                          model;
         RandomVariable*                 rng;
         Parameter*                      updatedParameter;
-        uint64_t                        updateId;
-        double                          tuningParameter;
-        
+        std::vector<UpdateParameters>   updateInfo;
         double                          changedBranchLength;        // the new branch length (if singleBranchChanged)
         bool                            rateMatrixNeedsUpdate;
         bool                            allTiprobsNeedUpdate;       // model changed -> recompute all matrices

@@ -15,6 +15,7 @@ Mcmc::Mcmc(RandomVariable* r, Model* m) : rng(r), myModel(m) {
 
     UserSettings& settings = UserSettings::userSettings();
     numCycles          = settings.getNumMcmcCycles();
+    burnLength         = settings.getBurnLength();
     numDigits          = (numCycles == 0) ? 1 : static_cast<int>(log10(numCycles)) + 1;
     printFrequency     = settings.getPrintFrequency();
     sampleFrequency    = settings.getSampleFrequency();

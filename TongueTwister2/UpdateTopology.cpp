@@ -18,8 +18,12 @@
 UpdateTopology::UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<UpdateAlignment*>& alnVec) : 
     Update(m, r), myParm(p), myAlignmentUpdates(alnVec) {
 
-    updateId = hashUpdateName(getUpdateName());
-    tuningParameter = 2.0 * log(2.0);  // lambda parameter from paper
+    updateInfo.resize(1);
+    updateInfo[0].updateIdx = 0;
+    updateInfo[0].updateName = getUpdateName();
+    updateInfo[0].updateHash = hashUpdateName(getUpdateName());
+    updateInfo[0].updateType = factor;
+    updateInfo[0].tuningParameter = 2.0 * log(2.0);
     
     tiProbs = model->getTiProbs();
     maxBrlen = myParm->getMaximumBrlen();
@@ -133,7 +137,7 @@ double UpdateTopology::update(void) {
     double m = y + oldCLen;
     
     // propose new total path length: m* = m × exp(λ(U₁ - 0.5))
-    double mStar = m * exp(tuningParameter * (rng->uniformRv() - 0.5));
+    double mStar = m * exp(updateInfo[0].tuningParameter * (rng->uniformRv() - 0.5));
     
     // Propose new node positions
     // Choose to move u or v with equal probability

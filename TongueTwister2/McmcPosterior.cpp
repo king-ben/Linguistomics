@@ -10,7 +10,7 @@
 
 
 
-McmcPosterior::McmcPosterior(RandomVariable* r, Model* m) : Mcmc(r, m) {
+McmcPosterior::McmcPosterior(RandomVariable* r, Model* m) : Mcmc(r, m), tuneFrequency(1000) {
 
 }
 
@@ -19,11 +19,11 @@ McmcPosterior::~McmcPosterior(void) {
 }
 
 
-void McmcPosterior::printStatus(int cycle, double lnL1, double lnL2, McmcTimer* timer) {
+void McmcPosterior::printStatus(int cycle, int nCycles, double lnL1, double lnL2, McmcTimer* timer) {
 
     std::cout << "   * " << std::setw(numDigits) << cycle << " -- ";
     std::cout << std::fixed << std::setprecision(2) << lnL1 << " -> " << lnL2 << " -- ";
-    timer->printStatus(cycle, numCycles);
+    timer->printStatus(nCycles, numCycles + burnLength);
     std::cout << std::endl; 
 }
 
@@ -42,7 +42,7 @@ void McmcPosterior::run(void) {
     McmcTimer timer;
     timer.start();
     
-    for (int n=1; n<=numCycles; n++)
+    for (int n=-burnLength, len=1; n<=numCycles; n++, len++)
         {
         // propose new state
         Update* update = updateMngr->randomlyChooseUpdate();
@@ -63,7 +63,7 @@ void McmcPosterior::run(void) {
             
         // print to the screen
         if (n % printFrequency == 0)
-            printStatus(n, currentLnL, newLnL, &timer);
+            printStatus(n, len, currentLnL, newLnL, &timer);
             
         // adjust states
         if (accept == true)
@@ -78,11 +78,18 @@ void McmcPosterior::run(void) {
             }
             
         // sample chain
-        if (n % sampleFrequency == 0)
+        if (n >= 0 && n % sampleFrequency == 0)
             output.sample(n, currentLnL, currentLnP);
+            
+        // tune updates
+        if (n < 0 && n % tuneFrequency == 0)
+            updateMngr->tune();
+        if (n == 0)
+            updateMngr->zeroOut();
         }
 
     timer.end();
     updateMngr->summary();
     output.close();
 }
+

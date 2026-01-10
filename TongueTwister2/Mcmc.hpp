@@ -23,6 +23,7 @@ class Mcmc {
         UpdateManager*  updateMngr;
         std::string     baseOutputFileName;
         int             numCycles;
+        int             burnLength;
         int             printFrequency;
         int             sampleFrequency;
         int             numDigits;

@@ -15,9 +15,14 @@
 UpdateAlignment::UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p) : 
     Update(m, r), myParm(p) {
     
-    updateId = hashUpdateName(getUpdateName());
-    tuningParameter = 0.5;
-    extensionProb = tuningParameter;
+    updateInfo.resize(1);
+    updateInfo[0].updateIdx = 0;
+    updateInfo[0].updateName = getUpdateName();
+    updateInfo[0].updateHash = hashUpdateName(getUpdateName());
+    updateInfo[0].updateType = probability;
+    updateInfo[0].tuningParameter = 0.5;
+        
+    extensionProb = updateInfo[0].tuningParameter;
 
     freqsParm = model->findParameter<ParameterFrequencies>(); // OK if this is NULL
 

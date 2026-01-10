@@ -18,8 +18,10 @@ class UpdateTopology : public Update {
     public:
                                             UpdateTopology(void) = delete;
                                             UpdateTopology(Model* m, RandomVariable* r, ParameterTree* p, const std::vector<UpdateAlignment*>& alnVec);
-        double                              getTuningParameter(void) override { return tuningParameter; }
-        uint64_t                            getUpdateId(void) override { return updateId; }
+        double                              getTuningParameter(void) override { return updateInfo[0].tuningParameter; }
+        size_t                              getUpdateIdx(void) override { return 0; }
+        uint64_t                            getUpdateId(void) override { return updateInfo[0].updateHash; }
+        UpdateType                          getUpdateType(void) override { return updateInfo[0].updateType;}
         std::string                         getUpdateName(void) override { return "LOCAL Topology Update"; }
         std::string                         parameterType(void) override { return "ParameterTree"; }
         void                                setDependants(void) override;

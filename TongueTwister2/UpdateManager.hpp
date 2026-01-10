@@ -25,7 +25,9 @@ class UpdateManager {
         Update*                         randomlyChooseUpdate(void);
         void                            reject(Update* u);
         void                            summary(void);
+        void                            tune(void);
         void                            updateDependants(Update* u);
+        void                            zeroOut(void);
     
     private:
         void                            buildAliasTable(void);

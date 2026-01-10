@@ -16,8 +16,10 @@ class UpdateAlignment : public Update {
                                         UpdateAlignment(void) = delete;
                                         UpdateAlignment(Model* m, RandomVariable* r, ParameterAlignment* p);
                                        ~UpdateAlignment(void);
-        uint64_t                        getUpdateId(void) { return updateId; }
-        double                          getTuningParameter(void) { return tuningParameter; }
+        size_t                          getUpdateIdx(void) { return 0; }
+        uint64_t                        getUpdateId(void) { return updateInfo[0].updateHash; }
+        UpdateType                      getUpdateType(void) { return updateInfo[0].updateType;}
+        double                          getTuningParameter(void) { return updateInfo[0].tuningParameter; }
         std::string                     getUpdateName(void);
         std::string                     parameterType(void) { return "ParameterAlignment"; }
         void                            setDependants(void);

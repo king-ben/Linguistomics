@@ -264,6 +264,11 @@ void UpdateManager::summary(void) {
     updateInfo.print();
 }
 
+void UpdateManager::tune(void) {
+
+    updateInfo.tune();
+}
+
 void UpdateManager::updateDependants(Update* u) {
 
     // update rate matrix if needed (must happen before transition probabilities)
@@ -282,4 +287,9 @@ void UpdateManager::updateDependants(Update* u) {
         tiProbs->updateBranch();
         }
     // else: no transition probability update needed (e.g., alignment or indel rates)
+}
+
+void UpdateManager::zeroOut(void) {
+
+    updateInfo.zeroOut();
 }

@@ -12,9 +12,11 @@ void UpdateStatistics::accept(Update* update) {
     if (it == info.end())
         {
         UpdateInfo x;
+        x.updateIdx = update->getUpdateIdx();
         x.name = update->getUpdateName();
         x.numProposals = 1;
         x.numAcceptances = 1;
+        x.updateType = update->getUpdateType();
         x.tuningParm = update->getTuningParameter();
         x.updatePtr = update;
         info.insert( std::make_pair(id,x) );
@@ -74,9 +76,11 @@ void UpdateStatistics::reject(Update* update) {
     if (it == info.end())
         {
         UpdateInfo x;
+        x.updateIdx = update->getUpdateIdx();
         x.name = update->getUpdateName();
         x.numProposals = 1;
         x.numAcceptances = 0;
+        x.updateType = update->getUpdateType();
         x.tuningParm = update->getTuningParameter();
         x.updatePtr = update;
         info.insert( std::make_pair(id,x) );
@@ -86,6 +90,103 @@ void UpdateStatistics::reject(Update* update) {
         it->second.numProposals++;
         }
 }
+
+void UpdateStatistics::tune(void) {
+
+    for (auto& [key,val] : info)
+        {
+        if (val.numProposals >= 200)
+            {
+            std::cout << std::setprecision(6);
+            double acceptanceProb = static_cast<double>(val.numAcceptances) / val.numProposals;
+            if (val.updateType == probability)
+                val.tuningParm = tuneProbability(acceptanceProb, val.tuningParm);
+            else if (val.updateType == window)
+                val.tuningParm = tuneWindow(acceptanceProb, val.tuningParm);
+            else if (val.updateType == simplex)
+                val.tuningParm = tuneSimplex(acceptanceProb, val.tuningParm);
+            else 
+                val.tuningParm = tuneFactor(acceptanceProb, val.tuningParm);  
+                
+            val.updatePtr->setUpdateTuningParameter(val.updateIdx, val.tuningParm);
+            val.numProposals = 0;
+            val.numAcceptances = 0;
+            }
+        }
+}
+
+double UpdateStatistics::tuneSimplex(double acceptanceProb, double currentTuningValue) {
+
+    double targetProb = 0.22;  
+      
+    double newTuningValue = currentTuningValue;
+    if ( acceptanceProb > targetProb )
+        newTuningValue /= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
+    else
+        newTuningValue *= (2.0 - acceptanceProb/targetProb);
+    
+    if (newTuningValue < 4.0)
+        newTuningValue = 4.0;
+    else if (newTuningValue > 40000.0)
+        newTuningValue = 40000.0;
+        
+    return newTuningValue;
+}
+
+double UpdateStatistics::tuneFactor(double acceptanceProb, double currentTuningValue) {
+
+    double targetProb = 0.44;
+    
+    double newTuningValue = currentTuningValue;
+    if ( acceptanceProb > targetProb )
+        newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
+    else
+        newTuningValue /= (2.0 - acceptanceProb/targetProb);
+
+    if (newTuningValue < log(1.01) )
+        newTuningValue = log(1.01);
+    else if (newTuningValue > log(1000.0))
+        newTuningValue = log(1000.0);
+        
+    return newTuningValue;
+}
+
+double UpdateStatistics::tuneWindow(double acceptanceProb, double currentTuningValue) {
+
+    double targetProb = 0.44;
+    
+    double newTuningValue = currentTuningValue;
+    if ( acceptanceProb > targetProb )
+        newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
+    else
+        newTuningValue /= (2.0 - acceptanceProb/targetProb);
+
+    if (newTuningValue < 0.0001 )
+        newTuningValue = 0.0001;
+    else if (newTuningValue > 10.0)
+        newTuningValue = 10.0;
+        
+    return newTuningValue;
+}
+
+double UpdateStatistics::tuneProbability(double acceptanceProb, double currentTuningValue) {
+
+    double targetProb = 0.22;
+    
+    double newTuningValue = currentTuningValue;
+    if ( acceptanceProb > targetProb )
+        newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
+    else
+        newTuningValue /= (2.0 - acceptanceProb/targetProb);
+
+    if (newTuningValue < 0.0001 )
+        newTuningValue = 0.0001;
+    else if (newTuningValue > 0.9999)
+        newTuningValue = 0.9999;
+        
+    return newTuningValue;
+}
+
 
 void UpdateStatistics::zeroOut(void) {
 

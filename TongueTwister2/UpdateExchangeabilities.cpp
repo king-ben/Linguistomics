@@ -15,21 +15,30 @@ UpdateExchangeabilities::UpdateExchangeabilities(Model* m, RandomVariable* r, Pa
 
     numRates = myParm->getNumRates();
 
-    updateNames[0] = "Exchangeabilities: Dirichlet k=1";
-    updateNames[1] = "Exchangeabilities: Mass Transfer";
-    updateNames[2] = "Exchangeabilities: ALR MVN";
-    updateNames[3] = "Exchangeabilities: Prior";
-    tuningValues[0] = 200.0;
-    tuningValues[1] = 200.0;
-    tuningValues[2] = 0.005;
-    tuningValues[3] = 0.0;
-    for (size_t i=0; i<4; i++)
-        updateHashes[i] = hashUpdateName(updateNames[i]);
-}
+    updateInfo.resize(4);
+    updateInfo[0].updateIdx = 0;
+    updateInfo[0].updateName = "Exchangeabilities: Dirichlet k=1";
+    updateInfo[0].updateHash = hashUpdateName("Exchangeabilities: Dirichlet k=1");
+    updateInfo[0].updateType = simplex;
+    updateInfo[0].tuningParameter = 200.0;
 
-uint64_t UpdateExchangeabilities::getUpdateId(void) {
+    updateInfo[1].updateIdx = 1;
+    updateInfo[1].updateName = "Exchangeabilities: Mass Transfer";
+    updateInfo[1].updateHash = hashUpdateName("Exchangeabilities: Mass Transfer");
+    updateInfo[1].updateType = undef;
+    updateInfo[1].tuningParameter = 200.0;
 
-    return updateHashes[lastUpdate];
+    updateInfo[2].updateIdx = 2;
+    updateInfo[2].updateName = "Exchangeabilities: ALR MVN";
+    updateInfo[2].updateHash = hashUpdateName("Exchangeabilities: ALR MVN");
+    updateInfo[2].updateType = factor;
+    updateInfo[2].tuningParameter = 0.005;
+
+    updateInfo[3].updateIdx = 3;
+    updateInfo[3].updateName = "Exchangeabilities: Prior";
+    updateInfo[3].updateHash = hashUpdateName("Exchangeabilities: Prior");
+    updateInfo[3].updateType = undef;
+    updateInfo[3].tuningParameter = 0.0;
 }
 
 void UpdateExchangeabilities::setDependants(void) {
@@ -52,17 +61,17 @@ double UpdateExchangeabilities::update(void) {
     if (u < 0.33)
         {
         lastUpdate = 1;
-        lnHastings = Simplex::updateMassTransfer(rng, oldRates, newRates, tuningValues[1], 0.00001);
+        lnHastings = Simplex::updateMassTransfer(rng, oldRates, newRates, updateInfo[1].tuningParameter, 0.00001);
         }
     else if (u < 0.66)
         {
         lastUpdate = 0;
-        lnHastings = Simplex::updateCenteredDirichlet(rng, oldRates, newRates, tuningValues[0], 1, 0.00001);
+        lnHastings = Simplex::updateCenteredDirichlet(rng, oldRates, newRates, updateInfo[0].tuningParameter, 1, 0.00001);
         }
     else 
         {
         lastUpdate = 2;
-        lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, tuningValues[2], 0.00001);
+        lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001);
         }
         
     setDependants();
