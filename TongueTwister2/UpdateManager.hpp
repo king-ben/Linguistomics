@@ -21,6 +21,8 @@ class UpdateManager {
                                         UpdateManager(Model* m, RandomVariable* r);
                                        ~UpdateManager(void);
         void                            accept(Update* u);
+        void                            beginProposal(void);
+        void                            markCognatesDirty(Update* u);
         void                            print(void);
         Update*                         randomlyChooseUpdate(void);
         void                            reject(Update* u);
@@ -32,8 +34,6 @@ class UpdateManager {
     private:
         void                            buildAliasTable(void);
         void                            setProposalProbabilities(void);
-        
-                                        // accessed on every MCMC cycle
         RandomVariable*                 rng;
         
                                         // Walker's alias method tables for O(1) selection

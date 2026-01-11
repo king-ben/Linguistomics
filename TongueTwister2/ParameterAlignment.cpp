@@ -7,7 +7,8 @@
 
 
 
-ParameterAlignment::ParameterAlignment(Model* m, RandomVariable* r, std::string n) : Parameter(m, r, n), indelRates(nullptr) {
+ParameterAlignment::ParameterAlignment(Model* m, RandomVariable* r, std::string n) : 
+    Parameter(m, r, n), indelRates(nullptr), cognateIndex(SIZE_MAX) {
 
     indelRates = modelPtr->findParameter<ParameterIndelRates>();
     if (indelRates == nullptr)
@@ -211,6 +212,7 @@ void ParameterAlignment::print(void) {
         std::cout << "     Num. Taxa:          " << alignment[idx]->getNumTaxa() << std::endl;
         std::cout << "     Num. Segments:      " << alignment[idx]->getNumSegments() << std::endl;
         std::cout << "     Max. Num. Segments: " << alignment[idx]->getMaximumNumberOfSegments()-1 << std::endl;
+        std::cout << "     Cognate Index:      " << cognateIndex << std::endl;
         size_t longLen = longestNameLength();
         for (size_t i=0; i<alignment[idx]->getNumTaxa(); i++)
             {

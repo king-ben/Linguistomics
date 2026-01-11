@@ -22,7 +22,10 @@
 
 
 
-Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p) : rng(r), modelType(mt), pool(p) {
+Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p) : 
+    rng(r), modelType(mt), pool(p),
+    states(nullptr), rateMatrix(nullptr), tiProbs(nullptr), numStates(0),
+    cachedTotalLnL(0.0), cacheInitialized(false) {
     
     // initialize the model states
     if (initializeStates() == false)
@@ -47,6 +50,18 @@ Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p) : rng(r), m
     // initialize the likelihood calculators
     if (initializeCalculators() == false)
         Msg::error("Problem initalizing the likelihood calculators");
+        
+    /* Initialize likelihood caching infrastructure
+       Note: actual cache values are set after first lnLikelihood() call */
+    size_t numCognates = calculators.size();
+    cachedLnL.resize(numCognates, 0.0);
+    dirtyFlags.resize(numCognates, true);  // all dirty initially
+    proposedLnL.resize(numCognates, 0.0);
+    proposedTotalLnL = 0.0;
+    
+    // reserve space for temporary storage
+    dirtyIndices.reserve(numCognates);
+    dirtyCalcs.reserve(numCognates);
 }
 
 Model::~Model(void) {
@@ -91,6 +106,37 @@ bool Model::alignmentsAreConsistent(std::vector<ParameterAlignment*>& alignments
         }
 
     return true;
+}
+
+size_t Model::getCognateIndex(LikelihoodCalculator* calc) const {
+
+    for (size_t i = 0; i < calculators.size(); i++)
+        {
+        if (calculators[i] == calc)
+            return i;
+        }
+    return SIZE_MAX;
+}
+
+size_t Model::getNumDirtyCognates(void) const {
+
+    size_t count = 0;
+    for (bool dirty : dirtyFlags)
+        {
+        if (dirty)
+            count++;
+        }
+    return count;
+}
+
+bool Model::hasAnyCognateDirty(void) const {
+
+    for (bool dirty : dirtyFlags)
+        {
+        if (dirty)
+            return true;
+        }
+    return false;
 }
 
 bool Model::initializeAlignments(void) {
@@ -204,19 +250,20 @@ bool Model::initializeAlignments(void) {
 bool Model::initializeCalculators(void) {
 
     // find the tree parameter
-    ParameterTree* t = dynamic_cast<ParameterTree*>(findParameter<ParameterTree>());
+    ParameterTree* t = findParameter<ParameterTree>();
     if (t == nullptr)
         Msg::error("Could not find tree parameter");
         
     // find the indel rates
-    ParameterIndelRates* r = dynamic_cast<ParameterIndelRates*>(findParameter<ParameterIndelRates>());
+    ParameterIndelRates* r = findParameter<ParameterIndelRates>();
     if (r == nullptr)
         Msg::error("Could not find indel rates parameter");
  
      // find the equilibirum frequencies
-    ParameterFrequencies* f = dynamic_cast<ParameterFrequencies*>(findParameter<ParameterFrequencies>());
+    ParameterFrequencies* f = findParameter<ParameterFrequencies>();
        
     // assign a likelihood calculator to each alignment
+    size_t cognateIdx = 0;
     for (size_t i=0; i<parameters.size(); i++)
         {
         if (isType<ParameterAlignment>(parameters[i]))
@@ -224,6 +271,10 @@ bool Model::initializeCalculators(void) {
             ParameterAlignment* aln = dynamic_cast<ParameterAlignment*>(parameters[i]);
             LikelihoodCalculator* calc = new LikelihoodCalculator(tiProbs, aln, t, r, f);
             calculators.push_back(calc);
+            
+            // store the cognate index in the alignment parameter for quick lookup
+            aln->setCognateIndex(cognateIdx);
+            cognateIdx++;
             }
         }
 
@@ -235,6 +286,22 @@ bool Model::initializeIndelRates(void) {
     ParameterIndelRates* rates = new ParameterIndelRates(this, rng, "Insertion/Deletion rates", 2.0, 2.0);
     parameters.push_back(rates);
     return true;
+}
+
+void Model::initializeLikelihoodCache(void) {
+
+    /* This should be called after the first lnLikelihood() computation
+       to populate the cache with valid values */
+    if (cacheInitialized)
+        return;
+        
+    /* The cache is already populated by the first lnLikelihood() call
+       so mark it as initialized */
+    cacheInitialized = true;
+    
+    // clear all dirty flags since we just computed everything
+    for (size_t i = 0; i < dirtyFlags.size(); i++)
+        dirtyFlags[i] = false;
 }
 
 bool Model::initializeStates(void) {
@@ -250,7 +317,7 @@ bool Model::initializeStates(void) {
 bool Model::initializeSubstitutionModel(void) {
 
     // find the tree parameter
-    ParameterTree* t = dynamic_cast<ParameterTree*>(findParameter<ParameterTree>());
+    ParameterTree* t = findParameter<ParameterTree>();
     if (t == nullptr)
         Msg::error("Could not find tree parameter");
         
@@ -368,16 +435,95 @@ bool Model::initializeTree(void) {
     return true;
 }
 
+void Model::keepLikelihoodCache(void) {
+
+    /* Called when MCMC proposal is accepted.
+       Copy the proposed new values into the permanent cache.
+       The proposedLnL values become the new cached values. */
+    for (size_t i = 0; i < dirtyFlags.size(); i++)
+        {
+        if (dirtyFlags[i])
+            {
+            cachedLnL[i] = proposedLnL[i];
+            }
+        dirtyFlags[i] = false;
+        }
+    cachedTotalLnL = proposedTotalLnL;
+}
+
 double Model::lnLikelihood(void) {
 
-    for (LikelihoodCalculator* like : calculators)
-        pool->pushTask(like);
+    /* Instead of recomputing ALL cognate likelihoods every MCMC cycle,
+       we only recompute those that are marked dirty.
+
+       IMPORTANT: This method does NOT modify cachedLnL or cachedTotalLnL.
+       It stores proposed values in proposedLnL and proposedTotalLnL.
+       The cache is only updated when keepLikelihoodCache() is called (accept). */
+    
+    // if cache not initialized, compute everything (first call)
+    if (!cacheInitialized)
+        {
+        // first call: compute all likelihoods and populate cache
+        for (LikelihoodCalculator* like : calculators)
+            pool->pushTask(like);
+        pool->wait();
+        
+        cachedTotalLnL = 0.0;
+        for (size_t i = 0; i < calculators.size(); i++)
+            {
+            cachedLnL[i] = calculators[i]->getResult();
+            cachedTotalLnL += cachedLnL[i];
+            dirtyFlags[i] = false;
+            }
+        
+        // initialize proposed values to match cached values
+        proposedLnL = cachedLnL;
+        proposedTotalLnL = cachedTotalLnL;
+        
+        cacheInitialized = true;
+        return cachedTotalLnL;
+        }
+    
+    // find which calculators are dirty and need recomputation
+    dirtyCalcs.clear();
+    dirtyIndices.clear();
+    
+    for (size_t i = 0; i < calculators.size(); i++)
+        {
+        if (dirtyFlags[i])
+            {
+            dirtyCalcs.push_back(calculators[i]);
+            dirtyIndices.push_back(i);
+            }
+        }
+    
+    // if nothing is dirty, return cached total (no proposal active)
+    if (dirtyCalcs.empty())
+        return cachedTotalLnL;
+    
+    // push only dirty calculators to thread pool
+    for (LikelihoodCalculator* calc : dirtyCalcs)
+        pool->pushTask(calc);
     pool->wait();
     
-    double lnL = 0.0;
-    for (LikelihoodCalculator* like : calculators)
-        lnL += like->getResult();
-    return lnL;
+    /* Compute proposed total by starting from cached total
+       and adjusting for the cognates that were recomputed */
+    proposedTotalLnL = cachedTotalLnL;
+    
+    for (size_t j = 0; j < dirtyCalcs.size(); j++)
+        {
+        size_t i = dirtyIndices[j];
+        double oldVal = cachedLnL[i];
+        double newVal = dirtyCalcs[j]->getResult();
+        
+        // store proposed value (don't modify cached value yet!)
+        proposedLnL[i] = newVal;
+        
+        // update proposed total
+        proposedTotalLnL += (newVal - oldVal);
+        }
+    
+    return proposedTotalLnL;
 }
 
 double Model::lnPrior(void) {
@@ -386,6 +532,18 @@ double Model::lnPrior(void) {
     for (Parameter* parm : parameters)
         lnP += parm->lnPriorProbability();
     return lnP;
+}
+
+void Model::markAllCognatesDirty(void) {
+
+    for (size_t i = 0; i < dirtyFlags.size(); i++)
+        dirtyFlags[i] = true;
+}
+
+void Model::markCognateDirty(size_t cognateIdx) {
+
+    if (cognateIdx < dirtyFlags.size())
+        dirtyFlags[cognateIdx] = true;
 }
 
 void Model::plotAscii(const std::map<int,int>& data) {
@@ -422,4 +580,28 @@ void Model::plotAscii(const std::map<int,int>& data) {
         std::cout << "-";
     std::cout << std::endl;
 
+}
+
+void Model::restoreLikelihoodCache(void) {
+
+    /* Called when MCMC proposal is REJECTED
+
+       Since lnLikelihood() does NOT modify cachedLnL or cachedTotalLnL,
+       there's nothing to restore. The cached values are still valid.
+
+       We just need to:
+       1. Clear the dirty flags
+       2. Reset proposedLnL to match cachedLnL for dirty entries
+          (so they're ready for the next proposal) */
+    
+    for (size_t i = 0; i < dirtyFlags.size(); i++)
+        {
+        if (dirtyFlags[i])
+            {
+            proposedLnL[i] = cachedLnL[i];  // reset proposed to cached
+            dirtyFlags[i] = false;
+            }
+        }
+    
+    proposedTotalLnL = cachedTotalLnL;
 }

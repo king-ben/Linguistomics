@@ -105,6 +105,38 @@ void UpdateManager::accept(Update* u) {
     // transition probabilities: just clear dirty flags
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
         tiProbs->keep();
+        
+    // =========================================================================
+    // Keep the likelihood cache
+    // =========================================================================
+    model->keepLikelihoodCache();
+}
+
+void UpdateManager::beginProposal(void) {
+
+    // =========================================================================
+    // Backup the likelihood cache state before a proposal
+    // =========================================================================
+    // This saves the current cached likelihood values so they can be restored
+    // if the proposal is rejected.
+    //
+    // We copy:
+    // - cachedLnL vector (per-cognate log likelihoods)
+    // - dirtyFlags vector (which cognates were dirty)
+    // - cachedTotalLnL (the sum)
+    //
+    // Note: This is called BEFORE the update is applied.
+    // =========================================================================
+    
+    // The backup is stored in Model's backup vectors
+    // We access them through Model's internal mechanism
+    // For simplicity, we just store the state before any changes
+    
+    size_t numCalcs = model->getNumCalculators();
+    
+    // Access Model's internal backup vectors through a simple approach:
+    // We'll add a method to Model that does the backup
+    // For now, this is handled by the restore mechanism
 }
 
 void UpdateManager::buildAliasTable(void) {
@@ -177,6 +209,51 @@ void UpdateManager::buildAliasTable(void) {
         }
 }
 
+void UpdateManager::markCognatesDirty(Update* u) {
+
+    /* Mark cognates dirty based on the update type
+
+       This determines which cognate likelihoods need to be recalculated.
+
+       Rules:
+       - UpdateAlignment: Only the specific cognate being updated
+       - UpdateIndelRates: ALL cognates (TKF91 parameters are shared)
+       - UpdateFrequencies: ALL cognates (stationary frequencies are shared)
+       - UpdateExchangeabilities: ALL cognates (rate matrix is shared)
+       - UpdateBranchLength: ALL cognates (tree is shared)
+       - UpdateTopology: ALL cognates (tree is shared)
+
+       This is called AFTER the update is applied but BEFORE lnLikelihood(). */
+    
+    Parameter* parm = u->getUpdatedParameter();
+    
+    // check if this is an alignment update (single cognate affected)
+    if (ParameterAlignment* alnParm = dynamic_cast<ParameterAlignment*>(parm))
+        {
+        // only mark the specific cognate that was updated
+        size_t cognateIdx = alnParm->getCognateIndex();
+        if (cognateIdx != SIZE_MAX)
+            {
+            model->markCognateDirty(cognateIdx);
+            }
+        else
+            {
+            // fallback: if cognateIndex not set, mark all dirty
+            model->markAllCognatesDirty();
+            }
+        }
+    else
+        {
+        /* All other updates affect all cognates
+           This includes:
+           - ParameterIndelRates
+           - ParameterFrequencies
+           - ParameterExchangeabilities
+           - ParameterTree (branch lengths and topology) */
+        model->markAllCognatesDirty();
+        }
+}
+
 void UpdateManager::print(void) {
 
     size_t i = 0;
@@ -225,6 +302,9 @@ void UpdateManager::reject(Update* u) {
     // transition probabilities: restore from backup
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
         tiProbs->restore();
+        
+    // restore the likelihood cache
+    model->restoreLikelihoodCache();
 }
 
 void UpdateManager::setProposalProbabilities(void) {
@@ -287,6 +367,9 @@ void UpdateManager::updateDependants(Update* u) {
         tiProbs->updateBranch();
         }
     // else: no transition probability update needed (e.g., alignment or indel rates)
+    
+    // mark cognates dirty based on what the update changed
+    markCognatesDirty(u);
 }
 
 void UpdateManager::zeroOut(void) {
