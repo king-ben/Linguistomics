@@ -17,47 +17,34 @@ class UpdateAlignment;
 class UpdateManager {
 
     public:
-                                        UpdateManager(void) = delete;
-                                        UpdateManager(Model* m, RandomVariable* r);
-                                       ~UpdateManager(void);
-        void                            accept(Update* u);
-        void                            markCognatesDirty(Update* u);
-        void                            print(void);
-        Update*                         randomlyChooseUpdate(void);
-        void                            reject(Update* u);
-        void                            summary(void);
-        void                            tune(void);
-        void                            updateDependants(Update* u);
-        void                            zeroOut(void);
+                                            UpdateManager(void) = delete;
+                                            UpdateManager(Model* m, RandomVariable* r);
+                                           ~UpdateManager(void);
+        void                                accept(Update* u);
+        void                                markCognatesDirty(Update* u);
+        void                                print(void);
+        Update*                             randomlyChooseUpdate(void);
+        void                                reject(Update* u);
+        void                                summary(void);
+        void                                tune(void);
+        void                                updateDependants(Update* u);
+        void                                zeroOut(void);
     
     private:
-        void                            buildAliasTable(void);
-        void                            setProposalProbabilities(void);
-        RandomVariable*                 rng;
-        
-                                        // Walker's alias method tables for O(1) selection
-                                        // accessed on every randomlyChooseUpdate() call
-        std::vector<double>             aliasProbability;
-        std::vector<size_t>             aliasIndex;
-        
-                                        // update vectors (accessed after selection)
-        std::vector<Update*>            updates;
-        
-                                        // statistics vectors (accessed on accept/reject)
-        std::vector<double>             proposalProbabilities;
-        UpdateStatistics                updateInfo;
-        
-                                        // lookup map (accessed for index lookup)
+        void                                buildAliasTable(void);
+        void                                setProposalProbabilities(void);
+        Model*                              model;
+        RateMatrix*                         rateMatrix;
+        TransitionProbabilities*            tiProbs;
+        RandomVariable*                     rng;
+        UpdateStatistics                    updateInfo;
+        std::vector<double>                 aliasProbability;
+        std::vector<double>                 proposalProbabilities;
+        std::vector<size_t>                 aliasIndex;
+        std::vector<Update*>                updates;
+        std::vector<UpdateAlignment*>       alignmentUpdates;
+        std::vector<Update*>                otherUpdates;
         std::unordered_map<Update*, size_t> updateIndex;
-        
-                                        // specialized update vectors
-        std::vector<UpdateAlignment*>   alignmentUpdates;
-        std::vector<Update*>            otherUpdates;
-        
-                                        // model references (rarely dereferenced after init)
-        Model*                          model;
-        RateMatrix*                     rateMatrix;
-        TransitionProbabilities*        tiProbs;
 };
 
 #endif

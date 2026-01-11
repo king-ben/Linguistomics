@@ -56,7 +56,6 @@ class UpdateAlignment : public Update {
         ParameterTree*                  treeParm;
         TransitionProbabilities*        tiProbs;
         Tree*                           tree;
-        
         int***                          profile;
         int*                            xProfile;
         int*                            yProfile;
@@ -74,7 +73,6 @@ class UpdateAlignment : public Update {
         int*                            pathNewPos;
         int*                            pathMask;
         int*                            pathFinalPos;
-        
         int                             numTaxa;
         int                             numNodes;
         int                             numStates;
@@ -82,7 +80,6 @@ class UpdateAlignment : public Update {
         int                             maxLength;
         int                             maxUnalignDimension;
         unsigned                        taxonMask;
-
         std::vector<int>                pathKey;
         std::map<std::vector<int>, int> dpTable;
                         

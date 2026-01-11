@@ -106,9 +106,7 @@ void UpdateManager::accept(Update* u) {
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
         tiProbs->keep();
         
-    // =========================================================================
-    // Keep the likelihood cache
-    // =========================================================================
+    // keep the likelihood cache
     model->keepLikelihoodCache();
 }
 
@@ -205,7 +203,7 @@ void UpdateManager::markCognatesDirty(Update* u) {
         {
         // only mark the specific cognate that was updated
         size_t cognateIdx = alnParm->getCognateIndex();
-        if (cognateIdx != SIZE_MAX)
+       if (cognateIdx != SIZE_MAX)
             {
             model->markCognateDirty(cognateIdx);
             }

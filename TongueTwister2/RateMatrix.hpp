@@ -62,9 +62,7 @@ class RateMatrixCustom : public RateMatrix {
         ParameterExchangeabilities* exchParm;
         ParameterFrequencies*       freqParm;
         RateMatrixHelper*           rateMatrixHelper;
-        
-                                    // cached pointers for inner loop (avoid repeated vector access)
-        const int*                  rateIndexMap;       // points into helper
+        const int*                  rateIndexMap;       // cached pointers for inner loop (points into helper)
 };
 
 #endif

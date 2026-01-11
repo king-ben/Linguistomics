@@ -44,19 +44,13 @@ class RateMatrixHelper {
         
     private:
         void                        initialize(Partition* part);
-        
-                                    // dimensions
         size_t                      numStates;
         size_t                      numGroups;
         int                         numRates;
-        
-                                    // lookup arrays allocated as contiguous blocks
         int*                        stateToGroup;       // [numStates] -> group index
         int*                        groupPairToRate;    // [numGroups * numGroups] -> rate index
         int*                        rateIndexMap;       // [numStates * numStates] -> rate index
-        
-                                    // for labels/printing only
-        std::vector<std::string>    groupNames;
+        std::vector<std::string>    groupNames;         // for labels/printing only
 };
 
 #endif

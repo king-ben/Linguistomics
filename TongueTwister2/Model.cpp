@@ -451,12 +451,13 @@ void Model::keepLikelihoodCache(void) {
     cachedTotalLnL = proposedTotalLnL;
 }
 
+#if 1
 double Model::lnLikelihood(void) {
 
     /* Instead of recomputing ALL cognate likelihoods every MCMC cycle,
        we only recompute those that are marked dirty.
 
-       IMPORTANT: This method does NOT modify cachedLnL or cachedTotalLnL.
+       This method does NOT modify cachedLnL or cachedTotalLnL.
        It stores proposed values in proposedLnL and proposedTotalLnL.
        The cache is only updated when keepLikelihoodCache() is called (accept). */
     
@@ -525,6 +526,20 @@ double Model::lnLikelihood(void) {
     
     return proposedTotalLnL;
 }
+#else
+double Model::lnLikelihood(void) {
+
+    // Bypass caching - compute everything every time
+    for (LikelihoodCalculator* like : calculators)
+        pool->pushTask(like);
+    pool->wait();
+    
+    double lnL = 0.0;
+    for (LikelihoodCalculator* like : calculators)
+        lnL += like->getResult();
+    return lnL;
+}
+#endif
 
 double Model::lnPrior(void) {
 
@@ -584,9 +599,9 @@ void Model::plotAscii(const std::map<int,int>& data) {
 
 void Model::restoreLikelihoodCache(void) {
 
-    /* Called when MCMC proposal is REJECTED
+    /* Called when MCMC proposal is rejected
 
-       Since lnLikelihood() does NOT modify cachedLnL or cachedTotalLnL,
+       Since lnLikelihood() does not modify cachedLnL or cachedTotalLnL,
        there's nothing to restore. The cached values are still valid.
 
        We just need to:
