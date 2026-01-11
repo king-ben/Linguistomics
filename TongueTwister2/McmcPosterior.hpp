@@ -19,7 +19,6 @@ class McmcPosterior : public Mcmc {
     
     protected:
         void            printStatus(int cycle, int nCycles, double lnL1, double lnL2, McmcTimer* timer);
-        int             tuneFrequency;
 };
 
 #endif

@@ -111,7 +111,7 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
         Msg::error("updateSimplexALRMVN: newVec not valid simplex");
 
     /* Hastings/Jacobian correction:
-       proposal symmetric in ALR space => only Jacobian ratio remains */
+       proposal symmetric in ALR space -> only Jacobian ratio remains */
     return sumLogVec(newVec) - sumLogVec(oldVec);
 }
 

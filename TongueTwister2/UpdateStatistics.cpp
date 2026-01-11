@@ -105,7 +105,7 @@ void UpdateStatistics::tune(void) {
                 val.tuningParm = tuneWindow(acceptanceProb, val.tuningParm);
             else if (val.updateType == simplex)
                 val.tuningParm = tuneSimplex(acceptanceProb, val.tuningParm);
-            else 
+            else if (val.updateType == factor)
                 val.tuningParm = tuneFactor(acceptanceProb, val.tuningParm);  
                 
             val.updatePtr->setUpdateTuningParameter(val.updateIdx, val.tuningParm);

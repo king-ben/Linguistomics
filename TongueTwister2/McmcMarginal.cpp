@@ -18,6 +18,7 @@ McmcMarginal::McmcMarginal(RandomVariable* r, Model* m) : Mcmc(r, m) {
     UserSettings& settings = UserSettings::userSettings();
     mcmcPhases = new McmcPhase(settings.getFirstBurnLength(), settings.getTuneLength(), settings.getBurnLength(), settings.getSampleLength(), settings.getSampleFrequency());
     samples = new SteppingStones(127, 0.3, 1.0);
+    tuneFrequency = 1000;
     
     // for printing nicely to the screen
     numCycles = calculateNumCycles(); // call this before calculatePrintDigits()
@@ -40,8 +41,8 @@ int McmcMarginal::calculateNumCycles(void) {
        to calculate numCycles from the MCMC phase information and the number
        of stones in the path sampling algorithm. */
     int nc = 0;
-    std::vector<std::string>& phases = mcmcPhases->getPhases();
-    for (std::string phase : phases)
+    std::vector<McmcPhases>& phases = mcmcPhases->getPhases();
+    for (McmcPhases& phase : phases)
         nc += mcmcPhases->getLengthForPhase(1, phase);
     nc *= samples->size();
     nc += mcmcPhases->getFirstBurnLength();
@@ -53,11 +54,11 @@ std::pair<int,int> McmcMarginal::calculatePrintDigits(void) {
     std::pair<int,int> numDigits;
 
     size_t maxPhaseLength = 0;
-    std::vector<std::string>& phases = mcmcPhases->getPhases();
-    for (std::string phase : phases)
+    std::vector<McmcPhases>& phases = mcmcPhases->getPhases();
+    for (McmcPhases& phase : phases)
         {
         size_t len = mcmcPhases->getLengthForPhase(1, phase);
-        if (phase == "burn")
+        if (phase == Burn)
             len += mcmcPhases->getFirstBurnLength();
         if (len > maxPhaseLength)
             maxPhaseLength = len;
@@ -68,14 +69,16 @@ std::pair<int,int> McmcMarginal::calculatePrintDigits(void) {
     return numDigits;
 }
 
-void McmcMarginal::printStatus(size_t stoneIdx, size_t cycle, size_t cnt, std::string& phase, double lnL1, double lnL2, McmcTimer* timer) {
+void McmcMarginal::printStatus(size_t stoneIdx, size_t cycle, size_t cnt, McmcPhases& phase, double lnL1, double lnL2, McmcTimer* timer) {
 
-    std::cout << "   ";
+    static constexpr const char* phaseStr[] = { "Preburn", "Tuning", "Burnin", "Sample" };
+    
+    std::cout << "   * ";
     std::cout << std::setw(3) << stoneIdx+1 << "/" << samples->size() << " ";
     std::cout << std::setw(numDigits) << cnt << " ";
     std::cout << std::setw(numDigitsPhase) << cycle << " ";
     std::cout << std::fixed << std::setprecision(7) << (*samples)[stoneIdx]->getPower() << " ";
-    std::cout << std::setw(6) << phase << " ";
+    std::cout << std::setw(6) << phaseStr[phase] << " ";
     std::cout << "-- " << std::fixed << std::setprecision(2) << lnL1 << " -> " << lnL2 << " -- ";
     timer->printStatus(cnt, numCycles);
     std::cout << std::endl; 
@@ -96,13 +99,14 @@ void McmcMarginal::run(void) {
     McmcTimer timer;
     timer.start();
 
-    std::vector<std::string>& phases = mcmcPhases->getPhases();
+    std::vector<McmcPhases>& phases = mcmcPhases->getPhases();
     for (size_t powIdx=0, cnt=1; powIdx<samples->size(); powIdx++)
         {
         Stone* stone = (*samples)[powIdx];
         double power = stone->getPower();
-        for (std::string phase : phases)
+        for (McmcPhases phase : phases)
             {
+            updateMngr->zeroOut();
             for (size_t n=1; n<=mcmcPhases->getLengthForPhase(powIdx, phase); n++, cnt++)
                 {
                 // propose new state
@@ -139,9 +143,15 @@ void McmcMarginal::run(void) {
                     }
                 
                 // sample the chain
-                if ( (n % mcmcPhases->getSampleFrequency() == 0  || n == mcmcPhases->getSampleLength()) && phase == "Sample" )
+                if ( (n % mcmcPhases->getSampleFrequency() == 0  || n == mcmcPhases->getSampleLength()) && phase == Sample )
                     samples->addSample(powIdx, currentLnL);
-                }
+                    
+                 // tune updates
+                if ((phase == Burn || phase == Tune) && n % tuneFrequency == 0)
+                    updateMngr->tune();
+               }
+            if (phase == Sample)
+                updateMngr->summary();
             }
         }
 

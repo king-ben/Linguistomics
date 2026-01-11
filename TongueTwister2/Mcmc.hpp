@@ -26,6 +26,7 @@ class Mcmc {
         int             burnLength;
         int             printFrequency;
         int             sampleFrequency;
+        int             tuneFrequency;
         int             numDigits;
 };
 

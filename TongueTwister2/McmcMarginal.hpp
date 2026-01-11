@@ -22,7 +22,7 @@ class McmcMarginal : public Mcmc {
     private:
         int                 calculateNumCycles(void);
         std::pair<int,int>  calculatePrintDigits(void);
-        void                printStatus(size_t stoneIdx, size_t cycle, size_t cnt, std::string& phase, double lnL1, double lnL2, McmcTimer* timer);
+        void                printStatus(size_t stoneIdx, size_t cycle, size_t cnt, McmcPhases& phase, double lnL1, double lnL2, McmcTimer* timer);
         McmcPhase*          mcmcPhases;
         SteppingStones*     samples;
         int                 numCycles;

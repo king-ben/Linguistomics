@@ -10,8 +10,9 @@
 
 
 
-McmcPosterior::McmcPosterior(RandomVariable* r, Model* m) : Mcmc(r, m), tuneFrequency(1000) {
+McmcPosterior::McmcPosterior(RandomVariable* r, Model* m) : Mcmc(r, m) {
 
+    tuneFrequency = 1000;
 }
 
 McmcPosterior::~McmcPosterior(void) {
@@ -42,7 +43,7 @@ void McmcPosterior::run(void) {
     McmcTimer timer;
     timer.start();
     
-    for (int n=-burnLength, len=1; n<=numCycles; n++, len++)
+    for (int n=-burnLength, cnt=1; n<=numCycles; n++, cnt++)
         {
         // propose new state
         Update* update = updateMngr->randomlyChooseUpdate();
@@ -63,7 +64,7 @@ void McmcPosterior::run(void) {
             
         // print to the screen
         if (n % printFrequency == 0)
-            printStatus(n, len, currentLnL, newLnL, &timer);
+            printStatus(n, cnt, currentLnL, newLnL, &timer);
             
         // adjust states
         if (accept == true)

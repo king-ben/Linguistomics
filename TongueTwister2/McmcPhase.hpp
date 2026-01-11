@@ -18,8 +18,8 @@ class McmcPhase {
         size_t                      getTuneLength(void) { return tuneLength; }
         size_t                      getSampleLength(void) { return sampleLength; }
         size_t                      getSampleFrequency(void) { return sampleFrequency; }
-        size_t                      getLengthForPhase(size_t powIdx, std::string ph);
-        std::vector<std::string>&   getPhases(void) { return phases; }
+        size_t                      getLengthForPhase(size_t powIdx, McmcPhases ph);
+        std::vector<McmcPhases>&    getPhases(void) { return phases; }
 
     private:
         size_t                      firstBurnLength;
@@ -28,7 +28,7 @@ class McmcPhase {
         size_t                      burnLength;
         size_t                      sampleLength;
         size_t                      sampleFrequency;
-        std::vector<std::string>    phases;
+        std::vector<McmcPhases>     phases;
 };
 
 #endif
