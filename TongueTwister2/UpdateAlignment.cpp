@@ -971,8 +971,8 @@ double UpdateAlignment::propose(double extProb, bool alignmentsMustBeDifferent) 
     if (extProb < 1.0)
         proposalLnProb += (len - len2) * log(1.0 - extProb);
     
-    // reverse proposal probability
-    proposalLnProb += calculateReverseProposal(curAlignment, pos, len);
+    // reverse proposal probability (originally, len was passed in instead of len2)
+    proposalLnProb += calculateReverseProposal(curAlignment, pos, len2);
     
     return proposalLnProb;
 }

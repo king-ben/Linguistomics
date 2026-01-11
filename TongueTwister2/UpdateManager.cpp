@@ -112,33 +112,6 @@ void UpdateManager::accept(Update* u) {
     model->keepLikelihoodCache();
 }
 
-void UpdateManager::beginProposal(void) {
-
-    // =========================================================================
-    // Backup the likelihood cache state before a proposal
-    // =========================================================================
-    // This saves the current cached likelihood values so they can be restored
-    // if the proposal is rejected.
-    //
-    // We copy:
-    // - cachedLnL vector (per-cognate log likelihoods)
-    // - dirtyFlags vector (which cognates were dirty)
-    // - cachedTotalLnL (the sum)
-    //
-    // Note: This is called BEFORE the update is applied.
-    // =========================================================================
-    
-    // The backup is stored in Model's backup vectors
-    // We access them through Model's internal mechanism
-    // For simplicity, we just store the state before any changes
-    
-    size_t numCalcs = model->getNumCalculators();
-    
-    // Access Model's internal backup vectors through a simple approach:
-    // We'll add a method to Model that does the backup
-    // For now, this is handled by the restore mechanism
-}
-
 void UpdateManager::buildAliasTable(void) {
 
     /* Walker, A. J. 1977. An efficient method for generating 

@@ -21,7 +21,6 @@ class UpdateManager {
                                         UpdateManager(Model* m, RandomVariable* r);
                                        ~UpdateManager(void);
         void                            accept(Update* u);
-        void                            beginProposal(void);
         void                            markCognatesDirty(Update* u);
         void                            print(void);
         Update*                         randomlyChooseUpdate(void);
