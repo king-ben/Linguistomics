@@ -71,7 +71,10 @@ double UpdateExchangeabilities::update(void) {
     else 
         {
         lastUpdate = 2;
-        lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001, 100);
+        if (oldRates.size() > 100)
+            lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001, 100);
+        else 
+            lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001);
         }
         
     setDependants();
