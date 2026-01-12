@@ -115,6 +115,99 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
     return sumLogVec(newVec) - sumLogVec(oldVec);
 }
 
+double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double sigma, double minVal, size_t blockSize) {
+
+    const size_t K = oldVec.size();
+    if (oldVec.size() != newVec.size())
+        Msg::error("updateSimplexALRMVN_blocked: unequal vector lengths");
+    if (K < 2)
+        Msg::error("updateSimplexALRMVN_blocked: K < 2");
+    if (!(sigma > 0.0))
+        Msg::error("updateSimplexALRMVN_blocked: sigma <= 0");
+    if (blockSize < 2)
+        Msg::error("updateSimplexALRMVN_blocked: blockSize < 2");
+    if (blockSize > K)
+        Msg::error("updateSimplexALRMVN_blocked: blockSize > K");
+    if (!isValidSimplex(oldVec, 1e-10))
+        Msg::error("updateSimplexALRMVN_blocked: oldVec not valid simplex");
+
+    // default: start with no change
+    //newVec = oldVec; // not needed because both vectors start every MCMC cycle identical
+
+    // choose a random block of indices 
+    // We want a set of distinct indices of size blockSize (Fisher-Yates partial shuffle)
+    std::vector<size_t> idx(K);
+    for (size_t i=0; i<K; i++)
+        idx[i] = i;
+
+    for (size_t i=0; i<blockSize; i++)
+        {
+        size_t j = i + (size_t)std::floor( rng->uniformRv() * (double)(K - i) );
+        if (j >= K)
+            j = K - 1;
+        std::swap(idx[i], idx[j]);
+        }
+
+    idx.resize(blockSize);
+
+    // extract block mass and block proportions
+    double blockMass = 0.0;
+    for (size_t t=0; t<blockSize; t++)
+        blockMass += oldVec[idx[t]];
+
+    if (!(blockMass > 0.0))
+        {
+        // should never happen for a valid simplex, but be safe
+        return -1e300;
+        }
+
+    // proportions p live on an m-simplex (m = blockSize)
+    std::vector<double> p_old(blockSize, 0.0);
+    for (size_t t=0; t<blockSize; t++)
+        p_old[t] = oldVec[idx[t]] / blockMass;
+
+    // if you enforce a global minVal, then inside the block the implied minimum on p is minVal / blockMass.
+    double pMin = 0.0;
+    if (minVal > 0.0)
+        pMin = minVal / blockMass;
+
+    // propose new block proportions with your existing ALR-MVN code
+    std::vector<double> p_new(blockSize, 0.0);
+
+    /* This returns the Hastings correction for the move in p-space.
+       Because x_block = blockMass * p, the constant blockMass cancels in Jacobians and in proposal densities.
+       So the Hastings correction for the overall x-move is IDENTICAL to the one for p. */
+    double logH = updateALRMVN(rng, p_old, p_new, sigma, pMin);
+
+    // if updateALRMVN hard-rejected (returns LOG_ZERO), propagate rejection.
+    if (logH <= -1e250)
+        {
+        newVec = oldVec;
+        return logH;
+        }
+
+    // write back block and validate global minVal if requested
+    for (size_t t=0; t<blockSize; t++)
+        newVec[idx[t]] = blockMass * p_new[t];
+
+    if (minVal > 0.0)
+        {
+        for (size_t i=0; i<newVec.size(); i++)
+            {
+            if (newVec[i] < minVal)
+                {
+                newVec = oldVec;
+                return -1e300;
+                }
+            }
+        }
+
+    if (!isValidSimplex(newVec, 1e-10))
+        Msg::error("updateSimplexALRMVN_blocked: newVec not valid simplex");
+
+    return logH;
+}
+
 double Simplex::updateFromPrior(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, std::vector<double>& alpha) {
 
     Probability::Dirichlet::rv(rng, alpha, newVec);

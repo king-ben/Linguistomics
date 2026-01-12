@@ -120,7 +120,7 @@ double UpdateStatistics::tuneSimplex(double acceptanceProb, double currentTuning
     double targetProb = 0.22;  
       
     double newTuningValue = currentTuningValue;
-    if ( acceptanceProb > targetProb )
+    if (acceptanceProb > targetProb)
         newTuningValue /= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
     else
         newTuningValue *= (2.0 - acceptanceProb/targetProb);
@@ -138,12 +138,12 @@ double UpdateStatistics::tuneFactor(double acceptanceProb, double currentTuningV
     double targetProb = 0.44;
     
     double newTuningValue = currentTuningValue;
-    if ( acceptanceProb > targetProb )
+    if (acceptanceProb > targetProb)
         newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
     else
         newTuningValue /= (2.0 - acceptanceProb/targetProb);
 
-    if (newTuningValue < log(1.01) )
+    if (newTuningValue < log(1.01))
         newTuningValue = log(1.01);
     else if (newTuningValue > log(1000.0))
         newTuningValue = log(1000.0);
@@ -156,12 +156,12 @@ double UpdateStatistics::tuneWindow(double acceptanceProb, double currentTuningV
     double targetProb = 0.44;
     
     double newTuningValue = currentTuningValue;
-    if ( acceptanceProb > targetProb )
+    if (acceptanceProb > targetProb)
         newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
     else
         newTuningValue /= (2.0 - acceptanceProb/targetProb);
 
-    if (newTuningValue < 0.0001 )
+    if (newTuningValue < 0.0001)
         newTuningValue = 0.0001;
     else if (newTuningValue > 10.0)
         newTuningValue = 10.0;
@@ -174,12 +174,12 @@ double UpdateStatistics::tuneProbability(double acceptanceProb, double currentTu
     double targetProb = 0.22;
     
     double newTuningValue = currentTuningValue;
-    if ( acceptanceProb > targetProb )
+    if (acceptanceProb > targetProb)
         newTuningValue *= (1.0 + ((acceptanceProb-targetProb)/(1.0 - targetProb)) );
     else
         newTuningValue /= (2.0 - acceptanceProb/targetProb);
 
-    if (newTuningValue < 0.0001 )
+    if (newTuningValue < 0.0001)
         newTuningValue = 0.0001;
     else if (newTuningValue > 0.9999)
         newTuningValue = 0.9999;

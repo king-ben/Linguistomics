@@ -29,10 +29,10 @@ UpdateExchangeabilities::UpdateExchangeabilities(Model* m, RandomVariable* r, Pa
     updateInfo[1].tuningParameter = 200.0;
 
     updateInfo[2].updateIdx = 2;
-    updateInfo[2].updateName = "Exchangeabilities: ALR MVN";
-    updateInfo[2].updateHash = hashUpdateName("Exchangeabilities: ALR MVN");
+    updateInfo[2].updateName = "Exchangeabilities: Blocked ALR MVN";
+    updateInfo[2].updateHash = hashUpdateName("Exchangeabilities: Blocked ALR MVN");
     updateInfo[2].updateType = factor;
-    updateInfo[2].tuningParameter = 0.005;
+    updateInfo[2].tuningParameter = 0.001;
 
     updateInfo[3].updateIdx = 3;
     updateInfo[3].updateName = "Exchangeabilities: Prior";
@@ -71,7 +71,7 @@ double UpdateExchangeabilities::update(void) {
     else 
         {
         lastUpdate = 2;
-        lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001);
+        lnHastings = Simplex::updateALRMVN(rng, oldRates, newRates, updateInfo[2].tuningParameter, 0.00001, 100);
         }
         
     setDependants();
