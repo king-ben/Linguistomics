@@ -10,8 +10,36 @@ C5 = new(#9628d19f-a73c-4513-8f75-b7d6fe7122b3#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
   HasAnchor: true;
-  Response: Paragraph {
-    "A reference to Figure 11; is found in section 4.4 par-2. ";
+  Response: Block {
+
+    Paragraph {
+    "We thank the reviewer for this suggestion and agree that clarity of exposition is important, especially given the technical nature of the models. "
+    };
+
+    Paragraph {
+    "Regarding the figures, Figure 11 is in fact referenced in the main text in Section 4.4, paragraph 2, where it is discussed in the context of model comparison and alignment behavior. "
+    "We will nevertheless revise the manuscript to make this reference more explicit and easier to locate. "
+    };
+
+    Paragraph {
+    "We agree that a summary table of models M1, M2, and M3 would improve readability. "
+    "We will add a small table summarizing the structure and assumptions of each model and will introduce the models earlier in the manuscript to provide additional context before their formal definition. "
+    };
+
+    Paragraph {
+    "With regard to model M3, it is not a hierarchical model in the statistical sense. "
+    "Rather, it is a structured substitution model in which word segments are partitioned into subsets based on their phonological role, such as vowels of different types and consonant classes. "
+    };
+
+    Paragraph {
+    "In the current implementation, the segment inventory is divided into ten such subsets. "
+    "The model assigns one rate parameter for substitutions within each subset, and a separate rate parameter for substitutions between each pair of subsets, resulting in ten within-class rates and ten-choose-two between-class rates. "
+    };
+
+    Paragraph {
+    "This structure allows the model to capture broad phonological regularities while remaining computationally tractable. "
+    "We will revise the manuscript to make this construction more explicit and to clarify how the parameters of M3 are defined. "
+    };
   };
 };
 
@@ -327,8 +355,31 @@ C18 = new(#282a37be-a39c-465a-b47d-83c21659b522#, Reviewers.R1) {
     "What is the exact procedure you use to compute its posterior distribution (I assume you integrate along the MCMC sample the posterior given the parameters, but it would be good to write it).";
   };
   AssignedTo(People.Huelsenbeck_John);
-  Response: Paragraph {
-    "TBD";
+  Response: Block {
+
+    Paragraph {
+    "The homology structure H is treated as a latent variable and is sampled jointly with all other model parameters using Markov chain Monte Carlo. "
+    "Its posterior distribution is therefore obtained from the MCMC output rather than by post hoc integration over samples of the remaining parameters. "
+    };
+
+    Paragraph {
+    "As described in the Appendix, the prior on H is induced by the TKF91 insertion–deletion process and corresponds to a geometric distribution on alignment length with parameter λ divided by μ, which is the equilibrium length distribution of the model. "
+    "This prior assigns higher probability to compact alignments when insertion rates are low relative to deletion rates. "
+    };
+
+    Paragraph {
+    "To update H during MCMC, we use the proposal mechanism described by Lunter et al. (2004). "
+    "At each update, a random contiguous block of alignment columns is selected, removed, and resampled under the TKF91 model conditional on the surrounding context. "
+    };
+
+    Paragraph {
+    "The proposed alignment for this region is then accepted or rejected according to the Metropolis–Hastings criterion, using the ratio of posterior probabilities of the proposed and current alignments. "
+    "This procedure defines a valid Markov chain whose stationary distribution is the joint posterior over tree, alignment, and model parameters. "
+    };
+
+    Paragraph {
+    "In this way, the posterior distribution of H is obtained directly from the MCMC sample and can be summarized by any desired posterior statistic, such as marginal alignment probabilities or posterior homology support between segment pairs. "
+    };
   };
 };
 
@@ -378,7 +429,7 @@ Paragraph {
 
 Paragraph {
    "We also added a sentence clarifying the prior on the alignment:\n\n";
-            "An alignment of length L receives a prior probability that is geometric with probability λ / μ. "; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter λ/μ.)"; 
+            "An alignment of length L receives a prior probability that is geometric with probability λ / μ. "; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter λ/μ.)";
     };
   };
 };
@@ -388,8 +439,42 @@ C20 = new(#c349a5f9-2263-4c11-8475-9fd5b938c92a#, Reviewers.R1) {
     "The article by Lunter is quite difficult to read as it includes several elements linked with genetics, and I think some more details in supplement would be great.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  Response: Paragraph {
-    "TBD";
+  Response: Block {
+
+    Paragraph {
+    "We agree with the reviewer that the paper by Lunter et al. is dense and difficult to read. "
+    "This is largely due to the mathematical and algorithmic complexity of the problem it addresses rather than its connection to genetics per se. "
+    };
+
+    Paragraph {
+    "The central contribution of Lunter et al. is not tied to molecular biology, but rather to the development of an algorithm for computing the likelihood under the TKF91 model on an arbitrary phylogenetic tree. "
+    "Prior to that work, likelihood calculations under TKF91 were only available for pairs of sequences. "
+    };
+
+    Paragraph {
+    "The fact that Lunter et al. apply their method to DNA sequences is incidental. "
+    "The TKF91 model consists of a continuous-time birth–death process governing insertions and deletions, coupled with an arbitrary continuous-time Markov substitution process on surviving characters. "
+    "Any substitution model can be used in place of DNA evolution, including the phonological substitution models used in the present study. "
+    };
+
+    Paragraph {
+    "For this reason, we view the genetics context of the Lunter et al. paper as largely orthogonal to its algorithmic contribution. "
+    "What is essential for our purposes is the dynamic programming method it provides for marginalizing over all possible insertion, deletion, and substitution histories on a tree. "
+    };
+
+    Paragraph {
+    "While we agree that additional exposition of this algorithm could in principle be helpful, we are concerned that reproducing its full derivation in the supplement would substantially increase the length and technical density of the paper without improving accessibility for most readers. "
+    "Readers with a strong interest in the algorithmic details are encouraged to consult the original paper and the accompanying software implementation. "
+    };
+
+    Paragraph {
+    "We also note that although the TKF91 model is historically important as the first fully event-based indel model, it has not seen widespread adoption in molecular evolution, largely because biological insertions and deletions typically involve multi-nucleotide events rather than single-site changes. "
+    "Nevertheless, TKF91 remains a foundational model in the literature and provides a mathematically clean framework for studying sequence evolution under insertion and deletion. "
+    };
+
+    Paragraph {
+    "For linguistic data, where segmental insertions and deletions are more naturally modeled at the single-segment level, the TKF91 framework is particularly well suited and provides a principled starting point for historical modeling. "
+    };
   };
 };
 
@@ -469,8 +554,27 @@ C26 = new(#5ce04d50-ce4a-4f51-9b28-0014edbbdc54#, Reviewers.R1) {
     "The assumption λ < μ might be better as part of the prior distribution.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  Response: Paragraph {
-    "TBD";
+  Response: Block {
+
+    Paragraph {
+    "In the manuscript we use S to denote the observed sequences of segments sampled for a cognate across the Romance languages, and we reserve Greek letters for model parameters. "
+    "This convention is consistent with standard usage in phylogenetics and allows us to distinguish clearly between observed linguistic data and latent model parameters. "
+    };
+
+    Paragraph {
+    "We agree that, formally, the tree topology and branch lengths are values taken by parameters τ and ν, respectively, rather than parameters themselves. "
+    "However, for readability we often refer to a particular realization of these parameters simply as “the tree,” which is conventional in the phylogenetic literature. "
+    };
+
+    Paragraph {
+    "With regard to the suggestion to introduce X for the observations and θ for the parameters, we prefer to retain our current notation, as it makes explicit the linguistic nature of the data and keeps the connection to the evolutionary model transparent. "
+    "We do not believe that introducing additional abstract symbols would substantially improve clarity for the intended readership. "
+    };
+
+    Paragraph {
+    "Finally, the constraint λ < μ is already enforced naturally by our prior specification. "
+    "Both λ and μ are assigned independent and identical exponential priors, with support restricted to the region λ < μ, so that the prior density is zero for parameter combinations with λ ≥ μ. "
+    };
   };
 };
 
@@ -564,20 +668,27 @@ C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
   Text: "Given the novelty of the TKF91 model to linguistic data, I was surprised that no simulation study was provided. The model should be validated using Simulation-Based Calibration.";
   AssignedTo(People.Huelsenbeck_John);
   Response: Paragraph {
-    "TBD";
+    "See our response to Comment 30."
   };
 };
 
 C44 = new(#d6430550-ec51-4710-a073-989ea4df9994#, Reviewers.R3) {
   Text: "There appears to be a contradiction in the parameter count for the Natural Class model. Earlier, the text states that there are “79 parameters for the equilibrium distribution and 80 parameters describing rates among natural classes,” whereas later the model is described as having 78 equilibrium parameters plus 55 class-rate parameters (total 133). The latter seems correct given the 10-class structure (45 off-diagonals + 10 within class rates), so is 80 a typo?";
   AssignedTo(People.Huelsenbeck_John);
+  Response: Paragraph {
+    "We apologize for this mistake, and have corrected the text. "
+    "For the equilibrium parameter, there are 79 frequencies, one for each segment state in our model. "
+    "But, there are only 78 free parameters, because the last frequency can be determined by the sum of the other 78 frequencies. "
+    "(Remember, the frequencies are constrained to sum to one. "
+    "Under the Natural Class model there are, indeed, 55 rate parameters, 10 for the changes with in the classes and 45 parameters to describe the rates of change between the classes. "
+  };
 };
 
 C49 = new(#52049589-ce3b-4965-8348-10c902f0d193#, Reviewers.R3) {
   Text: "It may help the reader if Figure 7 is labelled explicitly as showing class-pooled average rates derived from the full 79×79 Q-matrix of phoneme-to-phoneme substitutions. Currently, the relationship between the full Q and the reduced 10×10 class matrix in the figure is not stated clearly. Same for Figure 6, I guess these are pooled from the individual phonemes.";
   AssignedTo(People.Huelsenbeck_John);
   Response: Paragraph {
-    "TBD";
+    "We revised the text to indicate that the figures show pooled rates."
   };
 };
 
