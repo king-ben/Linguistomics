@@ -229,7 +229,7 @@ C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
     Paragraph {
       "We believe the reviewer may be conflating two different modeling distinctions, which is the source of the apparent disagreement. ";
       };
-      
+
     Paragraph {
       "First, regarding Bouchard-Côté et al. (2013), we agree that their method allows cognacy classes to be unknown a priori and inferred during analysis. ";
       "However, this does not change the nature of the observations in their likelihood. ";
@@ -267,39 +267,45 @@ C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "In our framework, the alignment itself is part of the inference. ";
-  "Each alignment column represents a hypothesis about homology, that is, which word segments in different languages descend from a single ancestral segment. ";
-  "We therefore treat the alignment as a random variable and use Markov chain Monte Carlo to sample alignments in proportion to their posterior probability under a given evolutionary model. ";
-  "\n\n";
+    Paragraph {
+    "In our framework, the alignment itself is part of the inference. ";
+    "Each alignment column represents a hypothesis about homology, that is, which word segments in different languages descend from a single ancestral segment. ";
+    "We therefore treat the alignment as a random variable and use Markov chain Monte Carlo to sample alignments in proportion to their posterior probability under a given evolutionary model. ";
+    };
 
-  "It is therefore both expected and informative that the posterior distribution of alignments differs across models. ";
-  "The reason is that the probability of any proposed alignment depends directly on the substitution and indel processes assumed by the model. ";
-  "Different models assign different probabilities to the same homology hypotheses. ";
-  "\n\n";
+    Paragraph {
+    "It is therefore both expected and informative that the posterior distribution of alignments differs across models. ";
+    "The reason is that the probability of any proposed alignment depends directly on the substitution and indel processes assumed by the model. ";
+    "Different models assign different probabilities to the same homology hypotheses. ";
+    };
 
-  "To make this concrete, consider an alignment column in which two segment states, say 0 and 1, are observed across languages. ";
-  "Such a column necessarily implies at least one historical change along the tree, either a direct substitution between 0 and 1 or a sequence of changes through intermediate states. ";
-  "The probability of that column is therefore sensitive to the rate matrix of the continuous-time Markov model governing substitutions. ";
-  "If transitions between the relevant states, or via intermediates, are relatively frequent, the alignment column will be more probable. ";
-  "If they require rare changes, it will be less probable. ";
-  "\n\n";
+    Paragraph {
+    "To make this concrete, consider an alignment column in which two segment states, say 0 and 1, are observed across languages. ";
+    "Such a column necessarily implies at least one historical change along the tree, either a direct substitution between 0 and 1 or a sequence of changes through intermediate states. ";
+    "The probability of that column is therefore sensitive to the rate matrix of the continuous-time Markov model governing substitutions. ";
+    "If transitions between the relevant states, or via intermediates, are relatively frequent, the alignment column will be more probable. ";
+    "If they require rare changes, it will be less probable. ";
+    };
 
-  "The same logic applies to deletions. ";
-  "If a model assigns a relatively high deletion rate to a particular segment, such as /k/, alignments in which that segment is absent in some languages become more probable under that model. ";
-  "Conversely, models in which such deletions are rare will favor different alignment structures. ";
-  "Thus, alignments that appear easier under one model are simply those that are more probable given that model’s assumptions about rates of substitution and deletion. ";
-  "\n\n";
+    Paragraph {
+    "The same logic applies to deletions. ";
+    "If a model assigns a relatively high deletion rate to a particular segment, such as /k/, alignments in which that segment is absent in some languages become more probable under that model. ";
+    "Conversely, models in which such deletions are rare will favor different alignment structures. ";
+    "Thus, alignments that appear easier under one model are simply those that are more probable given that model’s assumptions about rates of substitution and deletion. ";
+    };
 
-  "In Figure 11, the differences in inferred alignments therefore reflect differences in the underlying rate assumptions. ";
-  "The simplest model, isomorphic to JC69, assigns equal rates to all changes, whereas the more complex models allow rates to vary across segment types and transitions. ";
-  "These assumptions propagate naturally into the posterior over alignments, leading to the observed differences. ";
-  "\n\n";
+    Paragraph {
+    "In Figure 11, the differences in inferred alignments therefore reflect differences in the underlying rate assumptions. ";
+    "The simplest model, isomorphic to JC69, assigns equal rates to all changes, whereas the more complex models allow rates to vary across segment types and transitions. ";
+    "These assumptions propagate naturally into the posterior over alignments, leading to the observed differences. ";
+    };
 
-  "In short, the alignment differs between models precisely because the alignment is being inferred jointly with the evolutionary process, and different models encode different notions of what kinds of historical changes are likely. ";
+    Paragraph {
+    "In short, the alignment differs between models precisely because the alignment is being inferred jointly with the evolutionary process, and different models encode different notions of what kinds of historical changes are likely. ";
+    };
   };
-
 };
 
 C16 = new(#e1d990c4-c441-44b6-b224-51c376b3d2e2#, Reviewers.R1) {
@@ -334,39 +340,47 @@ C19 = new(#d461c4c4-e6b1-4931-9ff3-febca0c96767#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "The reviewer is absolutely right that, from a generative perspective, the prior on the homology structure H should depend on the insertion and deletion rates lambda and mu. ";
-  "Under an explicit indel process, these parameters determine the expected sequence length and, consequently, the prior distribution over alignment lengths and homology patterns. ";
-  "In particular, when insertion rates are low relative to deletion rates, shorter and more compact alignments should indeed receive higher prior probability than very long alignments. ";
-  "\n\n";
+    Paragraph {
+    "The reviewer is absolutely right that, from a generative perspective, the prior on the homology structure H should depend on the insertion and deletion rates lambda and mu. ";
+    "Under an explicit indel process, these parameters determine the expected sequence length and, consequently, the prior distribution over alignment lengths and homology patterns. ";
+    "In particular, when insertion rates are low relative to deletion rates, shorter and more compact alignments should indeed receive higher prior probability than very long alignments. ";
+    };
 
-  "Upon re-examining our implementation of the TKF91 model, we realized that our prior on H is not uniform, as implied by the manuscript text. ";
-  "Instead, the prior probability of an alignment length follows a geometric distribution with parameter lambda divided by mu, corresponding to the equilibrium length distribution of the TKF91 model. ";
-  "Thus, alignments with many columns are already down-weighted a priori, and the prior on H does depend on lambda and mu in an important and meaningful way. ";
-  "In this sense, the current implementation is closer to a generative indel-based prior than our description suggested. ";
-  "\n\n";
+Paragraph {
+    "Upon re-examining our implementation of the TKF91 model, we realized that our prior on H is not uniform, as implied by the manuscript text. ";
+    "Instead, the prior probability of an alignment length follows a geometric distribution with parameter lambda divided by mu, corresponding to the equilibrium length distribution of the TKF91 model. ";
+    "Thus, alignments with many columns are already down-weighted a priori, and the prior on H does depend on lambda and mu in an important and meaningful way. ";
+    "In this sense, the current implementation is closer to a generative indel-based prior than our description suggested. ";
+    };
 
-  "That said, the prior is still not fully generative in the strongest sense, because it does not explicitly model the full homology structure H as a realization of a TKF91 process conditional on lambda and mu. ";
-  "Rather, it captures the equilibrium length distribution implied by the model, while remaining agnostic about finer-grained dependencies among homology patterns. ";
-  "We agree that a prior constructed by explicitly generating H under the TKF91 process would be more coherent. ";
-  "However, implementing such a prior in a computationally tractable way, particularly in the context of joint inference over trees, alignments, and substitution parameters, remains challenging. ";
-  "\n\n";
+Paragraph {
+    "That said, the prior is still not fully generative in the strongest sense, because it does not explicitly model the full homology structure H as a realization of a TKF91 process conditional on lambda and mu. ";
+    "Rather, it captures the equilibrium length distribution implied by the model, while remaining agnostic about finer-grained dependencies among homology patterns. ";
+    "We agree that a prior constructed by explicitly generating H under the TKF91 process would be more coherent. ";
+    "However, implementing such a prior in a computationally tractable way, particularly in the context of joint inference over trees, alignments, and substitution parameters, remains challenging. ";
+    };
 
-  "We will revise the manuscript to correct the description of the prior on H and to clarify that alignment lengths are geometrically distributed with parameter lambda divided by mu, as implied by the equilibrium behavior of the TKF91 model. ";
-  "We will also clarify that developing fully generative priors on homology structures conditional on indel parameters is an important direction for future work. ";
-  "\n\n";
+Paragraph {
+    "We will revise the manuscript to correct the description of the prior on H and to clarify that alignment lengths are geometrically distributed with parameter lambda divided by mu, as implied by the equilibrium behavior of the TKF91 model. ";
+    "We will also clarify that developing fully generative priors on homology structures conditional on indel parameters is an important direction for future work. ";
+    };
 
-  "We have added the following sentence to the manuscript. ";
-  "\n\n";
+Paragraph {
+    "We have added the following sentence to the manuscript. ";
+    };
 
-  "A more coherent alternative would be to define a fully generative prior on H conditional on lambda and mu, building directly on the TKF91 process itself. ";
-  "Developing such priors for segmental homology structures remains an important direction for future work.\n\n ";
+Paragraph {
+    "A more coherent alternative would be to define a fully generative prior on H conditional on lambda and mu, building directly on the TKF91 process itself. ";
+    "Developing such priors for segmental homology structures remains an important direction for future work. ";
+    };
 
- "We also added a sentence clarifying the prior on the alignment:\n\n";
-          "An alignment of length L receives a prior probability that is geometric with probability λ / μ. "; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter λ/μ.)"; 
+Paragraph {
+   "We also added a sentence clarifying the prior on the alignment:\n\n";
+            "An alignment of length L receives a prior probability that is geometric with probability λ / μ. "; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter λ/μ.)"; 
+    };
   };
-
 };
 
 C20 = new(#c349a5f9-2263-4c11-8475-9fd5b938c92a#, Reviewers.R1) {
@@ -387,36 +401,41 @@ C21 = new(#8c6f45b5-fdd1-4c93-be2c-f96a92e2b4a4#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "The reviewer is correct that, if considered naively, the space of possible insertion–deletion histories is infinite. ";
-  "An ancestral sequence could in principle contain arbitrarily many characters that are later deleted. ";
-  "However, this does not invalidate our statement. ";
-  "The likelihood we compute does indeed account for all possible histories of insertion, deletion, and substitution, weighting each by its probability under the model. ";
-  "This is not an approximation, but a standard consequence of marginalization in continuous-time stochastic processes. ";
-  "\n\n";
+    Paragraph {
+    "The reviewer is correct that, if considered naively, the space of possible insertion–deletion histories is infinite. ";
+    "An ancestral sequence could in principle contain arbitrarily many characters that are later deleted. ";
+    "However, this does not invalidate our statement. ";
+    "The likelihood we compute does indeed account for all possible histories of insertion, deletion, and substitution, weighting each by its probability under the model. ";
+    "This is not an approximation, but a standard consequence of marginalization in continuous-time stochastic processes. ";
+    };
 
-  "Formally, the likelihood marginalizes over all unobserved evolutionary histories. ";
-  "Although the set of such histories is infinite, their total contribution is finite because histories with many insertion and deletion events have vanishingly small probability under the model. ";
-  "This is entirely analogous to other continuous-time Markov processes, where infinitely many event sequences are possible over any positive time interval, yet transition probabilities remain well defined. ";
-  "\n\n";
+    Paragraph {
+    "Formally, the likelihood marginalizes over all unobserved evolutionary histories. ";
+    "Although the set of such histories is infinite, their total contribution is finite because histories with many insertion and deletion events have vanishingly small probability under the model. ";
+    "This is entirely analogous to other continuous-time Markov processes, where infinitely many event sequences are possible over any positive time interval, yet transition probabilities remain well defined. ";
+    };
 
-  "This is the same principle that underlies likelihood calculations in simpler substitution-only models. ";
-  "In programs such as MrBayes or BEAST, the likelihood integrates over all possible assignments of ancestral states at internal nodes via the Felsenstein pruning algorithm, and all possible numbers and timings of substitution events along each branch via matrix exponentiation. ";
-  "Even in these models, the likelihood implicitly accounts for infinitely many substitution histories, despite the fact that only a finite state space is observed. ";
-  "\n\n";
+    Paragraph {
+    "This is the same principle that underlies likelihood calculations in simpler substitution-only models. ";
+    "In programs such as MrBayes or BEAST, the likelihood integrates over all possible assignments of ancestral states at internal nodes via the Felsenstein pruning algorithm, and all possible numbers and timings of substitution events along each branch via matrix exponentiation. ";
+    "Even in these models, the likelihood implicitly accounts for infinitely many substitution histories, despite the fact that only a finite state space is observed. ";
+    };
 
-  "For models with insertions and deletions, such as TKF91, the situation is conceptually identical but computationally more challenging. ";
-  "The TKF91 process defines a continuous-time birth–death model on sequence length, coupled with substitution on surviving characters. ";
-  "Although an ancestral sequence may be arbitrarily long, the equilibrium length distribution is proper, and the probability of extremely long ancestral sequences decays rapidly. ";
-  "The dynamic programming algorithm of Lunter et al. (2003) exploits this structure to marginalize analytically over all possible indel histories without enumerating them explicitly. ";
-  "The poor scaling of the algorithm reflects the difficulty of performing this marginalization exactly, not the presence of an approximation. ";
-  "\n\n";
+    Paragraph {
+    "For models with insertions and deletions, such as TKF91, the situation is conceptually identical but computationally more challenging. ";
+    "The TKF91 process defines a continuous-time birth–death model on sequence length, coupled with substitution on surviving characters. ";
+    "Although an ancestral sequence may be arbitrarily long, the equilibrium length distribution is proper, and the probability of extremely long ancestral sequences decays rapidly. ";
+    "The dynamic programming algorithm of Lunter et al. (2003) exploits this structure to marginalize analytically over all possible indel histories without enumerating them explicitly. ";
+    "The poor scaling of the algorithm reflects the difficulty of performing this marginalization exactly, not the presence of an approximation. ";
+    };
 
-  "Thus, while the reviewer’s intuition that there must be infinitely many histories is correct, this does not imply that the likelihood is ill-defined or approximate. ";
-  "On the contrary, the likelihood is precisely defined as a sum or integral over all such histories, and this is exactly what our statement in Section 5.1 was meant to convey. ";
+    Paragraph {
+    "Thus, while the reviewer’s intuition that there must be infinitely many histories is correct, this does not imply that the likelihood is ill-defined or approximate. ";
+    "On the contrary, the likelihood is precisely defined as a sum or integral over all such histories, and this is exactly what our statement in Section 5.1 was meant to convey. ";
+    };
   };
-
 };
 
 C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
@@ -425,19 +444,21 @@ C25 = new(#11995460-7bae-4185-ba13-861d7c9130f6#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "We appreciate the reviewer’s comment regarding notation. ";
-  "Our use of the symbol Ψ to denote a tree is not intended to be aesthetic, but conventional. ";
-  "In the phylogenetics literature, it is common to represent a phylogenetic tree as the combination of a topology, typically denoted by tau, and a set of branch lengths, often denoted by v. ";
-  "The pair is then written compactly as Ψ =(t,v). ";
-  "This notation is used, for example, to distinguish between the discrete combinatorial structure of the tree and its continuous branch-length parameters. ";
-  "\n\n";
+    Paragraph {
+    "We appreciate the reviewer’s comment regarding notation. ";
+    "Our use of the symbol Ψ to denote a tree is not intended to be aesthetic, but conventional. ";
+    "In the phylogenetics literature, it is common to represent a phylogenetic tree as the combination of a topology, typically denoted by tau, and a set of branch lengths, often denoted by v. ";
+    "The pair is then written compactly as Ψ =(t,v). ";
+    "This notation is used, for example, to distinguish between the discrete combinatorial structure of the tree and its continuous branch-length parameters. ";
+    };
 
-  "We adopted this convention to make the distinction between topology and branch lengths explicit and to remain consistent with existing usage in Bayesian phylogenetic modeling. ";
-  "That said, we are not wedded to this choice of symbol and would be happy to change the notation if the editor or reviewer strongly prefers an alternative. ";
+    Paragraph {
+    "We adopted this convention to make the distinction between topology and branch lengths explicit and to remain consistent with existing usage in Bayesian phylogenetic modeling. ";
+    "That said, we are not wedded to this choice of symbol and would be happy to change the notation if the editor or reviewer strongly prefers an alternative. ";
+    };
   };
-
 };
 
 C26 = new(#5ce04d50-ce4a-4f51-9b28-0014edbbdc54#, Reviewers.R1) {
@@ -459,22 +480,26 @@ C27 = new(#8dcfb5bc-4e1e-411e-9981-3bd0e57b458e#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "We appreciate the reviewer’s comment and agree that proper attribution is important. ";
-  "The original 1953 paper indeed involved multiple contributors. ";
-  "Metropolis introduced the core idea of simulating a physical system via a Markov process with a desired stationary distribution. ";
-  "The Rosenbluths and Teller contributed substantially to the mathematical formulation and practical implementation of the method. ";
-  "Hastings later generalized the original algorithm in a probabilistic framework, leading to what is now widely known as the Metropolis–Hastings algorithm. ";
-  "\n\n";
+    Paragraph {
 
-  "That said, while the longer name Hastings–Metropolis–Rosenbluth–Teller more fully reflects the authorship of the original work, the term Metropolis–Hastings is overwhelmingly standard in the statistics, physics, and computational biology literature. ";
-  "Using a nonstandard name would likely cause confusion for readers rather than clarify attribution. ";
-  "\n\n";
+    "We appreciate the reviewer’s comment and agree that proper attribution is important. ";
+    "The original 1953 paper indeed involved multiple contributors. ";
+    "Metropolis introduced the core idea of simulating a physical system via a Markov process with a desired stationary distribution. ";
+    "The Rosenbluths and Teller contributed substantially to the mathematical formulation and practical implementation of the method. ";
+    "Hastings later generalized the original algorithm in a probabilistic framework, leading to what is now widely known as the Metropolis–Hastings algorithm. ";
+    };
 
-  "For these reasons, we have retained the conventional terminology, while fully acknowledging the broader historical contributions underlying the method. ";
+    Paragraph {
+    "That said, while the longer name Hastings–Metropolis–Rosenbluth–Teller more fully reflects the authorship of the original work, the term Metropolis–Hastings is overwhelmingly standard in the statistics, physics, and computational biology literature. ";
+    "Using a nonstandard name would likely cause confusion for readers rather than clarify attribution. ";
+    };
+
+    Paragraph {
+    "For these reasons, we have retained the conventional terminology, while fully acknowledging the broader historical contributions underlying the method. ";
+    };
   };
-
 };
 
 C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
@@ -496,37 +521,43 @@ C30 = new(#b99ca14c-9db0-4814-adcc-04b6f9a89472#, Reviewers.R2) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "We thank the reviewer for this clear and accurate summary of our work and for the positive assessment of the motivation and results. ";
-  "We are particularly pleased that the reviewer finds the framing of the limitations of existing comparative approaches convincing, and that the empirical findings, especially the distinction between vowels and consonants and the relative stability of diphthongs and long vowels, are consistent with established results in the linguistic literature. ";
-  "\n\n";
+    Paragraph {
+    "We thank the reviewer for this clear and accurate summary of our work and for the positive assessment of the motivation and results. ";
+    "We are particularly pleased that the reviewer finds the framing of the limitations of existing comparative approaches convincing, and that the empirical findings, especially the distinction between vowels and consonants and the relative stability of diphthongs and long vowels, are consistent with established results in the linguistic literature. ";
+    };
 
-  "With respect to a simulation study, we fully agree that simulation-based validation, such as Simulation-Based Calibration, is a powerful and principled way to assess the behavior of Bayesian inference procedures, particularly for novel models. ";
-  "In an ideal setting, such a study would indeed be desirable. ";
-  "\n\n";
+    Paragraph {
+    "With respect to a simulation study, we fully agree that simulation-based validation, such as Simulation-Based Calibration, is a powerful and principled way to assess the behavior of Bayesian inference procedures, particularly for novel models. ";
+    "In an ideal setting, such a study would indeed be desirable. ";
+    };
 
-  "In the present case, however, a comprehensive simulation study is not practically feasible. ";
-  "Each full Markov chain Monte Carlo analysis under the TKF91-based framework requires multiple days of computation on a modern desktop computer. ";
-  "A properly designed simulation-based calibration analysis would require on the order of thousands to tens of thousands of independent simulations, each followed by a full MCMC run to convergence. ";
-  "At current computational costs, this would translate into months or even years of compute time, well beyond what is realistic for this study. ";
-  "\n\n";
+    Paragraph {
+    "In the present case, however, a comprehensive simulation study is not practically feasible. ";
+    "Each full Markov chain Monte Carlo analysis under the TKF91-based framework requires multiple days of computation on a modern desktop computer. ";
+    "A properly designed simulation-based calibration analysis would require on the order of thousands to tens of thousands of independent simulations, each followed by a full MCMC run to convergence. ";
+    "At current computational costs, this would translate into months or even years of compute time, well beyond what is realistic for this study. ";
+    };
 
-  "That said, the absence of a large-scale simulation study does not imply a lack of theoretical grounding. ";
-  "The inference framework we employ is standard Bayesian likelihood-based inference, applied to a new class of data rather than a new inferential paradigm. ";
-  "Under the assumed model, Bayesian posterior distributions have well-understood and desirable theoretical properties, including correct uncertainty quantification and asymptotic calibration. ";
-  "In particular, when the model is correctly specified and the posterior is adequately explored, Bayesian credible intervals contain the true parameter values with their nominal probabilities in repeated sampling. ";
-  "\n\n";
+    Paragraph {
+    "That said, the absence of a large-scale simulation study does not imply a lack of theoretical grounding. ";
+    "The inference framework we employ is standard Bayesian likelihood-based inference, applied to a new class of data rather than a new inferential paradigm. ";
+    "Under the assumed model, Bayesian posterior distributions have well-understood and desirable theoretical properties, including correct uncertainty quantification and asymptotic calibration. ";
+    "In particular, when the model is correctly specified and the posterior is adequately explored, Bayesian credible intervals contain the true parameter values with their nominal probabilities in repeated sampling. ";
+    };
 
-  "Moreover, the likelihood calculations themselves are exact under the TKF91 model, in the sense that they marginalize analytically over all unobserved histories of insertion, deletion, and substitution, rather than relying on approximations or heuristic scoring schemes. ";
-  "The computational burden arises precisely because of this exactness. ";
-  "The tradeoff between computational tractability and model realism is a familiar one in phylogenetics, and our work deliberately prioritizes model fidelity over speed. ";
-  "\n\n";
+    Paragraph {
+    "Moreover, the likelihood calculations themselves are exact under the TKF91 model, in the sense that they marginalize analytically over all unobserved histories of insertion, deletion, and substitution, rather than relying on approximations or heuristic scoring schemes. ";
+    "The computational burden arises precisely because of this exactness. ";
+    "The tradeoff between computational tractability and model realism is a familiar one in phylogenetics, and our work deliberately prioritizes model fidelity over speed. ";
+    };
 
-  "We view the present study as a proof of principle demonstrating that fully historical, segment-level evolutionary models can be applied directly to linguistic data within a Bayesian phylogenetic framework. ";
-  "We agree that future work, benefiting from algorithmic improvements, parallelization, or approximate inference schemes, should include extensive simulation-based validation, and we see this as a natural and important direction for further research. ";
+    Paragraph {
+    "We view the present study as a proof of principle demonstrating that fully historical, segment-level evolutionary models can be applied directly to linguistic data within a Bayesian phylogenetic framework. ";
+    "We agree that future work, benefiting from algorithmic improvements, parallelization, or approximate inference schemes, should include extensive simulation-based validation, and we see this as a natural and important direction for further research. ";
+    };
   };
-
 };
 
 C39 = new(#21232c33-f550-44cd-8cf1-c27b0b28693e#, Reviewers.R3) {
