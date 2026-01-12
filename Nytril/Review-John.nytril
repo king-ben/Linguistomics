@@ -160,25 +160,29 @@ C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "The reviewer raises the interesting issue of unobserved or extinct segmental states in ancestral languages. ";
-  "\n\n";
+    Paragraph {
+      "The reviewer raises the interesting issue of unobserved or extinct segmental states in ancestral languages. ";
+      };
 
-  "In our framework, ancestral segmental states are not restricted to those observed in the modern languages. ";
-  "When computing the likelihood, the model marginalizes over all possible ancestral states and evolutionary histories consistent with the specified state space. ";
-  "Consequently, a segment may appear with nonzero posterior probability at internal nodes of the tree even if it is never preserved in any extant language, for example because it is systematically deleted or transformed along all descendant branches. ";
-  "\n\n";
+    Paragraph {
+      "In our framework, ancestral segmental states are not restricted to those observed in the modern languages. ";
+      "When computing the likelihood, the model marginalizes over all possible ancestral states and evolutionary histories consistent with the specified state space. ";
+      "Consequently, a segment may appear with nonzero posterior probability at internal nodes of the tree even if it is never preserved in any extant language, for example because it is systematically deleted or transformed along all descendant branches. ";
+      };
 
-  "That said, the flexibility of the model is constrained by the choice of state space, which must be specified in advance. ";
-  "The model cannot, in its current form, infer entirely novel sound categories that lie outside this predefined inventory. ";
-  "However, one could in principle expand the state space to include hypothesized ancestral segments and allow different substitution and deletion processes to apply to different parts of the tree. ";
-  "Such nonhomogeneous, or lineage-specific, models are well established in molecular phylogenetics and provide a natural way to accommodate ancestral states that are present only in early lineages and later lost. ";
-  "\n\n";
+    Paragraph {
+      "That said, the flexibility of the model is constrained by the choice of state space, which must be specified in advance. ";
+      "The model cannot, in its current form, infer entirely novel sound categories that lie outside this predefined inventory. ";
+      "However, one could in principle expand the state space to include hypothesized ancestral segments and allow different substitution and deletion processes to apply to different parts of the tree. ";
+      "Such nonhomogeneous, or lineage-specific, models are well established in molecular phylogenetics and provide a natural way to accommodate ancestral states that are present only in early lineages and later lost. ";
+      };
 
-  "Exploring such extensions in a linguistic setting would be an interesting direction for future work, but beyond the scope of the present study. ";
+    Paragraph {
+      "Exploring such extensions in a linguistic setting would be an interesting direction for future work, but beyond the scope of the present study. ";
+    };
   };
-
 };
 
 C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
@@ -189,26 +193,29 @@ C12 = new(#f7dbaafc-a909-45d2-a231-bb2e225531f1#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
-  "It is correct that the stochastic models typically applied in historical linguistics are event-based. ";
-  "In practice, these are k-state models, where k is determined during the prior step of cognate coding. ";
-  "For example, Figure 11.1 of Greenhill et al. (2020) outlines the Comparative Method as beginning with the assignment of discrete cognate states to languages. ";
-  "In their illustration, a single cognate set is coded with k equals 3 abstract states, which would then be analyzed using a three-state continuous-time Markov model, as implemented in tools such as MrBayes or BEAST. ";
-  "\n\n";
+  Paragraph {
+    "It is correct that the stochastic models typically applied in historical linguistics are event-based. ";
+    "In practice, these are k-state models, where k is determined during the prior step of cognate coding. ";
+    "For example, Figure 11.1 of Greenhill et al. (2020) outlines the Comparative Method as beginning with the assignment of discrete cognate states to languages. ";
+    "In their illustration, a single cognate set is coded with k equals 3 abstract states, which would then be analyzed using a three-state continuous-time Markov model, as implemented in tools such as MrBayes or BEAST. ";
+    };
 
-  "While such models are formally event-based, the point raised in our conclusion concerns the interpretation of those events. ";
-  "The states themselves are abstractions produced by the coding process, rather than empirically observable linguistic forms. ";
-  "Consequently, when a transition occurs along a branch, for example from state B to state C, it is unclear what concrete linguistic change this event corresponds to. ";
-  "Does it represent a specific phonological or lexical transformation, or does it stand for a change involving forms that are not directly attested in the sampled languages? ";
-  "More generally, what linguistic entities are being gained, lost, or transformed by such a transition? ";
-  "\n\n";
+  Paragraph {
+    "While such models are formally event-based, the point raised in our conclusion concerns the interpretation of those events. ";
+    "The states themselves are abstractions produced by the coding process, rather than empirically observable linguistic forms. ";
+    "Consequently, when a transition occurs along a branch, for example from state B to state C, it is unclear what concrete linguistic change this event corresponds to. ";
+    "Does it represent a specific phonological or lexical transformation, or does it stand for a change involving forms that are not directly attested in the sampled languages? ";
+    "More generally, what linguistic entities are being gained, lost, or transformed by such a transition? ";
+    };
 
-  "This is the sense in which we wrote that when applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. ";
-  "Our comment is not intended to deny that these models are event-based, but rather to highlight that the nature of the events depends critically on how cognacy classes are defined and abstracted from the original data. ";
-  "In contrast to models that explicitly specify the linguistic units undergoing change, the connection between model transitions and underlying linguistic processes is indirect, and in some cases, ambiguous. ";
+  Paragraph {
+    "This is the sense in which we wrote that when applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. ";
+    "Our comment is not intended to deny that these models are event-based, but rather to highlight that the nature of the events depends critically on how cognacy classes are defined and abstracted from the original data. ";
+    "In contrast to models that explicitly specify the linguistic units undergoing change, the connection between model transitions and underlying linguistic processes is indirect, and in some cases, ambiguous. ";
+    };
   };
-
 };
 
 C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
@@ -218,35 +225,39 @@ C13 = new(#04cf0c5e-2b71-4158-ab28-be3e9bf4aa68#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
+    Paragraph {
+      "We believe the reviewer may be conflating two different modeling distinctions, which is the source of the apparent disagreement. ";
+      };
+      
+    Paragraph {
+      "First, regarding Bouchard-Côté et al. (2013), we agree that their method allows cognacy classes to be unknown a priori and inferred during analysis. ";
+      "However, this does not change the nature of the observations in their likelihood. ";
+      "In their framework, the observed data are still the surface word forms, or segments thereof, at the tips. ";
+      "Cognacy is treated as a latent structure linking these observed strings, not as an additional type of observation. ";
+      "In this sense, our statement that they treat cognate word-forms as observations was meant to contrast surface linguistic forms with abstract cognate states, not to deny that cognacy itself can be inferred. ";
+      };
 
-  "We believe the reviewer may be conflating two different modeling distinctions, which is the source of the apparent disagreement. ";
-  "\n\n";
+    Paragraph {
+      "Second, we respectfully disagree that their transducer-based model is a historical model in the same sense as models such as TKF91. ";
+      "The string transducer used by Bouchard-Côté et al. defines a probability distribution over pairs of strings via weighted edit operations, but it does not explicitly represent a sequence of evolutionary events unfolding along branches of a phylogenetic tree. ";
+      "That is, it assigns probabilities directly to string transformations, rather than integrating over explicit insertion, deletion, and substitution histories occurring through time. ";
+      "In this sense, it is not a historical model, even though it is motivated by diachronic considerations. ";
+      };
 
-  "First, regarding Bouchard-Côté et al. (2013), we agree that their method allows cognacy classes to be unknown a priori and inferred during analysis. ";
-  "However, this does not change the nature of the observations in their likelihood. ";
-  "In their framework, the observed data are still the surface word forms, or segments thereof, at the tips. ";
-  "Cognacy is treated as a latent structure linking these observed strings, not as an additional type of observation. ";
-  "In this sense, our statement that they treat cognate word-forms as observations was meant to contrast surface linguistic forms with abstract cognate states, not to deny that cognacy itself can be inferred. ";
-  "\n\n";
+    Paragraph {
+      "By contrast, the TKF91 model is explicitly historical. ";
+      "When computing the likelihood of the observed word forms at the tips of a tree, the model integrates over all possible sequences of insertion and deletion events along each branch, governed by a continuous-time birth–death process. ";
+      "The events are not merely a probabilistic abstraction but correspond to well-defined operations acting on evolving sequences through time. ";
+      };
 
-  "Second, we respectfully disagree that their transducer-based model is a historical model in the same sense as models such as TKF91. ";
-  "The string transducer used by Bouchard-Côté et al. defines a probability distribution over pairs of strings via weighted edit operations, but it does not explicitly represent a sequence of evolutionary events unfolding along branches of a phylogenetic tree. ";
-  "That is, it assigns probabilities directly to string transformations, rather than integrating over explicit insertion, deletion, and substitution histories occurring through time. ";
-  "In this sense, it is not a historical model, even though it is motivated by diachronic considerations. ";
-  "\n\n";
-
-  "By contrast, the TKF91 model is explicitly historical. ";
-  "When computing the likelihood of the observed word forms at the tips of a tree, the model integrates over all possible sequences of insertion and deletion events along each branch, governed by a continuous-time birth–death process. ";
-  "The events are not merely a probabilistic abstraction but correspond to well-defined operations acting on evolving sequences through time. ";
-  "\n\n";
-
-  "Regarding the reviewer’s second point, we agree that event-based models such as TKF91 operate in continuous time and that events are not observed individually. ";
-  "However, this does not undermine our claim that the model has well-defined events. ";
-  "Rather, it is precisely the explicit specification of those events and their rates that distinguishes historical sequence-evolution models from abstract state-based or transducer-based approaches. ";
-  "Our intent was to emphasize this distinction, not to suggest that events are discretely observed or temporally localized in the data. ";
+    Paragraph {
+      "Regarding the reviewer’s second point, we agree that event-based models such as TKF91 operate in continuous time and that events are not observed individually. ";
+      "However, this does not undermine our claim that the model has well-defined events. ";
+      "Rather, it is precisely the explicit specification of those events and their rates that distinguishes historical sequence-evolution models from abstract state-based or transducer-based approaches. ";
+      "Our intent was to emphasize this distinction, not to suggest that events are discretely observed or temporally localized in the data. ";
+    };
   };
-
 };
 
 C15 = new(#8b3c2f1f-ceed-4964-a385-de75df4c3112#, Reviewers.R1) {
