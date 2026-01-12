@@ -9,8 +9,46 @@ C1 = new(#24e42fab-cc77-4fff-b209-f3c5abb3bcc3#, Reviewers.R1) {
     "The main negative point in my opinion is the lack of importance given to H: depending on the choice of the prior on this parameter we can get extremely different results.";
   };
   AssignedTo(People.Huelsenbeck_John);
-  Response: Paragraph {
-    "TBD";
+  Response: Block {
+    Paragraph {
+    "We thank the reviewer for this thoughtful assessment of the paper. "
+    "We are especially pleased that they view the automatic inference of segmental alignments as a major strength of the framework, and that the use of Bayes factors for model comparison is seen as a valuable contribution. "
+    };
+
+    Paragraph {
+    "We fully agree that the homology structure H, the alignment of word segments across languages, is a central latent variable in the model and carries a great deal of linguistic information. "
+    "In the present work, we have focused primarily on using H as a vehicle for defining a likelihood under a fully historical model of word evolution. "
+    "However, we view the inferred posterior distribution over alignments as an important object of study in its own right. "
+    };
+
+    Paragraph {
+    "For example, one could define probabilistic notions of segmental homology, such as the posterior probability that two segments in two languages descend from a common ancestral segment, or identify regions of words that exhibit strong versus weak homological support across languages. "
+    "These are precisely the kinds of questions that linguists traditionally address qualitatively, and our framework provides a principled statistical way to approach them. "
+    };
+
+    Paragraph {
+    "We also agree that the choice of prior on H is consequential. "
+    "Because H defines the correspondence structure between words, different prior assumptions can influence the balance between insertions, deletions, and substitutions, and thereby affect downstream inferences. "
+    "For this reason, we believe that the specification of priors on homology structures deserves careful theoretical attention. "
+    };
+
+    Paragraph {
+    "In the present study, our goal was not to exhaustively explore this space of priors, but rather to demonstrate that fully historical, segment-level evolutionary models can be applied directly to linguistic data within a Bayesian phylogenetic framework. "
+    };
+
+    Paragraph {
+    "We therefore view this paper as a proof of concept. "
+    "It establishes a solid statistical foundation on which richer linguistic models, more expressive priors on homology, and more refined questions about sound change and lexical evolution can be built. "
+    };
+
+    Paragraph {
+    "By casting word evolution in an event-based probabilistic framework, we aim to provide a platform that allows linguists to devise and test explicit evolutionary hypotheses, rather than relying on heuristic alignments or abstract cognate encodings. "
+    };
+
+    Paragraph {
+    "In this sense, the role of H is not a weakness of the approach but one of its main strengths. "
+    "It makes explicit the homology assumptions that are usually implicit, and it provides a natural locus for future methodological development. "
+    };
   };
 };
 
