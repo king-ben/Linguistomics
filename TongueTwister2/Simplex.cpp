@@ -70,7 +70,7 @@ static inline double sumLogVec(const std::vector<double>& x) {
     return s;
 }
 
-double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double sigma, double minVal) {
+double Simplex::updateALRMVN(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, double sigma, double minVal) {
 
     const size_t K = oldVec.size();
     if (oldVec.size() != newVec.size())
@@ -115,7 +115,7 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
     return sumLogVec(newVec) - sumLogVec(oldVec);
 }
 
-double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double sigma, double minVal, size_t blockSize) {
+double Simplex::updateALRMVN(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, double sigma, double minVal, size_t blockSize) {
 
     const size_t K = oldVec.size();
     if (oldVec.size() != newVec.size())
@@ -208,13 +208,13 @@ double Simplex::updateALRMVN(RandomVariable* rng, std::vector<double>& oldVec, s
     return logH;
 }
 
-double Simplex::updateFromPrior(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, std::vector<double>& alpha) {
+double Simplex::updateFromPrior(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, std::vector<double>& alpha) {
 
     Probability::Dirichlet::rv(rng, alpha, newVec);
     return Probability::Dirichlet::lnPdf(alpha, oldVec) - Probability::Dirichlet::lnPdf(alpha, newVec);
 }
 
-double Simplex::updateMassTransfer(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, double minVal) {
+double Simplex::updateMassTransfer(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, double minVal) {
 
     const size_t K = oldVec.size();
     if (oldVec.size() != newVec.size())
@@ -279,7 +279,7 @@ double Simplex::updateMassTransfer(RandomVariable* rng, std::vector<double>& old
     return lnHastings;
 }
 
-double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, double minVal) {
+double Simplex::updateCenteredDirichlet(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, double minVal) {
     
     std::vector<double> alphaForward(oldVec.size());
     for (size_t i=0, n=alphaForward.size(); i<n; i++)
@@ -296,7 +296,7 @@ double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>
     return lnForwardProb;
 }
 
-double Simplex::updateCenteredDirichlet(RandomVariable* rng, std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, size_t k, double minVal) {
+double Simplex::updateCenteredDirichlet(RandomVariable* rng, const std::vector<double>& oldVec, std::vector<double>& newVec, double alpha0, size_t k, double minVal) {
     
     // choose which elements to update
     size_t n = oldVec.size();

@@ -26,43 +26,50 @@ C7 = new(#bba1563a-d9e3-4583-a553-5c144d26ee9c#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-Response: Paragraph {
+Response: Block {
+  Paragraph {
+    "We interpret the reviewer’s comment/concern as, \"How does your probabilistic model encode the linguistic assumption of regular sound change? ";
+    "Does that regularity emerge naturally through shared parameters and repeated evidence, or are the good results mainly due to large data size or conditioning on already-likely trees?\" ";
+    };
 
-  "We interpret the reviewer’s comment/concern as, \"How does your probabilistic model encode the linguistic assumption of regular sound change? ";
-  "Does that regularity emerge naturally through shared parameters and repeated evidence, or are the good results mainly due to large data size or conditioning on already-likely trees?\" ";
-  "\n\n";
+  Paragraph {
+    "We thank the reviewer for raising this point, which touches on the notion of regular sound change and how it is represented in a probabilistic framework. ";
+    };
 
-  "We thank the reviewer for raising this point, which touches on the notion of regular sound change and how it is represented in a probabilistic framework. ";
-  "\n\n";
+  Paragraph {
+    "In our model, regularity is not imposed as an explicit constraint but emerges naturally through parameter sharing in the likelihood. ";
+    "Segmental substitutions are governed by a single rate matrix that applies across all words, all alignment columns, and all branches of the tree. ";
+    "As a consequence, systematic correspondences—such as a recurrent /a/ to /e/ change between two lineages—are not treated as independent coincidences. ";
+    "Instead, repeated evidence for the same correspondence increases the posterior support for the corresponding substitution rate, which in turn increases the likelihood of trees that place those languages closer together. ";
+    "In this sense, regularity arises statistically through the accumulation of shared signal across many words. ";
+    };
 
-  "In our model, regularity is not imposed as an explicit constraint but emerges naturally through parameter sharing in the likelihood. ";
-  "Segmental substitutions are governed by a single rate matrix that applies across all words, all alignment columns, and all branches of the tree. ";
-  "As a consequence, systematic correspondences—such as a recurrent /a/ to /e/ change between two lineages—are not treated as independent coincidences. ";
-  "Instead, repeated evidence for the same correspondence increases the posterior support for the corresponding substitution rate, which in turn increases the likelihood of trees that place those languages closer together. ";
-  "In this sense, regularity arises statistically through the accumulation of shared signal across many words. ";
-  "\n\n";
+  Paragraph {
+    "If such systematic correspondences were absent, or if changes were genuinely irregular, the model would be unable to explain them parsimoniously with a small number of rate parameters, and the inferred distance between the languages would indeed be larger. ";
+    "Thus, the likelihood calculation directly rewards regular, repeated patterns of change, rather than assuming them a priori. ";
+    };
 
-  "If such systematic correspondences were absent, or if changes were genuinely irregular, the model would be unable to explain them parsimoniously with a small number of rate parameters, and the inferred distance between the languages would indeed be larger. ";
-  "Thus, the likelihood calculation directly rewards regular, repeated patterns of change, rather than assuming them a priori. ";
-  "\n\n";
+  Paragraph {
+    "Regarding the role of dataset size, we agree that having multiple cognate sets is essential for identifying regularity in a probabilistic model. ";
+    "This is not a weakness specific to our approach but a general feature of statistical inference: regularity can only be inferred when sufficient repeated evidence is available. ";
+    "With very small datasets, any method—probabilistic or otherwise—will have limited power to distinguish systematic change from noise. ";
+    };
 
-  "Regarding the role of dataset size, we agree that having multiple cognate sets is essential for identifying regularity in a probabilistic model. ";
-  "This is not a weakness specific to our approach but a general feature of statistical inference: regularity can only be inferred when sufficient repeated evidence is available. ";
-  "With very small datasets, any method—probabilistic or otherwise—will have limited power to distinguish systematic change from noise. ";
-  "\n\n";
+  Paragraph {
+    "Finally, our results are not driven by the restriction to three highly likely phylogenies. ";
+    "Rather, conditioning on a small set of plausible trees was a pragmatic choice to make the computational problem tractable, given the problems we encountered with the MCMC procedure jointly exploring alignment and tree space. ";
+    "Within this set, the likelihood still discriminates strongly among models based on how well they explain the observed segmental correspondences. ";
+    "The superior performance of the Natural Class model reflects its ability to capture systematic patterns of change in the data, not the prior selection of tree topologies. ";
+    };
 
-  "Finally, our results are not driven by the restriction to three highly likely phylogenies. ";
-  "Rather, conditioning on a small set of plausible trees was a pragmatic choice to make the computational problem tractable, given the problems we encountered with the MCMC procedure jointly exploring alignment and tree space. ";
-  "Within this set, the likelihood still discriminates strongly among models based on how well they explain the observed segmental correspondences. ";
-  "The superior performance of the Natural Class model reflects its ability to capture systematic patterns of change in the data, not the prior selection of tree topologies. ";
-  "\n\n";
+  Paragraph {
+    "We added the following sentence to section 5.2 of the manuscript to clarify this point: ";
+    };
 
-  "We added the following sentence to section 5.2 of the manuscript to clarify this point: ";
-  "\n\n";
-
-  "In this framework, regular sound change is not enforced a priori but arises statistically, since repeated segmental correspondences across many words increase the posterior support for the corresponding substitution rates and, consequently, for trees that place those languages closer together.";
+  Paragraph {
+    "In this framework, regular sound change is not enforced a priori but arises statistically, since repeated segmental correspondences across many words increase the posterior support for the corresponding substitution rates and, consequently, for trees that place those languages closer together.";
+    };
   };
-
 };
 
 
@@ -72,30 +79,31 @@ C8 = new(#83492b5e-b204-4774-90f8-dfd2b7bd0fe6#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
 
+  Paragraph {
     "We thank the reviewer for the suggestion. ";
     "While our model involves insertion, deletion, and substitution processes at the segmental level, it is quite different from Levenshtein-distance-based approaches. ";
-    "\n\n";
-
+    };
+  Paragraph {
     "Levenshtein distance is a pairwise measure based on the single minimum-cost sequence of edits required to transform one string into another. ";
     "By contrast, our framework defines a probabilistic model of sequence evolution along a phylogenetic tree, in which the likelihood integrates over all possible alignments, ancestral sequences, and histories of insertion, deletion, and substitution, weighting each by its probability under the model. ";
     "As a result, our method is not equivalent to a weighted edit distance, nor does it reduce to a distance-based inference procedure. ";
-    "\n\n";
-
+    };
+  Paragraph {
     "Moreover, Levenshtein-distance approaches require additional ad hoc choices, such as how to combine the distances in a tree, how to normalize the distances for word length, and how to handle uncertainty in homology. ";
     "Our goal is not to approximate string similarity, but to perform likelihood-based inference under an explicit event-based model of word evolution. ";
-    "\n\n";
-
+    };
+  Paragraph {
     "For these reasons, we view Levenshtein-based phylogenies as addressing a different class of problems and not as a directly comparable alternative to the approach presented in this paper. ";
-    "\n\n";
-
+    };
+  Paragraph {
     "We added the following sentence to clarify this point to the reader. ";
-    "\n\n";
-
+    };
+  Paragraph {
     "Despite its use of insertion, deletion, and substitution processes, the model is not equivalent to a weighted edit distance, as it marginalizes over all possible evolutionary histories rather than optimizing a single edit sequence. ";
     };
-
+  };
 };
 
 C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
@@ -105,40 +113,45 @@ C9 = new(#6151e5d5-7e71-443f-b618-3c88754e44c8#, Reviewers.R1) {
   };
   AssignedTo(People.Huelsenbeck_John);
 
-  Response: Paragraph {
+  Response: Block {
+    Paragraph {
+      "We agree with the reviewer that conditioning on a small set of topologies is justified for the Romance example, but is not a general solution. ";
+      "Our choice to restrict attention to three plausible Romance topologies was motivated by computational considerations rather than conceptual ones. ";
+      };
 
-  "We agree with the reviewer that conditioning on a small set of topologies is justified for the Romance example, but is not a general solution. ";
-  "Our choice to restrict attention to three plausible Romance topologies was motivated by computational considerations rather than conceptual ones. ";
-  "\n\n";
+    Paragraph {
+      "In principle, the framework we introduce does allow for full inference of tree topology. ";
+      "In practice, however, we have found that joint inference of tree topology and segmental alignments under the TKF91 model is extremely challenging. ";
+      "In our experiments, Markov chain Monte Carlo chains reliably converged to high-likelihood trees, but then exhibited very poor mixing over tree space. ";
+      "Independent runs would become trapped on different, but similarly good, topologies. ";
+      "This behavior reflects a strong coupling between tree topology and alignment. ";
+      "Once a tree is fixed, the alignments rapidly adapt to it, creating high barriers in the probabilities that make moves to alternative trees unlikely. ";
+      };
 
-  "In principle, the framework we introduce does allow for full inference of tree topology. ";
-  "In practice, however, we have found that joint inference of tree topology and segmental alignments under the TKF91 model is extremely challenging. ";
-  "In our experiments, Markov chain Monte Carlo chains reliably converged to high-likelihood trees, but then exhibited very poor mixing over tree space. ";
-  "Independent runs would become trapped on different, but similarly good, topologies. ";
-  "This behavior reflects a strong coupling between tree topology and alignment. ";
-  "Once a tree is fixed, the alignments rapidly adapt to it, creating high barriers in the probabilities that make moves to alternative trees unlikely. ";
-  "\n\n";
+    Paragraph {
+      "We have explored several strategies to address this issue. ";
+      "One approach is to propose joint moves that modify both the tree topology and the alignments simultaneously, with the goal of reducing this coupling. ";
+      "While conceptually appealing, our initial experiments suggest that designing such proposals with reasonable acceptance rates is nontrivial, and this remains an area of ongoing investigation. ";
+      "A second, not yet implemented, possibility is to use multiple chains associated with different tree topologies, together with a higher-level MCMC variable that switches between them. ";
+      "In this scheme, the relative time spent in each topology would approximate its posterior probability. ";
+      "Such an approach would be substantially more computationally expensive and would require restricting the explored tree space to a manageable subset. ";
+      };
 
-  "We have explored several strategies to address this issue. ";
-  "One approach is to propose joint moves that modify both the tree topology and the alignments simultaneously, with the goal of reducing this coupling. ";
-  "While conceptually appealing, our initial experiments suggest that designing such proposals with reasonable acceptance rates is nontrivial, and this remains an area of ongoing investigation. ";
-  "A second, not yet implemented, possibility is to use multiple chains associated with different tree topologies, together with a higher-level MCMC variable that switches between them. ";
-  "In this scheme, the relative time spent in each topology would approximate its posterior probability. ";
-  "Such an approach would be substantially more computationally expensive and would require restricting the explored tree space to a manageable subset. ";
-  "\n\n";
+    Paragraph {
+      "In short, while full topology inference is conceptually possible within our framework, making it practical under a segment-level indel model is an open computational problem. ";
+      "We view the present work as a proof of principle, demonstrating that likelihood-based inference under a fully historical word-evolution model is feasible. ";
+      "Improving tree-space exploration under this model is an active area of our ongoing research. ";
+      };
 
-  "In short, while full topology inference is conceptually possible within our framework, making it practical under a segment-level indel model is an open computational problem. ";
-  "We view the present work as a proof of principle, demonstrating that likelihood-based inference under a fully historical word-evolution model is feasible. ";
-  "Improving tree-space exploration under this model is an active area of our ongoing research. ";
-  "\n\n";
+    Paragraph {
+      "We added the following sentence to clarify this point to the reader. ";
+      };
 
-  "We added the following sentence to clarify this point to the reader. ";
-  "\n\n";
-
-  "Although the framework in principle supports full Bayesian inference of tree topology, in practice the strong coupling between topology and segmental alignment under the TKF91 model makes efficient exploration of tree space computationally challenging, and improving this aspect of the method remains an active area of ongoing work. ";
+    Paragraph {
+      "Although the framework in principle supports full Bayesian inference of tree topology, in practice the strong coupling between topology and segmental alignment under the TKF91 model makes efficient exploration of tree space computationally challenging, and improving this aspect of the method remains an active area of ongoing work. ";
+      };
+    };
   };
-
-};
 
 C10 = new(#51c66272-7832-41ed-98b9-e4ea9976a413#, Reviewers.R1) {
   Text: Paragraph {
