@@ -1,8 +1,10 @@
 #include <iostream>
+#include "FileManager.hpp"
 #include "JsonData.hpp"
 #include "McmcMarginal.hpp"
 #include "McmcPosterior.hpp"
 #include "Model.hpp"
+#include "Msg.hpp"
 #include "RandomVariable.hpp"
 #include "Threads.hpp"
 #include "UserSettings.hpp"
@@ -46,6 +48,12 @@ void initialize(int argc, char* argv[]) {
     UserSettings& settings = UserSettings::userSettings();
     settings.readCommandLineArguments(argc, argv);
     settings.print();
+    
+    // check the existence of important files/paths
+    if (FileManager::fileExists(settings.getDataFile()) == false)
+        Msg::error("Data file, \"" + settings.getDataFile() + ",\" does not exist");
+    if (FileManager::directoryExists(FileManager::getParentPath(settings.getOutFile())) == false)
+        Msg::error("Output directory, \"" + FileManager::getParentPath(settings.getOutFile()) + ",\" does not exist");
 
     // read the JSON file
     JsonData& jsonData = JsonData::jsonInstance();

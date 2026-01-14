@@ -287,7 +287,11 @@ bool McmcOutput::reopenJsonArrayForAppend(FILE* f) {
 void McmcOutput::sample(int generation, double lnL, double lnP) {
 
     writeScalarSample(generation, lnL, lnP);
+    fflush(scalarFile);
+
     writeTreeSample(generation);
+    fflush(treeFile);
+
     for (int i=0; i<numAlignments; i++)
         writeAlignmentSample(i);
 }
@@ -398,9 +402,9 @@ void McmcOutput::writeNewickNode(FILE* f, Node* p, Node* root) {
 
 void McmcOutput::writeScalarHeader(void) {
 
-    fprintf(scalarFile, "Gen");
-    fprintf(scalarFile, "lnL");
-    fprintf(scalarFile, "lnP");
+    fprintf(scalarFile, "Gen\t");
+    fprintf(scalarFile, "lnL\t");
+    fprintf(scalarFile, "lnP\t");
     
     // print the insertion/deletion rates header
     ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();
@@ -451,9 +455,9 @@ void McmcOutput::writeScalarHeader(void) {
 
 void McmcOutput::writeScalarSample(int gen, double lnL, double lnP) {
 
-    fprintf(scalarFile, "%d", gen);
-    fprintf(scalarFile, "%.2lf", lnL);
-    fprintf(scalarFile, "%.2lf", lnP);
+    fprintf(scalarFile, "%d\t", gen);
+    fprintf(scalarFile, "%.2lf\t", lnL);
+    fprintf(scalarFile, "%.2lf\t", lnP);
     
     // print the insertion/deletion rates
     ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();

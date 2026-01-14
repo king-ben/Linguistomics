@@ -53,8 +53,8 @@ class Node {
         Node*                   left;                   //  8 bytes -  16 bytes - first descendant
         Node*                   right;                  //  8 bytes -  24 bytes - second descendant
         double                  length;                 //  8 bytes -  32 bytes - branch length (used in likelihood calculation)
-        int                     offset;                 //  4 bytes -  36 bytes - position in node array
         int                     index;                  //  4 bytes -  40 bytes - logical index
+        int                     offset;                 //  4 bytes -  36 bytes - position in node array
         bool                    isLeaf;                 //  1 byte  -  41 bytes - frequently checked
         bool                    flag;                   //  1 byte  -  42 bytes - traversal flag
         bool                    isOutgroup;             //  1 byte  -  43 bytes 

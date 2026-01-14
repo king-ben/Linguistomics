@@ -20,7 +20,7 @@
 
 
 
-UpdateManager::UpdateManager(Model* m, RandomVariable* r) : rng(r), model(m) {
+UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
     
     tiProbs = model->getTiProbs();
     rateMatrix = model->getRateMatrix();

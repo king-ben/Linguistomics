@@ -97,6 +97,7 @@ CORE_SRCS = \
     BranchMapping.cpp \
     Container.cpp \
     Ctmc.cpp \
+    FileManager.cpp \
     JsonData.cpp \
     LikelihoodCalculator.cpp \
     MathCache.cpp \
