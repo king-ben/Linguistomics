@@ -438,7 +438,7 @@ namespace DavidSlides.Methods {
 
     Items.Item5.Text = Span {
       "Thorne et al. 1991"; Cite {References.Thorne1991}; " force ";
-      InsertionRate; Tex.lt; DeletionRate;
+      Equations.InsertionRateCondition;
       ", which means that words should ultimately shrink to zero length";
     };
 
@@ -448,7 +448,7 @@ namespace DavidSlides.Methods {
 
     Items.Item7.Text = Span {
       "The sequence length is a geometrically distributed random variable with parameter "
-      InsertionRate; Tex.Divide; DeletionRate;
+      Equations.InsertionProbability;
     };
 
     Items.Item8.Text = Span {
@@ -516,7 +516,7 @@ namespace DavidSlides.Methods {
     Items.Item4.Text = Span {
       InsertionRate; CommaSpace; DeletionRate;
       " ~ i.i.d. Exponentials with ";
-      InsertionRate; Tex.lt; DeletionRate;
+      Equations.InsertionRateCondition;
     };
 
     Items.Item5.Text = Span {

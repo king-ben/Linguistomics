@@ -74,9 +74,9 @@ class GraphSection: Content {
     style.Heading2 {
       title;
     };
-    var graph = new Graph();
-    graph.AddNodes(facts, 1);
-    graph;
+    new Graph() {
+      facts;
+    };
   };
 
   override GetBody(ContentStyle style, title) = Block {

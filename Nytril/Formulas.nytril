@@ -188,6 +188,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
   InsertionRate           = new(#1a94ba3d-d7da-4634-bbf6-88b03d84cffc#, lambda, "Segment insertion rate", "Rate of segment insertion");
   DeletionRate            = new(#0c0d91ab-e586-451e-8519-74bead5be54d#, Italic mu, "Rate of segment deletion");
   WordLength              = new(#5018b4ef-62b3-47fe-8086-64802e6f5a63#, Symbol("L"), "Word length", "Number of segments in a word");
+  AlignmentLength         = new(#217c505b-1686-40e2-9331-76cf5b2cf243#, Symbol("L"), "Alignment length", "Total number of segments in a word alignment");
   WordLengthi             = new(#e52b4cb8-63cb-4305-8d3f-7abca7f90d4b#, WordLength sub sym.i, "Word Length(i)", ("i" sup "th") " word length");
   RateParameter           = new(#909d6802-f159-4c23-9467-fd848d6e3e3c#, Symbol("r"), "Rate parameter");
   RateMatrixParams        = new(#d5d8bf9d-088e-420c-8c2f-56fd1fb73071#, sym.theta, "Rate parameters", "Parameters associated with the rate matrix");
@@ -666,6 +667,20 @@ readonly namespace<Equation> Equations {
       RateParameter;
     };
     EquationLink to [WordLength, DeletionRate, RateParameter];
+  };
+
+  InsertionRateCondition = new(#24f60e3f-7f05-4aee-b2b7-f8f6ce6fbb64#, "Insertion rate condition") {
+    Formula: EqSpan {
+      InsertionRate; lt; DeletionRate
+    };
+    EquationLink to [DeletionRate, InsertionRate];
+  };
+
+  InsertionProbability = new(#b38e6c01-c414-4e94-b862-ff449fc071ee#, "Insertion probability") {
+    Formula: EqSpan {
+      InsertionRate; Divide; DeletionRate
+    };
+    EquationLink to [DeletionRate, InsertionRate];
   };
 }
 
