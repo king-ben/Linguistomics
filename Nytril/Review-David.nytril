@@ -221,7 +221,7 @@ C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2) {
  Text: "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "This sentence has been corrected in the manuscript.";
   };
 };
 
@@ -229,7 +229,7 @@ C40 = new(#88a595c5-6b2d-4845-87a3-6132c8466320#, Reviewers.R3) {
   Text: "The best-fitting model M3 is heavily parameterized relative to the dataset size (133 parameters for the substitution model estimated from only 102 cognate sets in 9 languages). I wonder if this is a case of overfitting to the particular historical trajectory of Romance. For example, the low equilibrium frequency estimated for diphthongs may simply mirror their monophthongization from Latin in this sample rather than reflect a general property of diphthongs in language change. The rate differences in Figure 7 are quite extreme, which made me think that perhaps very low equilibrium frequencies are being assigned to phonemes that just happen to be rare. If datasets of the same size as the empirical data were simulated under a model with less extreme values of stable frequencies and exchangeability rates, would some phonemes be rare simply due to chance? Would the analysis estimate a low equilibrium frequency for these phonemes, even when the true generating frequency is higher?";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD - It is not over-parameterized";
+    "Overfitting is unlikely to be an issue since the natural class model contains only a fraction of the possible number of parameters (i.e., one for each possible transition among the 79 unique segments). We have also made it more explicit that all of the results regarding sound change are specifically about Latin and Romance, and not sound change. The low equilibrium frequency for diphthongs is unquestionably a reflection of the monophthongization processes in Latin and Romance and not a general property of sound change. ";
   };
 };
 
@@ -237,7 +237,7 @@ C41 = new(#f45bfeb0-5b37-456b-b5c3-2dd3a71f31bd#, Reviewers.R3) {
   Text: "I like the argument that in a typical linguistic phylogenetic analysis, cognate classifications are used as observations even though they are hypotheses. However, I don’t see how this new approach gets away from the problem. While the method analyzes observable segmental data, the dataset still depends on traditional cognacy judgments to decide which word-forms are grouped together. Any misclassification at this stage propagates into the analysis, just as in conventional approaches.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD - Insightful tone down comments about framework";
+    "We are grateful to the reviewer for this comment. We have tempered the original sentence to make it clear that the input data also depend on cognate judgments, even though they do not require transformation.";
   };
 };
 
@@ -253,7 +253,7 @@ C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3) {
   Text: "The authors filtered out any cognate sets without a form in one or more languages. I am unsure after reading the paper whether or not ths was a data collection decision, or if the method implementation actually requires complete data like this. Please clarify.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "We have clarified in the manuscript that the current implementation of the model requires complete cognate sets. In the future, we plan to allow it to work with incomplete cognate sets. ";
+    "We have clarified in the manuscript that incomplete cognate sets can be used but that we only used complete ones to simplify the modeling for this initial study.";
   };
 };
 
@@ -261,7 +261,7 @@ C47 = new(#5b0abd3b-4ed9-416e-84e6-5108bc60cad8#, Reviewers.R3) {
   Text: "The paragraph on page 3 beginning “Second, since root-meaning traits…” seems to be a criticism of the multistate model for cognate evolution. This is confusing for two reasons. First, it has already been stated on the previous page that the data is first binarised. Second, “state 0 of one cognate is not equivalent to state 0 of another”, surely you mean state 0 of a concept? The multistate approach has been attempted a few times (Heggarty et al. 2023 SI, Rönchen et al. 2024 and references therein), but for the most part linguistic phylogenies work on binarised data.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We have now made it clear in the manuscript that the criticisms in this paragraph apply to both binary and multistate encoding. We have also corrected the typo. ";
   };
 };
 
@@ -269,7 +269,7 @@ C48 = new(#c245e887-93d9-485b-b6dd-ea06d763f06a#, Reviewers.R3) {
   Text: "The authors state that the method works on cognate words regardless of meaning. However, the data is organised by meaning. I assume that this just refers to the meaning in Latin, but please clarify.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We have clarified in the manuscript that the organization of the cognate sets by meaning is purely a way to help keep track of the data. ";
   };
 };
 
@@ -277,7 +277,7 @@ C50 = new(#38b4e7cb-4089-47f4-9679-2698fde2ed27#, Reviewers.R3) {
   Text: "It may be worth defining “unigram” explicitly in the manuscript, as many readers from historical linguistics rather than computational linguistics may not be familiar with the term";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We have removed the term unigram here.";
   };
 };
 

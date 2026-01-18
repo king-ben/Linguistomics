@@ -16,6 +16,7 @@ readonly Person[] Authors = [
 // People referred to in the project are instantiated here, in alphabetical order
 readonly namespace<Person> People {
   Abete_Giovanni         = new(#97985e5d-e4b2-4956-a513-5b72f039e175#, "Giovanni", null, "Abete");
+  Abner_Natasha          = new(#d3c56fd1-f3b2-48c6-9cd7-99f0f6faf760#, "Natasha", null, "Abner");
   Abrego_Carissa         = new(#4105d878-bc23-4e23-a0b4-d1da9fb232dc#, "Carissa", null, "Abrego-Collier");
   Alekseyenko_Alexander  = new(#536d85c5-a534-43ef-bfe3-a310cb1a1cec#, "Alexander", "V.", "Alekseyenko");
   Aliyev_Elnur           = new(#e3a8fdb4-62f4-40f0-8f71-f672b9fdbddc#, "Aliyev", null, "Elnur");
@@ -63,6 +64,7 @@ readonly namespace<Person> People {
   Chen_IHsuan            = new(#015ba598-bbb4-4e36-8189-09d13a64068f#, "I-Hsuan", null, "Chen");
 
   Chen_MingHui           = new(#9b6a19e2-52a2-4595-9890-365a34996e6e#, "Ming-Hui", null, "Chen");
+  Clarte_Gregoire        = new(#05c5bcf6-8a74-4b0d-9565-16a448196689#, "Clarté", null, "Grégoire");
   Colbert_John           = new(#d4422ca7-df50-42e0-a782-c142bca3b207#, "John", "Paul", "Colbert");
   Coseriu_Eugenio        = new(#23c31224-76e1-4517-b147-02a0ad59bcae#, "Eugenio", null, "Coseriu");
   Croft_William          = new(#843012b9-a52e-449f-86f6-1b9f0778387c#, "William", "A.", "Croft");
@@ -93,6 +95,7 @@ readonly namespace<Person> People {
   Freiberg_Cassandra     = new(#cd5e9fc8-6794-4011-8ed7-37d58ae95a0f#, "Cassandra", null, "Freiberg");
 
   Garrett_Andrew         = new(#fc06716c-bf41-4623-b44d-3ee49fe81650#, "Andrew", "J.", "Garrett");
+  Geraci_Carlo           = new(#d2118a77-1ea1-4229-8d96-00473b6941d2#, "Carlo", null, "Geraci");
   Gojobori_Takashi       = new(#0a9f570b-f1ee-da4e-8d54-24b931f2382c#, "Takashi", null, "Gojobori");
   González_Martín        = new(#29b0b0a2-c612-42bf-846a-d77147886a89#, "Martín", null, "González");
   Goldstein_David        = new(#a3f46f7d-97db-4ca7-bdca-3846f26c33cf#, "David", "M.", "Goldstein") {
@@ -202,6 +205,7 @@ readonly namespace<Person> People {
   };
   Meade_Andrew           = new(#5f74f65c-12fa-4a8a-b9ed-888ecd3714d6#, "Andrew", null, "Meade");
   Mertens_Bianca         = new(#9210c389-b7c6-473e-a8e3-fbba1ccd8fbb#, "Bianca", null, "Mertens");
+  Mertz_Justine          = new(#668ef0f7-8d1a-4493-976e-673430eb0375#, "Justine", null, "Mertz");
   Metropolis_Nicholas    = new(#37f757f9-1917-4041-aab9-0217c24f2634#, "Nicholas", null, "Metropolis");
   Michalsky_Jan          = new(#2fcb5ece-8d1b-47e1-ade1-149b165f72a2#, "Jan", null, "Michalsky");
   Miklós_István          = new(#0afbdb78-0493-4bc3-951a-de83dacd7637#, "István", null, "Miklós");
@@ -239,6 +243,7 @@ readonly namespace<Person> People {
 
   Sadowsky_Scott         = new(#d6cece7d-96f4-44de-8a0c-d28401e67cf5#, "Scott", null, "Sadowsky");
   Sagart_Laurent         = new(#401532bb-fa64-4eb6-80ff-920207445b0c#, "Laurent", null, "Sagart");
+  Salgat_Anah            = new(#ae429b6c-e9d9-40d0-9b13-2aeef972f0e3#, "Anah", null, "Salgat");
   Salmons_Joseph         = new(#6934650a-779d-4414-9560-2c2df18258c5#, "Joseph", null, "Salmons");
   Sanchez_Fernando       = new(#49a93aac-60b8-469f-91d7-42cc490a81be#, "Fernando", null, "Sánchez Miret");
   Sandy_Clare            = new(#c65cbb3c-d849-44be-9792-501bfa38b308#, "Clare", "S.", "Sandy");
@@ -296,6 +301,8 @@ readonly namespace<Person> People {
   Wright_Roger           = new(#605ebf7f-a465-4964-8e4c-0a221e0a24a8#, "Roger", null, "Wright");
 
   Xie_Wangang            = new(#f88d81f0-fa68-4503-9129-41df8353ce36#, "Wangang", null, "Xie");
+
+  Yu_Shi                 = new(#67a3169e-2851-4277-927d-11a40f87d5cc#, "Shi", null, "Yu");
 }
 
 //======================================================================
@@ -464,6 +471,16 @@ readonly namespace<DocReference> References {
     Accessed: #2020#;
     PublisherLink to Organizations.ASJP;
     AuthorLink to [People.Wichmann_Søren, People.Holman_Eric, People.Brown_Cecil];
+  };
+
+  Abner2024 = new(#6d8261ef-5254-4359-a661-c471d949d254#, Article) {
+    Title  : "Computational phylogenetics reveal histories of sign languages";
+    Date   : #2024#;
+    Volume : 383;
+    Number : 6682;
+    Pages  : 519..523;
+    AuthorLink to [People.Abner_Natasha, People.Clarte_Gregoire, People.Geraci_Carlo, People.Ryder_Robin, People.Mertz_Justine, People.Salgat_Anah, People.Yu_Shi];
+    JournalLink to Organizations.Science;
   };
 
  Abrego2013 = new(#26137797-ce38-402c-be10-0980cb65e416#, InProceedings) {

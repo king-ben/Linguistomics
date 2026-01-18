@@ -1836,7 +1836,7 @@ class LimitationsSection: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      "Our results are based on a unigram model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
+      "Our results are based on a model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
       "Certain patterns of sound change cannot therefore be captured under such a model. ";
       "For instance, metathesis, a change in which two segments exchange positions, is modeled as two separate transitions. ";
       "Friulian "; TextIpa{"tarɔnt"}; " ultimately descends from Latin "; TextIpa{"rotundum"}; Space; style.SQuote{"round"};

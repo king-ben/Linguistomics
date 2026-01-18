@@ -60,8 +60,8 @@ class RootMeaningTraitsSection: Content {
           Cite {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
       "Cognates are linguistic units (e.g., segments, morphemes, words) that share a common ancestor. An example from the lexical domain is Spanish "; textit{"mano"}; " "; style.SQuoteComma{"hand"};
           "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance */manu/"; DotSpace;
-      "At least four types of lexical cognacy have been identified in the literature, but studies of linguistic phylogenetics rely overwhelming on one, root-meaning traits";
-          Cite {Chang2015}; DotSpace;
+      "Four types of lexical cognacy have been identified in the literature"; Cite {Chang2015};
+      ", but studies of linguistic phylogenetics rely overwhelming on one: root-meaning traits";
     };
 
     style.AddTable(TableFigures.CognateCoding, FigureOptions.Bottom);
@@ -72,6 +72,8 @@ class RootMeaningTraitsSection: Content {
       "The concepts themselves are drawn from a specific subset of the lexicon commonly referred to as the "; style.DQuote{"basic vocabulary,"}; " which typically includes words for body parts, basic actions, natural elements, and other core aspects of daily life that are allegedly less likely to undergo borrowing or replacement. ";
       "Swadesh lists are compilations of basic vocabulary terms, which now exist in several versions";
           Cite {Tadmor2010}; DotSpace;
+        };
+     style.BodyPar {
             style.TableReference(TableFigures.CognateCoding);
           " presents a root-meaning trait in a sample of Indo-European languages for the concept "; style.SQuoteEnd{"hand"};
       "Lexical items that share a common ancestor are assigned to the same cognate class. ";
@@ -86,7 +88,7 @@ class RootMeaningTraitsSection: Content {
       "Despite their prevalence, root-meaning traits suffer from several drawbacks. ";
       "First and foremost, the transformation of word-forms into abstract cognate relationships results in pervasive information loss. ";
       "For instance, the lexemes for "; style.SQuote{"hand"}; " in Spanish, French, and Italian are all assigned the same state in "; style.TableReference(TableFigures.CognateCoding); DotSpace;
-      "From the perspective of cognate class there is thus no variation and no inferences can be drawn about historical relationships of the languages with these lexemes. ";
+      "There is thus no variation and no inferences can be drawn about historical relationships of the languages with these lexemes. ";
       "There is, however, phylogenetic signal in the forms of the words themselves, as French "; TextIpa{"mɛ̃"};
       ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa {"mano"};
       " have diverged from Latin "; TextIpa {"manum"}; DotSpace;
@@ -96,11 +98,11 @@ class RootMeaningTraitsSection: Content {
     style.BodyPar {
       "Second, since root-meaning traits are analyzed the same way biologists analyze morphological characters";
           Cite {Lewis2001}; ", they are subject to the same limitations: ";
-          "(i) The state labels (0, 1, 2, etc.) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
+          "(i) The state labels (whether binary or multitstate) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
               "As a result, studies of linguistic phylogenies are restricted to models with symmetrical rates of change, in order that the probability of the observations remain the same regardless of the state label assignment; ";
               "the probability of the data should remain the same if the state labels are swapped, with the 0s coded as 1s and the 1s coded as 0s. ";
           "(ii) Similarly, the state labels from one word to another have different meanings. ";
-              "State 0 of one cognate is not equivalent to state 0 of another. State information across cognates can accordingly not be pooled to learn about their evolutionary dynamics. ";
+              "State 0 of one concept is not equivalent to state 0 of another. State information across cognates can accordingly not be pooled to learn about their evolutionary dynamics. ";
           "(iii) Since invariant root-meaning traits (with a single state assigned to each language under investigation) are uncommon, "
               "probability calculations must condition on constant patterns being absent from the data matrix. ";
       "Phylogenetic analyses of languages are consequently limited to estimating the tree and the divergence times between languages. ";
@@ -115,12 +117,12 @@ class RootMeaningTraitsSection: Content {
     };
 
     style.BodyPar {
-      "Finally, cognate-class assignments such as those in ";
+      "Finally, cognate-class designations such as those in ";
           style.TableReference(TableFigures.CognateCoding); " serve as the observations for phylogenetic inference even though they are not observed. ";
       "Cognacy judgments are hypotheses about ancestral relationships among words from related languages and cannot be observed any more than a phylogenetic tree can. ";
       "The use of root-meaning traits is thus at odds with the fundamental principles of Bayesian inference, according to which the posterior distributions are conditioned on observed data. ";
-      "To overcome this inconsistency, inferences should be drawn from cognate word-forms and not abstract cognate relationships, since the former are observable. ";
-      "More broadly, if there is a linguistic parallel to genes, it is word-forms, not cognacy relationships. ";
+      "Our approach partially overcomes this inconsistency. Inferences are drawn from observable word-forms and not abstract cognate relationships. ";
+      "At the same time, the input word-forms are selected on the basis of assumed cognacy. ";
     };
   };
 }
@@ -139,13 +141,13 @@ class TKF91ApproachSection: Content {
 
     style.TitlePar(title) {
      "On account of these challenges, we introduce an approach to linguistic phylogenetics in which the observations are cognate word-forms";
-     Cite {BouchardCote2013}; DotSpace;
+     Cite {BouchardCote2013; Abner2024}; DotSpace;
      "The segmental history of the word-forms is modeled with a continuous-time Markov model that allows one of three events to occur in an instant of time";
          Cite {Thorne1991}; ": ";
          "(i) a transition from one segment to another; (ii) the insertion of a single segment; or (iii) the deletion of a segment. ";
       "Our treatment allows us to analyze data in a manner akin to molecular phylogenetic analyses in biology. ";
-      "The model we use was first introduced by Thorne et al.";
-          Cite {Thorne1991}; ", and is known as the TKF91 model in the molecular evolution literature. ";
+      "This model was first introduced by Thorne et al.";
+          Cite {Thorne1991}; ", and is known as TKF91 in the molecular evolution literature. ";
       "Just as nucleotides are considered equivalent states regardless of their position in the genome, our method treats segments as equivalent across words. ";
       "We can therefore learn about the rates of individual events by pooling information across different words (or across different segments of a word). ";
       "This approach circumvents the four problems of root-meaning traits described above. ";
@@ -159,7 +161,7 @@ class TKF91ApproachSection: Content {
      "Indeed, one of the strengths of our approach is that it can take advantage of a rich set of segment-transition models, which are not limited by considerations of the labeling assigned to the states. ";
      "We illustrate the power of the TKF91 model with a sample of ";
      Enumerators.Cardinal(data.Taxa.Length-1);
-     " Romance languages and Latin, on the basis of which three robust properties of sound change. ";
+     " Romance languages and Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
      "First, vowels are for the most part less stable over time than consonants. " ;
      "Second, a model of sound change in which parameters are shared among natural classes of phonemes outperforms simpler models. " ;
      "Finally, the equilibrium frequencies reveal that Romance languages rely primarily on stops and short vowels for phonemic constrasts." ;
@@ -283,7 +285,7 @@ class PaperDataSection: Content {
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
       "The word-forms are cognate in the traditional sense in that they refer to word-forms that descend from a common ancestor"; Cite {Chang2015.OnPage(201)}; DotSpace;
       "In contrast to root-meaning traits (such as the one illustrated in ";
-         style.TableReference(TableFigures.CognateCoding); "), meaning is irrelevant"; DotSpace;
+         style.TableReference(TableFigures.CognateCoding); "), meaning is irrelevant to cognacy"; DotSpace;
       "For instance, the Latin adjective "; textit{"gravis"};  " means "; style.SQuoteComma{"heavy"}; "but French "; textit{"grave"}; " means "; style.SQuoteEnd{"serious"};
       "Despite this semantic difference, they are assigned to the same cognate set because they are segmentally homologous. ";
     };
@@ -291,10 +293,13 @@ class PaperDataSection: Content {
     style.BodyPar {
       "Cognate word-forms were selected as follows. ";
       "We first identified basic vocabulary items in Latin on the basis of the Swadesh 207 concept list. ";
-      "For each Latin lexeme, we then collected its cognates in our "; langcount; " Romance languages from etymological dictionaries. ";
+      "We could have selected cognates with any meanings, but used a Swadesh list solely to reduce the probability of encountering borrowed words. ";
+      "For each Latin lexeme, we collected its cognates in our "; langcount; " Romance languages from etymological dictionaries. ";
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
       "The orientation toward Latin is purely practical. ";
       "We only used cognate sets in which a cognate could be identified for each language and by starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
+      "(It is in principle possible to use incomplete cognate sets, i.e., sets in which at least one language lacks a cognate, but use of complete cognate sets simplifies parameter estimation, which is why we have followed this practice for this intiial study.)";
+
     };
 
     style.BodyPar {
