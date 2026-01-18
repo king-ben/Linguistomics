@@ -70,7 +70,7 @@ C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We thank the reviewer for bringing this work to our attention and have added discussion of it to the manuscript.";
   };
 };
 
@@ -82,7 +82,8 @@ C6 = new(#98b6f99a-d855-488f-8567-04ae6bf4ab41#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We agree with the reviewer that one-to-many alignments (e.g., /k/ to /sj/) are certainly relevant to sound change. ";
+    "As we explain in Section 5.4 of the manuscript, however, our current model lacks this capability, but we are planning to address this challenge in future work.";
   };
 };
 
@@ -97,7 +98,13 @@ C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
   AssignedTo(People.Goldstein_David);
   HasAnchor: true;
   Response: Paragraph {
-    "TBD";
+    "In the papers the reviewer mentions, lexical innovation refers to a specific form of change, whereby a lexeme becomes the standard or neutral term for a concept. ";
+    "This type of lexical change is bound to a definition of cognacy in which semantics is relevant. (Under the Chang et al. typology, these are root-meaning traits and lexeme-meaning traits). ";
+    "One of the innovations of our approach is that we are no longer beholden to this definition of cognacy, which is in fact not the most prevalence definition of cognacy in historical linguistics. ";
+    "Historical linguists working in a qualitative framework focus on shared segmental ancestry when defining cognacy, with semantics playing little to no role. ";
+    "Our model is situated within this approach to cognacy and at present it is not clear whether it would bring any advantage to incorporate the cognate classes characteristic of root-meaning traits. ";
+    "What would be more in line with the spirit of our approach would be to combine phylogenetic inference with automatic cognate detection (where, again, cognacy is defined solely as shared segmental ancestry).";
+    "This additional capability is one that we hope to add in future work.";
   };
 };
 
@@ -133,7 +140,17 @@ C22 = new(#3778b40f-c2c0-4d5d-9a98-fe1de03b9e2a#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "There are no empty characters in the representation of cognate word-forms, in the sense that the absence of a character is not a possible character state. ";
+    "The dashes in the datasets are actual gaps.";
+    "As we explain in the paper, the model requires an initial input of aligned phonemic representations, some of which contain gaps as way to represent, e.g., the correspondence between /a/ and /ie/. ";
+    "These are only initial inputs, however. ";
+    "As described in the manuscript, the model marginalizes over all possible segmental alignments, so that none of the parameter estimates assume any particular segmental alignment. ";
+    "In other words, one does not actually have to know that /a/ evolves into /ie/. ";
+    "One only has to know that the lexemes themselves are cognate. ";
+    "One does not need to know the homolgies of the individual segments. ";
+    "Our approach therefor does reduce human workload, since it spares researchers from having to make decisions about segment-level homologies .";
+    "In addition, there is no barrier to using our method with less-studied languages, provided that lexeme-level cognacy is known.";
+
   };
 };
 
@@ -236,7 +253,7 @@ C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3) {
   Text: "The authors filtered out any cognate sets without a form in one or more languages. I am unsure after reading the paper whether or not ths was a data collection decision, or if the method implementation actually requires complete data like this. Please clarify.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD - Only used complete cognate sets...";
+    "We have clarified in the manuscript that the current implementation of the model requires complete cognate sets. In the future, we plan to allow it to work with incomplete cognate sets. ";
   };
 };
 
