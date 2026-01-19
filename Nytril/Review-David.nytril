@@ -245,7 +245,7 @@ C42 = new(#52ecd739-5c63-4458-ad41-2a503ccb4d11#, Reviewers.R3) {
   Text: "In Figure 5, the clustering of -qii values by natural class is striking, but doesn’t it just follow from the model structure? In the Natural Class model, all phonemes in a given class share the same exchangeability rates. Considering two phonemes in the same class, the rows of the Q matrix will be almost identical apart from the difference of 1 out of the 79 stable frequency values. In other words, figure 5 is driven by the exchangeabilities (shared within class) not the equilibrium frequencies. It seems to me the equilibrium frequencies would have to be drastically different within classes to produce a different pattern than that seen in figure 5. The authors should discuss the extent to which clustering is expected given the model structure.";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD - Equilibrium frequencies...";
+    "We have clarified the relationship between the -qii values and the rate parameters. The clustering among rates is partially due to the model structure and partially to the similarity in equilibrium frequencies. ";
   };
 };
 

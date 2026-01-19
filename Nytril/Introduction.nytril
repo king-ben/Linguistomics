@@ -330,8 +330,9 @@ class PaperDataSection: Content {
       "The word-forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
       " for the concept "; TableFigures.ManualAlignment.WordDisplay(style);  "Dashes ("; style.SQuote {"-"} ") denote the absence of a homologous segment present in other word-forms" DotSpace;
       "For example, the "; TextIpa{"i"}; " of Latin "; TextIpa{"kʷ-id"}; " develops into "; TextIpa{"wa"}; " in French and Walloon. To accommodate the emergence of "; TextIpa{"w"}; ", there is an empty segmental slot before the vowel in all other languages"; DotSpace;
-      "As described below in Section 3, the manual alignments of cognate word-forms serve as the starting point for the Markov chain Monte Carlo (MCMC) sampling procedure, ";
+      "As described below in Section 3, however, manual alignments of cognate word-forms serve only as a starting point for the Markov chain Monte Carlo (MCMC) sampling procedure, ";
       "so our analysis does not condition on any particular alignment of segments. ";
+      "In other words, it is not necessary to include the dashes in the input alignments. ";
     };
 
     style.BodyPar {

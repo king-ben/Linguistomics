@@ -1492,16 +1492,27 @@ class WordTransformationSection: Content {
     style.TitlePar(title) {
       style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal elements of the rate matrix of the continuous-time Markov model describing phonemic ";
           "change estimated under the "; NaturalModelName; DotSpace;
-      "These diagonal elements can be interpreted as a Measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
+      "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
       "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
       "The higher the rate, the more rapidly a change to another segment occurs on average. ";
+      "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, africates, and nasal vowels, but this is an artefact of the visualization. ";
+      "The rates in these classes are not identical, but they are extremely similar. ";
+      "The differences are thus too small to be visible in this plot. ";
+    };
+
+    style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
+
+    style.BodyPar {
       "The most striking aspect of "; style.FigureReference(Figures.QRatesDiagonal); " is the division between vowels and consonants. ";
       "With the exception of affricates, vowels are the most volatile segments and within this class diphthongs and long vowels are the least stable. ";
       "Overall, the most stable segments are all consonants, with the stops the most stable of all. ";
       "The rates of change are also remarkably similar within each class:";
       " all the long vowels cluster together, as do the affricates, fricatives, short vowels, nasal vowels, fricatives, nasal consonants, and stops. ";
       "The only exceptions are the liquid "; VocalSegments.r;
-      ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels.";
+      ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels. ";
+      "This clustering is driven by the exchangeability rates that are shared between classes of segments and the degree of variation in the equilibrium frequencies. ";
+      "When there the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
+      "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
       //"In contrast to the rates in Figure [rate figure], those in ";
       //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
       // " and measures the rate of flow away from it (to any other segment). ";
@@ -1514,7 +1525,6 @@ class WordTransformationSection: Content {
       //"Although there are eight transitions in the graph, there are only two output segments, the mid-high front vowel /e/ and the high back vowel /u/. ";
     };
 
-    style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
 
     style.BodyPar {
       style.FigureReference(Figures.EquilibriumCharts);
@@ -1994,7 +2004,7 @@ class ModelInferenceSection: Content {
       UnknownTree;
       ", that contains information on the relatedness of the languages ";
       SpanParens {Topology};
-      " and the expected number of sound substitutions "; ExpectedEvents; " that occur along each branch of the tree. ";
+      " and the expected number of phonemic transitions "; ExpectedEvents; " that occur along each branch of the tree. ";
       "Language evolves along the branches of the tree according to the TKF91 model"; Cite {Thorne1991}; ", which allows either a segmental transition, insertion, or deletion to occur in an instant of time. ";
       "Insertions and deletions occur at rates "; InsertionRate; " and "; DeletionRate; " respectively, with "; InsertionRateCondition; DotSpace;
       "Phonemic substitution is modeled as a continuous-time Markov model with phonemes as the states of the process (as noted above, our inventory consists of "; MainResults.Data.UniqueSegments.Length; " phonemes). ";
