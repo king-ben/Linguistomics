@@ -129,11 +129,8 @@ C17 = new(#6e9118ce-df55-4efd-870e-18a41732f438#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "The connection between equilibrium frequency and phonological contrast lies in our use of phonemic representations. ";
-    "What the equilibrium frequencies reveal is how frequent a particular segment class is as a phoneme. ";
-    "So for a given Romance word one expects on average more stops and short vowels than segments from any other class. ";
-    "Since phonemes are by definition contrastive units, we claim that equilibrium frequencies reveal the phonemes most commonly used for contrasts. ";
-    "Just to be clear, this is not a claim about the functional load of phonemes in Romance. ";
+    "We thank the reviewer for this comment, which made us realize that the original formulation came to close to conflating frequencies and functional load. ";
+    "We have adjusted the text to make it clear that our results do not bear on the question of functional load. ";
   };
 };
 

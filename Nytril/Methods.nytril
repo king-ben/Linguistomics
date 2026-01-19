@@ -1787,11 +1787,11 @@ class SoundChangeSection: Content {
     };
 
      style.BodyPar{
-       "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insights into the phonemic contrasts that Romance languages rely on most"; DotSpace;
-       "The combined frequency of short vowels and stop consonants is over 0.5, which means that on average half of the segments of a word will be stops or consonants"; DotSpace;
-       "This tendency is the result of the diachronic trends discussed above"; DotSpace;
-       "With the reduction of diphthongs and long vowels, their functional load decreases while that of short vowels consequently increases"; DotSpace;
-    };
+   "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insight into the distribution of phonemic segments across major segment classes in Romance languages"; DotSpace;
+   "The combined frequency of short vowels and stop consonants exceeds 0.5, indicating that on average more than half of the segments in a word are drawn from these two classes"; DotSpace;
+   "This distributional skew reflects the diachronic developments discussed above"; DotSpace;
+   "In particular, the reduction of diphthongs and long vowels leads to a decrease in their frequency of occurrence, with a corresponding increase in the frequency of short vowels"; DotSpace;
+};
 
      style.BodyPar{
        "Finally, the results of model comparison support the relevance of natural classes in sound change"; Cite{King1969.OnPage(201)}; DotSpace;

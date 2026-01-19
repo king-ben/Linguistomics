@@ -164,7 +164,7 @@ class TKF91ApproachSection: Content {
      " Romance languages and Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
      "First, vowels are for the most part less stable over time than consonants. " ;
      "Second, a model of sound change in which parameters are shared among natural classes of phonemes outperforms simpler models. " ;
-     "Finally, the equilibrium frequencies reveal that Romance languages rely primarily on stops and short vowels for phonemic constrasts." ;
+     "Finally, the equilibrium frequencies indicate that Romance languages make disproportionately frequent use of stops and short vowels in word forms, relative to other segment classes. " ;
     };
 
     style.BodyPar {
