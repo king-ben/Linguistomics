@@ -70,7 +70,10 @@ C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "We thank the reviewer for bringing this work to our attention and have added discussion of it to the manuscript.";
+    "We thank the reviewer for bringing this work to our attention and have added a reference to this paper in the manuscript. ";
+    "While the goal of the model in this paper is very close to our own, the actual model is quite different. ";
+    "To name just two non-trivial differences, it relies on fixed alignments and does not model insertions and deletions as such. ";
+    "In the paper, the model is actually not applied to cognate word-forms, but rather contrastive units of sign languages. ";
   };
 };
 
