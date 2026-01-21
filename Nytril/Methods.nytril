@@ -1695,13 +1695,13 @@ class OtherApproachesSection: Content {
       "according to which sound change is abrupt and non-independent. ";
       "It is abrupt in that there are no intermediary stages in a transition from "; VocalSegments.ah; " to "; VocalSegments.oh; ", for instance. ";
       "It is non-independent since the change from one phoneme to another across all lexical items is regarded as a single event. ";
-      "Other scholars have emphasized the role of acoustic and auditory phonetics in sound change";
-      Cite {Blevins2004a; Ohala2003; Ohala2012};
+      "Other scholars emphasize the role of acoustic and auditory phonetics in sound change";
+      Cite {Ohala2003; Blevins2004a; Ohala2012};
       ", while yet another view contends that sound change occurs by gradually making its way through the lexicon in a process known as lexical diffusion"; Cite {Chen1975a; Phillips2015}; DotSpace;
     };
 
     style.BodyPar {
-      "Our framework is not situated within any one of these traditions, but rather has affinities to the phonemic approach and lexical diffusion. Since our observations are phonemic strings, it is phonemes that undergo insertions, deletions, and transitions. ";
+      "Our framework is not situated within any one of these traditions, but rather has affinities with the phonemic approach and lexical diffusion. Since our observations are phonemic strings, it is phonemes that undergo insertions, deletions, and transitions. ";
       "In contrast to the standard assumption of historical linguistics, however, these changes are treated as independent. ";
       "For instance, a change from "; VocalSegments.ah; " to "; VocalSegments.oh; " is not modeled as a single transition across all word-forms in our study. ";
       "Instead, a rate of change is inferred based on the homologies of "; VocalSegments.ah; " and "; VocalSegments.oh; " in the data and how often the former transitions to the latter. ";
@@ -1746,30 +1746,33 @@ class SoundChangeSection: Content {
 
    override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      "In contrast to traditional historical phonology, which focuses on identifying sound changes and their relative chronologies, the TKF91 approach delivers insights into overarching trends in the evolution of sounds and segmental inventories" DotSpace;
-      "We focus here on three measures that provide insights into both, specifically, the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies"; DotSpace;
-      "Although other quantitative measures of sound change have beeen developed in recent years, these measures are a new addition to the field" DotSpace;
-    };
+  "In contrast to traditional historical phonology, which is primarily concerned with individual sound changes and their relative chronologies, the TKF91 approach yields insights into broader systemic trends in the evolution of sounds and segmental inventories" DotSpace;
+  "We focus here on three measures that illuminate both aspects: the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies" DotSpace;
+  "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
+};
 
-    style.BodyPar {
-      "As noted above in section 3, the diagonal of the Q matrix is the rate at which a particular segment transitions to any other and thus measures its diachronic stability"; DotSpace;
-      "The prominent division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with previous studies of Romance historical phonology"; DotSpace;
-      "One of the major sound changes that distinguishes Latin from Romance is the loss of phonemic vowel length"; Cite{Janson1979; Loporcaro2015}; DotSpace;
-      "In a similar vein, the diphthongs of Classical Latin start to undergo monophthongization within Latin itself"; Cite {Posner1996.OnPage(106)};  DotSpace;
-      "Our results are also consistent with the study of"; Cite{Moran2021.OnPage(92..95)}; ", who find that vowels change faster than consonants in Indo-European"; DotSpace;
-      "It is important to note that they are measuring the rate at which the size of segmental inventories changes, which is not what the diagonal of the Q matrix measures"; DotSpace;
-      "In other words, their results suggest that in Indo-European vowel inventories are expanding at a faster rate compared to consonant inventories"; DotSpace;
-      "By contrast, our results do not bear on the size of the vowel inventories per se"; DotSpace;
-      "Our results also overlap to an extent with the basic consonant inventory of Nikolaev and Grossman"; Cite{Nikolaev2020}; ", /p t k n l r/, in that the most stable classes in our results are the stops and the nasals"; DotSpace;
-      "There is more agreement with the primal consonants of Bybee and Easterday";
-          Cite{Bybee2022}; ", /p t k b d g m n ŋ s l/"; DotSpace;
-      "There are two important differences between their primal consonants and our results, however" DotSpace;
-      "First, these consonsants are deemed primal because they are only rarely created by sound change"; DotSpace;
-      "In other words, they are rarely the output of sound change"; DotSpace;
-      "Under our framework, by contrast, segmental stability is associated with the input of sound change in that the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme"; DotSpace;
-      "Second, the basic and primal consonant inventories are intended to represent core universal consonants in the world's languages"; DotSpace;
-      "While our results are relevant for the typology of diachronic phonology in that they capture broad trends in segmental evolution, they should not be interpreted as universal patterns of sound change" DotSpace;
-    };
+style.BodyPar {
+  "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and thus serves as a measure of its diachronic stability" DotSpace;
+  "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " accords with findings from previous studies of Romance historical phonology" DotSpace;
+  "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Cite{Janson1979; Loporcaro2015}; DotSpace;
+  "Similarly, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Cite {Posner1996.OnPage(106)}; DotSpace;
+  "Our results are also broadly consistent with the findings of"; Cite{Moran2021.OnPage(92..95)}; ", who show that vowels change faster than consonants in Indo-European" DotSpace;
+  "It is important to note, however, that their measure captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
+  "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
+  "By contrast, our results do not directly address changes in the size of vowel inventories as such" DotSpace;
+};
+
+  style.BodyPar {
+  "Our findings also partially overlap with the basic consonant inventory proposed by Nikolaev and Grossman"; Cite{Nikolaev2020}; ", /p t k n l r/, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
+  "There is even greater convergence with the set of primal consonants proposed by Bybee and Easterday";
+      Cite{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
+  "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
+  "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
+  "That is, they seldom arise as the output of sound change processes" DotSpace;
+  "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
+  "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
+  "While our results are relevant for the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
+};
 
     style.BodyPar{
       "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
