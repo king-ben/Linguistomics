@@ -60,7 +60,7 @@ C2 = new(#c728912c-ed60-40c3-b780-93a4c0cb10fc#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "See our response to 13) below.";
   };
 };
 
@@ -165,7 +165,7 @@ C28 = new(#8fc83b55-a4bb-43c0-ade2-586266bd6ed6#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We have removed the Latin meanings.";
   };
 };
 
@@ -209,7 +209,7 @@ C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2) {
  Text: "\"study of (Moran et al. 2021, pp. 92-95)\"";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "Corrected";
   };
 };
 
@@ -217,7 +217,7 @@ C36 = new(#b2b69548-e966-4ddb-a42e-688b131a1753#, Reviewers.R2) {
   Text: "  - \"they are measuring the rate at which the size of segmental inventories changes\"";
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "Changed the phrasing.";
   };
 };
 
