@@ -1751,28 +1751,29 @@ class SoundChangeSection: Content {
       "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
     };
 
-    style.BodyPar {
-      "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and thus serves as a measure of its diachronic stability" DotSpace;
-      "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " accords with findings from previous studies of Romance historical phonology" DotSpace;
-      "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
-      "Similarly, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
-      "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowels change faster than consonants in Indo-European" DotSpace;
-      "It is important to note, however, that their measure captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
-      "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
-      "By contrast, our results do not directly address changes in the size of vowel inventories as such" DotSpace;
-    };
+style.BodyPar {
+  "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
+  "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
+  "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
+  "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
+  "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowels change more rapidly than consonants in Indo-European" DotSpace;
+  "It is important to note, however, that their metric captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
+  "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
+  "By contrast, our results do not directly address changes in vowel inventory size as such" DotSpace;
+};
 
-    style.BodyPar {
-      "Our findings also partially overlap with the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-      "There is even greater convergence with the set of primal consonants proposed by Bybee and Easterday";
-      Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
-      "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
-      "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
-      "That is, they seldom arise as the output of sound change processes" DotSpace;
-      "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
-      "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
-      "While our results are relevant for the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
-    };
+style.BodyPar {
+  "Our findings also overlap to some extent with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
+  "For example, the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
+  "There is even stronger convergence with the set of primal consonants proposed by Bybee and Easterday";
+  Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
+  "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
+  "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
+  "That is, they infrequently arise as the output of sound change processes" DotSpace;
+  "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
+  "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
+  "While our results are relevant to the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
+};
 
     style.BodyPar {
       "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
