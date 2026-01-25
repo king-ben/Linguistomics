@@ -51,8 +51,8 @@ namespace DavidSlides.Introduction {
 
     Items.Item2.Text = Span {
       "Nowhere is this more true than in the case of phylogenetic inference (Hoffmann et al. 2021";
-      Cite {References.Hoffmann2021}; CommaSpace;
-      "Greenhill et al. 2021"; Cite {References.Greenhill2021};
+      Citep {References.Hoffmann2021}; CommaSpace;
+      "Greenhill et al. 2021"; Citep {References.Greenhill2021};
       ")";
     };
 
@@ -144,9 +144,9 @@ namespace DavidSlides.PreviousResearch {
 
     Items.Item1.Text = Span {
       "There have been several recent attempts to estimate phylogenies from segmental data (Jäger 2018";
-      Cite {References.Jäger2018};
-      ", Macklin-Cordes 2021"; Cite {References.MacklinCordes2021};
-      ", Tresoldi 2022"; Cite {References.Tresoldi2022};
+      Citep {References.Jäger2018};
+      ", Macklin-Cordes 2021"; Citep {References.MacklinCordes2021};
+      ", Tresoldi 2022"; Citep {References.Tresoldi2022};
       ")";
     };
 
@@ -156,7 +156,7 @@ namespace DavidSlides.PreviousResearch {
 
     Items.Item3.Text = Span {
       "Although the character matrices in these studies is based on segmental data, they do not model segmental change directly (one exception: Bouchard-Côté et al. 2013";
-      Cite {References.BouchardCote2013}; ")";
+      Citep {References.BouchardCote2013}; ")";
     };
   }
 
@@ -329,10 +329,10 @@ namespace DavidSlides.TheData {
 
     Items.Item4.Text = Span {
       "Sampling? Are the most important sound correspondences sufficiently sampled? (Dockum and Bowern 2019";
-      Cite {References.Dockum2019};
+      Citep {References.Dockum2019};
       ", LIST";
-      Cite {References.List2019}; ") ???? Hruschka et al. 2015";
-      Cite {References.Hruschka2015};
+      Citep {References.List2019}; ") ???? Hruschka et al. 2015";
+      Citep {References.Hruschka2015};
       "  —lots of asymmetry in sound changes"
     };
 
@@ -437,7 +437,7 @@ namespace DavidSlides.Methods {
     };
 
     Items.Item5.Text = Span {
-      "Thorne et al. 1991"; Cite {References.Thorne1991}; " force ";
+      "Thorne et al. 1991"; Citep {References.Thorne1991}; " force ";
       Equations.InsertionRateCondition;
       ", which means that words should ultimately shrink to zero length";
     };
@@ -653,7 +653,7 @@ namespace DavidSlides.Results {
 
     Items.Item3.Text = Span {
       "Uriel Cohen-Priva has work on information theory in phonology and functional load";
-      Cite {References.Priva2012; References.Priva2017};
+      Citep {References.Priva2012; References.Priva2017};
       "More text";
     };
   }
@@ -715,7 +715,7 @@ namespace DavidSlides.Results {
     Title = "The locus of deletions";
 
     Items.Item1.Text = Span {
-      "Kessler 2007?"; Cite {References.Kessler2007};
+      "Kessler 2007?"; Citep {References.Kessler2007};
     };
 
     Items.Item2.Text = Span {
@@ -727,7 +727,7 @@ namespace DavidSlides.Results {
     };
 
     Items.Item4.Text = Span {
-      "erich round talk? Tresoldi 2022"; Cite {References.Tresoldi2022};
+      "erich round talk? Tresoldi 2022"; Citep {References.Tresoldi2022};
     };
 
     Items.Item5.Text = Span {
@@ -735,7 +735,7 @@ namespace DavidSlides.Results {
     };
 
     Items.Item6.Text = Span {
-      "Wedel et al. 2019"; Cite {References.Wedel2019};
+      "Wedel et al. 2019"; Citep {References.Wedel2019};
     };
   }
 }

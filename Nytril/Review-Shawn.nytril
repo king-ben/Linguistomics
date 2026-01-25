@@ -7,7 +7,7 @@ C4 = new(#d0fe979b-9bf2-43cd-af5a-e2bc05c2bfda#, Reviewers.R1) {
     "I mention those questions in the next parts.";
   };
   AssignedTo(People.Buchi_Éva);
-  Response: "TBD";
+  Response: "This comment is addressed in subsequent responses.";
 };
 
 C34 = new(#8402afbe-14ee-460e-85c2-aaa8d72d481c#, Reviewers.R2) {
@@ -37,6 +37,7 @@ C24 = new(#237ad429-4fa2-4e55-8bb1-94fd1639f8c5#, Reviewers.R1) {
 C32 = new(#f350218e-7962-41d4-9763-2e46b1929a55#, Reviewers.R2) {
   Text: "I find the referencing of figures a bit jarring, i.e., they aren't necessarily in order (e.g., 1, 2, 3...)";
   AssignedTo(People.McCreight_Shawn);
+  Response: "The figures have been redistributed more evenly throughout the length of the manuscript. ";
 };
 
 C33 = new(#b9de2ab6-70ae-4b54-8017-04ae88bbfc3f#, Reviewers.R2) {

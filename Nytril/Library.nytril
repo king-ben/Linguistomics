@@ -32,6 +32,16 @@ class AlignIndexClass {
     CognateName = cognate;
     Alignments  = alignments;
   }
+
+  string FullName {
+    if (CognateName == DefaultCognate)
+      return ConceptName;
+    return "{0}-{1}"(ConceptName, CognateName);
+  }
+
+  string TableName {
+    return ConceptName;
+  }
 }
 
 //======================================================================
@@ -47,15 +57,15 @@ class AlignPairClass: DocumentEntry {
   var ExperimentData Data;
   var AlignData[]    Alignments;
   var Size           BoxSize;
+  var                TableName;
 
   Constructor(ExperimentData data, AlignIndexClass cognate) {
-    super.Constructor(Guid.FromHash("Align" + cognate.CognateName + cognate.ConceptName), cognate.ConceptName);
+    super.Constructor(Guid.FromHash("Align" + cognate.FullName), cognate.FullName);
 
     Data       = data;
     Alignments = cognate.Alignments;
+    TableName  = cognate.TableName;
     BoxSize    = new Size(14pt, 14pt);
-    if (cognate.CognateName != DefaultCognate)
-      Name += "-" + cognate.CognateName;
   }
 
   Languages(data, height) = VBox {

@@ -546,7 +546,7 @@ class GapFrequencyChart: Content {
 
   override GetCaption(ContentStyle style) = Span {
     "The number of gaps observed across the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study at the word-initial segment (top), word-internal segment(s) (middle), and word-final segment (bottom). ";
-    "Nine languages were analyzed in this study, so it is not possible for there to be nine gaps. Deletion events that led to a gap for all the languages would not be included in an alignment, and is explicitly conditioned on in Lunter et al."; Cite{Lunter2003}; DotSpace;
+    "Nine languages were analyzed in this study, so it is not possible for there to be nine gaps. Deletion events that led to a gap for all the languages would not be included in an alignment, and is explicitly conditioned on in Lunter et al."; Citep{Lunter2003}; DotSpace;
     "There is a clear, and statistically significant, pattern of an increasing number of gaps as one moves from the initial to the final segment of the word. ";
     "(A likelihood ratio test of the null hypothesis that the distributions are the same at the initial, internal, and final segments is highly significant, with a test statistic of ";
     Span {
@@ -647,7 +647,7 @@ readonly LanguageDistributionFigure  Figures.LanguageDistribution = new;
 
 class LanguageDistributionFigure: Content {
   Constructor {
-    super.Constructor("Ggeographic distribution of languages");
+    super.Constructor("Geographic distribution of languages");
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -962,7 +962,7 @@ class LanguagesUsedFigure: Content {
                 language.Name;
                 var r = language.FindFirstFact(DocReference);
                 if (r is not null)
-                  Span {TextHeight: 75%; Cite {r}};
+                  Span {TextHeight: 75%; Citep {r}};
               };
 
               var mh = height - h;
@@ -1293,7 +1293,7 @@ class PhylogenyResultsSection: Content {
       var run = MainResults.MainRun;
       TextDigits: 3;
       "This problem was likely not encountered in the other implementations of the TKF91 model";
-      Cite {Lunter2004}; ", which analyzed an alignment of amino acid sequences. ";
+      Citep {Lunter2004}; ", which analyzed an alignment of amino acid sequences. ";
       "In our analysis of cognate data, the insertion and deletion rates were estimated to be quite high relative to the substitution rate: ";
       EqSpan {InsertionRate; Tex.Equals; run.InsertionRate}; " ("; run.InsertionRateLow; ", "; run.InsertionRateHigh; ") and ";
       EqSpan {DeletionRate; Tex.Equals; run.DeletionRate}; " ("; run.DeletionRateLow; ", "; run.DeletionRateHigh; ") ";
@@ -1310,7 +1310,7 @@ class PhylogenyResultsSection: Content {
        style.FigureReference(Figures.ModelTreesUsed); ". ";
       "Although there is considerable debate about the topology of the Romance languages, in recent decades most specialists have converged on the view that the first two clades to ";
        "form are Sardinian followed by Romanian";
-       Cite {Hall1950; Hall1976; Dardel1985; Swiggers2001; Vallejo2012; Buchi2015; Dworkin2016a}; DotSpace;
+       Citep {Hall1950; Hall1976; Dardel1985; Swiggers2001; Vallejo2012; Buchi2015; Dworkin2016a}; DotSpace;
       "Since Sardinian is not in our study group, the clade containing Romanian is the first to form in each of the trees in ";
        style.FigureReference(Figures.ModelTreesUsed); DotSpace;
       "The sub-trees containing the remaining dialects differ in their topologies, but they all contain Spanish and Portuguese as a clade, as well as Catalan, French, and Walloon. ";
@@ -1321,7 +1321,7 @@ class PhylogenyResultsSection: Content {
       ReviewNew {
         "/Proto-Romance";
       };
-      ", and the Romance languages"; Cite {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
+      ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
       "In this study, we assume the latter as Latin is an outgroup to the Romance languages. ";
       "This decision was motivated by practical considerations and not linguistic ones, as a tree model allowing sampled ancestry is more complicated than the one used in this paper"; DotSpace;
@@ -1402,10 +1402,10 @@ class SegmentModelsFigure: Content {
     style.TitlePar(title) {
       "We consider three models of segmental change in this study: ";
       PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
-      Cite {Jukes1969};
+      Citep {Jukes1969};
       " with equal rates between all pairs of states and in which the number of substitutions follows a Poisson distribution (hereafter referred to as the "; style.SQuote{PoissonModel.Name}; " model); ";
       UnequalModel; ", a model isomorphic to the model of DNA sequence evolution first described by Felsenstein";
-      Cite {Felsenstein1981};
+      Citep {Felsenstein1981};
       " in which the rate of change between a pair of segments is proportional to the equilibrium frequency of the destination segment; ";
       "and "; NaturalClassModel; ", the "; NaturalModelName; ", in which segments that share articulatory properties are grouped together with different rates of change within and between these segmental classes. ";
       "The number of estimated parameters varies across models. ";
@@ -1439,7 +1439,7 @@ class ModelComparisonSection: Content {
     style.ResumePar {
       "with ratios greater than one favoring model "; ModelI; ". ";
       "As the models examined are nested, we could calculate the Bayes factor using the Savage-Dickey ratio";
-        Cite {Dickey1971}; ", ";
+        Citep {Dickey1971}; ", ";
         "which is the ratio of the posterior to prior densities evaluated at the restriction that makes the parameter-rich model equivalent to the simpler model. "
       "The "; NaturalModelName; " explains the data substantially better than the two simpler models, with log Bayes ";
       // TODO: Maybe update the log bayes factor numbers dynamically, though this will be more tricky.
@@ -1448,7 +1448,7 @@ class ModelComparisonSection: Content {
       EqSpan {Tex.ln; BayesFactor23; Tex.Equals; -117.3};
       ", respectively, for a comparison of "; PoissonModel; " to "; UnequalModel; " and "; UnequalModel; " to "; NaturalClassModel; ". ";
       "This indicates overwhelming support for the more parameter-rich "; NaturalModelName;
-      Cite {Jeffreys1939}; DotSpace;
+      Citep {Jeffreys1939}; DotSpace;
     };
  };
 }
@@ -1691,13 +1691,13 @@ class OtherApproachesSection: Content {
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Approaches to sound change in the linguistics literature vary. ";
-      "One prominent view identifies phonemes as the basic units of change"; Cite {Bloomfield1933}; ", ";
+      "One prominent view identifies phonemes as the basic units of change"; Citep {Bloomfield1933}; ", ";
       "according to which sound change is abrupt and non-independent. ";
       "It is abrupt in that there are no intermediary stages in a transition from "; VocalSegments.ah; " to "; VocalSegments.oh; ", for instance. ";
       "It is non-independent since the change from one phoneme to another across all lexical items is regarded as a single event. ";
       "Other scholars emphasize the role of acoustic and auditory phonetics in sound change";
-      Cite {Ohala2003; Blevins2004a; Ohala2012};
-      ", while yet another view contends that sound change occurs by gradually making its way through the lexicon in a process known as lexical diffusion"; Cite {Chen1975a; Phillips2015}; DotSpace;
+      Citep {Ohala2003; Blevins2004a; Ohala2012};
+      ", while yet another view contends that sound change occurs by gradually making its way through the lexicon in a process known as lexical diffusion"; Citep {Chen1975a; Phillips2015}; DotSpace;
     };
 
     style.BodyPar {
@@ -1709,9 +1709,9 @@ class OtherApproachesSection: Content {
 
     style.BodyPar {
       "The application of the TKF91 model to linguistic data is similar to the analysis of Bouchard-Côté et al.";
-      Cite{BouchardCote2013};
+      Citep{BouchardCote2013};
       ", who also treat cognate word-forms as observations. Their approach differs, however, in that they applied a string transducer model";
-      Cite{Holmes2001};
+      Citep{Holmes2001};
       " to characterize segmental transitions. The transducer model has the advantage that it can account for many of the processes that are known to influence segmental change, such as context dependence. Our method, as currently implemented, does not consider the environment of segmental changes. However, unlike the transducer model, the TKF91 model is a historical model with well-defined events that can transform a word. In fact, the likelihood accounts for all the histories of insertion, deletion, and segmental substitution that could have led to the observed words sampled from the ";
       Enumerators.Cardinal(MainResults.Data.Taxa.Length);
       " languages. ";
@@ -1724,12 +1724,12 @@ class OtherApproachesSection: Content {
       "The complexity of the likelihood calculations under the TKF91 model is exponential in the number of taxa and word length. Specifically, the complexity is of order ";
       Equations.LikelihoodComplexity;
       " where "; NumTreeLeaves; " is the number of leaves on the tree and "; GMLength; " is the geometric mean of the word lengths";
-      Cite{Lunter2003}; DotSpace;
+      Citep{Lunter2003}; DotSpace;
       "The application of the TKF91 model to linguistic data is not as problematic as it is for DNA sequence data because words are much shorter than DNA sequences, with ";
       Equations.TypicalWordLength; DotSpace;
       "That said, one can obtain likelihood calculations that are linear in the number of tips if one assumes that the insertion rate is independent of the word length, instead of the overall insertion rate being ";
       Equations.OverallInsertionRate; " as it is under the TKF91 model";
-      Cite{BouchardCote2013b}; DotSpace;
+      Citep{BouchardCote2013b}; DotSpace;
       "This model—the Poisson Indel Process (PIP)—could be applied to linguistic data sets that are composed of many more languages than we analyzed here. Since the alignments visited by the MCMC procedure are similar in length, the PIP model might be a sensible option for linguistic data. ";
     };
   };
@@ -1744,44 +1744,44 @@ class SoundChangeSection: Content {
     super.Constructor("Insights into Sound Change");
   }
 
-   override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-  "In contrast to traditional historical phonology, which is primarily concerned with individual sound changes and their relative chronologies, the TKF91 approach yields insights into broader systemic trends in the evolution of sounds and segmental inventories" DotSpace;
-  "We focus here on three measures that illuminate both aspects: the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies" DotSpace;
-  "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
-};
+      "In contrast to traditional historical phonology, which is primarily concerned with individual sound changes and their relative chronologies, the TKF91 approach yields insights into broader systemic trends in the evolution of sounds and segmental inventories" DotSpace;
+      "We focus here on three measures that illuminate both aspects: the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies" DotSpace;
+      "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
+    };
 
-style.BodyPar {
-  "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and thus serves as a measure of its diachronic stability" DotSpace;
-  "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " accords with findings from previous studies of Romance historical phonology" DotSpace;
-  "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Cite{Janson1979; Loporcaro2015}; DotSpace;
-  "Similarly, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Cite {Posner1996.OnPage(106)}; DotSpace;
-  "Our results are also broadly consistent with the findings of"; Cite{Moran2021.OnPage(92..95)}; ", who show that vowels change faster than consonants in Indo-European" DotSpace;
-  "It is important to note, however, that their measure captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
-  "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
-  "By contrast, our results do not directly address changes in the size of vowel inventories as such" DotSpace;
-};
+    style.BodyPar {
+      "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and thus serves as a measure of its diachronic stability" DotSpace;
+      "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " accords with findings from previous studies of Romance historical phonology" DotSpace;
+      "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
+      "Similarly, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
+      "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowels change faster than consonants in Indo-European" DotSpace;
+      "It is important to note, however, that their measure captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
+      "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
+      "By contrast, our results do not directly address changes in the size of vowel inventories as such" DotSpace;
+    };
 
-  style.BodyPar {
-  "Our findings also partially overlap with the basic consonant inventory proposed by Nikolaev and Grossman"; Cite{Nikolaev2020}; ", /p t k n l r/, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-  "There is even greater convergence with the set of primal consonants proposed by Bybee and Easterday";
-      Cite{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
-  "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
-  "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
-  "That is, they seldom arise as the output of sound change processes" DotSpace;
-  "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
-  "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
-  "While our results are relevant for the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
-};
+    style.BodyPar {
+      "Our findings also partially overlap with the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
+      "There is even greater convergence with the set of primal consonants proposed by Bybee and Easterday";
+      Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
+      "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
+      "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
+      "That is, they seldom arise as the output of sound change processes" DotSpace;
+      "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
+      "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
+      "While our results are relevant for the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
+    };
 
-    style.BodyPar{
+    style.BodyPar {
       "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
       "In addition, the focus is not on transitions among individual segments, but rather transitions within and between natural classes" DotSpace;
       "For instance, the circles on the diagonal represent the average transition rate within each natural class"; DotSpace;
       "The liquids exhibit the highest rate and the diphthongs the lowest"; DotSpace;
       "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class"; DotSpace;
       "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong"; DotSpace;
-      "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Cite{Abrego2013; Mueller2013}; DotSpace;
+      "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Citep{Abrego2013; Mueller2013}; DotSpace;
       "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is with the short vowels"; DotSpace;
       "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
       "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
@@ -1789,24 +1789,24 @@ style.BodyPar {
       "This latter trend is driven by the emergence of nasalized vowels in French and Portuguese"; DotSpace;
     };
 
-     style.BodyPar{
-   "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insight into the distribution of phonemic segments across major segment classes in Romance languages"; DotSpace;
-   "The combined frequency of short vowels and stop consonants exceeds 0.5, indicating that on average more than half of the segments in a word are drawn from these two classes"; DotSpace;
-   "This distributional skew reflects the diachronic developments discussed above"; DotSpace;
-   "In particular, the reduction of diphthongs and long vowels leads to a decrease in their frequency of occurrence, with a corresponding increase in the frequency of short vowels"; DotSpace;
-};
+    style.BodyPar {
+     "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insight into the distribution of phonemic segments across major segment classes in Romance languages"; DotSpace;
+     "The combined frequency of short vowels and stop consonants exceeds 0.5, indicating that on average more than half of the segments in a word are drawn from these two classes"; DotSpace;
+     "This distributional skew reflects the diachronic developments discussed above"; DotSpace;
+     "In particular, the reduction of diphthongs and long vowels leads to a decrease in their frequency of occurrence, with a corresponding increase in the frequency of short vowels"; DotSpace;
+    };
 
-     style.BodyPar{
-       "Finally, the results of model comparison support the relevance of natural classes in sound change"; Cite{King1969.OnPage(201)}; DotSpace;
-       "It is well established that sound changes often target natural classes of segments"; DotSpace;
-       "Grimm’s Law, for instance, systematically affects all ";
-       ReviewNew{"Proto-Germanic reflexes of "};
-       "Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
-       "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
-       " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
+    style.BodyPar {
+      "Finally, the results of model comparison support the relevance of natural classes in sound change"; Citep{King1969.OnPage(201)}; DotSpace;
+      "It is well established that sound changes often target natural classes of segments"; DotSpace;
+      "Grimm’s Law, for instance, systematically affects all ";
+      ReviewNew{"Proto-Germanic reflexes of "};
+      "Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
+      "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
+      " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
     };
   };
- }
+}
 
 
 //======================================================================
@@ -1820,13 +1820,13 @@ class SegmentalSamplingSection: Content {
 
    override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Cite {References.Dockum2019}; DotSpace;
+      "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Citep {References.Dockum2019}; DotSpace;
       "Certain segmental transitions can play a crucial role in topological inference, but under a sampling scheme such as ours, in which selection of concepts is guided by a Swadesh list, ";
       "there is no guarantee that the necessary segmental correspondences will be sampled. ";
       "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/ (in terms of classical Latin, it neutralizes vowel length distinctions)"; DotSpace;
       "By contrast, Italo-Western Proto-Romance (i.e., the common ancestor of all other languages in our sample) merges */ʊ/ and */o/ to /o/ (in terms of classical Latin, it merged short <u> and long <o>)"; DotSpace;
       "As a result, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the " VocalSegments.oh; " of, for instance, Italian "; textit{"bocca"}; DotSpace;
-      "This correspondence is a key piece of evidence for the topological position of Romanian"; Cite {Janson1979.OnPage(25); Herman2000.OnPage(32..34)};
+      "This correspondence is a key piece of evidence for the topological position of Romanian"; Citep {Janson1979.OnPage(25); Herman2000.OnPage(32..34)};
       " and if it is not sufficiently represented in the dataset it may not be possible to infer its place in the tree accurately"; DotSpace;
       "There is the further question of how representative the frequency distributions of segments, which are presented in " ; style.FigureReference(Figures.SegmentOccuranceRates); ", are in the languages in our sample"; DotSpace;
       "These distributions are based on sets of word-forms sampled according to specific criteria and it is unclear how much they diverge from the true frequency distribution of each language"; DotSpace;
@@ -2008,7 +2008,7 @@ class ModelInferenceSection: Content {
       ", that contains information on the relatedness of the languages ";
       SpanParens {Topology};
       " and the expected number of phonemic transitions "; ExpectedEvents; " that occur along each branch of the tree. ";
-      "Language evolves along the branches of the tree according to the TKF91 model"; Cite {Thorne1991}; ", which allows either a segmental transition, insertion, or deletion to occur in an instant of time. ";
+      "Language evolves along the branches of the tree according to the TKF91 model"; Citep {Thorne1991}; ", which allows either a segmental transition, insertion, or deletion to occur in an instant of time. ";
       "Insertions and deletions occur at rates "; InsertionRate; " and "; DeletionRate; " respectively, with "; InsertionRateCondition; DotSpace;
       "Phonemic substitution is modeled as a continuous-time Markov model with phonemes as the states of the process (as noted above, our inventory consists of "; MainResults.Data.UniqueSegments.Length; " phonemes). ";
       "The rates of change between all pairs of states are contained in the rate matrix "; RateMatrix; ", which is governed by parameters ";  RateMatrixParams; DotSpace;
@@ -2025,11 +2025,11 @@ class ModelInferenceSection: Content {
     style.ResumePar {
       "where "; SegmentalInfo; " are the observed segments for the cognate words. ";
       "The likelihood function, "; LiklihoodFunction;
-      ", is calculated using the algorithm of Lunter "; textit{"et al."}; Cite {Lunter2003}; DotSpace;
+      ", is calculated using the algorithm of Lunter "; textit{"et al."}; Citep {Lunter2003}; DotSpace;
       "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
       "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionRateCondition; DotSpace;
       ReviewNew {
-        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distriubted with parameter "; InsertionProbability; ".) ";
+        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distributed with parameter "; InsertionProbability; ".) ";
         "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
         "Developing such priors for segmental homology structures remains an important direction for future work. ";
       }
@@ -2039,7 +2039,7 @@ class ModelInferenceSection: Content {
       "We numerically approximate the posterior distribution of the parameters using MCMC. ";
       "Specifically, we constructed a Markov chain that has as its states the parameters of the model and a stationary distribution that is the posterior distribution of interest. ";
       "Samples from this chain when at stationarity are valid, albeit dependent, samples from the posterior distribution. ";
-      "Besides sampling the phylogenetic parameters of the model, the chain also samples segmental alignments"; Cite{Lunter2004}; DotSpace;
+      "Besides sampling the phylogenetic parameters of the model, the chain also samples segmental alignments"; Citep{Lunter2004}; DotSpace;
     };
 
     style.AddTable(Figures.PartitionAssignments, FigureOptions.Bottom, 98%);
@@ -2122,7 +2122,7 @@ class WorkflowFigure: Content {
     arrow;
   };
 
-  Box(index, text) = VBox(96, 96, new Edge(2, 1, Colors.DarkGray)) {
+  Box(index, text) = VBox(110, 96, new Edge(2, 3, Colors.DarkGray)) {
     TextFace: TextFaces.SansSerif;
     TextHeight: 14pt;
     VAlign: Center;
@@ -2136,7 +2136,6 @@ class WorkflowFigure: Content {
     };
   };
 
-
   override GetBody(ContentStyle style, title) = HBox(100%) {
     HAlign: Center;
     VBox {
@@ -2147,12 +2146,12 @@ class WorkflowFigure: Content {
         HBox {
           VAlign: Center;
           Bracket: Brackets.FlatRound;
-          Box(0, ["Segment", "Library"]);
+          Box(0, ["Segment", "Library", "(static)"]);
           Arrow(Tex.Plus);
           Box(1, ["Cognate", "Data"]);
         };
         Arrow(Tex.rightarrow);
-        Box(2, ["Tests", "&", "Validation"]);
+        Box(2, ["Parsing", "&", "Validation"]);
         Arrow(Tex.rightarrow);
         Box(3, ["Create", "MCMC", "Dataset"]);
       };
@@ -2167,11 +2166,11 @@ class WorkflowFigure: Content {
       HBox {
         Margin: PadT(5);
         VAlign: Center;
-        Box(7, ["Results"]);
+        Box(7, ["Manuscript", "&", "Supplements"]);
         Arrow(Tex.leftarrow);
         Box(6, ["Figures", "&", "Narrative"]);
         Arrow(Tex.leftarrow);
-        Box(5, ["Stats", "&", "Processing"]);
+        Box(5, ["Compute", "Rates"]);
         Arrow(Tex.leftarrow);
         Box(4, ["Run", "MCMC", Icons.hourglass_top]);
       };
@@ -2432,7 +2431,7 @@ class MethodsSection: Content {
     };
 
     style.BodyPar {
-      "These are partial mitochondrial sequences from Gojobori"; Cite {Hayasaka1988}; DotSpace;
+      "These are partial mitochondrial sequences from Gojobori"; Citep {Hayasaka1988}; DotSpace;
       "In the original paper, the complete data had ";
       SampledLanguages(12);
       " primate species and the sequences were each 898 nucleotides in length. ";
@@ -2454,13 +2453,13 @@ class MethodsSection: Content {
     style.BodyPar {
       "Our approach to the underyling data for phylogenetic inference is novel within linguistics. ";
       "Like others, we concentrate on the so-called "; style.SQuote{"basic vocabulary"}; " of a language";
-      Cite{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023;};
+      Citep{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023;};
       ", since the lexical items that instantiate concepts in this domain are less prone to horizontal transmission (i.e., linguistic borrowing). ";
       "In contrast to every study of linguistic phylogenetics that we are aware of, however, our investigation draws inferences directly from word-forms. ";
       "For each concept in our dataset, homologous lexical items are assigned to a ";
       Definition("cognate class"); DotSpace;
       "The word-forms within each cognate class are phonemic representations based on the International Phonetic Alphabet";
-      Cite{IPA1999}; DotSpace;
+      Citep{IPA1999}; DotSpace;
       "Consider the cognate class for the concept ";
       style.SQuote {ec.Name}; ":";
     };
@@ -2625,7 +2624,7 @@ class MethodsSection: Content {
     };
 
     style.BodyPar {
-      "The TKF91"; Cite {Thorne1991}; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
+      "The TKF91"; Citep {Thorne1991}; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
       InsertDelete(" and "); DotSpace;
       "They introduced a convention for thinking about a DNA sequence in which nucleotides are connected by invisible links. ";
       "Each nucleotide is paired with the link to its right. ";
@@ -2642,7 +2641,7 @@ class MethodsSection: Content {
       InsertDelete(Tex.Divide); DotSpace;
       "This constraint is adopted in this study. ";
       "In fact, the model we use is precisely the same as the TKF91 model, but with a different continuous-time Markov model to describe segmental transitions. ";
-      "TKF91"; Cite {Thorne1991}; " uses a four-state process to describe nucleotide substitutions. ";
+      "TKF91"; Citep {Thorne1991}; " uses a four-state process to describe nucleotide substitutions. ";
     };
 
     style.BodyPar {
@@ -2741,7 +2740,7 @@ class MethodsSection: Content {
     };
 
     style.BodyPar {
-      "The likelihood is calculated on a per-word basis using the algorithm described by"; Cite{Lunter2003} ", which conditions on an alignment. ";
+      "The likelihood is calculated on a per-word basis using the algorithm described by"; Citep{Lunter2003} ", which conditions on an alignment. ";
       "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high dimensional summations and integrals required for the posterior probability is unfeasible. ";
       "Instead, we numerically approximate the joint posterior probability distribution of the parameters using Markov chain Monte Carlo.";
     };
@@ -2750,9 +2749,9 @@ class MethodsSection: Content {
       BodyTitle {"Markov chain Monte Carlo"}; DotSpace;
       "The aim of Markov chain Monte Carlo (MCMC) is to construct a Markov chain that has as its possible states the parameter values of the statistical model and a stationary distribution that is the posterior probability distribution of the parameters. ";
       "Metropolis et al. (1953)";
-      Cite {Metropolis1953};
+      Citep {Metropolis1953};
       " and Hastings (1970)";
-      Cite {Hastings1970};
+      Citep {Hastings1970};
       " describe rules for constructing such a chain. ";
       "When at stationarity, samples from this chain form valid, albeit dependent, samples from the posterior probability distribution. ";
       "The Metropolis-Hastings algorithm constructs the Markov chain using the following algorithm:";
@@ -2823,9 +2822,9 @@ class MethodsSection: Content {
     };
 
     style.BodyPar {
-      "The proposals we implement in this study are all typical for phylogenetic models, such as the LOCAL mechanism to update the tree and branch lengths"; Cite{Larget1999}; DotSpace;
+      "The proposals we implement in this study are all typical for phylogenetic models, such as the LOCAL mechanism to update the tree and branch lengths"; Citep{Larget1999}; DotSpace;
       "The unique aspect of this study is a proposal mechanism for the alignments of the segments for various words. ";
-      "Here, we use the proposal mechanism described by Lunter et al."; Cite{Lunter2005}; DotSpace;
+      "Here, we use the proposal mechanism described by Lunter et al."; Citep{Lunter2005}; DotSpace;
     };
 
     style.BodyPar {
@@ -2852,7 +2851,7 @@ class MethodsSection: Content {
       ", whereas the oppose is true for a Bayes factor greater than one. ";
       "In contrast to frequentist statistics, Bayesian model comparison does not involve p-values. ";
       "The Bayes Factor is instead interpreted as is or on a log scale. ";
-      Cite{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
+      Citep{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
     };
 
     BodyTable([1", 1", 3"]) {
@@ -2895,14 +2894,14 @@ class MethodsSection: Content {
       "The main limitation of Bayesian model comparison is numerically approximating the marginal likelihoods of the models. ";
       "This can be done in numerous ways. ";
       "For example, one can construct a Markov chain that jumps between models, even if the models differ in dimensions, using a generalization of MCMC described by Green (1995; reversible-jump MCMC). ";
-      "Alternatively, one can numerically approximate the marginal likelihoods using what is called path-sampling in which numerous MCMC chains explore a path between the prior and posterior distributions"; Cite{Lartillot2006; Xie2010}; DotSpace;
+      "Alternatively, one can numerically approximate the marginal likelihoods using what is called path-sampling in which numerous MCMC chains explore a path between the prior and posterior distributions"; Citep{Lartillot2006; Xie2010}; DotSpace;
     };
 
     style.BodyPar {
       "Three models describing how word segments evolve along the branches of the tree are compared in this study. ";
       "The first model is isomorphic to the model of molecular evolution first described by Jukes and Cantor ";
-      Cite{Jukes1969}; ", and assumes that the rates of change between all IPA segments is equal. ";
-      "The second model, isomorphic to the model first described by Felsenstein"; Cite{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
+      Citep{Jukes1969}; ", and assumes that the rates of change between all IPA segments is equal. ";
+      "The second model, isomorphic to the model first described by Felsenstein"; Citep{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
     };
 
     ReviewNewBlock {
