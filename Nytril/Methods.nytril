@@ -1756,10 +1756,7 @@ style.BodyPar {
   "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
   "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
   "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
-  "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowels change more rapidly than consonants in Indo-European" DotSpace;
-  "It is important to note, however, that their metric captures the rate of change in the size of segmental inventories, which differs from what is measured by the diagonal of the Q matrix" DotSpace;
-  "More specifically, their results indicate that vowel inventories in Indo-European are expanding at a faster rate than consonant inventories" DotSpace;
-  "By contrast, our results do not directly address changes in vowel inventory size as such" DotSpace;
+  "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowel inventories have changed more rapidly than consonant inventories in Indo-European" DotSpace;
 };
 
 style.BodyPar {
