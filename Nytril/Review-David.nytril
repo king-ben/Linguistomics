@@ -85,7 +85,7 @@ C6 = new(#98b6f99a-d855-488f-8567-04ae6bf4ab41#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "We agree with the reviewer that one-to-many alignments (e.g., /k/ to /sj/) are certainly relevant to sound change. ";
+    "We agree with the reviewer that a one-to-many correspondence such as /k/ to /sj/ is certainly relevant to sound change. ";
     "As we explain in Section 5.4 of the manuscript, however, our current model lacks this capability, but we are planning to address this challenge in future work.";
   };
 };
@@ -121,7 +121,7 @@ C14 = new(#96314a3d-e69d-4a17-aa1d-fce98843707e#, Reviewers.R1) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "For further clarification of the segmentation and alignment, see issues 1 above and 18 and 19 below. The greater frequency of the insertion and deletion rates is driven by the empirical frequency of these events in the data.";
   };
 };
 
@@ -201,7 +201,7 @@ C31 = new(#c8570ecb-4d7a-4dc6-b654-6fd1a46d9ca6#, Reviewers.R2) {
   };
   AssignedTo(People.Goldstein_David);
   Response: Paragraph {
-    "TBD";
+    "We thank the reviewer for these comments and for our attention to these articles. We have clarified the description of primal consonants, but have decided not to discuss the literature on borrowing and sound change in this study.";
   };
 };
 
