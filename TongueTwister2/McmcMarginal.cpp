@@ -18,7 +18,6 @@ McmcMarginal::McmcMarginal(RandomVariable* r, Model* m) : Mcmc(r, m) {
     UserSettings& settings = UserSettings::userSettings();
     mcmcPhases = new McmcPhase(settings.getFirstBurnLength(), settings.getTuneLength(), settings.getBurnLength(), settings.getSampleLength(), settings.getSampleFrequency());
     samples = new SteppingStones(127, 0.3, 1.0);
-    samples->print();
     tuneFrequency = 1000;
     
     // for printing nicely to the screen
