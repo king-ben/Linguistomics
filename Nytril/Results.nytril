@@ -192,7 +192,7 @@ class AlignmentChart {
             var ap = new AlignPairClass(Data, a);
             Paragraph {
               Span {
-                ap.Name;
+                ap.TableName;
                 TipAction: ap;
               };
             };
