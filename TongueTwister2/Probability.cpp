@@ -45,48 +45,77 @@ double Beta::cdf(double a, double b, double x) noexcept {
 }
 
 double Beta::quantile(double alpha, double beta, double x) noexcept {
-
-    double curPos = 0.5;
-    double increment = 0.25;
-    double curFraction = Helper::incompleteBeta(alpha, beta, curPos);
-    bool directionUp = (curFraction <= x);
-    int nswitches = 0;
-    
-    for (int i=0; i<1000 && nswitches<=20; i++)
+	
+	int i = 0, nswitches = 0;
+	double curPos = 0.5;
+	bool stopIter = false;
+    bool directionUp;
+	double increment = 0.25;
+	double curFraction = Helper::incompleteBeta (alpha, beta, curPos);
+	if (curFraction > x)
         {
-        curFraction = Helper::incompleteBeta(alpha, beta, curPos);
-        
-        if (curFraction > x)
-            {
-            if (directionUp)
-                {
-                nswitches++;
-                directionUp = false;
-                increment /= 2.0;
-                }
-            while (curPos - increment <= 0.0)
-                increment /= 2.0;
-            curPos -= increment;
-            }
-        else if (curFraction < x)
-            {
-            if (!directionUp)
-                {
-                nswitches++;
-                directionUp = true;
-                increment /= 2.0;
-                }
-            while (curPos + increment >= 1.0)
-                increment /= 2.0;
-            curPos += increment;
-            }
-        else
-            {
-            break;
-            }
+		directionUp = false;
+        }
+    else
+        {
+		directionUp = true;
         }
     
-    return curPos;
+	while (!stopIter)
+        {
+		curFraction = Helper::incompleteBeta(alpha, beta, curPos);
+		if (curFraction > x && directionUp == false)
+            {
+			// continue going down 
+			while (curPos - increment <= 0.0)
+                {
+				increment /= 2.0;
+                }
+			curPos -= increment;
+            }
+		else if (curFraction > x && directionUp == true)
+            {
+			// switch directions, and go down
+			nswitches++;
+			directionUp = false;
+			while (curPos - increment <= 0.0)
+                {
+				increment /= 2.0;
+                }
+			increment /= 2.0;
+			curPos -= increment;
+            }
+		else if (curFraction < x && directionUp == true)
+            {
+			// continue going up
+			while (curPos + increment >= 1.0)
+                {
+				increment /= 2.0;
+                }
+			curPos += increment;
+            }
+		else if (curFraction < x && directionUp == false)
+            {
+			// switch directions, and go up
+			nswitches++;
+			directionUp = true;
+			while (curPos + increment >= 1.0)
+                {
+				increment /= 2.0;
+                }
+			increment /= 2.0;
+			curPos += increment;
+            }
+		else
+            {
+			stopIter = true;
+            }
+		if (i > 1000 || nswitches > 20)
+			stopIter = true;
+		i++;
+        }
+    
+	return (curPos);
 }
 
 #pragma mark - Chi-Square Distribution
@@ -600,68 +629,88 @@ double Helper::lnGammacor(double x) noexcept {
 
 double Helper::incompleteBeta(double a, double b, double x) noexcept {
 
-    constexpr double tol = 1.0E-07;
-    constexpr int itMax = 1000;
+	double tol = 1.0E-07;
     
-    if (x <= 0.0)
-        return 0.0;
-    if (x >= 1.0)
-        return 1.0;
-    
-    double psq = a + b;
-    double xx, cx, pp, qq;
-    bool indx;
-    
-    if (a < psq * x)
+	double value;
+	if ( x <= 0.0 )
         {
-        xx = 1.0 - x;
-        cx = x;
-        pp = b;
-        qq = a;
-        indx = true;
+		value = 0.0;
+		return value;
         }
-    else
+	else if ( 1.0 <= x )
         {
-        xx = x;
-        cx = 1.0 - x;
-        pp = a;
-        qq = b;
-        indx = false;
+		value = 1.0;
+		return value;
         }
     
-    double term = 1.0;
-    double value = 1.0;
-    int ns = static_cast<int>(qq + cx * psq);
-    double rx = xx / cx;
-    double temp = qq - 1.0;
+	/* change tail if necessary and determine S */
+	double psq = a + b;
     
-    if (ns == 0)
-        rx = xx;
-    
-    for (int it = 0; it < itMax; it++)
+	double xx, cx, pp, qq;
+	bool indx;
+	if ( a < (a + b) * x )
         {
-        term = term * temp * rx / (pp + it);
-        value += term;
-        temp = std::fabs(term);
-        if (temp <= tol && temp <= tol * value)
-            break;
-        ns--;
-        if (ns >= 0)
+		xx = 1.0 - x;
+		cx = x;
+		pp = b;
+		qq = a;
+		indx = true;
+        }
+	else
+        {
+		xx = x;
+		cx = 1.0 - x;
+		pp = a;
+		qq = b;
+		indx = false;
+        }
+    
+	double term = 1.0;
+	int i = 1;
+	value = 1.0;
+	int ns = (int)(qq + cx * (a + b));
+    
+	// use Soper's reduction formulas
+	double rx = xx / cx;
+    
+	double temp = qq - (double)i;
+	if ( ns == 0 )
+		rx = xx;
+    
+	int it = 0;
+	int it_max = 1000;
+	for (;;)
+        {
+		it++;
+		if ( it_max < it )
             {
-            temp = qq - (it + 1);
-            if (ns == 0)
-                rx = xx;
+			return 1.0e300;
             }
-        else
+		term = term * temp * rx / ( pp + ( double ) ( i ) );
+		value = value + term;
+		temp = fabs(term);
+		if ( temp <= tol && temp <= tol * value )
+			break;
+		i++;
+		ns--;
+		if ( 0 <= ns )
             {
-            temp = psq;
-            psq += 1.0;
+			temp = qq - (double)i;
+			if ( ns == 0 )
+				rx = xx;
+            }
+		else
+            {
+			temp = psq;
+			psq = psq + 1.0;
             }
         }
     
-    value = value * std::exp(pp * std::log(xx) + (qq - 1.0) * std::log(cx) - lnBeta(a, b) - std::log(pp));
-    
-    return indx ? 1.0 - value : value;
+	// finish calculation 
+	value = value * exp(pp * log(xx) + (qq - 1.0) * log(cx) - lnBeta(a, b) - log(pp));
+	if ( indx )
+		value = 1.0 - value;
+	return value;
 }
 
 double Helper::incompleteGamma(double x, double alpha, double LnGamma_alpha) noexcept {

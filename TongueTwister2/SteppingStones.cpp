@@ -1,4 +1,5 @@
 #include <cmath>
+#include <iomanip>
 #include <iostream>
 #include "Msg.hpp"
 #include "Probability.hpp"
@@ -101,5 +102,5 @@ double SteppingStones::marginalLikelihood(void) {
 void SteppingStones::print(void) {
 
     for (size_t i=0; i<size(); i++)
-        std::cout << i << " " << stones[i]->getPower() << std::endl;
+        std::cout << i << " " << std::fixed << std::setprecision(20) << stones[i]->getPower() << std::endl;
 }
