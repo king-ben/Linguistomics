@@ -320,7 +320,7 @@ namespace DavidSlides.TheData {
     };
 
     Items.Item2.Text = Span {
-      "Supersegmental properties? Only way to incorporate this at this moment is to treat each segment + diacritic combination as a unique segment.";
+      "Supra-segmental properties? Only way to incorporate this at this moment is to treat each segment + diacritic combination as a unique segment.";
     };
 
     Items.Item3.Text = Span {

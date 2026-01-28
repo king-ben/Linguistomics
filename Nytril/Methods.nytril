@@ -1863,7 +1863,7 @@ class LimitationsSection: Content {
       "Under the TKF91 model, this single event becomes two, with one change from /r/ to /t/ and another from /t/ to /r/ (leaving aside the possibility of intermediate transitions). ";
       "A second limitation is that the context in which a segmental transition takes place plays no role in the estimation of transition rates. ";
       "It is well known that the evolution of phonemes can be sensitive to neighboring sounds. ";
-      "Finally, there is currently no straightforward way to incorporate supersegmental features such as stress, although it plays a crucial role in the phonological history of the Romance languages. ";
+      "Finally, there is currently no straightforward way to incorporate supra-segmental features such as stress, although it plays a crucial role in the phonological history of the Romance languages. ";
     };
   };
 }
