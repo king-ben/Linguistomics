@@ -30,6 +30,7 @@ class Simplex {
         virtual size_t                  getFirstIndex(size_t idx) = 0;
         virtual size_t                  getSecondIndex(size_t idx) = 0;
         float                           getMean(size_t idx) { return mean[idx]; }
+        float                           getMean(size_t idx) const { return mean[idx]; }
         float                           getPriorMean(size_t idx) { return priorMean[idx]; }
         float                           getVariance(size_t idx) { return variance[idx]; }
         float                           getLowerCI(size_t idx) { return lowerCI[idx]; }

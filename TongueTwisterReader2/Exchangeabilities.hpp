@@ -17,6 +17,7 @@ class Exchangeabilities : public Simplex {
         size_t                              getSecondIndex(size_t idx) { return fromTo[idx].second; }
         size_t                              getNumRates(void) { return dimension; }
         size_t                              getNumRates(void) const { return dimension; }
+        double                              getAverageRate(int r1, int r2) const;
         void                                print(void);
         nlohmann::json                      toJson(void);
         

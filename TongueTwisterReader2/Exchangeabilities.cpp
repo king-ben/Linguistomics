@@ -78,6 +78,19 @@ Exchangeabilities::Exchangeabilities(McmcSummary& samples, double bf) : Simplex(
         }
 }
 
+double Exchangeabilities::getAverageRate(int r1, int r2) const {
+
+    if (r1 > r2)
+        std::swap(r1, r2);
+    for (size_t i=0; i<size(); i++)
+        {
+        if (fromTo[i].first == r1 && fromTo[i].second == r2)
+            return mean[i];
+        }
+    Msg::error("Could not find average rate for groups");
+    return 0.0;
+}
+
 void Exchangeabilities::print(void) {
 
     for (size_t i=0; i<dimension; i++)

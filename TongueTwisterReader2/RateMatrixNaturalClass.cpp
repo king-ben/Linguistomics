@@ -1,5 +1,7 @@
+#include "Container.hpp"
 #include "Exchangeabilities.hpp"
 #include "Msg.hpp"
+#include "Partition.hpp"
 #include "RateMatrixHelper.hpp"
 #include "RateMatrixNaturalClass.hpp"
 #include "StateFrequencies.hpp"
@@ -71,5 +73,23 @@ RateMatrixNaturalClass::RateMatrixNaturalClass(const StateFrequencies& f, const 
         }
     
     calculateMeanAndVariance();
+    
+    // get rates for Natural classes
+    
+    
+    ncRates.create(part->numSubsets()); 
+    for (int i=0; i<numStates; i++)
+        {
+        for (int j=i+1; j<numStates; j++)
+            {
+            int groupI = part->indexOfSubsetWithValue(i);
+            int groupJ = part->indexOfSubsetWithValue(j);
+            double rate = r.getAverageRate(groupI, groupJ);
+            ncRates(groupI-1,groupJ-1) += rate * f.getMean(j);
+            ncRates(groupJ-1,groupI-1) += rate * f.getMean(i);
+            }
+        }
+    ncRates.print();
+    
 }
 
