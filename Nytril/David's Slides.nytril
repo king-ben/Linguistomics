@@ -19,7 +19,7 @@ class DavidDesignClass: TexDesign {
 
 class DavidSlideShow: SlideShow {
   Constructor {
-    super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, SlideContentStyle, Authors);
+    super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, new OtherStyle, Authors);
     Title       = "From phonology to phylogeny\nA new framework for phylogenetic inference";
     Description = "Presentation for Linguists";
   }

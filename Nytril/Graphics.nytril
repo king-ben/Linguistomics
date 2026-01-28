@@ -81,15 +81,17 @@ readonly namespace PaperStyle {
   };
 
   ShowTree(ContentStyle style, Node root, width, title=null, axis=null, reorder=true) = VBox {
+    style.SansSerif;
     if (title is valid) {
-      Margin: PadAll(5pt);
-      style.Heading1 {
+      Margin: new Thickness(0, 5pt, 5pt, 5pt);
+      Paragraph {
+        TextHeight: 120%;
+        Bold;
         title;
       };
     }
 
     TreeBox(width, null) {
-      style.SansSerif;
       TextHeight: 11pt;
       Reorder: reorder;
       Root: root;
@@ -125,10 +127,8 @@ readonly namespace PaperStyle {
       Reorder: true;
       Root: root;
       Default: new Node(null) {
-//        NodeGap: 5pt;
         Curvature: 20%;
         Bevel: 20%;
-//        Marker: BranchMarker;
       };
       if (axis is valid) {
         TreeAxisLabel: axis;

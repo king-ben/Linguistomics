@@ -24,7 +24,6 @@ include "Slideshow";
 include "John Slides";
 include "David's Slides";
 include "Data Validation";
-include "Review";
 include "Review-John";
 include "Review-David";
 include "Review-Shawn";
@@ -38,23 +37,31 @@ readonly namespace<Person> Reviewers {
 
 //======================================================================
 
-readonly ContentStyle     MainContentStyle  = new JOLEStyle(LineNumbers);
-readonly ContentStyle     SupplementStyle   = new JOLEStyle(None);
-readonly ContentStyle     SlideContentStyle = new OtherStyle;
-readonly LinguisticsPaper MainPaper         = new;
-readonly RealmSite        Main.Site         = new LinguistomicsSite;
-readonly                  Main.Facts        = [People, References, Equations, WorldLanguages, Comments];
+readonly namespace<ReviewComment> ReviewComments {}
+
+readonly ReviewComment[] CommentList {
+   return ReviewComments.ToSortedArray(false, @ReviewComment.CompareOrder);
+}
+
+//======================================================================
+
+readonly LinguisticsPaper    MainPaper         = new;
+readonly SupplementalContent SupplementalPaper = new;
+readonly ContentStyle        ReviewStyle       = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
+
+readonly RealmSite           Main.Site  = new LinguistomicsSite;
+readonly                     Main.Facts = [People, References, Equations, WorldLanguages, CommentList];
 
 readonly namespace Main.Documents {
-  HomePage            HomePage          = new;
-  StyleDocument       PaperJOLE         = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, MainContentStyle);
-  StyleDocument       Supplemental      = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", new SupplementalContent, SupplementStyle);
-  StyleDocument       Analysis          = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, SupplementStyle);
-  DavidSlideShow      DavidPresentation = new;
-  JohnSlideShow       JohnPresentation  = new;
-  DiagnosticsDocument Diagnostic        = new(SupplementStyle, MainResults.Data);
-  ReviewDocument      Review            = new;
-  RevisedDocument     Revised           = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Revised", MainPaper, MainContentStyle);
+  HomePage            HomePage           = new;
+  StyleDocument       PaperJOLE          = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, new JOLEStyle(LineNumbers Anonymous));
+  StyleDocument       PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
+  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", SupplementalPaper, new JOLEStyle(None));
+  StyleDocument       SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplemental (Review)", SupplementalPaper, ReviewStyle);
+  StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, new JOLEStyle(None));
+  DavidSlideShow      DavidPresentation  = new;
+  JohnSlideShow       JohnPresentation   = new;
+  DiagnosticsDocument Diagnostic         = new(new JOLEStyle(None), MainResults.Data);
 
 //  TexDocument       TexPaper          = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
 }
@@ -92,19 +99,6 @@ class OtherStyle: PNASStyle {
 
 //===============================================================
 
-class ReviewStyle: PNASStyle {
-  Constructor {
-    super.Constructor("Review", TemplateOptions.None);
-  }
-
-  override SetTextStyle = {
-    TextFamily: TextFamilies.Calibri;
-    TextHeight: 10pt;
-  };
-}
-
-//===============================================================
-
 class HomePage: SitePage {
   Constructor {
     super.Constructor(Main.Site, #29f0a41f-f0f2-4830-bcaa-70418aa20157#, "Home", "Linguistics Research Project");
@@ -125,7 +119,7 @@ class HomePage: SitePage {
       Info.Title;
     };
 
-    MainContentStyle.ShowAuthorList(MainPaper, true);
+    new JOLEStyle(None).ShowAuthorList(MainPaper, true);
     Paragraph {
       SpaceAfter: 20pt;
     };

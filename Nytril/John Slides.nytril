@@ -10,7 +10,7 @@ class JohnDesign: FancyDesign {
 
 class JohnSlideShow: SlideShow {
   Constructor {
-    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesign, SlideContentStyle, [People.Huelsenbeck_John]);
+    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesign, new OtherStyle, [People.Huelsenbeck_John]);
     Title       = Info.Title;
     Description = "Presentation for Biologists";
   }
@@ -34,7 +34,7 @@ class JohnSlideShow: SlideShow {
     AddFigureSlide(Figures.ExchangeabilityTable);
     AddFigureSlide(Figures.RateChart);
     AddFigureSlide(Figures.TransitionRates);
-    AddFigureSlide(new SingleAlignmentFigure(34, 6, "Flower"));
+    AddFigureSlide(Figures.AlignmentFlower);
     AddFigureSlide(new AlignmentCompareFigure(12, 6));
     AddFigureSlide(Figures.GappinessChart);
     AddFigureSlide(Figures.ConsensusTree);

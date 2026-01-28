@@ -12,6 +12,7 @@ class AbstractSection: Content {
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
       "Linguistic phylogenies are standardly inferred from abstract cognate relationships among lexemes. ";
+      style.ReviewMark(ReviewComments.C41);
       "Despite the prevalence of this practice, it suffers from well-known drawbacks: ";
           "it disregards the phylogenetic signal in the segmental form of words; ";
           "the types of questions that can be addressed are limited; ";
@@ -96,7 +97,7 @@ class RootMeaningTraitsSection: Content {
     };
 
     style.BodyPar {
-      ReviewComment(Comments.C47);
+      style.ReviewMark(ReviewComments.C47);
       "Second, since root-meaning traits are analyzed the same way biologists analyze morphological characters";
           Citep {Lewis2001}; ", they are subject to the same limitations: ";
           "(i) The state labels (whether binary or multistate) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
@@ -274,11 +275,11 @@ class PaperDataSection: Content {
     style.AddFigure(Figures.LanguageDistribution, FigureOptions.Bottom | FigureOptions.Full, 60%);
 
     style.TitlePar(title) {
-      ReviewComment(Comments.C4);
+      style.ReviewMark(ReviewComments.C4);
       "This study is based on a dataset of cognate word-forms from a sample of ";
       langcount;
       " Romance languages and Latin, ";
-      ReviewNew {
+      style.ReviewNew {
         "an assortment of languages which are all typologically fusional, ";
       };
       "whose geographic distribution is presented in ";
@@ -299,20 +300,22 @@ class PaperDataSection: Content {
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
       "The orientation toward Latin is purely practical. ";
       "We only used cognate sets in which a cognate could be identified for each language and by starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
-      "(It is in principle possible to use incomplete cognate sets, i.e., sets in which at least one language lacks a cognate, but use of complete cognate sets simplifies parameter estimation, which is why we have followed this practice for this initial study.)";
-
+      style.ReviewMark(ReviewComments.C45);
+      style.ReviewNew {
+        "(It is in principle possible to use incomplete cognate sets, i.e., sets in which at least one language lacks a cognate, but use of complete cognate sets simplifies parameter estimation, which is why we have followed this practice for this initial study.)";
+      }
     };
 
     style.BodyPar {
-      ReviewComment(Comments.C23);
+      style.ReviewMark(ReviewComments.C23);
       "In total, the dataset contains "; data.UsedCognates.Length;
       " cognate sets, which are comprised of "; data.WordCount;
       " word-forms containing "; data.UniqueSegments.Length;
-      ReviewOld {
+      style.ReviewOld {
         " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
         ConceptList(data, style); DotSpace;
       };
-      ReviewNew {
+      style.ReviewNew {
         " unique segments drawn from "; data.UsedConcepts.Length; " concepts. ";
       };
       "The word-forms can be represented as either phonetic or phonemic sequences. ";
@@ -342,7 +345,7 @@ class PaperDataSection: Content {
       "For verbs, the present active infinitive is used. ";
       "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word-forms. ";
       "Among nouns and adjectives in our dataset, the ancestral form is";
-      ReviewNew {
+      style.ReviewNew {
         ", as expected, ";
       };
       "far more often the accusative. ";
@@ -352,7 +355,7 @@ class PaperDataSection: Content {
     };
 
     style.BodyPar{
-      ReviewComment(Comments.C4);
+      style.ReviewMark(ReviewComments.C4);
       "The lexical histories of the Romance languages are notoriously complex"; Citep {Stefenelli1992; Dworkin2016b};
       ", as they have been shaped not only by inheritance but also by borrowings from both other Romance languages and Latin itself. ";
       "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
@@ -360,7 +363,7 @@ class PaperDataSection: Content {
       "Two reasons are responsible for this reduced risk. ";
       "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Citep {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
       "Second, the phonological developments of the Romance languages, ";
-      ReviewNew {
+      style.ReviewNew {
         "whose earliest written testimonies go as far back as the 9" sup "th"; " and 10" sup "th";
         " centuries, so that their history is exceptionally well known, ";
       };
@@ -391,15 +394,15 @@ class PaperDataCuration: Content {
     };
 
     style.BodyPar {
-      ReviewComment(Comments.C38);
+      style.ReviewMark(ReviewComments.C38);
       "Word-forms from the "; Enumerators.Cardinal(data.Taxa.Length); " languages in our study are organized into classes by concept and then by cognate class. ";
       style.FigureReference(Figures.ConceptEncoding); " shows an example of the raw data for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
       "A challenge for programming in linguistics is that the IPA representation of words is expressed in Unicode (UCS), ";
-      ReviewOld {
+      style.ReviewOld {
         "not ASCII or ANSI. This requires care with file formats, text encodings and diacritic compositional form. ";
       };
-      ReviewNew {
-        "which cannot be represented in a single-byte encoding like ASCII. ";
+      style.ReviewNew {
+        "which cannot be represented in a single-byte encoding such as ASCII. ";
         "Instead, it best stored in UTF8 which is a common, cross-platform, multi-byte encoding for UCS. ";
         "Diacritic compositional form must be standardized to faciliate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
       };

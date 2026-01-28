@@ -1451,7 +1451,7 @@ abstract class FrequencyChart {
 
   ShowChart(ContentStyle style) = VBox {
     HAlign: Center;
-    OccurranceChart(new(ExtentWidth, Math.Min(5", ExtentHeight)));
+    OccurranceChart(new(ExtentWidth, Math.Min(4", ExtentHeight)));
     Rule.ShowHLegend(style, 8pt, null) {
       Margin: PadTB(8pt);
     };

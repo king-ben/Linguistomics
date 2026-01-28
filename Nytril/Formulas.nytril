@@ -165,7 +165,7 @@ Condition(EquationSymbol x, y) = Span {
 //======================================================================
 
 readonly namespace<EquationSymbol> EquationSymbols {
-  GMLength                = new(#c10d64bd-0831-4105-aa42-2e94e3dd9316#, Span {ReviewOld{"GM(L)"}; ReviewNew {TextOverline: true;  "L"}}, "Geomretric mean of word lengths", "The geometric mean of the length of the words in the alignment, excluding gaps");
+  GMLength                = new(#c10d64bd-0831-4105-aa42-2e94e3dd9316#, Span {TextOverline: true;  "L"}, "Geomretric mean of word lengths", "The geometric mean of the length of the words in the alignment, excluding gaps");
   Phylogeny               = new(#307ce909-f048-4a73-bc64-45f876fc661a#, Psi , "Phylogeny", "The (possibly unknown) relationship between entities resulting from an evolutionary tree");
   Topology                = new(#8e8c02ac-3f24-4ae2-837d-7c807b313956#, tau, "Tree topology", "Information on the relationships of the languages");
   SubstitutionRate        = new(#04322008-770d-4b3f-8241-88e38317047c#, Italic mu, "Substitution rate", "The rate at which the language changes");

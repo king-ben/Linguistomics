@@ -1,18 +1,18 @@
 using Format;
-readonly namespace<Comment> Comments;
+readonly namespace<ReviewComment> ReviewComments;
 
 C4 = new(#d0fe979b-9bf2-43cd-af5a-e2bc05c2bfda#, Reviewers.R1) {
   Text: Paragraph {
     "I don’t think a direct comparison with any of those model is doable or interesting (although you mention that TKF91 is not primarily used to infer the phylogeny and thus Bouchard-Côté is your direct competitor), but I would think some more questions can be asked based on those articles (I am not a specialist of Romance languages so some remarks might just mean additional details on the specificities of this domain is needed). ";
     "I mention those questions in the next parts.";
   };
-  AssignedTo(People.Buchi_Éva);
+  ReviewAssigned to People.Buchi_Éva;
   Response: "This comment is addressed in subsequent responses.";
 };
 
 C34 = new(#8402afbe-14ee-460e-85c2-aaa8d72d481c#, Reviewers.R2) {
   Text: "\"(DÉRom, 2023)\"? ";
-  AssignedTo(People.Buchi_Éva);
+  ReviewAssigned to People.Buchi_Éva;
   Response: "N.B. the ATILF is getting rid of the Stella-server, so this URL will soon no longer work, whereas the “generic” URL will always be maintained.";
 };
 
@@ -20,7 +20,7 @@ C23 = new(#dea1d699-0d2c-4f05-9a20-9e6d220f3414#, Reviewers.R1) {
   Text: Paragraph {
     "p7: lieasinabed, the whole list should go in appendix.";
   };
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   HasAnchor: true;
   Response: "Moved list to the end of the Supplemental section. ";
 };
@@ -29,29 +29,29 @@ C24 = new(#237ad429-4fa2-4e55-8bb1-94fd1639f8c5#, Reviewers.R1) {
   Text: Paragraph {
     "Conclusion: estinmation";
   };
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   HasAnchor: true;
   Response: "Corrected. ";
 };
 
 C32 = new(#f350218e-7962-41d4-9763-2e46b1929a55#, Reviewers.R2) {
   Text: "I find the referencing of figures a bit jarring, i.e., they aren't necessarily in order (e.g., 1, 2, 3...)";
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Response: "The figures have been redistributed more evenly throughout the length of the manuscript. ";
 };
 
 C33 = new(#b9de2ab6-70ae-4b54-8017-04ae88bbfc3f#, Reviewers.R2) {
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Text: "Colors in figure 1 aren't color blind friendly (I also find the two greens hard to distinguish)";
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Response: "Changed ambiguous colors to color-blind friendly ones. ";
 };
 
 C38 = new(#c060f19b-87ac-4790-9bd5-e4d126be9082#, Reviewers.R2) {
   Text: "\"not ASCII or ANSI\" -- why is ANSI mentioned here (or at all)? ";
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   HasAnchor: true;
-  Response: "That was a good catch. I said 'ANSI' when I meant the 'ANSI Latin 1' code page. I rephrased this part to make it more precise. ";
+  Response: "That was a good catch. We said 'ANSI' when we meant the 'ANSI Latin 1' code page. We rephrased this part to make it more precise. ";
 };
 
 C29 = new(#f7e84d6b-186b-45fd-94d2-74bb10a1eb40#, Reviewers.R1) {
@@ -59,19 +59,19 @@ C29 = new(#f7e84d6b-186b-45fd-94d2-74bb10a1eb40#, Reviewers.R1) {
     "Last paragraph of 5.1, ";
     "avoid naming a single number with several letters GM(L) could be written with a single letter. 4";
   };
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Response: "The symbol was changed to " EquationSymbols.GMLength;
 };
 
 C43 = new(#2b06ad58-9746-4319-92af-1602db04f1b1#, Reviewers.R3) {
   Text: "The code repository lacks any instructions or a readme file. The repo should be updated with the aim that the model can be applied by other researchers to their own data.";
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Response: "The repository now has a \"readme.pdf\" file.";
 };
 
 C46 = new(#dbed1663-deba-490b-aa8d-0add0855d896#, Reviewers.R3) {
   Text: "The section starting around Figure 3, which presents an IPA–Unicode encoding example and raw data for the concept “mountain”, is informative but hard to follow in terms of the overall data-processing path. I recommend adding a schematic diagram of the workflow, from initial cognate identification through IPA encoding, segment parsing, alignment generation, and Bayesian inference to final rate and topology estimates. Such a figure would help readers understand the broader computational pipeline, and clarify where key modelling and data decisions occur.";
-  AssignedTo(People.McCreight_Shawn);
+  ReviewAssigned to People.McCreight_Shawn;
   Response: Paragraph {
     "A 'Workflow' section was added to the Supplemental to describe the experimental processing. A pipeline figure was created and put in the same section. ";
   };

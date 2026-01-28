@@ -24,6 +24,7 @@ class LinguisticsPaper: LinguisticsContent {
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
     Acknowledgements      = PaperSections.Acknowledgements;
+    Comments              = CommentList;
 
     Keywords = [
       "Bayesian inference",

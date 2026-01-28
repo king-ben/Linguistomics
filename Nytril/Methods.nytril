@@ -88,9 +88,13 @@ class ModelTreesFigure: Content {
     "Model trees used in all analyses";
   };
 
-  override GetBody(ContentStyle style, title) = VBox {
+  override GetBody(ContentStyle style, title) = HBox {
+    var sep   = 20pt;
+    var trees = TreeExamples.PriorTrees.Length;
+    var w     = (ExtentWidth - sep * (trees-1)) / trees;
+    Separation: sep-1;
     foreach (var tree in TreeExamples.PriorTrees)
-      ShowTreeHorizontal(style, tree, 80%, Lang.Tree + Space + each1);
+      ShowTree(style, tree, w, "{0} {1}"(Lang.Tree, each1));
   };
 }
 
@@ -185,6 +189,7 @@ class SingleAlignmentFigure: AlignmentExamplesFigure {
 }
 
 readonly SingleAlignmentFigure Figures.AlignmentExample1 = new(16, 4, "Flower");
+readonly SingleAlignmentFigure Figures.AlignmentFlower   = new(34, 6, "Flower");
 
 //======================================================================
 
@@ -496,7 +501,7 @@ class EquilibriumFrequencyChart: Content {
     "The equilibrium frequencies "; EquilibriumDistribution; " of each natural class";
   };
 
-  override GetBody(ContentStyle style, title) = Chart(100%, 3") {
+  override GetBody(ContentStyle style, title) = Chart(100%, 2.75") {
     ChartType: ChartTypes.Bar;
     style.SansSerif;
     TextHeight: 11pt;
@@ -572,12 +577,12 @@ class GapFrequencyChart: Content {
     VBox {
       HAlign: Center;
       foreach (var gap in gaps) {
-        Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.5")) {
+        Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.2")) {
           ChartType: ChartTypes.Column;
 
           ValueLabel: PaperStyle.ValueLabel {
             TextHeight: 8pt;
-            ["Word-initial segment", "Word-internal Segment(s)", "Word-final Segment"][each0]
+            ["Word-initial seg.", "Word-internal seg(s)", "Word-final seg."][each0]
           };
 
           ValueAxis: ChartAxis {
@@ -1318,7 +1323,7 @@ class PhylogenyResultsSection: Content {
 
     style.BodyPar {
       "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin";
-      ReviewNew {
+      style.ReviewNew {
         "/Proto-Romance";
       };
       ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
@@ -1512,7 +1517,10 @@ class WordTransformationSection: Content {
       ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels. ";
       "This clustering is driven by the exchangeability rates that are shared between classes of segments and the degree of variation in the equilibrium frequencies. ";
       "When there the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
-      "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
+      style.ReviewMark(ReviewComments.C42);
+      style.ReviewNew {
+        "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
+      };
       //"In contrast to the rates in Figure [rate figure], those in ";
       //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
       // " and measures the rate of flow away from it (to any other segment). ";
@@ -1614,7 +1622,7 @@ class WordSegmentRelSection: Content {
       style.FigureReference(align1); " shows alignments for the concept ";
       style.SQuote {
         TextCase: TextCases.AllLower;
-        align1.Examples[0].Concept
+        align1.Examples[0].Concept;
       };
       ", which illustrates three key properties of all posterior alignments. ";
       "First, the distributions of credible sets are heavily weighted in favor of a single alignment with most of the posterior probability. ";
@@ -1629,12 +1637,12 @@ class WordSegmentRelSection: Content {
       "Finally, the alignments tend to assign segments from the same class to the same column in the alignment. ";
     };
 
-    style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Bottom);
+    style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Bottom, 80%);
 
     style.BodyPar {
       var align2 = Figures.AlignmentExample2;
 
-      ReviewComment(Comments.C5);
+      style.ReviewMark(ReviewComments.C5);
       "Interestingly, the distribution of alignments depends on the model of segmental change. ";
       style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
@@ -1720,7 +1728,7 @@ class OtherApproachesSection: Content {
     };
 
     style.BodyPar {
-      ReviewComment(Comments.C29);
+      style.ReviewMark(ReviewComments.C29);
       "The complexity of the likelihood calculations under the TKF91 model is exponential in the number of taxa and word length. Specifically, the complexity is of order ";
       Equations.LikelihoodComplexity;
       " where "; NumTreeLeaves; " is the number of leaves on the tree and "; GMLength; " is the geometric mean of the word lengths";
@@ -1798,7 +1806,7 @@ style.BodyPar {
       "Finally, the results of model comparison support the relevance of natural classes in sound change"; Citep{King1969.OnPage(201)}; DotSpace;
       "It is well established that sound changes often target natural classes of segments"; DotSpace;
       "Grimm’s Law, for instance, systematically affects all ";
-      ReviewNew{"Proto-Germanic reflexes of "};
+      style.ReviewNew{"Proto-Germanic reflexes of "};
       "Proto-Indo-European stops—voiceless, voiced, and voiced aspirated"; DotSpace;
       "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
       " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
@@ -1871,11 +1879,11 @@ class AdvantagesSection: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      ReviewComment(Comments.C11);
+      style.ReviewMark(ReviewComments.C11);
       "Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
      };
 
-    style.AddFigure(Figures.GappinessChart, FigureOptions.Bottom);
+    style.AddFigure(Figures.GappinessChart, FigureOptions.Bottom, 70%);
 
     style.BodyPar {
       "By casting the problem of language change in a statistical framework, we inherit the benefits of the statistical approach to estimate model parameters and, perhaps more importantly, to compare alternative models of language change to find the model that best explains the data. In this way, linguists can learn about language evolution by devising models that account for potential linguistic phenomena, then testing the model against models that do not account for the linguistic feature. This approach has proven successful in molecular evolution where models have been described and tested that account for many evolutionary processes of molecular change.";
@@ -2026,7 +2034,7 @@ class ModelInferenceSection: Content {
       ", is calculated using the algorithm of Lunter "; textit{"et al."}; Citep {Lunter2003}; DotSpace;
       "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
       "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionRateCondition; DotSpace;
-      ReviewNew {
+      style.ReviewNew {
         "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distributed with parameter "; InsertionProbability; ".) ";
         "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
         "Developing such priors for segmental homology structures remains an important direction for future work. ";
@@ -2043,6 +2051,7 @@ class ModelInferenceSection: Content {
     style.AddTable(Figures.PartitionAssignments, FigureOptions.Bottom, 98%);
 
     style.BodyPar {
+      style.ReviewMark(ReviewComments.C44);
       var number = Enumerators.Cardinal(rule.Filters.Length);
       "Our model of segmental transitions is based on phonological natural classes, which are classes of segments that share phonetic properties. ";
       "The segmental inventory of our dataset was exhaustively partitioned into "; number; " classes, which are presented in ";
@@ -2187,14 +2196,14 @@ class ConclusionSection: Content {
 
   override GetBody(ContentStyle style, title) = Block {
     style.TitlePar(title) {
-      ReviewComment(Comments.C24);
+      style.ReviewMark(ReviewComments.C24);
       "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
       "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). ";
       "Moreover, the event-based approach has the potential to improve divergence-time ";
-      ReviewOld {
+      style.ReviewOld {
         "estinmation";
       };
-      ReviewNew {
+      style.ReviewNew {
         "estimation";
       };
       ", which relies on estimating the number of events that occurred along the branches of the tree. ";
@@ -2902,7 +2911,7 @@ class MethodsSection: Content {
       "The second model, isomorphic to the model first described by Felsenstein"; Citep{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
     };
 
-    ReviewNewBlock {
+    style.ReviewNewBlock {
     style.BodyPar {
       BodyTitle {"Cognates Used in the Paper"}; DotSpace;
       "In total, the dataset contains "; data.UsedCognates.Length;

@@ -19,8 +19,8 @@ class SegmentPartition: Fact {
     Name       = name;
     PluralName = plural;
     BackColor  = Color.ChartColor(index);
+    TextColor  = BackColor.TextCompliment;
     Marker     = Markers.Dot(BackColor);
-    TextColor  = Color.TextCompliment;
     Index      = index;
     Segments   = segments;
 
