@@ -399,12 +399,12 @@ class PaperDataCuration: Content {
       style.FigureReference(Figures.ConceptEncoding); " shows an example of the raw data for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
       "A challenge for programming in linguistics is that the IPA representation of words is expressed in Unicode (UCS), ";
       style.ReviewOld {
-        "not ASCII or ANSI. This requires care with file formats, text encodings and diacritic compositional form. ";
+        "not ASCII or ANSI. This requires care with file formats, text encoding and diacritic compositional form. ";
       };
       style.ReviewNew {
         "which cannot be represented in a single-byte encoding such as ASCII. ";
         "Instead, it best stored in UTF8 which is a common, cross-platform, multi-byte encoding for UCS. ";
-        "Diacritic compositional form must be standardized to faciliate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
+        "Diacritic compositional form must be standardized to facilitate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
       };
       "Furthermore, each IPA segment string can comprise several UCS code-points, so that the mapping between string characters and segments is not one-to-one. ";
       style.FigureReference(Figures.SegmentEncoding); " shows an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";

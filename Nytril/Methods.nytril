@@ -1500,7 +1500,7 @@ class WordTransformationSection: Content {
       "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
       "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
       "The higher the rate, the more rapidly a change to another segment occurs on average. ";
-      "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, africates, and nasal vowels, but this is an artefact of the visualization. ";
+      "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, affricates, and nasal vowels, but this is an artefact of the visualization. ";
       "The rates in these classes are not identical, but they are extremely similar. ";
       "The differences are thus too small to be visible in this plot. ";
     };
@@ -1858,8 +1858,8 @@ class LimitationsSection: Content {
       "Our results are based on a model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
       "Certain patterns of sound change cannot therefore be captured under such a model. ";
       "For instance, metathesis, a change in which two segments exchange positions, is modeled as two separate transitions. ";
-      "Friulian "; TextIpa{"tarɔnt"}; " ultimately descends from Latin "; TextIpa{"rotundum"}; Space; style.SQuote{"round"};
-      ", with the initial sequence "; TextIpa{"rVt"}; " of Latin having metathesized to "; TextIpa{"tVr"}; DotSpace;
+      "Friulian "; TextIpa{"tarɔnt"}; " ultimately descends from Latin "; TextIpa{"rotundum"}; Space; style.SQuoteComma{"round"};
+      "with the initial sequence "; TextIpa{"rVt"}; " of Latin having metathesized to "; TextIpa{"tVr"}; DotSpace;
       "Under the TKF91 model, this single event becomes two, with one change from /r/ to /t/ and another from /t/ to /r/ (leaving aside the possibility of intermediate transitions). ";
       "A second limitation is that the context in which a segmental transition takes place plays no role in the estimation of transition rates. ";
       "It is well known that the evolution of phonemes can be sensitive to neighboring sounds. ";
