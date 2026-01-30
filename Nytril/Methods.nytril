@@ -669,13 +669,13 @@ class LanguageDistributionFigure: Content {
         BorderRadius: 1pt;
       };
       VBox {
-        Separation: 4pt;
+        Separation: 2.8pt;
         foreach (var l in MainResults.Data.LanguageSet) {
           if (l != WorldLanguages.Latin) {
             HBox {
-              Separation: 2pt;
+              VAlign: Center;
+              Separation: 3pt;
               Canvas(8pt, 8pt, 0.5pt) {
-                Baseline: 85%;
                 BorderRadius: 2pt;
                 Background: l.MapColor;
               };

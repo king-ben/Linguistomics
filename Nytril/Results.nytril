@@ -617,7 +617,6 @@ class AlignedCountClass: CountBase {
       };
 
       XAxis: ChartAxis {
-        Rotation: 90 degrees;
         TextHeight: 7pt;
         foreach (var sa in LegendSegments) {
           var p = Partitions[sa.PartitionIndex];
