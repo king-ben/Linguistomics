@@ -359,7 +359,7 @@ class PaperDataSection: Content {
       "The lexical histories of the Romance languages are notoriously complex"; Citep {Stefenelli1992; Dworkin2016b};
       ", as they have been shaped not only by inheritance but also by borrowings from other Romance languages as well as Latin itself. ";
       "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
-      "In fact, Romance data are in many ways ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
+      "In fact, Romance data are ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
       "Two reasons are responsible for this reduced risk. ";
       "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Citep {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
       "Second, the phonological developments of the Romance languages, ";
@@ -404,10 +404,10 @@ class PaperDataCuration: Content {
       style.ReviewNew {
         "which cannot be represented in a single-byte encoding such as ASCII. ";
         "Instead, it is best stored in UTF-8 which is a common, cross-platform, multibyte encoding for UCS. ";
-        "Diacritic compositional form must be standardized to facilitate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
+        "Diacritic compositional form must be standardized to facilitate string equality testing. We selected Form C, but what matters is that the form is consistent across files. ";
       };
       "Furthermore, each IPA segment string can comprise several UCS code points, so that the mapping between string characters and segments is not one-to-one. ";
-      style.FigureReference(Figures.SegmentEncoding); " shows an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";
+      style.FigureReference(Figures.SegmentEncoding); " presents an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";
       "Since our analysis requires each word to be separated into segments, a parser converts word strings into arrays of segment objects that facilitate the manipulation of segments at a high level. ";
       "A reusable library of such objects endows each segment with linguistic features that can be used for analysis. ";
       "After the input step, all steps are coded using properties such as "; style.SQuote{"vowel"}; " and "; style.SQuoteComma{"nasal"}; "rather than working with strings of characters directly.";

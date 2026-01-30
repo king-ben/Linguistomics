@@ -1322,15 +1322,15 @@ class PhylogenyResultsSection: Content {
     };
 
     style.BodyPar {
-      "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin";
+      "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin, ";
       style.ReviewNew {
-        "/Proto-Romance";
+        "Proto-Romance";
       };
       ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
-      "In this study, we assume the latter as Latin is an outgroup to the Romance languages. ";
-      "This decision was motivated by practical considerations and not linguistic ones, as a tree model allowing sampled ancestry is more complicated than the one used in this paper"; DotSpace;
-      "That said, our treatment of Latin allows for the possibility that it is ancestral to the other Romance languages; an estimated zero branch length leading to Latin would place it at the root of the Romance language tree"; DotSpace;
+      "In this study, we adopt the latter assumption and treat Latin as an outgroup to the Romance languages. ";
+      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here"; DotSpace;
+      "Importantly, however, our treatment of Latin does not preclude an ancestral interpretation: if the estimated branch length leading to Latin is zero, Latin is effectively placed at the root of the Romance clade."; DotSpace;
     };
 
     style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Bottom, 70%);
@@ -1501,8 +1501,7 @@ class WordTransformationSection: Content {
       "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
       "The higher the rate, the more rapidly a change to another segment occurs on average. ";
       "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, affricates, and nasal vowels, but this is an artefact of the visualization. ";
-      "The rates in these classes are not identical, but they are extremely similar. ";
-      "The differences are thus too small to be visible in this plot. ";
+      "The rates in these classes are not identical, but they are so small that they are not visible in this plot. ";
     };
 
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
@@ -1537,17 +1536,17 @@ class WordTransformationSection: Content {
     style.BodyPar {
       style.FigureReference(Figures.EquilibriumCharts);
       " shows the estimated equilibrium frequencies of the "; NaturalModelName; " "; NaturalClassModel; DotSpace;
-      "The equilibrium frequencies are used in two ways when calculating the probability of the observed data. ";
-      "First, they serve as the probability of the segmental state at the root of the tree. ";
-      "Second, they modify the rate of change between segments for models "; UnequalModel; " and "; NaturalClassModel;
-      ", with the rate of change proportional to the frequency of the destination segment. ";
-      "Indeed, the rates of change to ";
+      "These equilibrium frequencies play two roles in the calculation of the likelihood of the observed data. ";
+      "First, they define the prior probability distribution over segmental states at the root of the tree. ";
+      "Second, for models "; UnequalModel; " and "; NaturalClassModel;
+      ", they modulate the rates of change between segments, such that the rate of transition is proportional to the equilibrium frequency of the destination segment. ";
+      "Consistent with this formulation, transitions into ";
       style.TextList {
         TextCase: TextCases.AllLower;
         diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
       };
-      " are the highest as are the estimated equilibrium frequencies for those classes. ";
-      "The estimated equilibrium frequency generally tracks the frequency of the segments in the data. ";
+      " have the highest estimated rates, corresponding to their elevated equilibrium frequencies. ";
+      "More generally, the estimated equilibrium frequencies closely track the empirical frequencies of segments in the data. ";
     };
 
     style.BodyPar {
@@ -2021,7 +2020,7 @@ class ModelInferenceSection: Content {
     };
 
     style.BodyPar {
-      "We perform estimation in a Bayesian framework, basing parameter estimates on the joint posterior probability distribution, ";
+      "We perform estimation in a Bayesian framework, in which parameter estimates are based on the joint posterior probability distribution: ";
     };
 
     style.AlignEquations {
@@ -2035,7 +2034,7 @@ class ModelInferenceSection: Content {
       "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
       "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionRateCondition; DotSpace;
       style.ReviewNew {
-        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model, at equilibrium, the length of an alignment is geometrically distributed with parameter "; InsertionProbability; ".) ";
+        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model the length of an alignment at equilibgrium is geometrically distributed with parameter "; InsertionProbability; ".) ";
         "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
         "Developing such priors for segmental homology structures remains an important direction for future work. ";
       }
