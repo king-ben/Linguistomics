@@ -340,7 +340,7 @@ class PaperDataSection: Content {
     };
 
     style.BodyPar {
-      "Latin is a highly synthetic language, with most lexical items having multiple word forms. ";
+      "Latin is a highly synthetic language in which most lexical items having multiple word forms. ";
       "In this study, each lexical item is represented by a single word-form, however. ";
       "For verbs, the present active infinitive is used. ";
       "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word forms. ";
@@ -389,8 +389,8 @@ class PaperDataCuration: Content {
 
     style.TitlePar(title) {
       "Our analysis is coordinated using a program written in the Nytril programming language"; Citep {Nytrilprogram}; DotSpace;
-      "We created an automated framework for the experiment that comprises a reusable IPA library, word data, ";
-      "data quality checks, typeset output and input files for the MCMC software (written in C++). ";
+      "We created an automated framework for the experiment that comprises a reusable IPA library, word forms, ";
+      "data quality checks, typeset output, and input files for the MCMC software (written in C++). ";
     };
 
     style.BodyPar {
@@ -399,14 +399,14 @@ class PaperDataCuration: Content {
       style.FigureReference(Figures.ConceptEncoding); " shows an example of the raw data for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
       "A challenge for programming in linguistics is that the IPA representation of words is expressed in Unicode (UCS), ";
       style.ReviewOld {
-        "not ASCII or ANSI. This requires care with file formats, text encoding and diacritic compositional form. ";
+        "not ASCII or ANSI. This requires care with file formats, text encoding, and diacritic compositional form. ";
       };
       style.ReviewNew {
         "which cannot be represented in a single-byte encoding such as ASCII. ";
-        "Instead, it best stored in UTF8 which is a common, cross-platform, multi-byte encoding for UCS. ";
+        "Instead, it is best stored in UTF-8 which is a common, cross-platform, multibyte encoding for UCS. ";
         "Diacritic compositional form must be standardized to facilitate string equality testing. We chose Form C, but what matters is that the form is consistent across files. ";
       };
-      "Furthermore, each IPA segment string can comprise several UCS code-points, so that the mapping between string characters and segments is not one-to-one. ";
+      "Furthermore, each IPA segment string can comprise several UCS code points, so that the mapping between string characters and segments is not one-to-one. ";
       style.FigureReference(Figures.SegmentEncoding); " shows an example of a more complex encoding where the numbers in grey are the hexadecimal UCS code points for the letters and diacritics. ";
       "Since our analysis requires each word to be separated into segments, a parser converts word strings into arrays of segment objects that facilitate the manipulation of segments at a high level. ";
       "A reusable library of such objects endows each segment with linguistic features that can be used for analysis. ";
@@ -419,7 +419,7 @@ class PaperDataCuration: Content {
       "The MCMC analysis runs for "; Span {config.Generations; TextGroup: true}; " cycles and repeats to check for convergence. ";
       "Samples taken during the first "; Span {config.PreBurn; TextGroup: true}; " cycles of the chain are discarded as burn-in. ";
       "When the analysis is complete, the results are read back into the control program. ";
-      "The resulting tables, trees and graphical figures are automatically generated from the MCMC output and combined with narrative elements created by the authors to make the final paper and supplemental materials. ";
+      "The resulting tables, trees, and graphical figures are automatically generated from the MCMC output and combined with narrative elements created by the authors to make the final paper and supplemental materials. ";
     }
   };
 }
