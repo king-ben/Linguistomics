@@ -1329,8 +1329,8 @@ class PhylogenyResultsSection: Content {
       ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
       "In this study, we adopt the latter assumption and treat Latin as an outgroup to the Romance languages. ";
-      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here"; DotSpace;
-      "Importantly, however, our treatment of Latin does not preclude an ancestral interpretation: if the estimated branch length leading to Latin is zero, Latin is effectively placed at the root of the Romance clade."; DotSpace;
+      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here. "; 
+      "Importantly, however, our treatment of Latin does not preclude an ancestral interpretation: if the estimated branch length leading to Latin is zero, Latin is effectively placed at the root of the Romance clade. ";
     };
 
     style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Bottom, 70%);
@@ -2034,7 +2034,7 @@ class ModelInferenceSection: Content {
       "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
       "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionRateCondition; DotSpace;
       style.ReviewNew {
-        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model the length of an alignment at equilibgrium is geometrically distributed with parameter "; InsertionProbability; ".) ";
+        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model the length of an alignment at equilibrium is geometrically distributed with parameter "; InsertionProbability; ".) ";
         "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
         "Developing such priors for segmental homology structures remains an important direction for future work. ";
       }

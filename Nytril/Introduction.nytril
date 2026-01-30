@@ -299,7 +299,7 @@ class PaperDataSection: Content {
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
       "The orientation toward Latin is purely practical. ";
       "We only used cognate sets in which a cognate could be identified for each language. ";
-      "By starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
+      "By starting from Latin, we maximized the chances of having cognates in all of the Romance languages in our sample. ";
       style.ReviewMark(ReviewComments.C45);
       style.ReviewNew {
         "(It is in principle possible to use incomplete cognate sets, i.e., sets in which at least one language lacks a cognate, but use of complete cognate sets simplifies parameter estimation, which is why we have followed this practice for this initial study.)";
