@@ -144,26 +144,25 @@ class TKF91ApproachSection: Content {
     style.TitlePar(title) {
      "On account of these challenges, we introduce an approach to linguistic phylogenetics in which the observations are cognate word forms";
      Citep {BouchardCote2013; Abner2024}; DotSpace;
-     "The segmental history of the word forms is modeled with a continuous-time Markov model that allows one of three events to occur in an instant of time";
-         Citep {Thorne1991}; ": ";
+     "The segmental history of the word forms is modeled with a continuous-time Markov model that allows one of three types of events to occur in an instant of time: ";
          "(i) a transition from one segment to another; (ii) the insertion of a single segment; or (iii) the deletion of a segment. ";
       "Our treatment allows us to analyze data in a manner akin to molecular phylogenetic analyses in biology. ";
-      "This model was first introduced by Thorne et al.";
-          Citep {Thorne1991}; ", and is known as TKF91 in the molecular evolution literature. ";
+      "This model was first introduced by ";
+          Citet{Thorne1991}; ", and is known as TKF91 in the molecular evolution literature. ";
       "Just as nucleotides are considered equivalent states regardless of their position in the genome, our method treats segments as equivalent across words. ";
-      "We can therefore learn about the rates of individual events by pooling information across different words (or across different segments of a word). ";
+      "We can therefore learn about the rates of individual event types by pooling information across different words (or across different segments of a word). ";
       "This approach circumvents the four problems of root-meaning traits described above. ";
     };
 
     style.BodyPar {
-     "Although the TKF91 model can be used to, in principle, infer phylogenies, we focus in this study on its ability to estimate rates of changes among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
+     "Although the TKF91 model can in principle be used to infer phylogenies, we focus in this study on its ability to estimate rates of change among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
      "There are a variety of methods for estimating the diachronic stability of segments";
      Citep {Wichmann2009; Moran2018; Moran2021};
      ", but none is phylogenetically based or uses models of segmental transitions. ";
      "Indeed, one of the strengths of our approach is that it can take advantage of a rich set of segment-transition models, which are not limited by considerations of the labeling assigned to the states. ";
      "We illustrate the power of the TKF91 model with a sample of ";
      Enumerators.Cardinal(data.Taxa.Length-1);
-     " Romance languages and Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
+     " Romance languages plus Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
      "First, vowels are for the most part less stable over time than consonants. " ;
      "Second, a model of sound change in which parameters are shared among natural classes of phonemes outperforms simpler models. " ;
      "Finally, the equilibrium frequencies indicate that Romance languages make disproportionately frequent use of stops and short vowels in word forms, relative to other segment classes. " ;
@@ -171,7 +170,7 @@ class TKF91ApproachSection: Content {
 
     style.BodyPar {
       "The remainder of this paper is structured as follows. ";
-      "Sections 2 and 3 introduce the data and methods, respectively, which are followed by a presentation of the results in section 4. ";
+      "Sections 2 and 3 introduce the data and methods, respectively, which are followed by a presentation of the results in Section 4. ";
       "Section 5 situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
       "Section 6 brings the paper to a close with a recapitulation of the main points and identifies possibilities for expanding the TKF91 approach. ";
     };
@@ -285,7 +284,7 @@ class PaperDataSection: Content {
       "whose geographic distribution is presented in ";
 
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
-      "The word forms are cognate in the traditional sense in that they refer to word forms that descend from a common ancestor"; Citep {Chang2015.OnPage(201)}; DotSpace;
+      "The word forms are cognate in the traditional sense: they descend from a common ancestor"; Citep {Chang2015.OnPage(201)}; DotSpace;
       "In contrast to root-meaning traits (such as the one illustrated in ";
          style.TableReference(TableFigures.CognateCoding); "), meaning is irrelevant to cognacy"; DotSpace;
       "For instance, the Latin adjective "; textit{"gravis"};  " means "; style.SQuoteComma{"heavy"}; "but French "; textit{"grave"}; " means "; style.SQuoteEnd{"serious"};
@@ -299,7 +298,8 @@ class PaperDataSection: Content {
       "For each Latin lexeme, we collected its cognates in our "; langcount; " Romance languages from etymological dictionaries. ";
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
       "The orientation toward Latin is purely practical. ";
-      "We only used cognate sets in which a cognate could be identified for each language and by starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
+      "We only used cognate sets in which a cognate could be identified for each language. ";
+      "By starting from Latin we maximized the chances of having cognates in all of the Romance languages in our sample. ";
       style.ReviewMark(ReviewComments.C45);
       style.ReviewNew {
         "(It is in principle possible to use incomplete cognate sets, i.e., sets in which at least one language lacks a cognate, but use of complete cognate sets simplifies parameter estimation, which is why we have followed this practice for this initial study.)";
@@ -357,7 +357,7 @@ class PaperDataSection: Content {
     style.BodyPar{
       style.ReviewMark(ReviewComments.C4);
       "The lexical histories of the Romance languages are notoriously complex"; Citep {Stefenelli1992; Dworkin2016b};
-      ", as they have been shaped not only by inheritance but also by borrowings from both other Romance languages and Latin itself. ";
+      ", as they have been shaped not only by inheritance but also by borrowings from other Romance languages as well as Latin itself. ";
       "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
       "In fact, Romance data are in many ways ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
       "Two reasons are responsible for this reduced risk. ";
