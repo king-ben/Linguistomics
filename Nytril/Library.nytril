@@ -195,7 +195,7 @@ class AlignPairClass: DocumentEntry {
       SpaceAfter: 10pt;
       HBox(100%) {
         Justify: Justifiers.SpaceBetween;
-        Name;
+        TableName;
         if (Alignments.Length > 1)
           GetChart(new(3", 0.75"), max);
       };
