@@ -3,18 +3,28 @@
 \usepackage{verbatim}
 \usepackage{array}
 \usepackage{booktabs}
-\usepackage{lineno}
 \usepackage{fontspec}
 \setmainfont{Libertinus Serif}
 \begin{document}
-\linenumbers
 \journaltitle{Journal of Language Evolution}
 \copyrightyear{2026}
 \pubyear{2026}
 \appnotes{Paper}
 \firstpage{1}
 \title{Understanding linguistic evolution using an event-based model}
-\author{Anonymous submission}
+\author[1,$\ast$]{David M. Goldstein}
+\author[2]{Shawn H. McCreight}
+\author[3]{\'{E}va Buchi}
+\author[4]{John P. Huelsenbeck}
+
+\address[1]{\orgdiv{Department of Linguistics}, \orgname{University of California, Los Angeles}\orgaddress{\street{UCLA}, \postcode{90095-1543}, \state{California}}}
+\address[2]{\orgdiv{Nytril LLC}, \orgaddress{\street{2904 Horsehead Bay Dr. NW}, \postcode{98335}, \state{Washington}}}
+\address[3]{\orgdiv{Centre national de la recherche scientifique}, }
+\address[4]{\orgdiv{Department of Integrative Biology}, \orgname{University of California, Berkeley}\orgaddress{\street{UC Berkeley}, \postcode{94720}, \state{California}}}
+
+
+\corresp[$\ast$]{David M. Goldstein\href{email:dgoldstein@humnet.ucla.edu}{dgoldstein@humnet.ucla.edu}}
+
 \abstract{Linguistic phylogenies are standardly inferred from abstract cognate relationships among lexemes. Despite the prevalence of this practice, it suffers from well-known drawbacks: it disregards the phylogenetic signal in the segmental form of words; the types of questions that can be addressed are limited; and it treats cognate judgments, which are hypotheses, as observations. In this study, we present a framework for comparative linguistic analysis that overcomes these deficiencies. At the heart of our framework is the TKF91 model, which is a model of molecular evolution originally developed to account for insertion and deletion events in DNA sequences. Within this framework phylogenetic inferences can be drawn directly from cognate word forms, which opens a new horizon of possibilities for historical and evolutionary linguistics. We showcase in particular the ability of this framework to deliver new insights into sound change and the evolution of segmental inventories.}
 
 \keywords{Bayesian inference, Language Evolution, Phylogenetics, Markov chain Monte Carlo, Phonology, Romance}
@@ -314,10 +324,13 @@ We have presented the first application of the TKF91 model to a linguistic datas
 The code and data for this study are available on \href{https://github.com/jhuelsenbeck/Linguistomics}{GitHub}. 
 
 \section{Author contributions statement}
-Anonymous submission
+D.M.G. collected data, \'{E}.B. reviewed it, S.H.M. developed the control software, and J.P.H. developed the MCMC software. D.M.G., S.H.M., and J.P.H. wrote the manuscript. 
 
 \section{Acknowledgements}
-Anonymous submission
+We thank Gerton Lunter for help with the TKF91 model.
+
+\section{Funding}
+J.P.H. was supported through NSF (1759909) and the Koret Foundation. 
 
 
 \bibliographystyle{abbrvnat}
