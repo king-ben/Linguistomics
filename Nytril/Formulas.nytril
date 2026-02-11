@@ -603,7 +603,7 @@ readonly namespace<Equation> Equations {
       Equals;
       "{"; qij; "}";
       Equals;
-      StateSection.StateMatrix(PaperSections.Methods.StateCount);
+      StateSection.StateMatrix(PaperSections.PhylogenyModel.StateCount);
       Space;
       RateMatrixScale;
     };

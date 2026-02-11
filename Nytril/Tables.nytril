@@ -675,7 +675,7 @@ class SegmentAssignmentsFigure: ExperimentContent {
     super.Constructor(data, "Segment Assignments");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     Paragraph {
       var textheight = 18pt;
       TextHeight: textheight;

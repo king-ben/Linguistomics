@@ -1563,7 +1563,7 @@ class FrequencyFigure: Content {
     Chart = chart;
   }
 
-  override GetBody(ContentStyle style, title) = Chart.ShowChart(style);
+  override GetBody(ContentStyle style) = Chart.ShowChart(style);
 }
 
 //======================================================================

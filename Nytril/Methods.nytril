@@ -14,7 +14,7 @@ class PartitionAssignmentsFigure: Content {
 
   override GetCaption(ContentStyle style) = Rule.GetCaption(style);
 
-  override GetBody(ContentStyle style, title) = Rule.ShowPartitions;
+  override GetBody(ContentStyle style) = Rule.ShowPartitions;
 }
 
 //======================================================================
@@ -36,7 +36,7 @@ class ExperimentalRunFigure: Content {
     }
 
     if (anytree) {
-      style.FirstPar {
+      style.Par {
         Lang.Model;
         ColonSpace;
         model.Name;
@@ -57,7 +57,7 @@ class ExperimentalRunFigure: Content {
     style.DQuote {MainResults.Data.Name};
   };
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
     Span {
@@ -88,7 +88,7 @@ class ModelTreesFigure: Content {
     "Model trees used in all analyses";
   };
 
-  override GetBody(ContentStyle style, title) = HBox {
+  override GetBody(ContentStyle style) = HBox {
     var sep   = 20pt;
     var trees = TreeExamples.PriorTrees.Length;
     var w     = (ExtentWidth - sep * (trees-1)) / trees;
@@ -112,7 +112,7 @@ class ExperimentalRunsFigure: Content {
     "The width of the lines is proportional to the estimated rates. ";
   };
 
-  override GetBody(ContentStyle style, title) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
+  override GetBody(ContentStyle style) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
 }
 
 //======================================================================
@@ -123,15 +123,16 @@ readonly AlignmentsFigure Figures.Alignments = new;
 
 class AlignmentsFigure: Content {
   Constructor {
-    super.Constructor("Alignments");
+    super.Constructor("Alignment categories");
   }
 
   override GetCaption(ContentStyle style) = Span {
-    ExperimentResults.CutoffPercent;
-    " credible set of alignments";
+   "All cognate categories showing the number of alignments to reach the ";
+   ExperimentResults.CutoffPercent;
+   " credible interval. ";
   };
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     AlignmentResults.ShowChart(style, new(ExtentWidth, ExtentHeight - 1"));
   };
 }
@@ -147,10 +148,10 @@ class AllAlignmentsFigure: Content {
 
   override GetCaption(ContentStyle style) = Span {
     ExperimentResults.CutoffPercent;
-    " credible set of alignments";
+    " credible set of alignments for each category. ";
   };
 
-  override GetBody(ContentStyle style, title) = AlignmentResults.ShowAll;
+  override GetBody(ContentStyle style) = AlignmentResults.ShowAll;
 }
 
 //======================================================================
@@ -165,7 +166,7 @@ class AlignmentExamplesFigure: Content {
 
   override GetCaption(ContentStyle style) = "Credible sets for cognate alignments";
 
-  override GetBody(ContentStyle style, title) = AlignmentResults.ShowSet(Examples, true);
+  override GetBody(ContentStyle style) = AlignmentResults.ShowSet(Examples, true);
 }
 
 readonly AlignmentExamplesFigure Figures.AlignmentExamples = new(
@@ -185,7 +186,7 @@ class SingleAlignmentFigure: AlignmentExamplesFigure {
     "The alignments are ordered from the highest posterior probability (top-left alignment) to the lowest posterior probability (bottom-right alignment) in row order. ";
   };
 
-  override GetBody(ContentStyle style, title) = AlignmentResults.ShowSet(Examples, false);
+  override GetBody(ContentStyle style) = AlignmentResults.ShowSet(Examples, false);
 }
 
 readonly SingleAlignmentFigure Figures.AlignmentExample1 = new(16, 4, "Flower");
@@ -301,7 +302,7 @@ class AlignmentCompareFigure: Content {
     }
   };
 
-  override GetBody(ContentStyle style, title) = VBox {
+  override GetBody(ContentStyle style) = VBox {
     var data = MainResults.Data;
     foreach (var m in Models) {
       Paragraph {
@@ -327,7 +328,7 @@ class ExchangeabilityTable: Content {
     super.Constructor(Lang.Exchangeability);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var th = ExtentWidth * 0.015;
     style.SansSerif;
     TextHeight: th;
@@ -402,7 +403,7 @@ class NaturalClassRateChart: Content {
     "Shaded area represents the 95% credible interval. ";
   };
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     style.SansSerif;
     TextHeight: ExtentWidth * 0.015;
 
@@ -501,7 +502,7 @@ class EquilibriumFrequencyChart: Content {
     "The equilibrium frequencies "; EquilibriumDistribution; " of each natural class";
   };
 
-  override GetBody(ContentStyle style, title) = Chart(100%, 2.75") {
+  override GetBody(ContentStyle style) = Chart(100%, 2.75") {
     ChartType: ChartTypes.Bar;
     style.SansSerif;
     TextHeight: 11pt;
@@ -565,7 +566,7 @@ class GapFrequencyChart: Content {
      ".)";
   };
 
-  override GetBody(ContentStyle style, title) = HBox {
+  override GetBody(ContentStyle style) = HBox {
     style.SansSerif;
     VAlign: Center;
     PaperStyle.ValueLabel {
@@ -623,7 +624,7 @@ class QRatesMatrixFigure: Content {
     super.Constructor("Rate Matrix " RateMatrix);
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
 }
 
 //======================================================================
@@ -639,7 +640,7 @@ class QRatesDiagonalFigure: Content {
     "The rate of change when in a particular segmental state (or "; -qii; ")"
   };
 
-  override GetBody(ContentStyle style, title) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
+  override GetBody(ContentStyle style) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
 }
 
 //======================================================================
@@ -659,7 +660,7 @@ class LanguageDistributionFigure: Content {
     "Approximate geographic distribution of the Romance languages examined in this study.";
   };
 
-  override GetBody(ContentStyle style, title) = Paragraph {
+  override GetBody(ContentStyle style) = Paragraph {
     ParAlignment: Center;
     HBox {
       VAlign: Center;
@@ -697,7 +698,7 @@ class AverageAllFigure: Content {
     super.Constructor("All Rates");
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowAllRates;
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowAllRates;
 }
 
 //======================================================================
@@ -709,7 +710,7 @@ class AverageSortedFigure: Content {
     super.Constructor("Rate vs. Direction");
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowRateDirected;
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowRateDirected;
 }
 
 //======================================================================
@@ -721,7 +722,7 @@ class RateDirectionFigure: Content {
     super.Constructor("Directionality");
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowDirection;
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowDirection;
 }
 
 //======================================================================
@@ -735,7 +736,7 @@ class SpecificRatesFigure: Content {
 
   static bool Predicate(SegmentRate a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
 }
 
 TransitionTitle(type) = "The top {0} {1} transitions"(TopCount, type);
@@ -749,7 +750,7 @@ class QRatesTopFigure: Content {
     super.Constructor(TransitionTitle("segmental"));
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Extrema(TopCount, true);
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Extrema(TopCount, true);
 }
 
 //======================================================================
@@ -764,7 +765,7 @@ class QRatesCCFigure: Content {
   static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
                                        a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.Pairs(TopCount, @Predicate);
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(TopCount, @Predicate);
 }
 
 //======================================================================
@@ -776,7 +777,7 @@ class QRatesOneWayFigure: Content {
     super.Constructor(TransitionTitle("highly directed"));
   }
 
-  override GetBody(ContentStyle style, title) = MainResults.MainRun.QRates.ShowChartPairs(TopCount, MainResults.MainRun.QRates.SortByDirection);
+  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowChartPairs(TopCount, MainResults.MainRun.QRates.SortByDirection);
 }
 
 //======================================================================
@@ -793,7 +794,7 @@ class AllFrequenciesFigure: Content {
 
   override GetCaption(ContentStyle style) = "The frequency of occurrance of each segment for all languages";
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     Display.FrequencyChart(style, new(ExtentWidth, Math.Min(ExtentHeight, 5")));
   };
 }
@@ -807,7 +808,7 @@ class ConsensusTree: Content {
     super.Constructor(Lang.ConsensusTree);
   }
 
-  override GetBody(ContentStyle style, title) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
+  override GetBody(ContentStyle style) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
 }
 
 //======================================================================
@@ -831,7 +832,7 @@ class SegmentOccuranceFigure: ExperimentContent {
 
   override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
 
-  override GetBody(ContentStyle style, title) = new SegmentFrequencyChart(Data, false).ShowChart(style);
+  override GetBody(ContentStyle style) = new SegmentFrequencyChart(Data, false).ShowChart(style);
 }
 
 //======================================================================
@@ -843,7 +844,7 @@ class SegmentGroupedFigure: ExperimentContent {
     super.Constructor(data, "Segment Occurance Rates (by partition)");
   }
 
-  override GetBody(ContentStyle style, title) = new SegmentFrequencyChart(Data, true).ShowChart(style);
+  override GetBody(ContentStyle style) = new SegmentFrequencyChart(Data, true).ShowChart(style);
 }
 
 //======================================================================
@@ -857,7 +858,7 @@ class PartitionFrequenciesFigure: ExperimentContent {
 
   override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
 
-  override GetBody(ContentStyle style, title) = new PartitionFrequencyChart(Data).ShowChart(style);
+  override GetBody(ContentStyle style) = new PartitionFrequencyChart(Data).ShowChart(style);
 }
 
 //======================================================================
@@ -914,7 +915,7 @@ class ExampleTreeFigure: Content {
     "An example tree showing the relationships of {0} languages."(SampledLanguages(MainResults.Data.LanguageSet.Length));
   };
 
-  override GetBody(ContentStyle style, title) = PaperStyle.ShowTree(style, MainResults.Data.NumberedTree, 5", null, null, false);
+  override GetBody(ContentStyle style) = PaperStyle.ShowTree(style, MainResults.Data.NumberedTree, 5", null, null, false);
 }
 
 //======================================================================
@@ -926,7 +927,7 @@ class ExampleConceptsFigure: Content {
     super.Constructor(Lang.ConceptsExamples);
   }
 
-  override GetBody(ContentStyle style, title) = AllWords.ShowTable(style, MainResults.Data, 11pt, 2);
+  override GetBody(ContentStyle style) = AllWords.ShowTable(style, MainResults.Data, 11pt, 2);
 }
 
 //======================================================================
@@ -938,7 +939,7 @@ class LanguagesUsedFigure: Content {
     super.Constructor(Lang.Languages);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var rows      = 2;
     var data      = MainResults.Data;
     var cols      = (data.Taxa.Length + 1) div rows;
@@ -1157,7 +1158,7 @@ class AlignmentFigure: Content {
     "). ";
   };
 
-  override GetBody(ContentStyle style, title)= VBox {
+  override GetBody(ContentStyle style)= VBox {
     TextHeight: 10pt;
     Separation: 4pt;
     Margin: PadB(5pt);
@@ -1261,7 +1262,7 @@ class ResultsSection: Content {
  }
 
 /*
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     style.TitlePar(title) {
 
     };
@@ -1278,8 +1279,8 @@ class PhylogenyResultsSection: Content {
     super.Constructor("Phylogeny");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Our statistical analysis treats all model parameters as random variables with prior probability distributions. ";
       "The tree topology describing the relationships of the languages is also considered a random variable with a uniform prior probability in which all possible tree topologies are assigned equal prior probability. ";
       "As described in the Methods section, we use MCMC to numerically approximate the posterior probability distribution of the model parameters. ";
@@ -1287,14 +1288,14 @@ class PhylogenyResultsSection: Content {
         "the MCMC algorithm would find a good tree then become stuck on it. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "In our MCMC implementation, parameters are updated in blocks. ";
       "A parameter is randomly selected and then updated. In a single MCMC cycle, either the tree topology or the alignment is updated, but not both simultaneously. ";
       "The tree topology and alignments are confounded. As the MCMC procedure found better trees, the alignments that were accepted by the MCMC procedure tended to fit the current tree in computer memory. ";
       "As the alignment becomes better adapted to the current tree in memory, it becomes more difficult for the MCMC procedure to accept alternative topologies, even if they would be sensible on a different alignment.";
     };
 
-    style.BodyPar {
+    style.Par {
       var run = MainResults.MainRun;
       TextDigits: 3;
       "This problem was likely not encountered in the other implementations of the TKF91 model";
@@ -1310,7 +1311,7 @@ class PhylogenyResultsSection: Content {
        "specific tree topologies, and this tree support could change depending on the homology assignments for the alignment.";
     };
 
-    style.BodyPar {
+    style.Par {
       "In all subsequent analyses, we use the three topologies presented in "
        style.FigureReference(Figures.ModelTreesUsed); ". ";
       "Although there is considerable debate about the topology of the Romance languages, in recent decades most specialists have converged on the view that the first two clades to ";
@@ -1321,7 +1322,7 @@ class PhylogenyResultsSection: Content {
       "The sub-trees containing the remaining dialects differ in their topologies, but they all contain Spanish and Portuguese as a clade, as well as Catalan, French, and Walloon. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin, ";
       style.ReviewNew {
         "Proto-Romance";
@@ -1329,7 +1330,7 @@ class PhylogenyResultsSection: Content {
       ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
       "In this study, we adopt the latter assumption and treat Latin as an outgroup to the Romance languages. ";
-      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here. "; 
+      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here. ";
       "Importantly, however, our treatment of Latin does not preclude an ancestral interpretation: if the estimated branch length leading to Latin is zero, Latin is effectively placed at the root of the Romance clade. ";
     };
 
@@ -1398,13 +1399,13 @@ class SegmentModelsFigure: Content {
     super.Constructor("Models of segmental change");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data     = MainResults.Data;
     var rule     = data.Rule;
     var segments = data.UniqueSegments.Length - 1;
     var rp       = rule.Filters.Length;
 
-    style.TitlePar(title) {
+    style.Par {
       "We consider three models of segmental change in this study: ";
       PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
       Citep {Jukes1969};
@@ -1431,8 +1432,8 @@ class ModelComparisonSection: Content {
     super.Constructor("Model Comparison");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.BodyPar {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "We compared the fit of the three models described above in section 3 to the data using the Bayes factor. ";
       "The Bayes factor is the ratio of the marginal likelihoods, ";
     };
@@ -1441,7 +1442,7 @@ class ModelComparisonSection: Content {
       style.LineEquation(Equations.BayesFactorEq);
     };
 
-    style.ResumePar {
+    style.Par {
       "with ratios greater than one favoring model "; ModelI; ". ";
       "As the models examined are nested, we could calculate the Bayes factor using the Savage-Dickey ratio";
         Citep {Dickey1971}; ", ";
@@ -1469,7 +1470,7 @@ class WordTransformationSection: Content {
 
   SelfArrow(text) = Span {text; Tex.rightarrow; text};
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data        = MainResults.Data;
     var rule        = data.Rule;
     var rp          = rule.Filters.Length;
@@ -1494,7 +1495,7 @@ class WordTransformationSection: Content {
       }
     }
 
-    style.TitlePar(title) {
+    style.Par {
       style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal elements of the rate matrix of the continuous-time Markov model describing phonemic ";
           "change estimated under the "; NaturalModelName; DotSpace;
       "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
@@ -1506,7 +1507,7 @@ class WordTransformationSection: Content {
 
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
 
-    style.BodyPar {
+    style.Par {
       "The most striking aspect of "; style.FigureReference(Figures.QRatesDiagonal); " is the division between vowels and consonants. ";
       "With the exception of affricates, vowels are the most volatile segments and within this class diphthongs and long vowels are the least stable. ";
       "Overall, the most stable segments are all consonants, with the stops the most stable of all. ";
@@ -1533,7 +1534,7 @@ class WordTransformationSection: Content {
     };
 
 
-    style.BodyPar {
+    style.Par {
       style.FigureReference(Figures.EquilibriumCharts);
       " shows the estimated equilibrium frequencies of the "; NaturalModelName; " "; NaturalClassModel; DotSpace;
       "These equilibrium frequencies play two roles in the calculation of the likelihood of the observed data. ";
@@ -1549,7 +1550,7 @@ class WordTransformationSection: Content {
       "More generally, the estimated equilibrium frequencies closely track the empirical frequencies of segments in the data. ";
     };
 
-    style.BodyPar {
+    style.Par {
       style.FigureReference(Figures.RateChart);
       " shows the estimated rates of change between the "; rp; " groups of the "; NaturalModelName; DotSpace;
       "Rates of change are generally highest among segments in the same class. ";
@@ -1610,8 +1611,8 @@ class WordSegmentRelSection: Content {
     super.Constructor("Segmental Alignments");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       var align1 = Figures.AlignmentExample1;
       var index1 = align1.Examples[0].FindAlignment(MainResults.MainRun);
 
@@ -1638,7 +1639,7 @@ class WordSegmentRelSection: Content {
 
     style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Bottom, 80%);
 
-    style.BodyPar {
+    style.Par {
       var align2 = Figures.AlignmentExample2;
 
       style.ReviewMark(ReviewComments.C5);
@@ -1695,8 +1696,8 @@ class OtherApproachesSection: Content {
     super.Constructor("The TKF91 Framework Compared to Other Approaches");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Approaches to sound change in the linguistics literature vary. ";
       "One prominent view identifies phonemes as the basic units of change"; Citep {Bloomfield1933}; ", ";
       "according to which sound change is abrupt and non-independent. ";
@@ -1707,14 +1708,14 @@ class OtherApproachesSection: Content {
       ", while yet another view contends that sound change occurs by gradually making its way through the lexicon in a process known as lexical diffusion"; Citep {Chen1975a; Phillips2015}; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "Our framework is not situated within any one of these traditions, but rather has affinities with the phonemic approach and lexical diffusion. Since our observations are phonemic strings, it is phonemes that undergo insertions, deletions, and transitions. ";
       "In contrast to the standard assumption of historical linguistics, however, these changes are treated as independent. ";
       "For instance, a change from "; VocalSegments.ah; " to "; VocalSegments.oh; " is not modeled as a single transition across all word-forms in our study. ";
       "Instead, a rate of change is inferred based on the homologies of "; VocalSegments.ah; " and "; VocalSegments.oh; " in the data and how often the former transitions to the latter. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "The application of the TKF91 model to linguistic data is similar to the analysis of Bouchard-Côté et al.";
       Citep{BouchardCote2013};
       ", who also treat cognate word-forms as observations. Their approach differs, however, in that they applied a string transducer model";
@@ -1726,7 +1727,7 @@ class OtherApproachesSection: Content {
       "Since the TKF91 model is event-based, it is a natural starting point for modeling sound change even if that starting point does not account for processes that are accommodated for in other models, such as the string transducer model. ";
     };
 
-    style.BodyPar {
+    style.Par {
       style.ReviewMark(ReviewComments.C29);
       "The complexity of the likelihood calculations under the TKF91 model is exponential in the number of taxa and word length. Specifically, the complexity is of order ";
       Equations.LikelihoodComplexity;
@@ -1751,35 +1752,35 @@ class SoundChangeSection: Content {
     super.Constructor("Insights into Sound Change");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "In contrast to traditional historical phonology, which is primarily concerned with individual sound changes and their relative chronologies, the TKF91 approach yields insights into broader systemic trends in the evolution of sounds and segmental inventories" DotSpace;
       "We focus here on three measures that illuminate both aspects: the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies" DotSpace;
       "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
     };
 
-style.BodyPar {
-  "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
-  "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
-  "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
-  "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
-  "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowel inventories have changed more rapidly than consonant inventories in Indo-European" DotSpace;
-};
+    style.Par {
+      "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
+      "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
+      "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
+      "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
+      "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowel inventories have changed more rapidly than consonant inventories in Indo-European" DotSpace;
+    };
 
-style.BodyPar {
-  "Our findings also overlap to some extent with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
-  "For example, the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-  "There is even stronger convergence with the set of primal consonants proposed by Bybee and Easterday";
-  Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
-  "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
-  "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
-  "That is, they infrequently arise as the output of sound change processes" DotSpace;
-  "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
-  "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
-  "While our results are relevant to the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
-};
+    style.Par {
+      "Our findings also overlap to some extent with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
+      "For example, the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
+      "There is even stronger convergence with the set of primal consonants proposed by Bybee and Easterday";
+      Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/" DotSpace;
+      "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
+      "First, these consonants are considered primal because they are only rarely created through sound change" DotSpace;
+      "That is, they infrequently arise as the output of sound change processes" DotSpace;
+      "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
+      "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
+      "While our results are relevant to the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
+    };
 
-    style.BodyPar {
+    style.Par {
       "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
       "In addition, the focus is not on transitions among individual segments, but rather transitions within and between natural classes" DotSpace;
       "For instance, the circles on the diagonal represent the average transition rate within each natural class"; DotSpace;
@@ -1794,14 +1795,14 @@ style.BodyPar {
       "This latter trend is driven by the emergence of nasalized vowels in French and Portuguese"; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
      "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insight into the distribution of phonemic segments across major segment classes in Romance languages"; DotSpace;
      "The combined frequency of short vowels and stop consonants exceeds 0.5, indicating that on average more than half of the segments in a word are drawn from these two classes"; DotSpace;
      "This distributional skew reflects the diachronic developments discussed above"; DotSpace;
      "In particular, the reduction of diphthongs and long vowels leads to a decrease in their frequency of occurrence, with a corresponding increase in the frequency of short vowels"; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "Finally, the results of model comparison support the relevance of natural classes in sound change"; Citep{King1969.OnPage(201)}; DotSpace;
       "It is well established that sound changes often target natural classes of segments"; DotSpace;
       "Grimm’s Law, for instance, systematically affects all ";
@@ -1823,8 +1824,8 @@ class SegmentalSamplingSection: Content {
     super.Constructor("Segmental Sampling");
   }
 
-   override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+   override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Citep {References.Dockum2019}; DotSpace;
       "Certain segmental transitions can play a crucial role in topological inference, but under a sampling scheme such as ours, in which selection of concepts is guided by a Swadesh list, ";
       "there is no guarantee that the necessary segmental correspondences will be sampled. ";
@@ -1852,8 +1853,8 @@ class LimitationsSection: Content {
     super.Constructor("Limitations of the event-based model");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Our results are based on a model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
       "Certain patterns of sound change cannot therefore be captured under such a model. ";
       "For instance, metathesis, a change in which two segments exchange positions, is modeled as two separate transitions. ";
@@ -1876,15 +1877,15 @@ class AdvantagesSection: Content {
     super.Constructor("Advantages of the event-based approach");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       style.ReviewMark(ReviewComments.C11);
       "Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
      };
 
     style.AddFigure(Figures.GappinessChart, FigureOptions.Bottom, 70%);
 
-    style.BodyPar {
+    style.Par {
       "By casting the problem of language change in a statistical framework, we inherit the benefits of the statistical approach to estimate model parameters and, perhaps more importantly, to compare alternative models of language change to find the model that best explains the data. In this way, linguists can learn about language evolution by devising models that account for potential linguistic phenomena, then testing the model against models that do not account for the linguistic feature. This approach has proven successful in molecular evolution where models have been described and tested that account for many evolutionary processes of molecular change.";
     };
 
@@ -1905,8 +1906,8 @@ class PaperMethodsSummary: Content {
     AddContent(PaperSections.DataCuration);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "A detailed description of the model and analysis can be found in the Supplemental Material. ";
       "What follows is an outline, sufficient in detail to provide an understanding of the model and experiments performed in this study.";
     };
@@ -1935,7 +1936,7 @@ class ManualAlignmentFigure: Content {
     WordDisplay(style);
   };
 
-  override GetBody(ContentStyle style, title) = LanguageTable([Column.Fit(2"), Column.Fit(2"), Column.Fit(1")]) {
+  override GetBody(ContentStyle style) = LanguageTable([Column.Fit(2"), Column.Fit(3"), Column.Fit(1.5")]) {
     ParAlignment: Center;
     TextHeight: Math.Max(ExtentWidth * 0.02, 9pt);
 
@@ -1977,7 +1978,7 @@ class WordCountTable: Content {
     };
   };
 
-  override GetBody(ContentStyle style, title) = LanguageTable([1.5"]) {
+  override GetBody(ContentStyle style) = LanguageTable([2"]) {
     LanguageTitleRow {
       Lang.Language; Lang.WordForms; Lang.SegmentCount;
     };
@@ -2004,10 +2005,10 @@ class ModelInferenceSection: Content {
     super.Constructor("Model and Statistical Inference");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var rule = MainResults.Data.Rule;
 
-    style.TitlePar(title) {
+    style.Par {
       "We assume that the languages under investigation are related to one another through an unknown phylogenetic tree, ";
       UnknownTree;
       ", that contains information on the relatedness of the languages ";
@@ -2019,7 +2020,7 @@ class ModelInferenceSection: Content {
       "The rates of change between all pairs of states are contained in the rate matrix "; RateMatrix; ", which is governed by parameters ";  RateMatrixParams; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "We perform estimation in a Bayesian framework, in which parameter estimates are based on the joint posterior probability distribution: ";
     };
 
@@ -2027,7 +2028,7 @@ class ModelInferenceSection: Content {
       style.LineEquation(Equations.BayesianEstimation);
     };
 
-    style.ResumePar {
+    style.Par {
       "where "; SegmentalInfo; " are the observed segments for the cognate words. ";
       "The likelihood function, "; LiklihoodFunction;
       ", is calculated using the algorithm of Lunter "; textit{"et al."}; Citep {Lunter2003}; DotSpace;
@@ -2040,7 +2041,7 @@ class ModelInferenceSection: Content {
       }
     };
 
-    style.BodyPar {
+    style.Par {
       "We numerically approximate the posterior distribution of the parameters using MCMC. ";
       "Specifically, we constructed a Markov chain that has as its states the parameters of the model and a stationary distribution that is the posterior distribution of interest. ";
       "Samples from this chain when at stationarity are valid, albeit dependent, samples from the posterior distribution. ";
@@ -2049,7 +2050,7 @@ class ModelInferenceSection: Content {
 
     style.AddTable(Figures.PartitionAssignments, FigureOptions.Bottom, 98%);
 
-    style.BodyPar {
+    style.Par {
       style.ReviewMark(ReviewComments.C44);
       var number = Enumerators.Cardinal(rule.Filters.Length);
       "Our model of segmental transitions is based on phonological natural classes, which are classes of segments that share phonetic properties. ";
@@ -2081,7 +2082,7 @@ class ConceptEncodingFigure: Content {
     "The concept "; style.SQuote{TextCase: TextCases.AllLower; Concept.Name}; " as coded in the data file.";
   };
 
-  override GetBody(ContentStyle style, title) = Paragraph {
+  override GetBody(ContentStyle style) = Paragraph {
     ParAlignment: Center;
     Frame(2.5") {
       SourcePar(Data, Concept.Concept)
@@ -2102,7 +2103,7 @@ class SegmentEncodingFigure: Content {
     "The IPA-Unicode encoding of a segment.";
   };
 
-  override GetBody(ContentStyle style, title) = Paragraph {
+  override GetBody(ContentStyle style) = Paragraph {
     ParAlignment: Center;
     Frame {
       VocalSegments.VlAlveolarNSAffricate.Display(20pt);
@@ -2142,7 +2143,7 @@ class WorkflowFigure: Content {
     };
   };
 
-  override GetBody(ContentStyle style, title) = HBox(100%) {
+  override GetBody(ContentStyle style) = HBox(100%) {
     HAlign: Center;
     VBox {
       HAlign: Right;
@@ -2193,8 +2194,8 @@ class ConclusionSection: Content {
     super.Constructor("Conclusion");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       style.ReviewMark(ReviewComments.C24);
       "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
       "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). ";
@@ -2216,7 +2217,7 @@ class ConclusionSection: Content {
 
     style.AddFigure(Figures.SegmentEncoding, FigureOptions.Bottom, 50%);
 
-    style.BodyPar {
+    style.Par {
       "The code and data for this study are available on ";
       Span {
         TipAction: new URL("https://github.com/jhuelsenbeck/Linguistomics");
@@ -2237,14 +2238,65 @@ class AcknowledgementsSection: Content {
     super.Constructor("Acknowledgements");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      if (style.IsAnonymous)
+        DocLang.Anonymous;
+      else {
+        "We thank "; style.ShowPerson(People.Lunter_Gerton); " for help with the TKF91 model. ";
+        "Earlier versions of this work were presented at the Computational Phylogenetics and Language (Pre)history Workshop, EvoLang 2024, and the UCLA Phonology Seminar. ";
+        "We are grateful to audiences at all three venues for their feedback and in particular to Chundra Cathcart, Frederik Hartmann, Simon Greenhill, and Gerhard Jäger. ";
+        "We would also like to thank the three anonymous reviewers for insightful comments that improved several aspects of the paper.";
+      }
+    }
+  };
+}
+
+//======================================================================
+
+readonly FundingSection PaperSections.Funding = new;
+
+class FundingSection: Content {
+  Constructor {
+    super.Constructor("Funding");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       if (style.IsAnonymous)
         DocLang.Anonymous;
       else {
         style.ShowInitials(People.Huelsenbeck_John);
         " was supported through NSF (1759909) and the Koret Foundation. ";
-        "We thank "; style.ShowPerson(People.Lunter_Gerton); " for help with the TKF91 model.";
+      }
+    }
+  };
+}
+
+//======================================================================
+
+readonly BiographySection PaperSections.Biography = new;
+
+class BiographySection: Content {
+  Constructor {
+    super.Constructor("Biography");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "Brief biographies of the authors. ";
+    };
+
+    style.NumberedList {
+      foreach (var b in BioSummaries) {
+        Paragraph {
+          Span {
+            Bold;
+            style.ShowPerson(b.Author);
+          };
+          ColonSpace;
+          b.Text;
+        };
       }
     }
   };
@@ -2259,8 +2311,8 @@ class ContributionsSection: Content {
     super.Constructor("Author contributions statement");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       if (style.IsAnonymous)
         DocLang.Anonymous;
       else {
@@ -2281,32 +2333,47 @@ class ContributionsSection: Content {
 readonly MethodsSection PaperSections.Methods = new;
 
 class MethodsSection: Content {
-  const StateCount = 5;
-
   Constructor {
     super.Constructor(Lang.Methods);
-//    AddTable(Figures.PartitionAssignments);
+    AddContent(PaperSections.Phylogeny);
+    AddContent(PaperSections.PhylogenyData);
+    AddContent(PaperSections.PhylogenyModel);
+    AddContent(PaperSections.BayesianParameters);
+    AddContent(PaperSections.MCMC);
+    AddContent(PaperSections.MCMCComparison);
+    AddContent(PaperSections.UsedCognates);
+    AddContent(PaperSections.Workflow);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    var data = MainResults.Data;
-    var ec   = new ExampleConcept(data, data.ExampleConcept);
-
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "We describe the assumptions of the models, how their parameters are estimated, and how different models of segmental evolution can be compared in a statistical framework.";
     };
+  };
+}
 
-    style.AddFigure(Figures.ExampleTree, FigureOptions.Bottom | FigureOptions.Full, 70%);
+//======================================================================
 
-    style.BodyPar {
-      BodyTitle {"Phylogeny relating languages"}; DotSpace;
+readonly PhylogenySection PaperSections.Phylogeny = new;
+
+class PhylogenySection: Content {
+  Constructor {
+    super.Constructor("Phylogeny relating languages");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    var data = MainResults.Data;
+
+    style.Par {
       "We assume that the languages in our study group are related by an unknown evolutionary tree, called a ";
       style.SQuote {Phylogeny.Name}; ", which we denote "; Phylogeny; DotSpace;
       "The phylogeny contains information on the topological relationships among "; NumLanguages;
       " sampled languages, as well as the divergence times of the languages or the amount of change that occurred between the languages. ";
     };
 
-    style.BodyPar {
+    style.AddFigure(Figures.ExampleTree, FigureOptions.Bottom | FigureOptions.Full, 70%);
+
+    style.Par {
       style.FigureReference(Figures.ExampleTree); " shows an example of a phylogeny for "; SampledLanguages(data.Taxa.Length); " languages. ";
       "In the terminology of evolutionary biology, the tree is composed of "; style.SQuote{"nodes"}; " and "; style.SQuoteEnd{"branches"};
       "(By contrast, mathematicians call nodes and branches "; style.SQuote{"vertices"} " and "; style.SQuote{"edges,"}; " respectively.) ";
@@ -2318,13 +2385,13 @@ class MethodsSection: Content {
       "In the tree of "; style.FigureReference(Figures.ExampleTree); ", the ancestor of node 3 is "; EqSpan {AncestorNode(3); Tex.Equals; 13}; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "The branches connect the nodes of the tree and are represented as lines in "; style.FigureReference(Figures.ExampleTree); DotSpace;
       "The branch is assigned the label from its descendant node. In "; style.FigureReference(Figures.ExampleTree);
       ", for instance, the branch connecting nodes 13 and 14 is labeled 15. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "A phylogeny is an information-rich graph. ";
       "For one, it contains information on the relationships of the languages. ";
       "This topological information is denoted "; Topology; DotSpace;
@@ -2367,7 +2434,7 @@ class MethodsSection: Content {
       "For comparison, the number of atoms in the universe is on the order of "; 10 sup 80; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
      "The interior nodes of the tree represent language divergence events that occurred at specific times in the past and are denoted ";
      EqSpan {
        Span {Bold; Time};
@@ -2410,9 +2477,22 @@ class MethodsSection: Content {
      EqSpan {ExpectedEvents sub sym.i};
      ", which are in units of expected number of substitutions per segment (as described below). ";
     };
+  };
+}
+//======================================================================
 
-    style.BodyPar {
-      BodyTitle {"Data"}; DotSpace;
+readonly PhylogenyDataSection PaperSections.PhylogenyData = new;
+
+class PhylogenyDataSection: Content {
+  Constructor {
+    super.Constructor("Data");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    var data = MainResults.Data;
+    var ec   = new ExampleConcept(data, data.ExampleConcept);
+
+    style.Par {
       "The similarities of words from different languages are informative about how the languages are related. ";
       "In this study, we use statistical methods developed in the field of evolutionary biology to estimate the relationships of species based on either the morphological characteristics of the species or the DNA sequences sampled from the same gene and compared across the species. ";
       "The methods assume that the characteristics compared across species are homologous. ";
@@ -2420,7 +2500,7 @@ class MethodsSection: Content {
       "Consider as an example the following DNA sequences sampled from three species,";
     };
 
-    BodyTable([1", 5"]) {
+    style.BodyTable([1", 5"]) {
       foreach (var a in attribute(ExampleAnimals).Children) {
         Row {
           TextHeight: 10pt;
@@ -2436,7 +2516,7 @@ class MethodsSection: Content {
       }
     };
 
-    style.BodyPar {
+    style.Par {
       "These are partial mitochondrial sequences from Gojobori"; Citep {Hayasaka1988}; DotSpace;
       "In the original paper, the complete data had ";
       SampledLanguages(12);
@@ -2446,7 +2526,7 @@ class MethodsSection: Content {
       "Typically, homology at this level is established by sequence similarity and synteny of the gene (i.e., the gene that is compared across species is in the same, or at least similar, position along the chromosome when compared across species, which is another way of saying the gene that is compared has the same neighboring genes in all the species in the analysis). "
     };
 
-    style.BodyPar {
+    style.Par {
       "Not only must the DNA sequences be homologous, but the fine-scale homology of the sequences must also be established. ";
       "The DNA sequences above are in an aligned form in which the fine-scale homology has been established; ";
       "each column of the alignment is considered to be homologous. ";
@@ -2456,7 +2536,7 @@ class MethodsSection: Content {
       "Importantly, phylogenetic methods assume that the homology established by the alignment program is correct.";
     };
 
-    style.BodyPar {
+    style.Par {
       "Our approach to the underyling data for phylogenetic inference is novel within linguistics. ";
       "Like others, we concentrate on the so-called "; style.SQuote{"basic vocabulary"}; " of a language";
       Citep{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023;};
@@ -2470,11 +2550,11 @@ class MethodsSection: Content {
       style.SQuote {ec.Name}; ":";
     };
 
-    SegmentTable(ec, data, true);
+    SegmentTable(style, ec, data, true);
 
     style.AddFigure(Figures.Alignment, FigureOptions.Bottom | FigureOptions.Full, 80%);
 
-    style.ResumePar {
+    style.Par {
       "The word for "; style.SQuote {ec.Name}; " in "; ec.Taxon.Language; ", for example, is "
       "/"; ec.LangWord; "/. ";
       "The matrix assumes that the fine-scale homology of the segments has been established. ";
@@ -2484,7 +2564,7 @@ class MethodsSection: Content {
       " shows two further possibilities. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "Note that a segmental alignment, denoted ";
       SegmentalAlignment;
       ", is constructed by combining the segmental information for the languages of interest with information on the homology of the segments. ";
@@ -2513,9 +2593,9 @@ class MethodsSection: Content {
       style.SQuote {ec.Name}; " is:";
     };
 
-    SegmentTable(ec, MainResults.Data, false);
+    SegmentTable(style, ec, MainResults.Data, false);
 
-    style.BodyPar {
+    style.Par {
       "Here, the segments for "; ec.Taxon.Language; " would be ";
       EqSpan {
         Segment sub 1;
@@ -2542,7 +2622,7 @@ class MethodsSection: Content {
       " that can be formed using two different homology maps. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "Spoken and written word-forms can be observed, but alignments cannot. ";
       "There are many different ways in which the segments of a cognate word can be homologous. ";
       "The example from the word "; ec.Name; ", above, shows only one such way. ";
@@ -2550,27 +2630,39 @@ class MethodsSection: Content {
       "Our method considers all possible segmental alignments of the word-forms in a cognate class, weighting each such possibility by its probability under a model. ";
       "In this way, our method does not condition on any specific segmental alignment.";
     };
+  };
+}
 
-    style.BodyPar {
-      BodyTitle {"Language evolution model"}; DotSpace;
+//======================================================================
+
+readonly PhylogenyModelSection PaperSections.PhylogenyModel = new;
+
+class PhylogenyModelSection: Content {
+  const StateCount = 5;
+
+  Constructor {
+    super.Constructor("Language evolution model");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "We assume that cognate words evolve along the branches of a phylogenetic tree through substitution of one segment by another, insertion of a new segment, or deletion of a segment.";
     };
 
-    style.BodyPar {
+    style.Par {
       "Substitution of one segment for another is modeled using a continuous-time Markov model in which the possible states are the set of segments in the phonemic representations. ";
       "At the heart of a continuous-time Markov chain is a rate matrix describing the rate of change between all pairs of states. ";
       "Consider, for example, a simplified Markov process with only "; Enumerators.Cardinal(StateCount); " segments as states. ";
       "The rates of change between the pairs of states can be represented in tabular form as follows:";
     };
 
-    style.BodyPar {
-      ParAlignment: ParAlignments.Center;
+    style.CenterFigure {
       Frame {
         StateSection.StateTable(StateCount);
       };
     };
 
-    style.ResumePar {
+    style.Par {
       "where ";
       RateChange;
       " is the rate of change from segment "; sym.i; " to segment "; sym.j; DotSpace;
@@ -2582,13 +2674,13 @@ class MethodsSection: Content {
 
     style.LineEquation(RatesOfChangeBetweenStates);
 
-    style.ResumePar {
+    style.Par {
       "The additional parameter ";
       RateMatrixScale;
       " scales the rate matrix such that the average rate of segmental substitution is 1.0.";
     };
 
-    style.BodyPar {
+    style.Par {
       "A continuous-time Markov model has a simple physical interpretation. ";
       "Specifically, when the process is in state "; sym.i; ", one waits an exponentially-distributed time with parameter ";
       -qii; " until the next segmental substitution occurs. ";
@@ -2615,7 +2707,7 @@ class MethodsSection: Content {
       "Both the transition probabilities and equilibrium probability distribution play an important role in calculating the likelihood (see below).";
     };
 
-    style.BodyPar {
+    style.Par {
       "Insertions and deletions of single segments occur at rates ";
       InsertDelete(" and ");
       ", respectively. ";
@@ -2629,7 +2721,7 @@ class MethodsSection: Content {
       "In this case, the words of a language would be reduced to silence. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "The TKF91"; Citep {Thorne1991}; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
       InsertDelete(" and "); DotSpace;
       "They introduced a convention for thinking about a DNA sequence in which nucleotides are connected by invisible links. ";
@@ -2640,7 +2732,7 @@ class MethodsSection: Content {
       "As a result, the process does not go extinct, even when "; InsertDelete(Tex.lt); ". ";
       "Instead, a nucleotide (and its link) can be inserted to to the right of the immortal link. ";
       };
-     style.BodyPar {
+     style.Par {
       "The TKF91 model constrains the insertion rate to be less than the deletion rate ";
       SpanParens {InsertDelete(Tex.lt)};
       ", so the equilibrium distribution of a sequence length is geometrically distributed with parameter ";
@@ -2650,7 +2742,7 @@ class MethodsSection: Content {
       "TKF91"; Citep {Thorne1991}; " uses a four-state process to describe nucleotide substitutions. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "The overall substitution and insertion/deletion process can be described as follows. ";
       "In a sequence ";
       WordLength;
@@ -2663,7 +2755,7 @@ class MethodsSection: Content {
 
     style.LineEquation(InDelDistribution);
 
-    style.BodyPar {
+    style.Par {
       "When an event occurs, it is a substitution with probability ";
       InDelProbability;
       ", an insertion with probability ";
@@ -2675,16 +2767,27 @@ class MethodsSection: Content {
       SpanParens {HomologyMap};
       " to be treated as a parameter of the model. ";
     };
+  };
+}
 
-    style.BodyPar {
-      BodyTitle {"Bayesian estimation of model parameters"}; DotSpace;
+//======================================================================
+
+readonly BayesianParametersSection PaperSections.BayesianParameters = new;
+
+class BayesianParametersSection: Content {
+  Constructor {
+    super.Constructor("Bayesian estimation of model parameters");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "We estimate the parameters of the model in a Bayesian framework. ";
       "Bayesians base inferences on the posterior probability distribution of a parameter, which can be calculated using Bayes’ theorem as";
     };
 
     style.LineEquation(BayesTheorem);
 
-    style.ResumePar {
+    style.Par {
       "where the pipe indicates a conditional statement. ";
       "In words, the posterior probability distribution of the parameters is equal to the likelihood ";
       InBrackets {PPO};
@@ -2694,11 +2797,11 @@ class MethodsSection: Content {
       InBrackets {PO}; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "In this study, parameters include:";
     };
 
-    BodyTable([new(1", null, null, HAligns.Right), 20pt, 4"]) {
+    style.BodyTable([new(1", null, null, HAligns.Right), 20pt, 4"]) {
       ParamRow {
         ParamList(Topology);
         "Tree Topologies";
@@ -2721,38 +2824,49 @@ class MethodsSection: Content {
       };
     };
 
-    style.BodyPar {
+    style.Par {
       "We assign prior probability distributions to all parameters of the model (see Table 1). ";
       "The posterior probability distribution of the model parameters is then";
     };
 
     style.LineEquation(PosteriorProbabilityDistribution);
 
-    style.ResumePar {
+    style.Par {
       "We highlight that the likelihood is marginalized over all possible alignments: "
     };
 
     style.LineEquation(MarginalizationOverAlignments);
 
-    style.ResumePar {
+    style.Par {
       "where the sum is over all possible alignment maps. Our inferences are therefore not conditioned on any particular alignment of segments being correct. ";
       "In a similar vein, the marginal likelihood accounts for all possible combinations of model parameters:";
     };
 
     style.LineEquation(MarginalLikelihoodParameters);
 
-    style.ResumePar {
+    style.Par {
       "where the integrals represent integration over all possible combinations of branch lengths, rate matrix parameters, and insertion/deletion rates.";
     };
 
-    style.BodyPar {
+    style.Par {
       "The likelihood is calculated on a per-word basis using the algorithm described by"; Citep{Lunter2003} ", which conditions on an alignment. ";
       "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high dimensional summations and integrals required for the posterior probability is unfeasible. ";
       "Instead, we numerically approximate the joint posterior probability distribution of the parameters using Markov chain Monte Carlo.";
     };
+  };
+}
 
-    style.BodyPar {
-      BodyTitle {"Markov chain Monte Carlo"}; DotSpace;
+//======================================================================
+
+readonly MCMCSection PaperSections.MCMC = new;
+
+class MCMCSection: Content {
+  Constructor {
+    super.Constructor("Markov chain Monte Carlo");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "The aim of Markov chain Monte Carlo (MCMC) is to construct a Markov chain that has as its possible states the parameter values of the statistical model and a stationary distribution that is the posterior probability distribution of the parameters. ";
       "Metropolis et al. (1953)";
       Citep {Metropolis1953};
@@ -2827,18 +2941,29 @@ class MethodsSection: Content {
       };
     };
 
-    style.BodyPar {
+    style.Par {
       "The proposals we implement in this study are all typical for phylogenetic models, such as the LOCAL mechanism to update the tree and branch lengths"; Citep{Larget1999}; DotSpace;
       "The unique aspect of this study is a proposal mechanism for the alignments of the segments for various words. ";
       "Here, we use the proposal mechanism described by Lunter et al."; Citep{Lunter2005}; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "The general strategy behind a MCMC analysis is to run the chain for many thousands or millions of cycles. Each cycle, the chain proposes a new state that may accepted or rejected as the next state of the chain. Every so often, the state of the chain is printed to a file. In our study, we sampled the chain every 100 cycles. The samples contained in the output files can be used to reconstruct the marginal posterior probability distributions of parameters. As an example, the fraction of the time a particular alignment of a cognate is found in the file is a valid approximation of that alignment's posterior probability. Similarly, the fraction of the time a particular tree topology is found in the output file is a valid approximation of that tree's posterior probability. Probability distributions for continuous parameters can be approximated by constructing a frequency histogram for the parameter from the output files produced by the MCMC analysis.";
     };
+  };
+}
 
-    style.BodyPar {
-      BodyTitle {"Model comparison"}; DotSpace;
+//======================================================================
+
+readonly MCMCComparisonSection PaperSections.MCMCComparison = new;
+
+class MCMCComparisonSection: Content {
+  Constructor {
+    super.Constructor("Model comparison");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "In a Bayesian analysis, parameter estimates are based on the joint posterior probability distribution of the parameters, which we numerically approximate using the Metropolis-Hastings algorithm. ";
       "Often, however, the linguist is interested in the comparison of two or more models with the goal of evaluating which of the models best explains the observations. ";
       "Bayesian model comparison is based on the marginal likelihoods of the models. ";
@@ -2850,7 +2975,7 @@ class MethodsSection: Content {
 
     style.LineEquation(ModelComparison);
 
-    style.ResumePar {
+    style.Par {
       "The Bayes Factor measures the relative support of the two models. ";
       "A Bayes Factor less than one favors ";
       Model sub 1;
@@ -2860,7 +2985,7 @@ class MethodsSection: Content {
       Citep{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
     };
 
-    BodyTable([1", 1", 3"]) {
+    style.BodyTable([1", 1", 3"]) {
       Row(BorderB(0.5pt)) {
         BayesFactor;
         Span {"log" sub 10; BayesFactor};
@@ -2888,7 +3013,7 @@ class MethodsSection: Content {
       };
     };
 
-    style.BodyPar {
+    style.Par {
       "In a Bayesian analysis, there is no need to penalize parameter rich models for having more parameters. ";
       "Rather, the penalization is built into the comparison; ";
       "the additional parameters in a complicated model are each assigned a prior probability distribution. ";
@@ -2896,81 +3021,108 @@ class MethodsSection: Content {
       "Hence, there is no need to compare the Bayes factor to a null distribution as there is in frequentist hypothesis testing.";
     };
 
-    style.BodyPar {
+    style.Par {
       "The main limitation of Bayesian model comparison is numerically approximating the marginal likelihoods of the models. ";
       "This can be done in numerous ways. ";
       "For example, one can construct a Markov chain that jumps between models, even if the models differ in dimensions, using a generalization of MCMC described by Green (1995; reversible-jump MCMC). ";
       "Alternatively, one can numerically approximate the marginal likelihoods using what is called path-sampling in which numerous MCMC chains explore a path between the prior and posterior distributions"; Citep{Lartillot2006; Xie2010}; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "Three models describing how word segments evolve along the branches of the tree are compared in this study. ";
       "The first model is isomorphic to the model of molecular evolution first described by Jukes and Cantor ";
       Citep{Jukes1969}; ", and assumes that the rates of change between all IPA segments is equal. ";
       "The second model, isomorphic to the model first described by Felsenstein"; Citep{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
     };
-
-    style.ReviewNewBlock {
-    style.BodyPar {
-      BodyTitle {"Cognates Used in the Paper"}; DotSpace;
-      "In total, the dataset contains "; data.UsedCognates.Length;
-      " cognate sets that comprise "; data.WordCount;
-      " word-forms containing "; data.UniqueSegments.Length;
-      " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
-      PaperDataSection.ConceptList(data, style); DotSpace;
-    };
-
-    style.AddFigure(Figures.Workflow, FigureOptions.Bottom | FigureOptions.Full);
-
-    var code = Span {TextFace: TextFaces.Mono};
-
-    style.BodyPar {
-      BodyTitle {"Workflow"}; DotSpace;
-      "The first step in the experiment was to create a dictionary of IPA segment information. ";
-      "The files "; code {"IPA.nytril"}; "  and  "; code {"Segments.nytril"}; " contain the definitions of these classes and the information about each segment is encoded in separate instances of the these classes. ";
-      "The definition of a segment includes the IPA symbol string {e.g. "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
-      "These files are designed to be reusable for future experiments, and by other researchers. ";
-    };
-    style.BodyPar {
-      "Next is the aggregation of cognate words, stored in nytril source files as strings, organized by category and language. ";
-      "The strings contain UCS code points encoding the IPA symbol for each segment, making it easy to copy and paste from different sources. ";
-      "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
-      "The words also may contain syllable stress marks, but these are ignored for this experiment. ";
-      "The format of this file was created to facilitate the collection and editing by the researchers. ";
-      "Although these word files are organized by parts of speech (e.g. "; code{"Nouns.nytril"}; ", "; code{"Adjectives.nytril"}; ", etc..), this has no effect other than to break them up into smaller chunks for easier editing. ";
-      "In other words, it is organized in the way that makes the most sense to a linguist, but when processed, they are aggregated and sorted in a different way. ";
-    };
-    style.BodyPar {
-      "The next step involves software. The strings are decoded and the UCS code points are turned into an array of VocalSegment objects. ";
-      "Since the IPA characters contain diacritic marks and have a variable length, the code points in the strings must be normalized to a specific form before being compared. ";
-      "We chose Form C (NFC - Canonical precomposition), but the goal is that the diacritics are in the same relative position in all strings, for accurate comparison. ";
-      "Once these strings are parsed to object pointers, they are tested by converting them back to a string to confirm that they produce the same sequence as the starting point. ";
-      "The segment objects are next grouped into words, and associated by category, cognate and language until the final result is a large conventional data structure representing all of the raw data in the experiment. ";
-    };
-    style.BodyPar {
-      "The next step is to produce a series of diagnostic documents that show the data in a variety of tables and charts. ";
-      "The goal is to slice the words and data in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
-    };
-    style.BodyPar {
-      "When the team is statisfied that the data is well formed, a process is run to take all of the data and create an experiment snapshot. ";
-      "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
-    };
-    style.BodyPar {
-      "TongueTwister performs the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
-      "After this is complete, these files are read by another program called TongueTwisterReader that does the final statistical aggregation and produces final output files in the nytril format. ";
-    };
-    style.BodyPar {
-      "Finally, these files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
-      "These figures are combined with narrative from the researchers, to produce the final paper and presentation slide decks. ";
-      style.FigureReference(Figures.Workflow); " shows a model of this workflow. ";
-    };
-  };
   };
 }
 
 //======================================================================
 
-SegmentTable(ExampleConcept example, ExperimentData data, aligned) = BodyTable([1", 14pt]) {
+readonly UsedCognatesSection PaperSections.UsedCognates = new;
+
+class UsedCognatesSection: Content {
+  Constructor {
+    super.Constructor("Cognates Used in the Paper");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    var data = MainResults.Data;
+
+    style.ReviewNewBlock {
+      style.Par {
+        "In total, the dataset contains "; data.UsedCognates.Length;
+        " cognate sets that comprise "; data.WordCount;
+        " word-forms containing "; data.UniqueSegments.Length;
+        " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+        PaperDataSection.ConceptList(data, style); DotSpace;
+      };
+    };
+  };
+}
+
+//======================================================================
+
+readonly WorkflowSection PaperSections.Workflow = new;
+
+class WorkflowSection: Content {
+  Constructor {
+    super.Constructor("Workflow");
+  }
+
+  override GetBody(ContentStyle style) = Block {
+    var code = Span {TextFace: TextFaces.Mono};
+
+    style.ReviewNewBlock {
+      style.Par {
+        "The first step in the experiment was to create a dictionary of IPA segment information. ";
+        "The files "; code {"IPA.nytril"}; "  and  "; code {"Segments.nytril"}; " contain the definitions of these classes and the information about each segment is encoded in separate instances of the these classes. ";
+        "The definition of a segment includes the IPA symbol string {e.g. "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
+        "These files are designed to be reusable for future experiments, and by other researchers. ";
+      };
+      style.Par {
+        "Next is the aggregation of cognate words, stored in nytril source files as strings, organized by category and language. ";
+        "The strings contain UCS code points encoding the IPA symbol for each segment, making it easy to copy and paste from different sources. ";
+        "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
+        "The words also may contain syllable stress marks, but these are ignored for this experiment. ";
+        "The format of this file was created to facilitate the collection and editing by the researchers. ";
+        "Although these word files are organized by parts of speech (e.g. "; code{"Nouns.nytril"}; ", "; code{"Adjectives.nytril"}; ", etc..), this has no effect other than to break them up into smaller chunks for easier editing. ";
+        "In other words, it is organized in the way that makes the most sense to a linguist, but when processed, they are aggregated and sorted in a different way. ";
+      };
+      style.Par {
+        "The next step involves software. The strings are decoded and the UCS code points are turned into an array of VocalSegment objects. ";
+        "Since the IPA characters contain diacritic marks and have a variable length, the code points in the strings must be normalized to a specific form before being compared. ";
+        "We chose Form C (NFC - Canonical precomposition), but the goal is that the diacritics are in the same relative position in all strings, for accurate comparison. ";
+        "Once these strings are parsed to object pointers, they are tested by converting them back to a string to confirm that they produce the same sequence as the starting point. ";
+        "The segment objects are next grouped into words, and associated by category, cognate and language until the final result is a large conventional data structure representing all of the raw data in the experiment. ";
+      };
+      style.Par {
+        "The next step is to produce a series of diagnostic documents that show the data in a variety of tables and charts. ";
+        "The goal is to slice the words and data in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
+      };
+      style.Par {
+        "When the team is statisfied that the data is well formed, a process is run to take all of the data and create an experiment snapshot. ";
+        "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
+      };
+      style.Par {
+        "TongueTwister performs the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
+        "After this is complete, these files are read by another program called TongueTwisterReader that does the final statistical aggregation and produces final output files in the nytril format. ";
+      };
+
+      style.AddFigure(Figures.Workflow, FigureOptions.Bottom | FigureOptions.Full);
+
+      style.Par {
+        "Finally, these files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
+        "These figures are combined with narrative from the researchers, to produce the final paper and presentation slide decks. ";
+        style.FigureReference(Figures.Workflow); " shows a model of this workflow. ";
+      };
+    };
+  };
+}
+
+//======================================================================
+
+SegmentTable(ContentStyle style, ExampleConcept example, ExperimentData data, aligned) = style.BodyTable([1", 14pt]) {
   var words = example.Cognate.Words;
   foreach (var taxon in data.Taxa) {
     Row {
@@ -2992,27 +3144,27 @@ class RateMatrixSection: Content {
     super.Constructor("Rate Matrix Discussion");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Our model describes how the segments evolve along the branches of the tree. We have three events that can occur to change a word: an insertion of a single segment, a deletion of a single segment, and a substitution of a segment.";
     };
 
-    style.BodyPar {
+    style.Par {
       "A substitution is the replacement of one segment by another. We model substitutions as occurring according to a continuous-time Markov model. Such a model can be understood if you know two things: the possible states and the rate of change between all pairs of states. For our work, the states are the "; MainResults.Data.UniqueSegments.Length; " possible segments. The rates of change between all pairs of states are contained in a rate matrix, which we denote "; RateMatrix; DotSpace;
     };
 
-    style.BodyPar {
+    style.Par {
       "You can completely describe the substitution process if you have "; RateMatrix; DotSpace; "We use "; RateMatrix; " to calculate transition probabilities (by exponentiating the product of the rate matrix and the branch length) and also to get the stationary frequencies of the process (which are the probability of capturing the process in some state after infinite time has passed)."
     };
 
-    style.BodyPar {
+    style.Par {
       "Now, for understanding the rate matrix. Let’s denote "; qij; " as the rate of change from state "; sym.i; " to state "; sym.j; ". (It’s simply an element of the rate matrix, "; RateMatrix; "). This is literally the rate of change to that state when the process is in state "; sym.i; ". Comparing rates in the rate matrix can be useful. You can say things such as, “ This rate is higher than that rate. This makes sense because everyone knows that such changes occur frequently in language.” I would especially compare rates in a single row. Does it make sense to see, for example, that when changes occur, they are more likely to be to other states in the same class? Does it make sense that when we have a change and a segment is in the green class that it is more likely to be to a segment in the dark gray and brown classes? That’s how I read ";
       style.FigureReference(Figures.QRatesMatrix); DotSpace;
     };
 
     style.AddFigure(Figures.QRatesMatrix, FigureOptions.Bottom | FigureOptions.Full);
 
-    style.BodyPar {
+    style.Par {
       "That said, I think the diagonals are quite interesting because they give you an idea of the relative volatility of the segments. The diagonals are simply the negative of the sum of the off-diagonal components of the row:"
     };
 
@@ -3020,23 +3172,23 @@ class RateMatrixSection: Content {
       style.LineEquation(Equations.OffDiagonalComponents);
     };
 
-    style.BodyPar {
+    style.Par {
       "where "; sym.j; " is iterated over all states (for "; sym.i; Tex.neq; sym.j; "). What does this mean? Let’s consider two segments one of which has a diagonal value of –1.0 and the other that has a value of –2.0. The rate of change for the first, then, is 1.0 and the second is 2.0. This means that the second segment is in a sense more volatile than the first. When we are in the second segment, we move to another state at a rate 2.0 which is twice the rate of the first segment."
     };
 
-    style.BodyPar {
+    style.Par {
       "What should you look for here with respect to the linguistic data? Well, I don’t know. I’m hoping that, with this interpretation under his belt, David will see patterns that make sense. Are certain segments known to be more volatile in language? Are others known to be more conservative? Does this background knowledge in the field match up with the rates we are getting (the diagonal values)?"
     };
 
-    style.BodyPar {
+    style.Par {
       "The other graphs show the average rates. The average rates can be calculated from the rate matrix, "; RateMatrix; ". To distinguish the average rate matrix from the rate matrix, "; RateMatrix; ", I will denote it "; AverageMatrix; ". The "; sym.ij sup "th"; " element of this average rate matrix is calculated as "; AverageRateElement; ". In words, the average rate of change from state "; sym.i; " to state "; sym.j; " is equal to the probability of starting in state "; sym.i; " and then moving to state "; sym.j; "."
     };
 
-    style.BodyPar {
+    style.Par {
       "What do the average rates tell us? I think the interpretation is a little more confusing, but still well defined. We are looking at averages now, over all the characters and taking into account their frequencies. A segment that is frequent in the data set will have a boost, here, because "; Probability sub sym.i; " will be higher."
     };
 
-    style.BodyPar {
+    style.Par {
       "Perhaps the best way to think of this is as follows: "; AverageMatrix; " tells you the average rates and takes into account the probability of starting in state "; sym.i; DotSpace; RateMatrix; ", by contrast, assumes you are already in state "; sym.i; " and tells you how rapidly you move to various states (from "; sym.i; " to the other possible states). I believe for our purposes, you should concentrate on "; RateMatrix; DotSpace;
     };
   };
