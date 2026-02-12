@@ -2,73 +2,21 @@ using Format;
 readonly namespace<ReviewComment> ReviewComments;
 
 
-C1 = new(#24e42fab-cc77-4fff-b209-f3c5abb3bcc3#, Reviewers.R1) {
-  Text: Paragraph {
-    "In this article the author propose to model the phonological evolution of word forms through time, and to infer jointly the phonological changes and the phylogeny of the tree (actually it seems the authors only select the topology from 3 proposed topologies). ";
-    "They propose several models and manage to compute a Bayes factor, which is a very good addition to the paper in my opinion. The main positive point of the model in my opinion is that the alignment of the word forms is automatic and a side produce of the inference. ";
-    "The main negative point in my opinion is the lack of importance given to H: depending on the choice of the prior on this parameter we can get extremely different results.";
-  };
-  ReviewAssigned to People.Huelsenbeck_John;
-  Response: Block {
-    Paragraph {
-    "We thank the reviewer for this thoughtful assessment of the paper. "
-    "We are especially pleased that they view the automatic inference of segmental alignments as a major strength of the framework, and that the use of Bayes factors for model comparison is seen as a valuable contribution. "
-    };
-
-    Paragraph {
-    "We fully agree that the homology structure H, the alignment of word segments across languages, is a central latent variable in the model and carries a great deal of linguistic information. "
-    "In the present work, we have focused primarily on using H as a vehicle for defining a likelihood under a fully historical model of word evolution. "
-    "However, we view the inferred posterior distribution over alignments as an important object of study in its own right. "
-    };
-
-    Paragraph {
-    "For example, one could define probabilistic notions of segmental homology, such as the posterior probability that two segments in two languages descend from a common ancestral segment, or identify regions of words that exhibit strong versus weak homological support across languages. "
-    "These are precisely the kinds of questions that linguists traditionally address qualitatively, and our framework provides a principled statistical way to approach them. "
-    };
-
-    Paragraph {
-    "We also agree that the choice of prior on H is consequential. "
-    "Because H defines the correspondence structure between words, different prior assumptions can influence the balance between insertions, deletions, and substitutions, and thereby affect downstream inferences. "
-    "For this reason, we believe that the specification of priors on homology structures deserves careful theoretical attention. "
-    };
-
-    Paragraph {
-    "In the present study, our goal was not to exhaustively explore this space of priors, but rather to demonstrate that fully historical, segment-level evolutionary models can be applied directly to linguistic data within a Bayesian phylogenetic framework. "
-    };
-
-    Paragraph {
-    "We therefore view this paper as a proof of concept. "
-    "It establishes a solid statistical foundation on which richer linguistic models, more expressive priors on homology, and more refined questions about sound change and lexical evolution can be built. "
-    };
-
-    Paragraph {
-    "By casting word evolution in an event-based probabilistic framework, we aim to provide a platform that allows linguists to devise and test explicit evolutionary hypotheses, rather than relying on heuristic alignments or abstract cognate encodings. "
-    };
-
-    Paragraph {
-    "In this sense, the role of H is not a weakness of the approach but one of its main strengths. "
-    "It makes explicit the homology assumptions that are usually implicit, and it provides a natural locus for future methodological development. "
-    };
-  };
-};
-
-C2 = new(#c728912c-ed60-40c3-b780-93a4c0cb10fc#, Reviewers.R1) {
+C2 = new(#c728912c-ed60-40c3-b780-93a4c0cb10fc#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "Two articles come to my mind as comparison points for this work: the first is Bouchard-Côté’s one (2013) that is cited but not enough commented in my opinion. ";
     "The current article uses TKF91 as a base for their inference, while Bouchard-Côté's comments on this model that it lacks expressiveness, and I would agree with this comment. ";
     "Obviously, as Bouchard-Côté mostly wants to infer the ancestral states, it is possible to use a more complex model.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "See our response to 13) below.";
   };
 };
 
-C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
+C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "The second article would be Abner (2024) ”Computational phylogenetics reveal histories of sign languages”, which is closer in the goal but uses different assumptions on the model.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We thank the reviewer for bringing this work to our attention and have added a reference to this paper in the manuscript. ";
     "While the goal of the model in this paper is very close to our own, the actual model is quite different. ";
@@ -77,20 +25,19 @@ C3 = new(#daf1e77c-7961-4769-a348-66ab6fc951c8#, Reviewers.R1) {
   };
 };
 
-C6 = new(#98b6f99a-d855-488f-8567-04ae6bf4ab41#, Reviewers.R1) {
+C6 = new(#98b6f99a-d855-488f-8567-04ae6bf4ab41#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "Concerning the environment influence. ";
     "In Bouchard-Côté they use transducer to retranscribe some of these interactions. ";
     "In your model another 1 possibility would be to use a different segmentation: for example align /k/ with /sj/, which would I guess be the best option here.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We agree with the reviewer that a one-to-many correspondence such as /k/ to /sj/ is certainly relevant to sound change. ";
     "As we explain in Section 5.4 of the manuscript, however, our current model lacks this capability, but we are planning to address this challenge in future work.";
   };
 };
 
-C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
+C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "Lexical innovation is particularly important in linguistics, in the example presented there is little to no innovation. ";
     "Is that why the author chose this example? ";
@@ -98,7 +45,6 @@ C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
     "There is an extensive literature on those models (Dollo model by Nicholls and Gray; Gray and Atkinson, etc.). ";
     "I don’t think these models are related directly to your article, but the second paragraph of 5.5 tells a different story.";
   };
-  ReviewAssigned to People.Goldstein_David;
   HasAnchor: true;
   Response: Paragraph {
     "In the papers the reviewer mentions, lexical innovation refers to a specific form of change, whereby a lexeme becomes the standard or neutral term for a concept. ";
@@ -111,7 +57,7 @@ C11 = new(#72b822fe-704b-471b-97ee-27d71ebc619e#, Reviewers.R1) {
   };
 };
 
-C14 = new(#96314a3d-e69d-4a17-aa1d-fce98843707e#, Reviewers.R1) {
+C14 = new(#96314a3d-e69d-4a17-aa1d-fce98843707e#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "Overall, I wonder if the example of romance languages is adapted: complexity of the latin forms, addition of these empty characters that depends on the choice of the prior on H, interaction of sounds, multiplicity of the forms for a single meaning (e.g. ";
     "accusative/nominative, masculine/feminine), change of the meanings. In the results you observe that the deletion and insertion are more frequent than substitutions. ";
@@ -119,30 +65,27 @@ C14 = new(#96314a3d-e69d-4a17-aa1d-fce98843707e#, Reviewers.R1) {
     "The other possibility is that there are lots of insertion and deletion in your dataset overall. ";
     "Maybe the question should be the segmentation and the alignment themselves.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "For further clarification of the segmentation and alignment, see issues 1 above and 18 and 19 below. The greater frequency of the insertion and deletion rates is driven by the empirical frequency of these events in the data.";
   };
 };
 
-C17 = new(#6e9118ce-df55-4efd-870e-18a41732f438#, Reviewers.R1) {
+C17 = new(#6e9118ce-df55-4efd-870e-18a41732f438#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "P6 - Finally, the equilibrium frequencies reveal that Romance languages rely primarily on stops and short vowels for phonemic constrasts” I don’t understand how this relates with the previous sentence: these equilibrium frequencies mean that the stops are more frequent, not that they contrast more, or you need additional steps of thinking. ";
     "I don’t really know why those frequencies are interesting.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We thank the reviewer for this comment, which made us realize that the original formulation came to close to conflating frequencies and functional load. ";
     "We have adjusted the text to make it clear that our results do not bear on the question of functional load. ";
   };
 };
 
-C22 = new(#3778b40f-c2c0-4d5d-9a98-fe1de03b9e2a#, Reviewers.R1) {
+C22 = new(#3778b40f-c2c0-4d5d-9a98-fe1de03b9e2a#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "I think the paper is interesting, but I have the impression that most of the choices are ad hoc: inserting the empty characters before the /a/ so that it can evolve into /ie/ in french really does not seem possible unless the people using the model have a thourough knowledge of the history of the languages. It is my believe that comptuational methods in linguistics should be used to reduce human workload, and to get quantitative results. ";
     "On the second aspect the method proposed here is interesting, but I seriously doubt the possibility to apply it in less studied languages, where adding those empty characters would be critical.";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "There are no empty characters in the representation of cognate word-forms, in the sense that the absence of a character is not a possible character state. ";
     "The dashes in the datasets are actual gaps. ";
@@ -158,18 +101,17 @@ C22 = new(#3778b40f-c2c0-4d5d-9a98-fe1de03b9e2a#, Reviewers.R1) {
   };
 };
 
-C28 = new(#8fc83b55-a4bb-43c0-ade2-586266bd6ed6#, Reviewers.R1) {
+C28 = new(#8fc83b55-a4bb-43c0-ade2-586266bd6ed6#, Reviewers.R1, People.Goldstein_David) {
   Text: Paragraph {
     "Appendix 1: You should precise “size of the 95% set ...” ";
     "why are some of the meanings given in english and other in english and latin?";
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have removed the Latin meanings.";
   };
 };
 
-C31 = new(#c8570ecb-4d7a-4dc6-b654-6fd1a46d9ca6#, Reviewers.R2) {
+C31 = new(#c8570ecb-4d7a-4dc6-b654-6fd1a46d9ca6#, Reviewers.R2, People.Goldstein_David) {
   Text: Block {
     Paragraph {
       "I was a bit confused by the remarks regarding primal consonants:  ";
@@ -199,96 +141,85 @@ C31 = new(#c8570ecb-4d7a-4dc6-b654-6fd1a46d9ca6#, Reviewers.R2) {
       "I think they do a nice job of outlining the limitations of the current model, without getting into too much detail, e.g.: \"current implementation of the model is unable to take into account phonetic variation of word-forms\" and in describing the limitations of what the model can do in regard to sound change patterns that aren't one-to-one (in Section 5.4). ";
     };
   };
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We thank the reviewer for these comments and for our attention to these articles. We have clarified the description of primal consonants, but have decided not to discuss the literature on borrowing and sound change in this study.";
   };
 };
 
-C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2) {
+C35 = new(#a22ad687-3f7f-4d16-b0fe-1ab6c301527e#, Reviewers.R2, People.Goldstein_David) {
  Text: "\"study of (Moran et al. 2021, pp. 92-95)\"";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "Corrected";
   };
 };
 
-C36 = new(#b2b69548-e966-4ddb-a42e-688b131a1753#, Reviewers.R2) {
+C36 = new(#b2b69548-e966-4ddb-a42e-688b131a1753#, Reviewers.R2, People.Goldstein_David) {
   Text: "  - \"they are measuring the rate at which the size of segmental inventories changes\"";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "Changed the phrasing.";
   };
 };
 
-C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2) {
+C37 = new(#4abae0d2-7a64-4478-96c8-9251b6857b7e#, Reviewers.R2, People.Goldstein_David) {
  Text: "I just have a hard time parsing this: \"on the basis of which three robust properties of sound change\"";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "This sentence has been corrected in the manuscript.";
   };
 };
 
-C40 = new(#88a595c5-6b2d-4845-87a3-6132c8466320#, Reviewers.R3) {
+C40 = new(#88a595c5-6b2d-4845-87a3-6132c8466320#, Reviewers.R3, People.Goldstein_David) {
   Text: "The best-fitting model M3 is heavily parameterized relative to the dataset size (133 parameters for the substitution model estimated from only 102 cognate sets in 9 languages). I wonder if this is a case of overfitting to the particular historical trajectory of Romance. For example, the low equilibrium frequency estimated for diphthongs may simply mirror their monophthongization from Latin in this sample rather than reflect a general property of diphthongs in language change. The rate differences in Figure 7 are quite extreme, which made me think that perhaps very low equilibrium frequencies are being assigned to phonemes that just happen to be rare. If datasets of the same size as the empirical data were simulated under a model with less extreme values of stable frequencies and exchangeability rates, would some phonemes be rare simply due to chance? Would the analysis estimate a low equilibrium frequency for these phonemes, even when the true generating frequency is higher?";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "Overfitting is unlikely to be an issue since the natural class model contains only a fraction of the possible number of parameters (i.e., one for each possible transition among the 79 unique segments). We have also made it more explicit that all of the results regarding sound change are specifically about Latin and Romance, and not sound change. The low equilibrium frequency for diphthongs is unquestionably a reflection of the monophthongization processes in Latin and Romance and not a general property of sound change. ";
   };
 };
 
-C41 = new(#f45bfeb0-5b37-456b-b5c3-2dd3a71f31bd#, Reviewers.R3) {
+C41 = new(#f45bfeb0-5b37-456b-b5c3-2dd3a71f31bd#, Reviewers.R3, People.Goldstein_David) {
   Text: "I like the argument that in a typical linguistic phylogenetic analysis, cognate classifications are used as observations even though they are hypotheses. However, I don’t see how this new approach gets away from the problem. While the method analyzes observable segmental data, the dataset still depends on traditional cognacy judgments to decide which word-forms are grouped together. Any misclassification at this stage propagates into the analysis, just as in conventional approaches.";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We are grateful to the reviewer for this comment. We have tempered the original sentence to make it clear that the input data also depend on cognate judgments, even though they do not require transformation.";
   };
 };
 
-C42 = new(#52ecd739-5c63-4458-ad41-2a503ccb4d11#, Reviewers.R3) {
+C42 = new(#52ecd739-5c63-4458-ad41-2a503ccb4d11#, Reviewers.R3, People.Goldstein_David) {
   Text: "In Figure 5, the clustering of -qii values by natural class is striking, but doesn’t it just follow from the model structure? In the Natural Class model, all phonemes in a given class share the same exchangeability rates. Considering two phonemes in the same class, the rows of the Q matrix will be almost identical apart from the difference of 1 out of the 79 stable frequency values. In other words, figure 5 is driven by the exchangeabilities (shared within class) not the equilibrium frequencies. It seems to me the equilibrium frequencies would have to be drastically different within classes to produce a different pattern than that seen in figure 5. The authors should discuss the extent to which clustering is expected given the model structure.";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have clarified the relationship between the -qii values and the rate parameters. The clustering among rates is partially due to the model structure and partially to the similarity in equilibrium frequencies. ";
   };
   HasAnchor: true;
 };
 
-C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3) {
+C45 = new(#fd664a97-aee0-45d1-9cf0-e4f6808a9a84#, Reviewers.R3, People.Goldstein_David) {
   Text: "The authors filtered out any cognate sets without a form in one or more languages. I am unsure after reading the paper whether or not ths was a data collection decision, or if the method implementation actually requires complete data like this. Please clarify.";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have clarified in the manuscript that incomplete cognate sets can be used but that we only used complete ones to simplify the modeling for this initial study.";
   };
   HasAnchor: true;
 };
 
-C47 = new(#5b0abd3b-4ed9-416e-84e6-5108bc60cad8#, Reviewers.R3) {
+C47 = new(#5b0abd3b-4ed9-416e-84e6-5108bc60cad8#, Reviewers.R3, People.Goldstein_David) {
   Text: "The paragraph on page 3 beginning “Second, since root-meaning traits…” seems to be a criticism of the multistate model for cognate evolution. This is confusing for two reasons. First, it has already been stated on the previous page that the data is first binarised. Second, “state 0 of one cognate is not equivalent to state 0 of another”, surely you mean state 0 of a concept? The multistate approach has been attempted a few times (Heggarty et al. 2023 SI, Rönchen et al. 2024 and references therein), but for the most part linguistic phylogenies work on binarised data.";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have now made it clear in the manuscript that the criticisms in this paragraph apply to both binary and multistate encoding. We have also corrected the typo. ";
   };
   HasAnchor: true;
 };
 
-C48 = new(#c245e887-93d9-485b-b6dd-ea06d763f06a#, Reviewers.R3) {
+C48 = new(#c245e887-93d9-485b-b6dd-ea06d763f06a#, Reviewers.R3, People.Goldstein_David) {
   Text: "The authors state that the method works on cognate words regardless of meaning. However, the data is organised by meaning. I assume that this just refers to the meaning in Latin, but please clarify.";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have clarified in the manuscript that the organization of the cognate sets by meaning is purely a way to help keep track of the data. ";
   };
 };
 
-C50 = new(#38b4e7cb-4089-47f4-9679-2698fde2ed27#, Reviewers.R3) {
+C50 = new(#38b4e7cb-4089-47f4-9679-2698fde2ed27#, Reviewers.R3, People.Goldstein_David) {
   Text: "It may be worth defining “unigram” explicitly in the manuscript, as many readers from historical linguistics rather than computational linguistics may not be familiar with the term";
-  ReviewAssigned to People.Goldstein_David;
   Response: Paragraph {
     "We have removed the term unigram here.";
   };
 };
 
-C51 = new(#9fc6618a-a3db-4fcb-a105-a6f7f86a4b29#, Reviewers.R3) {
+C51 = new(#9fc6618a-a3db-4fcb-a105-a6f7f86a4b29#, Reviewers.R3, People.Goldstein_David) {
   Text: "Reference: Rönchen, Philipp, Tilo Wiklund, and Harald Hammarström. \"Likelihood calculation in a multistate model of vocabulary evolution for linguistic dating.\" Language Dynamics and Change 14.1 (2024): 1-41. ";
   NoAction: true;
 };
