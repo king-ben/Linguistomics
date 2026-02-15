@@ -1107,11 +1107,11 @@ class AlignmentFigure: Content {
     Canvas {
       Background: Colors.White;
       X: size.Width * 0.3;
-      Y: (size.Height - 25pt) * 0.5;
+      Y: (size.Height - 60pt) * 0.5;
       TextHeight: 20pt;
       TextColor: ArrowColor;
       Bold;
-      Tex.Plus;
+      "+";
     };
   };
 
