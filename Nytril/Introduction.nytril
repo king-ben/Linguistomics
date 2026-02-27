@@ -76,43 +76,42 @@ class RootMeaningTraitsSection: Content {
     Citep {Tadmor2010}; DotSpace;
    };
 
+    style.Par {
+    style.TableReference(TableFigures.CognateCoding);
+    " presents a root-meaning trait for the concept ";
+    style.SQuoteEnd{"hand"};
+    " in a sample of Indo-European languages. ";
+    "Lexical items that descend from a common ancestor are grouped into the same cognate class, with class membership determined on the basis of regular sound correspondences. ";
+    "The resulting multistate cognate classifications are typically recoded as a set of binary characters, where 0 and 1 indicate the absence or presence, respectively, of a lexeme belonging to a given cognate class. ";
+    "These binary values constitute the observed data used for subsequent phylogenetic inference. ";
+};
 
-     style.Par {
-            style.TableReference(TableFigures.CognateCoding);
-          " presents a root-meaning trait in a sample of Indo-European languages for the concept "; style.SQuoteEnd{"hand"};
-      "Lexical items that share a common ancestor are assigned to the same cognate class. ";
-      "These assignments are based on regular sound correspondences among the languages. ";
-      "The multi-state cognate-class representations in ";
-           style.TableReference(TableFigures.CognateCoding);
-           " are usually transformed into binary characters, in which 0 and 1 values denote the absence and presence, respectively, of lexemes belonging to a particular cognate class. ";
-      "These values are treated as the observations for phylogenetic inference. ";
-    };
 
     style.Par {
-      "Despite their prevalence, root-meaning traits suffer from several drawbacks. ";
-      "First and foremost, the transformation of word forms into abstract cognate relationships entails substantial information loss. ";
-      "For instance, the lexemes for "; style.SQuote{"hand"}; " in Spanish, French, and Italian are all assigned the same state in "; style.TableReference(TableFigures.CognateCoding); DotSpace;
-      "Since there is no variation, no inferences can be drawn about the historical relationships of these languages. ";
-      "There is, however, phylogenetic signal in the forms of the words themselves, as French "; TextIpa{"mɛ̃"};
-      ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa {"mano"};
-      " have diverged from Latin "; TextIpa {"manum"}; DotSpace;
-      "The current practice of linguistic phylogenetics is unable to take such differences into account. ";
-    };
+  "Despite their widespread use, root-meaning traits exhibit several well-known limitations. ";
+  "The most serious is that the reduction of word forms to abstract cognate classes results in substantial information loss. ";
+  "For example, the lexemes for "; style.SQuote{"hand"}; " in Spanish, French, and Italian are assigned the same state in "; style.TableReference(TableFigures.CognateCoding); DotSpace;
+  "Since this representation exhibits no variation across these languages, no inferences can be drawn about their historical relationships. ";
+  "The segmental forms themselves, however, preserve phylogenetic signal: French "; TextIpa{"mɛ̃"};
+  ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa{"mano"};
+  " each represent distinct reflexes of Latin "; TextIpa{"manum"}; DotSpace;
+  "Standard trait-based methods in linguistic phylogenetics are not designdd to incorporate such fine-grained segmental divergence into the inference process. ";
+};
+
 
     style.Par {
-      style.ReviewMark(ReviewComments.C47);
-      "Second, since root-meaning traits are analyzed the same way biologists analyze morphological characters";
-          Citep {Lewis2001}; ", they are subject to the same limitations: ";
-          "(i) The state labels (whether binary or multistate) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
-              "As a result, studies of linguistic phylogenies are restricted to models with symmetrical rates of change, in order that the probability of the observations remain the same regardless of the state label assignment; ";
-              "the probability of the data should remain the same if the state labels are swapped, with the 0s coded as 1s and the 1s coded as 0s. ";
-          "(ii) Similarly, the state labels from one word to another have different meanings. ";
-              "State 0 of one concept is not equivalent to state 0 of another. State information across cognates can accordingly not be pooled to learn about their evolutionary dynamics. ";
-          "(iii) Invariant root-meaning traits (those with a single state across all languages) are uncommon. As a result, ";
-              "probability calculations must condition on constant patterns being absent from the data matrix. ";
-      "Phylogenetic analyses of languages are consequently limited to estimating the tree and the divergence times between languages. ";
-      "The evolutionary dynamics of the sounds of language can be investigated only with difficulty. ";
-    };
+  style.ReviewMark(ReviewComments.C47);
+  "Second, since root-meaning traits are analyzed analogously to morphological characters in biology";
+  Citep{Lewis2001}; ", they inherit the same methodological constraints. ";
+  "(i) The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. ";
+  "Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. ";
+  "That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. ";
+  "(ii) Moreover, state labels are not comparable across lexical items. ";
+  "State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. ";
+  "(iii) Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. ";
+  "Likelihood calculations must therefore condition on the exclusion of constant patterns from the data matrix. ";
+  "As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. ";
+};
 
     style.Par {
       "Third, the transformation of multistate cognate relationships into binary characters introduces dependencies into the data, in that the values of the binary characters are not independent of one another. ";
