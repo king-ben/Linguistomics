@@ -150,7 +150,7 @@ class TKF91ApproachSection: Content {
   "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
   "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
   "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
-  "The model, first introduced by ";
+  "The model, first introduced by";
   Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
   "Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. ";
   "This permits estimation of event rates by pooling information across lexical items and segmental positions. ";

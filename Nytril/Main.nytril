@@ -92,10 +92,9 @@ class JOLEStyle: OUPStyle {
   Constructor(TemplateOptions options) {
     super.Constructor("Journal of Language Evolution", options | TemplateOptions.SectionNumbers);
     TexPackages.AddEach(["fontspec"]);
-    TexFont            = "Libertinus Serif";
-    SansSerif          = TextFamily: TextFamilies.LibertinusSans;
-    FigureStartPage    = 2;
-    InlineAuthors      = 2;
+    TexFont         = "Libertinus Serif";
+    SansSerif       = TextFamily: TextFamilies.LibertinusSans;
+    FigureStartPage = 2;
   }
 
   override SetTextStyle = {
