@@ -465,7 +465,7 @@ namespace DavidSlides.Methods {
       };
       Paragraph;
       Equations.BayesTheorem.GetLayoutBlock {
-        TextHeight: 18pt;
+        TextHeight: 16pt;
       };
     };
 

@@ -122,6 +122,33 @@ class RunResultsThread: Parallel.Thread {
     return c;
   }
 
+  double TestStatistic {
+    var   spectrum = GapSpectrum;
+    double n       = 0;
+    double lnL1    = 0.0;
+    double lnL0    = 0.0;
+
+    Vector<double> statistic = new(spectrum.Length, 0.0);
+    Vector<double> countVals = new(spectrum[0].Length, 0.0);
+    foreach (var gap in spectrum) {
+      var ni = Math.Sum(gap);
+      n += ni;
+      foreach (var value in gap) {
+        if (value != 0)
+          lnL1 += value * Math.Log(value / ni);
+      }
+      statistic[each0] = n;
+      foreach (var value in gap)
+        countVals[each0] += value;
+    }
+
+    foreach (var value in countVals) {
+      if (value != 0)
+        lnL0 += value * Math.Log(value/n);
+    }
+    return -2.0 * (lnL0 - lnL1);
+  }
+
   override bool Execute {
     var align    = IO.ReadScript(AlignmentFile).Root;
     var treefile = Info.ExperimentRoot Run.RootFolder Info.TreeFile;

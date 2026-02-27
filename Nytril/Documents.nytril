@@ -24,14 +24,15 @@ class LinguisticsPaper: LinguisticsContent {
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
     Acknowledgements      = PaperSections.Acknowledgements;
+    Funding               = PaperSections.Funding;
     Comments              = CommentList;
+    ExtraSections         = [PaperSections.Contributions, Acknowledgements, Funding];
 
     Keywords = [
       "Bayesian inference",
-      "Language Evolution",
+      "Historical linguistics",
+      "Historical phonology",
       "Phylogenetics",
-      "Markov chain Monte Carlo",
-      "Phonology",
       "Romance"
     ];
 
@@ -41,7 +42,20 @@ class LinguisticsPaper: LinguisticsContent {
     AddContent(PaperSections.Results);
     AddContent(PaperSections.DiscussionSection);
     AddContent(PaperSections.Conclusion);
-    AddContent(PaperSections.Contributions);
+  }
+}
+
+//======================================================================
+
+class LinguisticsTitle: LinguisticsContent {
+  Constructor {
+    super.Constructor("Title Page");
+    Title            = Info.Title;
+    Description      = "Linguistics research paper";
+    Acknowledgements = PaperSections.Acknowledgements;
+    Funding          = PaperSections.Funding;
+    Comments         = CommentList;
+    ExtraSections    = [Acknowledgements, Funding, PaperSections.Biography];
   }
 }
 
@@ -80,7 +94,7 @@ class GraphSection: Content {
     };
   };
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var spanish = MatchAll(CognateWord) {
       Text: MatchPrefix MatchGraf "a";
 

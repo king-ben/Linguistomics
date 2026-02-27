@@ -675,23 +675,25 @@ class SegmentAssignmentsFigure: ExperimentContent {
     super.Constructor(data, "Segment Assignments");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     Paragraph {
       var textheight = 18pt;
       TextHeight: textheight;
 
       foreach (var segment in Data.UniqueSegments) {
         HBox(textheight * 3.25, null, new Edge(0.25pt, 1, 85%)) {
-          VAlign: Center;
           Margin: 5;
           Span {
-            HAlignment: HAligns.Center;
+            VAlignment: Top;
             TextColor: Colors.LightGray;
-            TextHeight: 75%;
+            TextHeight: 50%;
             each0;
           };
-          Space*4;
-          segment.ShowSegment;
+          HBox {
+            HAlignment: Center;
+            VAlignment: Center;
+            segment.ShowSegment;
+          }
         }
       }
     };

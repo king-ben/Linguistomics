@@ -227,12 +227,6 @@ readonly namespace PaperStyle {
 //    SourceSelection(concept, SourceSelectOptions.Line SourceSelectOptions.Children);
   };
 
-  BodyTable(Column[] columns) = Table(null, null, columns) {
-    SpaceBefore: 10pt;
-    SpaceAfter: 10pt;
-    LeftIndent: 0.5";
-  };
-
   BodyTitle = Span {
     Bold;
   };
@@ -249,10 +243,6 @@ readonly namespace PaperStyle {
   };
 
   readonly InBrackets = HBox {TextEquation: true; Bracket: Brackets.Square};
-
-  EqSpan = Span {
-    TextEquation: true;
-  };
 
   ValueLabel = HBox(null, null, PadB(6)) {
     Transform: Transform.Rotate(-90 degrees);
@@ -272,7 +262,7 @@ class TreeContent: Content {
     Axis = axis;
   }
 
-  override GetBody(ContentStyle style, title) = Paragraph {
+  override GetBody(ContentStyle style) = Paragraph {
     PaperStyle.ShowTree(style, Root, 100%, null, Axis);
   };
 }

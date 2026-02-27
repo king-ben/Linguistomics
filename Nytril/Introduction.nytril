@@ -9,17 +9,17 @@ class AbstractSection: Content {
     super.Constructor(Lang.Abstract);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
-      "Linguistic phylogenies are standardly inferred from abstract cognate relationships among lexemes. ";
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "Linguistic phylogenies are typically inferred from abstract cognate relationships among lexemes. ";
       style.ReviewMark(ReviewComments.C41);
       "Despite the prevalence of this practice, it suffers from well-known drawbacks: ";
           "it disregards the phylogenetic signal in the segmental form of words; ";
           "the types of questions that can be addressed are limited; ";
           "and it treats cognate judgments, which are hypotheses, as observations. ";
-      "In this study, we present a framework for comparative linguistic analysis that overcomes these deficiencies. ";
-      "At the heart of our framework is the TKF91 model, which is a model of molecular evolution originally developed to account for insertion and deletion events in DNA sequences. ";
-      "Within this framework phylogenetic inferences can be drawn directly from cognate word forms, which opens a new horizon of possibilities for historical and evolutionary linguistics. ";
+      "We present a framework for comparative linguistic analysis that overcomes these deficiencies. ";
+      "At the heart of our approach is the TKF91 model, which is a model of molecular evolution originally developed to account for insertion and deletion events in DNA sequences. ";
+      "With this model, phylogenetic inferences can be drawn directly from cognate word forms, which opens a new horizon of possibilities for historical and evolutionary linguistics. ";
       "We showcase in particular the ability of this framework to deliver new insights into sound change and the evolution of segmental inventories.";
     };
   };
@@ -34,8 +34,8 @@ class SignificanceSection: Content {
     super.Constructor("Significance Statement");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
       "Linguistic phylogenies conventionally rely on abstract cognate relationships, which are akin to morphological characters used in biology. ";
       "While this approach has proven serviceable, it constrains the range of inquiries that can be pursued. ";
       "In this study, we introduce a model of linguistic evolution that characterizes segmental change through three core processes: ";
@@ -55,77 +55,80 @@ class RootMeaningTraitsSection: Content {
     super.Constructor("Root-meaning traits");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
-      "Linguistic phylogenies are typically inferred from abstract cognate relationships";
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "Most linguistic phylogenies are inferred from abstract cognate relationships";
           Citep {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
       "Cognates are linguistic units at different levels (e.g., segments, morphemes, words) that share a common ancestor. An example from the lexical domain is Spanish "; textit{"mano"}; " "; style.SQuoteComma{"hand"};
           "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance */manu/"; DotSpace;
       "Four types of lexical cognacy have been identified in the literature"; Citep {Chang2015};
-      ", but studies of linguistic phylogenetics rely overwhelmingly on one: root-meaning traits";
+      ", but phylogenetic studies rely overwhelmingly on one: root-meaning traits.";
     };
 
     style.AddTable(TableFigures.CognateCoding, FigureOptions.Bottom);
 
-    style.BodyPar {
-       "Root-meaning traits encode the ancestral relationships of the root of the most semantically general and stylistically neutral word for a given concept, such as "; style.SQuote{"hand"};
-          Citep {Heggarty2023}; DotSpace;
-      "The concepts themselves are drawn from a specific subset of the lexicon commonly referred to as the "; style.DQuote{"basic vocabulary,"}; " which typically includes words for body parts, basic actions, natural elements, and other core aspects of daily life that are allegedly less likely to undergo borrowing or replacement. ";
-      "Swadesh lists are compilations of basic vocabulary terms, which now exist in several versions";
-          Citep {Tadmor2010}; DotSpace;
-        };
-     style.BodyPar {
-            style.TableReference(TableFigures.CognateCoding);
-          " presents a root-meaning trait in a sample of Indo-European languages for the concept "; style.SQuoteEnd{"hand"};
-      "Lexical items that share a common ancestor are assigned to the same cognate class. ";
-      "These assignments are based on regular sound correspondences among the languages. ";
-      "The multi-state cognate-class representations in ";
-           style.TableReference(TableFigures.CognateCoding);
-           " are usually transformed into binary characters, in which 0 and 1 values denote the absence and presence, respectively, of lexemes belonging to a particular cognate class. ";
-      "These values are treated as the observations for phylogenetic inference. ";
-    };
+    style.Par {
+    "Root-meaning traits encode the ancestral relationships of the root of the most semantically general and stylistically neutral word associated with a given concept, such as "; style.SQuote{"hand"};
+     Citep {Heggarty2023}; DotSpace;
+    "The concepts are drawn from a restricted subset of the lexicon commonly referred to as the "; style.DQuote{"basic vocabulary,"};
+    " which includes terms for body parts, basic actions, natural phenomena, and other central domains of daily life that are assumed to be comparatively resistant to borrowing and replacement. ";
+    "These basic vocabulary items are typically organized into Swadesh lists, which now exist in several versions";
+    Citep {Tadmor2010}; DotSpace;
+   };
 
-    style.BodyPar {
-      "Despite their prevalence, root-meaning traits suffer from several drawbacks. ";
-      "First and foremost, the transformation of word forms into abstract cognate relationships results in pervasive information loss. ";
-      "For instance, the lexemes for "; style.SQuote{"hand"}; " in Spanish, French, and Italian are all assigned the same state in "; style.TableReference(TableFigures.CognateCoding); DotSpace;
-      "Since there is no variation, no inferences can be made about historical relationships of the languages with these lexemes. ";
-      "There is, however, phylogenetic signal in the forms of the words themselves, as French "; TextIpa{"mɛ̃"};
-      ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa {"mano"};
-      " have diverged from Latin "; TextIpa {"manum"}; DotSpace;
-      "The current practice of linguistic phylogenetics is unable to take such differences into account. ";
-    };
+    style.Par {
+    style.TableReference(TableFigures.CognateCoding);
+    " presents a root-meaning trait for the concept ";
+    style.SQuoteEnd{"hand"};
+    " in a sample of Indo-European languages. ";
+    "Lexical items that descend from a common ancestor are grouped into the same cognate class, with class membership determined on the basis of regular sound correspondences. ";
+    "The resulting multistate cognate classifications are typically recoded as a set of binary characters, where 0 and 1 indicate the absence or presence, respectively, of a lexeme belonging to a given cognate class. ";
+    "These binary values constitute the observed data used for subsequent phylogenetic inference. ";
+};
 
-    style.BodyPar {
-      style.ReviewMark(ReviewComments.C47);
-      "Second, since root-meaning traits are analyzed the same way biologists analyze morphological characters";
-          Citep {Lewis2001}; ", they are subject to the same limitations: ";
-          "(i) The state labels (whether binary or multistate) are arbitrary, with no intrinsic meaning except to distinguish cognate classes. ";
-              "As a result, studies of linguistic phylogenies are restricted to models with symmetrical rates of change, in order that the probability of the observations remain the same regardless of the state label assignment; ";
-              "the probability of the data should remain the same if the state labels are swapped, with the 0s coded as 1s and the 1s coded as 0s. ";
-          "(ii) Similarly, the state labels from one word to another have different meanings. ";
-              "State 0 of one concept is not equivalent to state 0 of another. State information across cognates can accordingly not be pooled to learn about their evolutionary dynamics. ";
-          "(iii) Since invariant root-meaning traits (with a single state assigned to each language under investigation) are uncommon, "
-              "probability calculations must condition on constant patterns being absent from the data matrix. ";
-      "Phylogenetic analyses of languages are consequently limited to estimating the tree and the divergence times between languages. ";
-      "The evolutionary dynamics of the sounds of language can be investigated only with difficulty. ";
-    };
 
-    style.BodyPar {
-      "Third, the transformation of multistate cognate relationships into binary characters introduces dependencies into the data, in that the values of the binary characters are not independent of one another. ";
-      "For a given concept, if a language has a word belonging to one cognate class, it will not have words from other cognate classes (unless of course polymorphisms are included). ";
-      "The continuous-time Markov chains that model the evolution of lexical items in cognate classes assume that character evolution is independent and identically distributed (i.i.d.). ";
-      "Binary characters derived from multistate cognate data violate this assumption. ";
-    };
+    style.Par {
+  "Despite their widespread use, root-meaning traits exhibit several well-known limitations. ";
+  "The most serious is that the reduction of word forms to abstract cognate classes results in substantial information loss. ";
+  "For example, the lexemes for "; style.SQuote{"hand"}; " in Spanish, French, and Italian are assigned the same state in "; style.TableReference(TableFigures.CognateCoding); DotSpace;
+  "Since this representation exhibits no variation across these languages, no inferences can be drawn about their historical relationships. ";
+  "The segmental forms themselves, however, preserve phylogenetic signal: French "; TextIpa{"mɛ̃"};
+  ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa{"mano"};
+  " each represent distinct reflexes of Latin "; TextIpa{"manum"}; DotSpace;
+  "Standard trait-based methods in linguistic phylogenetics are not designdd to incorporate such fine-grained segmental divergence into the inference process. ";
+};
 
-    style.BodyPar {
-      "Finally, cognate-class designations such as those in ";
-          style.TableReference(TableFigures.CognateCoding); " serve as the observations for phylogenetic inference even though they are not observed. ";
-      "Cognacy judgments are hypotheses about ancestral relationships among words from related languages and cannot be observed any more than a phylogenetic tree can. ";
-      "The use of root-meaning traits is thus at odds with the fundamental principles of Bayesian inference, according to which the posterior distributions are conditioned on observed data. ";
-      "Our approach partially overcomes this inconsistency. Inferences are drawn from observable word forms and not abstract cognate relationships. ";
-      "At the same time, the input word-forms are selected on the basis of assumed cognacy. ";
-    };
+
+    style.Par {
+  style.ReviewMark(ReviewComments.C47);
+  "Second, since root-meaning traits are analyzed analogously to morphological characters in biology";
+  Citep{Lewis2001}; ", they inherit the same methodological constraints. ";
+  "(i) The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. ";
+  "Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. ";
+  "That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. ";
+  "(ii) Moreover, state labels are not comparable across lexical items. ";
+  "State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. ";
+  "(iii) Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. ";
+  "Likelihood calculations must therefore condition on the exclusion of constant patterns from the data matrix. ";
+  "As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. ";
+};
+
+style.Par {
+  "Third, recoding multistate cognate relationships as binary characters induces statistical dependencies among the resulting variables. ";
+  "For any given concept, the presence of one cognate class in a language entails the absence of the others, except in cases of polymorphism. ";
+  "However, the continuous-time Markov models typically employed assume that characters evolve independently and identically distributed (i.i.d.). ";
+  "Binary characters derived from multistate cognate data violate this independence assumption. ";
+};
+
+style.Par {
+  "Finally, cognate-class assignments such as those in ";
+  style.TableReference(TableFigures.CognateCoding); " are treated as observed data, even thought they are inferred. ";
+  "Cognacy judgments are hypotheses about ancestral relationships among lexical items and cannot be observed any more than a phylogenetic tree can. ";
+  "This practice sits uneasily with the principles of Bayesian inference, under which posterior distributions are conditioned on observable data. ";
+  "Our approach mitigates this tension by conditioning inference on attested word forms rather than abstract cognate classes. ";
+  "At the same time, the selection of word forms remains guided by prior assumptions of cognacy. ";
+};
+
   };
 }
 
@@ -138,41 +141,45 @@ class TKF91ApproachSection: Content {
     super.Constructor("The TKF91 approach");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
-    style.TitlePar(title) {
-     "On account of these challenges, we introduce an approach to linguistic phylogenetics in which the observations are cognate word forms";
-     Citep {BouchardCote2013; Abner2024}; DotSpace;
-     "The segmental history of the word forms is modeled with a continuous-time Markov model that allows one of three types of events to occur in an instant of time: ";
-         "(i) a transition from one segment to another; (ii) the insertion of a single segment; or (iii) the deletion of a segment. ";
-      "Our treatment allows us to analyze data in a manner akin to molecular phylogenetic analyses in biology. ";
-      "This model was first introduced by ";
-          Citet{Thorne1991}; ", and is known as TKF91 in the molecular evolution literature. ";
-      "Just as nucleotides are considered equivalent states regardless of their position in the genome, our method treats segments as equivalent across words. ";
-      "We can therefore learn about the rates of individual event types by pooling information across different words (or across different segments of a word). ";
-      "This approach circumvents the four problems of root-meaning traits described above. ";
-    };
+    style.Par {
+  "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
+  Citep {BouchardCote2013; Abner2024}; DotSpace;
+  "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
+  "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
+  "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
+  "The model, first introduced by ";
+  Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
+  "Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. ";
+  "This permits estimation of event rates by pooling information across lexical items and segmental positions. ";
+  "By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. ";
+  "It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. ";
+};
 
-    style.BodyPar {
-     "Although the TKF91 model can in principle be used to infer phylogenies, we focus in this study on its ability to estimate rates of change among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
-     "There are a variety of methods for estimating the diachronic stability of segments";
+
+    style.Par {
+     "Although the TKF91 model can be used for tree estimation, we focus on its capacity to estimate rates of change among segments, a central question in both linguistic theory and phonological typology. ";
+     "Several quantitative measures of diachronic segment stability have been proposed";
      Citep {Wichmann2009; Moran2018; Moran2021};
-     ", but none is phylogenetically based or uses models of segmental transitions. ";
-     "Indeed, one of the strengths of our approach is that it can take advantage of a rich set of segment-transition models, which are not limited by considerations of the labeling assigned to the states. ";
-     "We illustrate the power of the TKF91 model with a sample of ";
+     ", but these approaches are not embedded within an explicit phylogenetic framework and do not model segment-to-segment transitions. ";
+     "A key advantage of our method is that it accommodates a broad class of transition models unconstrained by arbitrary state codings. ";
+     "We demonstrate the power of the TKF91 model with a sample of ";
      Enumerators.Cardinal(data.Taxa.Length-1);
-     " Romance languages plus Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
-     "First, vowels are for the most part less stable over time than consonants. " ;
-     "Second, a model of sound change in which parameters are shared among natural classes of phonemes outperforms simpler models. " ;
-     "Finally, the equilibrium frequencies indicate that Romance languages make disproportionately frequent use of stops and short vowels in word forms, relative to other segment classes. " ;
+     " Romance languages together with Latin. ";
+     "The analysis yields three principal findings concerning sound change from Latin to Romance. ";
+     "First, vowels exhibit greater diachronic volatility than consonants. ";
+     "Second, models that parameterize transition rates over phonological natural classes provide a substantially better fit than simpler alternatives. ";
+     "Third, the inferred equilibrium frequencies indicate a disproportionate representation of stops and short vowels in Romance lexical forms relative to other segment classes. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "The remainder of this paper is structured as follows. ";
-      "Sections 2 and 3 introduce the data and methods, respectively, which are followed by a presentation of the results in Section 4. ";
+      "Sections 2 and 3 describe the data and methodological framework. ";
+       "Section 4 presents the empirical results. ";
       "Section 5 situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
-      "Section 6 brings the paper to a close with a recapitulation of the main points and identifies possibilities for expanding the TKF91 approach. ";
+      "Section 6 concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
     };
   };
 }
@@ -187,8 +194,8 @@ class CognateWordFormsSection: Content {
     super.Constructor("Modeling linguistic history with cognate word-forms");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
+  override GetBody(ContentStyle style) = Block {
+    style.Par{
       "The use of cognate words introduces several challenges, such as the alignment of homologous segments of cognate word forms. ";
       "In a molecular phylogenetic analysis, the fine-scale homology of nucleotides sampled from different species is established using sequence alignment programs. ";
       "However, even for molecular data in which long nucleotide sequences are the norm, there can be substantial uncertainty in the alignment";
@@ -214,14 +221,15 @@ class IntroductionSection: Content {
     AddContent(PaperSections.TKF91Approach);
   }
 
-  override GetBody(ContentStyle style, title) = Block {
-    style.TitlePar(title) {
-      "Natural languages exhibit the property of descent with modification, which allows their histories to be represented by a tree structure and estimated using phylogenetic methods developed in evolutionary biology";
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "Natural languages exhibit the property of descent with modification, which allows their histories to be represented as phylogenetic trees and inferred using methods originally developed in evolutionary biology";
         Citep {Atkinson2005; Croft2008; Pagel2009; Borchesius2017; Bromham2017; Pagel2017}; DotSpace;
-      "Over the past twenty years, these methods have come to play a prominent role in historical and evolutionary linguistics. ";
+      "Over the past two decades, such methods have become central to historical and evolutionary linguistics. ";
       "Bayesian phylogenetic methods in particular are increasingly used to infer tree topologies, ancestral states, and divergence times";
         Citep {Bouckaert2012; Bowern2012; Chang2015; Dunn2017; Sagart2019; Carling2021; Auderset2023; Heggarty2023}; DotSpace;
-      "Despite the undeniable advances of these methods, a fundamental problem remains unaddressed: the nature of the observations. ";
+      "Despite the undeniable advances of these methods, a foundational issue remains unresolved: the nature of the observations. ";
+      "We argue that modeling linguistic evolution as a sequence of explicit segmental events yields richer and more coherent inferences than current trait-based approaches. ";
     };
   };
 }
@@ -267,20 +275,17 @@ class PaperDataSection: Content {
     }
   };
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data      = MainResults.Data;
     var langcount = Enumerators.Cardinal(data.Taxa.Length-1);
 
     style.AddFigure(Figures.LanguageDistribution, FigureOptions.Bottom | FigureOptions.Full, 60%);
 
-    style.TitlePar(title) {
+    style.Par {
       style.ReviewMark(ReviewComments.C4);
-      "This study is based on a dataset of cognate word forms from a sample of ";
+      "The dataset consists of cognate word forms from a sample of ";
       langcount;
       " Romance languages and Latin, ";
-      style.ReviewNew {
-        "an assortment of languages which are all typologically fusional, ";
-      };
       "whose geographic distribution is presented in ";
 
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
@@ -291,13 +296,13 @@ class PaperDataSection: Content {
       "Despite this semantic difference, they are assigned to the same cognate set because they are segmentally homologous. ";
     };
 
-    style.BodyPar {
+    style.Par {
       "Cognate word forms were selected as follows. ";
       "We first identified basic vocabulary items in Latin on the basis of the Swadesh 207 concept list. ";
       "We could have selected cognates with any meanings, but used a Swadesh list solely to reduce the probability of encountering borrowed words. ";
       "For each Latin lexeme, we collected its cognates in our "; langcount; " Romance languages from etymological dictionaries. ";
       "Forms thought to be due to borrowing either from Latin or from another Romance language were excluded. ";
-      "The orientation toward Latin is purely practical. ";
+      "The orientation toward Latin is motivated purely by practical considerations. ";
       "We only used cognate sets in which a cognate could be identified for each language. ";
       "By starting from Latin, we maximized the chances of having cognates in all of the Romance languages in our sample. ";
       style.ReviewMark(ReviewComments.C45);
@@ -306,7 +311,7 @@ class PaperDataSection: Content {
       }
     };
 
-    style.BodyPar {
+    style.Par {
       style.ReviewMark(ReviewComments.C23);
       "In total, the dataset contains "; data.UsedCognates.Length;
       " cognate sets, which are comprised of "; data.WordCount;
@@ -330,7 +335,7 @@ class PaperDataSection: Content {
 
     style.AddTable(TableFigures.ManualAlignment, FigureOptions.Bottom);
 
-    style.BodyPar {
+    style.Par {
       "The word forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
       " for the concept "; TableFigures.ManualAlignment.WordDisplay(style);  "Dashes ("; style.SQuote {"-"} ") denote the absence of a homologous segment present in other word forms" DotSpace;
       "For example, the "; TextIpa{"i"}; " of Latin "; TextIpa{"kʷ-id"}; " develops into "; TextIpa{"wa"}; " in French and Walloon. To accommodate the emergence of "; TextIpa{"w"}; ", there is an empty segmental slot before the vowel in all other languages"; DotSpace;
@@ -339,22 +344,19 @@ class PaperDataSection: Content {
       "In other words, it is not necessary to include the dashes in the input alignments. ";
     };
 
-    style.BodyPar {
-      "Latin is a highly synthetic language in which most lexical items having multiple word forms. ";
-      "In this study, each lexical item is represented by a single word-form, however. ";
+    style.Par {
+      "Latin is a highly synthetic language in which most lexical items have multiple word forms. ";
+      "In our dataset, each lexical item is represented by a single word-form, however. ";
       "For verbs, the present active infinitive is used. ";
       "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word forms. ";
       "Among nouns and adjectives in our dataset, the ancestral form is";
-      style.ReviewNew {
-        ", as expected, ";
-      };
       "far more often the accusative. ";
       "The selection of word forms is not without consequences, since it can impact the estimated transition rates. For instance, most masculine singular nominative adjectives in Latin end in "; TextIpa{"-us"}; DotSpace;
       "By contrast, feminine singular nominative adjectives end in "; TextIpa{"-a"}; DotSpace;
       "Use of the feminine forms would increase the number of transitions originating in this vowel. ";
     };
 
-    style.BodyPar{
+    style.Par{
       style.ReviewMark(ReviewComments.C4);
       "The lexical histories of the Romance languages are notoriously complex"; Citep {Stefenelli1992; Dworkin2016b};
       ", as they have been shaped not only by inheritance but also by borrowings from other Romance languages as well as Latin itself. ";
@@ -365,7 +367,7 @@ class PaperDataSection: Content {
       "Second, the phonological developments of the Romance languages, ";
       style.ReviewNew {
         "whose earliest written testimonies go as far back as the 9" sup "th"; " and 10" sup "th";
-        " centuries, so that their history is exceptionally well known, ";
+        " centuries, so that their histories are relatively well-known, ";
       };
       "are sufficiently well understood that borrowings and Latinisms can often be detected. ";
       "We excluded all word forms for which evidence of borrowing could be identified. ";
@@ -384,16 +386,16 @@ class PaperDataCuration: Content {
     super.Constructor("Data Curation and Analysis");
   }
 
-  override GetBody(ContentStyle style, title) = Block {
+  override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
-    style.TitlePar(title) {
+    style.Par {
       "Our analysis is coordinated using a program written in the Nytril programming language"; Citep {Nytrilprogram}; DotSpace;
       "We created an automated framework for the experiment that comprises a reusable IPA library, word forms, ";
       "data quality checks, typeset output, and input files for the MCMC software (written in C++). ";
     };
 
-    style.BodyPar {
+    style.Par {
       style.ReviewMark(ReviewComments.C38);
       "Word forms from the "; Enumerators.Cardinal(data.Taxa.Length); " languages in our study are organized into classes by concept and then by cognate class. ";
       style.FigureReference(Figures.ConceptEncoding); " shows an example of the raw data for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
@@ -413,7 +415,7 @@ class PaperDataCuration: Content {
       "After the input step, all steps are coded using properties such as "; style.SQuote{"vowel"}; " and "; style.SQuoteComma{"nasal"}; "rather than working with strings of characters directly.";
     };
 
-    style.BodyPar {
+    style.Par {
       var config = MainResults.MainRun.Run.Config;
       "After the raw input is parsed, the control program aggregates and partitions the words and builds the data files for the MCMC program to perform Bayesian phylogenetic analysis under the TKF91 model. ";
       "The MCMC analysis runs for "; Span {config.Generations; TextGroup: true}; " cycles and repeats to check for convergence. ";
@@ -455,7 +457,7 @@ class CognateCoding: Content {
       code;
   };
 
-  override GetBody(ContentStyle style, title) = LanguageTable([Column.Fit(2")]*3) {
+  override GetBody(ContentStyle style) = LanguageTable([Column.Fit(2")]*3) {
     ParAlignment: Center;
     LanguageTitleRow {
       Lang.Language;
@@ -506,7 +508,7 @@ class MultiStateCharacter: Content {
     CognateCoding.LanguageLine(Russian, "отец", binary, 3);
   };
 
-  override GetBody(ContentStyle style, title) = FatherTable(style, false);
+  override GetBody(ContentStyle style) = FatherTable(style, false);
 }
 
 //======================================================================
@@ -518,7 +520,7 @@ class BinaryRepresentation: Content {
     super.Constructor("Binary cognate classes");
   }
 
-  override GetBody(ContentStyle style, title) = MultiStateCharacter.FatherTable(style, true);
+  override GetBody(ContentStyle style) = MultiStateCharacter.FatherTable(style, true);
 }
 
 //======================================================================
