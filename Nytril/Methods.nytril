@@ -1705,7 +1705,7 @@ readonly SoundChangeSection PaperSections.InsightsSoundChange = new;
 
 class SoundChangeSection: Content {
   Constructor {
-    super.Constructor("Insights into Sound Change");
+    super.Constructor("Sound Change and Phonological Typology");
   }
 
   override GetBody(ContentStyle style) = Block {
@@ -1725,7 +1725,7 @@ class SoundChangeSection: Content {
 
     style.Par {
       "Our findings also overlap with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
-      "For example, the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
+      "For example, the basic consonant inventory proposed by "; Citet{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
       "There is even stronger convergence with the set of primal consonants proposed by ";
       Citet{Bybee2022}; ", /p t k b d g m n ŋ s l/. ";
       "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
@@ -1806,7 +1806,7 @@ readonly LimitationsSection PaperSections.Limitations = new;
 
 class LimitationsSection: Content {
   Constructor {
-    super.Constructor("Limitations of the event-based model");
+    super.Constructor("Limitations of the Model");
   }
 
   override GetBody(ContentStyle style) = Block {
@@ -1830,7 +1830,7 @@ readonly AdvantagesSection PaperSections.Advantages = new;
 
 class AdvantagesSection: Content {
   Constructor {
-    super.Constructor("Advantages of the event-based approach");
+    super.Constructor("Advantages of the Event-Based Approach");
   }
 
   override GetBody(ContentStyle style) = Block {
