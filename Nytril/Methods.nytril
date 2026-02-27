@@ -1726,7 +1726,7 @@ class SoundChangeSection: Content {
     style.Par {
       "Our findings also overlap with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
       "For example, the basic consonant inventory proposed by "; Citet{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-      "There is even stronger convergence with the set of primal consonants proposed by ";
+      "There is even stronger convergence with the set of primal consonants proposed by";
       Citet{Bybee2022}; ", /p t k b d g m n ŋ s l/. ";
       "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
       "First, these consonants are considered primal because they are only rarely created through sound change. ";

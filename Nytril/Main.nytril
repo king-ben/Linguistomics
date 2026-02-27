@@ -95,6 +95,7 @@ class JOLEStyle: OUPStyle {
     TexFont            = "Libertinus Serif";
     SansSerif          = TextFamily: TextFamilies.LibertinusSans;
     FigureStartPage    = 2;
+    InlineAuthors      = 2;
   }
 
   override SetTextStyle = {
