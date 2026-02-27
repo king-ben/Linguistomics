@@ -95,7 +95,7 @@ class RootMeaningTraitsSection: Content {
   "The segmental forms themselves, however, preserve phylogenetic signal: French "; TextIpa{"mɛ̃"};
   ", Spanish "; TextIpa{"mano"}; ", and Italian "; TextIpa{"mano"};
   " each represent distinct reflexes of Latin "; TextIpa{"manum"}; DotSpace;
-  "Standard trait-based methods in linguistic phylogenetics are not designdd to incorporate such fine-grained segmental divergence into the inference process. ";
+  "Standard trait-based methods in linguistic phylogenetics are not designed to incorporate such fine-grained segmental divergence into the inference process. ";
 };
 
 
@@ -122,7 +122,7 @@ style.Par {
 
 style.Par {
   "Finally, cognate-class assignments such as those in ";
-  style.TableReference(TableFigures.CognateCoding); " are treated as observed data, even thought they are inferred. ";
+  style.TableReference(TableFigures.CognateCoding); " are treated as observed data, even though they are inferred. ";
   "Cognacy judgments are hypotheses about ancestral relationships among lexical items and cannot be observed any more than a phylogenetic tree can. ";
   "This practice sits uneasily with the principles of Bayesian inference, under which posterior distributions are conditioned on observable data. ";
   "Our approach mitigates this tension by conditioning inference on attested word forms rather than abstract cognate classes. ";
