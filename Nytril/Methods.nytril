@@ -552,23 +552,16 @@ class GapFrequencyChart: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-
-
     "Distribution of alignment gaps across word positions for the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study. ";
     "The top panel shows the proportion of alignments with a given number of gaps at the word-initial segment, the middle panel at word-internal segments, and the bottom panel at the word-final segment. ";
     "Since nine languages are analyzed, at most eight gaps can occur at a given position: a deletion event affecting all nine languages would not appear in the alignment and is explicitly conditioned on in the likelihood calculation"; Citep{Lunter2003}; DotSpace;
     "Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. ";
-    "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions (χ² = 425.62, df = 16, p < 0.001), which confirms a statistically significant positional asymmetry. ";
+    "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions, (";
 
-    Span {
-      TextDigits: 2;
-       GapInfo.TestStatistic;
-     };
-     "; ";
-     EqSpan {DegreesFreedom; Tex.Equals; 16};
-     CommaSpace;
-     EqSpan {PValue; Tex.lt; 0.001};
-     ".)";
+    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; GapInfo.TestStatistic}}; CommaSpace;
+    EqSpan {DegreesFreedom; Tex.Equals; 16}; CommaSpace;
+    EqSpan {PValue; Tex.lt; 0.001};
+     ") which confirms a statistically significant positional asymmetry. ";
   };
 
   override GetBody(ContentStyle style) = HBox {
