@@ -232,39 +232,6 @@ class ModelComparer {
 
 //======================================================================
 
-class GappinessSignificance {
-  var double TestStatistic;
-
-  Constructor(RunResultsThread run) {
-    var   spectrum = run.GapSpectrum;
-    double n       = 0;
-    double lnL1    = 0.0;
-    double lnL0    = 0.0;
-
-    Vector<double> statistic = new(spectrum.Length, 0.0);
-    Vector<double> countVals = new(spectrum[0].Length, 0.0);
-    foreach (var gap in spectrum) {
-      var ni = Math.Sum(gap);
-      n += ni;
-      foreach (var value in gap) {
-        if (value != 0)
-          lnL1 += value * Math.Log(value / ni);
-      }
-      statistic[each0] = n;
-      foreach (var value in gap)
-        countVals[each0] += value;
-    }
-
-    foreach (var value in countVals) {
-      if (value != 0)
-        lnL0 += value * Math.Log(value/n);
-    }
-    TestStatistic = -2.0 * (lnL0 - lnL1);
-  }
-}
-
-//======================================================================
-
 class AlignmentCompareFigure: Content {
   const string Concept  = "Sky";
 
@@ -544,8 +511,6 @@ class EquilibriumFrequencyChart: Content {
 
 readonly GapFrequencyChart Figures.GappinessChart = new;
 
-readonly GappinessSignificance GapInfo = new(MainResults.MainRun);
-
 class GapFrequencyChart: Content {
   Constructor {
     super.Constructor("Gap frequency comparison chart");
@@ -558,7 +523,7 @@ class GapFrequencyChart: Content {
     "Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. ";
     "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions, (";
 
-    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; GapInfo.TestStatistic}}; CommaSpace;
+    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; MainResults.MainRun.TestStatistic}}; CommaSpace;
     EqSpan {DegreesFreedom; Tex.Equals; 16}; CommaSpace;
     EqSpan {PValue; Tex.lt; 0.001};
      ") which confirms a statistically significant positional asymmetry. ";
