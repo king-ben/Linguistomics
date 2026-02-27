@@ -62,7 +62,7 @@ class RootMeaningTraitsSection: Content {
       "Cognates are linguistic units at different levels (e.g., segments, morphemes, words) that share a common ancestor. An example from the lexical domain is Spanish "; textit{"mano"}; " "; style.SQuoteComma{"hand"};
           "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance */manu/"; DotSpace;
       "Four types of lexical cognacy have been identified in the literature"; Citep {Chang2015};
-      ", but phylogenetic studies rely overwhelmingly on one: root-meaning traits";
+      ", but phylogenetic studies rely overwhelmingly on one: root-meaning traits.";
     };
 
     style.AddTable(TableFigures.CognateCoding, FigureOptions.Bottom);
