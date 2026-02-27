@@ -225,6 +225,7 @@ class ModelComparer {
   };
 
   ShowAlignmentNumber = Span {
+    TextGroup: true;
     TotalCount; " alignments under the "; GetLayoutSpan;
   };
 }
@@ -1064,7 +1065,7 @@ class AlignmentFigure: Content {
         var t        = map[each0];
         var segments = example.Cognate.Words[taxon.Index].Segments;
         if (text) {
-          var i        = 0;
+          var i  = 0;
           foreach (var c in t) {
             if (c == '1' and i < segments.Length)
               segments[i++].ShowBlock;
