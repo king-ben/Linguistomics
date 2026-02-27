@@ -1862,12 +1862,13 @@ class PaperMethodsSummary: Content {
     AddContent(PaperSections.DataCuration);
   }
 
-  override GetBody(ContentStyle style) = Block {
-    style.Par {
-      "A detailed description of the model and analysis can be found in the Supplemental Material. ";
-      "What follows is an outline, sufficient in detail to provide an understanding of the model and the experiments. ";
-    };
+override GetBody(ContentStyle style) = Block {
+  style.Par {
+    "A comprehensive account of the model specification and computational implementation is provided in the Supplemental Material. ";
+    "The discussion here summarizes the essential components of the framework and the structure of the empirical analyses. ";
   };
+};
+
 }
 
 //======================================================================
@@ -1964,17 +1965,34 @@ class ModelInferenceSection: Content {
   override GetBody(ContentStyle style) = Block {
     var rule = MainResults.Data.Rule;
 
-    style.Par {
-      "We assume that the languages under investigation are related to one another through an unknown phylogenetic tree, ";
-      UnknownTree;
-      ", that contains information on the relatedness of the languages ";
-      SpanParens {Topology};
-      " and the expected number of phonemic transitions "; ExpectedEvents; " that occur along each branch of the tree. ";
-      "Language evolves along the branches of the tree according to the TKF91 model"; Citep {Thorne1991}; ", which allows either a segmental transition, insertion, or deletion to occur in an instant of time. ";
-      "Insertions and deletions occur at rates "; InsertionRate; " and "; DeletionRate; " respectively, with "; InsertionRateCondition; DotSpace;
-      "Phonemic substitution is modeled as a continuous-time Markov model with phonemes as the states of the process (as noted above, our inventory consists of "; MainResults.Data.UniqueSegments.Length; " phonemes). ";
-      "The rates of change between all pairs of states are contained in the rate matrix "; RateMatrix; ", which is governed by parameters ";  RateMatrixParams; DotSpace;
-    };
+
+style.Par {
+  "We assume that the languages in our sample are related by an unknown phylogenetic tree, ";
+  UnknownTree;
+  ", which encodes both their branching structure ";
+  SpanParens{Topology};
+  " and the expected number of phonemic transition events ";
+  ExpectedEvents;
+  " along each branch. ";
+  "Evolution of word forms along the tree is modeled under TKF91";
+  Citep{Thorne1991};
+  ", an event-based continuous-time process in which three instantaneous operations are permitted: segmental substitution, insertion, and deletion. ";
+  "Insertions and deletions occur at rates ";
+  InsertionRate;
+  " and ";
+  DeletionRate;
+  ", respectively, subject to the constraint ";
+  InsertionRateCondition;
+  DotSpace;
+  "Segmental substitution is modeled as a continuous-time Markov process whose states correspond to phonemes (the inventory comprises ";
+  MainResults.Data.UniqueSegments.Length;
+  " distinct segments). ";
+  "All pairwise substitution rates are specified by the rate matrix ";
+  RateMatrix;
+  ", which is governed by parameters ";
+  RateMatrixParams;
+  DotSpace;
+};
 
     style.Par {
       "We perform estimation in a Bayesian framework, in which parameter estimates are based on the joint posterior probability distribution: ";
