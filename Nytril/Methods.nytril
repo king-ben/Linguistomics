@@ -551,10 +551,14 @@ class GapFrequencyChart: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "The number of gaps observed across the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study at the word-initial segment (top), word-internal segment(s) (middle), and word-final segment (bottom). ";
-    "Nine languages were analyzed in this study, so it is not possible for there to be nine gaps. Deletion events that led to a gap for all the languages would not be included in an alignment, and is explicitly conditioned on in Lunter et al."; Citep{Lunter2003}; DotSpace;
-    "There is a clear, and statistically significant, pattern of an increasing number of gaps as one moves from the initial to the final segment of the word. ";
-    "(A likelihood ratio test of the null hypothesis that the distributions are the same at the initial, internal, and final segments is highly significant, with a test statistic of ";
+
+
+    "Distribution of alignment gaps across word positions for the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study. ";
+    "The top panel shows the proportion of alignments with a given number of gaps at the word-initial segment, the middle panel at word-internal segments, and the bottom panel at the word-final segment. ";
+    "Since nine languages are analyzed, at most eight gaps can occur at a given position: a deletion event affecting all nine languages would not appear in the alignment and is explicitly conditioned on in the likelihood calculation"; Citep{Lunter2003}; DotSpace;
+    "Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. ";
+    "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions (χ² = 425.62, df = 16, p < 0.001), which confirms a statistically significant positional asymmetry. ";
+
     Span {
       TextDigits: 2;
        GapInfo.TestStatistic;
@@ -657,7 +661,7 @@ class LanguageDistributionFigure: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "Approximate geographic distribution of the Romance languages examined in this study.";
+    "Approximate geographic distribution of the Romance languages in the study group.";
   };
 
   override GetBody(ContentStyle style) = Paragraph {
@@ -816,7 +820,7 @@ class ConsensusTree: Content {
 SegmentOccuranceCaption(ExperimentData data) = Span {
   var l0 = data.Taxa[0].Language;
 
-  "Comparison of occurance rates of segments in each language. Segments are sorted by the rates in ";
+  "Comparison of occurence rates of segments in each language. Segments are sorted by the rates in ";
   l0;
   ". Bars are normalized to the rate of the most frequently ocurring segment in each language. ";
   "Languages are ordered by their Euclidian distance from "; l0; " indicated by the red line.";
@@ -826,7 +830,7 @@ readonly SegmentOccuranceFigure Figures.SegmentOccuranceRates = new(MainResults.
 
 class SegmentOccuranceFigure: ExperimentContent {
   Constructor(ExperimentData data) {
-    super.Constructor(data, "Segment Occurance Rates");
+    super.Constructor(data, "Segment Occurence Rates");
     Data = data;
   }
 
@@ -1279,8 +1283,8 @@ class PhylogenyResultsSection: Content {
       "Our statistical analysis treats all model parameters as random variables with prior probability distributions. ";
       "The tree topology describing the relationships of the languages is also considered a random variable with a uniform prior probability in which all possible tree topologies are assigned equal prior probability. ";
       "As described in the Methods section, we use MCMC to numerically approximate the posterior probability distribution of the model parameters. ";
-      "Our analyses consistently found a handful of topologies that best explained the data. Unfortunately, the MCMC poorly explored the tree space: ";
-        "the MCMC algorithm would find a good tree then become stuck on it. ";
+      "Our analyses consistently found a handful of topologies that best explained the data. Unfortunately, the MCMC algorithm poorly explored the tree space: ";
+        "it would find a good tree then become stuck on it. ";
     };
 
     style.Par {
@@ -1401,7 +1405,7 @@ class SegmentModelsFigure: Content {
     var rp       = rule.Filters.Length;
 
     style.Par {
-      "We consider three models of segmental change in this study: ";
+      "We consider three models of segmental change: ";
       PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
       Citep {Jukes1969};
       " with equal rates between all pairs of states and in which the number of substitutions follows a Poisson distribution (hereafter referred to as the "; style.SQuote{PoissonModel.Name}; " model); ";
@@ -1446,7 +1450,7 @@ class ModelComparisonSection: Content {
       EqSpan {Tex.ln; BayesFactor12; Tex.Equals; -1074.2}; " and ";
       EqSpan {Tex.ln; BayesFactor23; Tex.Equals; -117.3};
       ", respectively, for a comparison of "; PoissonModel; " to "; UnequalModel; " and "; UnequalModel; " to "; NaturalClassModel; ". ";
-      "This indicates overwhelming support for the more parameter-rich "; NaturalModelName;
+      "This difference indicates overwhelming support for the more parameter-rich "; NaturalModelName;
       Citep {Jeffreys1939}; DotSpace;
     };
  };
@@ -1495,7 +1499,7 @@ class WordTransformationSection: Content {
       "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
       "The higher the rate, the more rapidly a change to another segment occurs on average. ";
       "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, affricates, and nasal vowels, but this is an artefact of the visualization. ";
-      "The rates in these classes are not identical, but they are so small that they are not visible in this plot. ";
+      "The rates in these classes are not identical, but they they are sufficiently small that they are visually indistinguishable in this plot. ";
     };
 
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
@@ -1509,7 +1513,7 @@ class WordTransformationSection: Content {
       "The only exceptions are the liquid "; VocalSegments.r;
       ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels. ";
       "This clustering is driven by the exchangeability rates that are shared between classes of segments and the degree of variation in the equilibrium frequencies. ";
-      "When there the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
+      "When the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
       style.ReviewMark(ReviewComments.C42);
       style.ReviewNew {
         "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
@@ -1652,7 +1656,7 @@ class WordSegmentRelSection: Content {
       " model, but only ";
       align2.NaturalClass.ShowAlignmentNumber;
       " model. ";
-      "This difference makes sense given the rates estimated under the "
+      "This difference is consistent with the rates estimated under the "
       align2.NaturalClass; " ("; style.FigureReference(Figures.RateChart); "). ";
       "For example, the rate of change between "; VocalSegments.u; " and "; VocalSegments.oh; " are estimated to be high, whereas the rate between consonants and "; VocalSegments.oh; " is low. ";
       "The distribution of alignments under the ";
@@ -1728,7 +1732,7 @@ class OtherApproachesSection: Content {
       Citep{Lunter2003}; DotSpace;
       "The application of the TKF91 model to linguistic data is not as problematic as it is for DNA sequence data because words are much shorter than DNA sequences, with ";
       Equations.TypicalWordLength; DotSpace;
-      "That said, one can obtain likelihood calculations that are linear in the number of tips if one assumes that the insertion rate is independent of the word length, instead of the overall insertion rate being ";
+      "However, one can obtain likelihood calculations that are linear in the number of tips if one assumes that the insertion rate is independent of the word length, instead of the overall insertion rate being ";
       Equations.OverallInsertionRate; " as it is under the TKF91 model";
       Citep{BouchardCote2013b}; DotSpace;
       "This model—the Poisson Indel Process (PIP)—could be applied to linguistic data sets that are composed of many more languages than we analyzed here. Since the alignments visited by the MCMC procedure are similar in length, the PIP model might be a sensible option for linguistic data. ";
@@ -1902,7 +1906,7 @@ class PaperMethodsSummary: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       "A detailed description of the model and analysis can be found in the Supplemental Material. ";
-      "What follows is an outline, sufficient in detail to provide an understanding of the model and experiments performed in this study. ";
+      "What follows is an outline, sufficient in detail to provide an understanding of the model and the experiments. ";
     };
   };
 }
@@ -2035,7 +2039,7 @@ class ModelInferenceSection: Content {
     style.Par {
       "We numerically approximate the posterior distribution of the parameters using MCMC. ";
       "Specifically, we constructed a Markov chain that has as its states the parameters of the model and a stationary distribution that is the posterior distribution of interest. ";
-      "Samples from this chain when at stationarity are valid, albeit dependent, samples from the posterior distribution. ";
+      "Samples from this chain, once it has reached stationarity, are valid (albeit dependent) samples from the posterior distribution. ";
       "Besides sampling the phylogenetic parameters of the model, the chain also samples segmental alignments"; Citep{Lunter2004}; DotSpace;
     };
 
@@ -2188,7 +2192,7 @@ class ConclusionSection: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       style.ReviewMark(ReviewComments.C24);
-      "We have presented the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
+      "We present the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
       "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). ";
       "Moreover, the event-based approach has the potential to improve divergence-time ";
       style.ReviewOld {
@@ -2198,7 +2202,7 @@ class ConclusionSection: Content {
         "estimation";
       };
       ", which relies on estimating the number of events that occurred along the branches of the tree. ";
-      "When applied to abstract cognate relationships, it is not clear what exactly is being counted along the branches. ";
+      "When applied to abstract cognate relationships, it is unclear what events are actually being counted along the branches. ";
       "By contrast, the possible events in our event-based approach are well defined: segmental transitions, insertions, or deletions.";
     };
 
