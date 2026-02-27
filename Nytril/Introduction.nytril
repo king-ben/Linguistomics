@@ -148,7 +148,7 @@ class TKF91ApproachSection: Content {
   "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
   Citep {BouchardCote2013; Abner2024}; DotSpace;
   "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
-  "(i) substitution of one segment for another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
+  "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
   "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
   "The model, first introduced by ";
   Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
@@ -160,24 +160,26 @@ class TKF91ApproachSection: Content {
 
 
     style.Par {
-     "Although the TKF91 model can be used to infer phylogenies, we focus on its capacity to estimate rates of change among segments, as it is of central importance to both linguistic theory and linguistic typology. ";
-     "There are a variety of methods for estimating the diachronic stability of segments";
+     "Although the TKF91 model can be used for tree estimation, we focus on its capacity to estimate rates of change among segments, a central question in both linguistic theory and phonological typology. ";
+     "Several quantitative measures of diachronic segment stability have been proposed";
      Citep {Wichmann2009; Moran2018; Moran2021};
-     ", but none is phylogenetically based or uses models of segmental transitions. ";
-     "Indeed, one of the strengths of our approach is that it can take advantage of a rich set of segment-transition models, which are not limited by considerations of the labeling assigned to the states. ";
-     "We illustrate the power of the TKF91 model with a sample of ";
+     ", but these approaches are not embedded within an explicit phylogenetic framework and do not model segment-to-segment transitions. ";
+     "A key advantage of our method is that it accommodates a broad class of transition models unconstrained by arbitrary state codings. ";
+     "We demonstrate the power of the TKF91 model with a sample of ";
      Enumerators.Cardinal(data.Taxa.Length-1);
-     " Romance languages plus Latin, on the basis of which we find robust evidence for the following three claims regarding sound change between Latin and Romance. ";
-     "First, vowels are for the most part less stable over time than consonants. " ;
-     "Second, a model of sound change in which parameters are shared among natural classes of phonemes outperforms simpler models. " ;
-     "Finally, the equilibrium frequencies indicate that Romance languages make disproportionately frequent use of stops and short vowels in word forms, relative to other segment classes. " ;
+     " Romance languages together with Latin. ";
+     "The analysis yields three principal findings concerning sound change from Latin to Romance. ";
+     "First, vowels exhibit greater diachronic volatility than consonants. ";
+     "Second, models that parameterize transition rates over phonological natural classes provide a substantially better fit than simpler alternatives. ";
+     "Third, the inferred equilibrium frequencies indicate a disproportionate representation of stops and short vowels in Romance lexical forms relative to other segment classes. ";
     };
 
     style.Par {
       "The remainder of this paper is structured as follows. ";
-      "Sections 2 and 3 introduce the data and methods, respectively, which are followed by a presentation of the results in Section 4. ";
+      "Sections 2 and 3 describe the data and methodological framework. ";
+       "Section 4 presents the empirical results. ";
       "Section 5 situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
-      "Section 6 brings the paper to a close with a recapitulation of the main points and identifies possibilities for expanding the TKF91 approach. ";
+      "Section 6 concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
     };
   };
 }
