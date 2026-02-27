@@ -341,6 +341,28 @@ style.Par {
 
     style.AddTable(TableFigures.ManualAlignment, FigureOptions.Bottom);
 
+style.Par {
+  "Within each cognate set, word forms were manually aligned. An illustrative example is provided in ";
+  style.TableReference(TableFigures.ManualAlignment);
+  " for the concept ";
+  TableFigures.ManualAlignment.WordDisplay(style);
+  "Dashes ("; style.SQuote{"-"}; ") indicate the absence of a segment homologous to one present in other forms";
+  DotSpace;
+  "For example, the ";
+  TextIpa{"i"};
+  " of Latin ";
+  TextIpa{"kʷ-id"};
+  " corresponds to ";
+  TextIpa{"wa"};
+  " in French and Walloon. To represent the emergence of ";
+  TextIpa{"w"};
+  ", an empty segmental position is introduced before the vowel in the remaining languages";
+  DotSpace;
+  "As discussed in Section 3, however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
+  "Inference does not condition on any fixed alignment and the posterior distribution integrates over alternative homology assignments. ";
+  "Accordingly, explicit gap symbols are not required elements of the input. ";
+};
+
     style.Par {
       "The word forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
       " for the concept "; TableFigures.ManualAlignment.WordDisplay(style);  "Dashes ("; style.SQuote {"-"} ") denote the absence of a homologous segment present in other word forms" DotSpace;
