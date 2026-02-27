@@ -363,45 +363,42 @@ style.Par {
   "Accordingly, explicit gap symbols are not required elements of the input. ";
 };
 
-    style.Par {
-      "The word forms in each cognate set are manually aligned, an example of which is provided in "; style.TableReference(TableFigures.ManualAlignment);
-      " for the concept "; TableFigures.ManualAlignment.WordDisplay(style);  "Dashes ("; style.SQuote {"-"} ") denote the absence of a homologous segment present in other word forms" DotSpace;
-      "For example, the "; TextIpa{"i"}; " of Latin "; TextIpa{"kʷ-id"}; " develops into "; TextIpa{"wa"}; " in French and Walloon. To accommodate the emergence of "; TextIpa{"w"}; ", there is an empty segmental slot before the vowel in all other languages"; DotSpace;
-      "As described below in Section 3, however, manual alignments of cognate word forms serve only as a starting point for the Markov chain Monte Carlo (MCMC) sampling procedure, ";
-      "so our analysis does not condition on any particular alignment of segments. ";
-      "In other words, it is not necessary to include the dashes in the input alignments. ";
-    };
+style.Par {
+  "Latin is a highly synthetic language in which most lexical items exhibit multiple inflected forms. ";
+  "For purposes of analysis, each lexical item in the dataset is represented by a single form. ";
+  "Verbs are represented by the present active infinitive. ";
+  "Nouns, adjectives, and pronouns are represented by singular forms in either the accusative or, less frequently, the nominative case, as these are the case forms directly continued in the Romance languages. ";
+  "The selection of citation form is not methodologically neutral, as it can influence estimated transition rates. ";
+  "For example, most masculine singular nominative adjectives in Latin end in ";
+  TextIpa{"-us"}; ", ";
+  "whereas feminine singular nominative adjectives end in ";
+  TextIpa{"-a"};
+  DotSpace;
+  "Systematic inclusion of feminine forms would increase the number of transitions originating in this vowel. ";
+};
 
-    style.Par {
-      "Latin is a highly synthetic language in which most lexical items have multiple word forms. ";
-      "In our dataset, each lexical item is represented by a single word-form, however. ";
-      "For verbs, the present active infinitive is used. ";
-      "For nouns, adjectives, and pronouns, singular forms in either the accusative or the nominative case are used, since these are the two case forms cognate with Romance word forms. ";
-      "Among nouns and adjectives in our dataset, the ancestral form is";
-      "far more often the accusative. ";
-      "The selection of word forms is not without consequences, since it can impact the estimated transition rates. For instance, most masculine singular nominative adjectives in Latin end in "; TextIpa{"-us"}; DotSpace;
-      "By contrast, feminine singular nominative adjectives end in "; TextIpa{"-a"}; DotSpace;
-      "Use of the feminine forms would increase the number of transitions originating in this vowel. ";
-    };
+style.Par {
+  style.ReviewMark(ReviewComments.C4);
+  "The lexical histories of the Romance languages are complex";
+  Citep{Stefenelli1992; Dworkin2016b};
+  ", as they reflect not only vertical inheritance but also substantial borrowing both from within Romance and from Latin itself. ";
+  "Given this non-tree-like component of their evolution, one might question the suitability of Romance data for phylogenetic modeling. ";
+  "In fact, Romance cognates are particularly well suited to our objectives for two reasons. ";
+  "First, the dataset is restricted to basic vocabulary, a domain in which borrowing is relatively infrequent";
+  Citep{Tadmor2010; Carling2019.OnPage(2)};
+  DotSpace;
+  "Second, the phonological development of the Romance languages, which are attested in written sources from as early as the 9" sup "th";
+  " and 10" sup "th";
+  " centuries, is sufficiently well understood that borrowings and Latinisms can often be identified. ";
+  "All forms for which evidence of borrowing was detected were excluded. ";
+  "Romance cognates are thus appropriate for our analysis for the same reason that the traditional comparative method has successfully reconstructed Proto-Romance forms. ";
+  "For example, the ";
+  textit{"Dictionnaire Étymologique Roman"};
+  Citep{Derom};
+  " reconstructs portions of the Proto-Romance lexicon from a dataset comparable in scope and design to ours. ";
+};
 
-    style.Par{
-      style.ReviewMark(ReviewComments.C4);
-      "The lexical histories of the Romance languages are notoriously complex"; Citep {Stefenelli1992; Dworkin2016b};
-      ", as they have been shaped not only by inheritance but also by borrowings from other Romance languages as well as Latin itself. ";
-      "Given this non-tree-like evolution, it is natural to question whether Romance cognates are appropriate for our phylogenetic method. ";
-      "In fact, Romance data are ideally suited to our goals because the histories of individual cognate sets are well understood and the risk of horizontal transmission in our dataset is low. ";
-      "Two reasons are responsible for this reduced risk. ";
-      "First, our dataset focuses on basic vocabulary, where lexical borrowing is less common"; Citep {Tadmor2010; Carling2019.OnPage(2)}; DotSpace;
-      "Second, the phonological developments of the Romance languages, ";
-      style.ReviewNew {
-        "whose earliest written testimonies go as far back as the 9" sup "th"; " and 10" sup "th";
-        " centuries, so that their histories are relatively well-known, ";
-      };
-      "are sufficiently well understood that borrowings and Latinisms can often be detected. ";
-      "We excluded all word forms for which evidence of borrowing could be identified. ";
-      "Romance cognates are therefore appropriate for our analysis for the same reason that scholars have been able to reconstruct Proto-Romance lexemes using the traditional comparative method. ";
-      "For instance, the "; textit{"Dictionnaire Étymologique Roman"}; Citep{Derom}; " reconstructs a subset of the Proto-Romance lexicon from a dataset similar in spirit to ours. ";
-    };
+
   };
 }
 
