@@ -1724,10 +1724,10 @@ class SoundChangeSection: Content {
     };
 
     style.Par {
-      "Our findings also overlap to some extent with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
+      "Our findings also overlap with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
       "For example, the basic consonant inventory proposed by Nikolaev and Grossman"; Citep{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-      "There is even stronger convergence with the set of primal consonants proposed by Bybee and Easterday";
-      Citep{Bybee2022}; ", /p t k b d g m n ŋ s l/. ";
+      "There is even stronger convergence with the set of primal consonants proposed by ";
+      Citet{Bybee2022}; ", /p t k b d g m n ŋ s l/. ";
       "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
       "First, these consonants are considered primal because they are only rarely created through sound change. ";
       "That is, they infrequently arise as the output of sound change processes. ";
@@ -1994,45 +1994,72 @@ style.Par {
   DotSpace;
 };
 
-    style.Par {
-      "We perform estimation in a Bayesian framework, in which parameter estimates are based on the joint posterior probability distribution: ";
-    };
+style.Par {
+  "Parameter estimation is conducted within a Bayesian framework, with inference based on the joint posterior distribution of all model parameters: ";
+};
 
-    style.AlignEquation(Equations.BayesianEstimation);
+style.AlignEquation(Equations.BayesianEstimation);
 
-    style.Par {
-      "where "; SegmentalInfo; " are the observed segments for the cognate words. ";
-      "The likelihood function, "; LiklihoodFunction;
-      ", is calculated using the algorithm of Lunter "; textit{"et al."}; Citep {Lunter2003}; DotSpace;
-      "We use priors for the model parameters that are standard in phylogenetics, except for the rate parameters for the insertions and deletions, ";
-      "which are assumed to follow independent and identically distributed exponential distributions with "; InsertionRateCondition; DotSpace;
-      style.ReviewNew {
-        "An alignment of length "; AlignmentLength; " receives a prior probability that is geometric with probability "; InsertionProbability; DotSpace; "(Under the TKF91 model the length of an alignment at equilibrium is geometrically distributed with parameter "; InsertionProbability; ".) ";
-        "A more coherent alternative would be to define a fully generative prior on the alignment conditional on the insertion and deletion rates, building directly on the TKF91 process itself. ";
-        "Developing such priors for segmental homology structures remains an important direction for future work. ";
-      }
-    };
+style.Par {
+  SegmentalInfo;
+  " denotes the observed segmental sequences of the cognate word forms. ";
+  "The likelihood function, ";
+  LiklihoodFunction;
+  ", is evaluated using the dynamic programming algorithm of ";
+  Citet{Lunter2003};
+  DotSpace;
+  "Prior distributions for most parameters follow conventions standard in phylogenetic modeling. ";
+  "The insertion and deletion rate parameters, however, are assigned independent exponential priors subject to the constraint ";
+  InsertionRateCondition;
+  DotSpace;
+  style.ReviewNew{
+    "An alignment of length ";
+    AlignmentLength;
+    " is assigned a geometric prior with parameter ";
+    InsertionProbability;
+    DotSpace;
+    "Under the TKF91 process, the equilibrium distribution of alignment lengths is geometric with parameter ";
+    InsertionProbability;
+    ", which motivates this choice. ";
+    "A more principled alternative would specify a fully generative prior over alignments conditional on the insertion and deletion rates, derived directly from the TKF91 process. ";
+    "The development of such priors for segmental homology structures remains an important objective for future research. ";
+  }
+};
 
-    style.Par {
-      "We numerically approximate the posterior distribution of the parameters using MCMC. ";
-      "Specifically, we constructed a Markov chain that has as its states the parameters of the model and a stationary distribution that is the posterior distribution of interest. ";
-      "Samples from this chain, once it has reached stationarity, are valid (albeit dependent) samples from the posterior distribution. ";
-      "Besides sampling the phylogenetic parameters of the model, the chain also samples segmental alignments"; Citep{Lunter2004}; DotSpace;
-    };
+style.Par {
+  "The posterior distribution is approximated numerically using Markov chain Monte Carlo, or MCMC";
+  Citep{Metropolis1953; Hastings1970}; DotSpace;
+  "We construct a Markov chain whose state space consists of the full set of model parameters and whose stationary distribution coincides with the posterior distribution of interest. ";
+  "After convergence, the samples drawn from this chain constitute dependent but valid draws from the posterior. ";
+  "In addition to phylogenetic parameters, the MCMC algorithm jointly samples segmental alignments";
+  Citep{Lunter2004};
+  DotSpace;
+};
 
-    style.AddTable(Figures.PartitionAssignments, FigureOptions.Bottom, 98%);
+style.AddTable(Figures.PartitionAssignments, FigureOptions.Bottom, 98%);
 
-    style.Par {
-      style.ReviewMark(ReviewComments.C44);
-      var number = Enumerators.Cardinal(rule.Filters.Length);
-      "Our model of segmental transitions is based on phonological natural classes, which are classes of segments that share phonetic properties. ";
-      "The segmental inventory of our dataset was exhaustively partitioned into "; number; " classes, which are presented in ";
-      style.TableReference(Figures.PartitionAssignments); DotSpace;
-      "This "; style.SQuote{rule.Name}; " model allows different rates among the "; number; " classes of segments. ";
-      " It has "; MainResults.Data.UniqueSegments.Length; " parameters for the equilibrium distribution and ";
-      (rule.Filters.Length-1)^2-1; " parameters describing rates among natural classes. ";
-      "The equilibrium frequencies are modeled as random variables drawn from a flat Dirichlet prior distribution. ";
-    };
+style.Par {
+  style.ReviewMark(ReviewComments.C44);
+  var number = Enumerators.Cardinal(rule.Filters.Length);
+  "Segmental substitution is parameterized with reference to phonological natural classes, which are defined as sets of segments sharing phonetic features. ";
+  "The segment inventory is exhaustively partitioned into ";
+  number;
+  " such classes, listed in ";
+  style.TableReference(Figures.PartitionAssignments);
+  DotSpace;
+  "Under the ";
+  NaturalModelName;
+  ", transition rates are allowed to vary across these ";
+  number;
+  " classes. ";
+  "The model includes ";
+  MainResults.Data.UniqueSegments.Length;
+  " parameters governing the equilibrium distribution and ";
+  (rule.Filters.Length-1)^2-1;
+  " parameters specifying exchange rates among natural classes. ";
+  "Equilibrium frequencies are treated as random variables with a flat Dirichlet prior. ";
+};
+
   };
 }
 

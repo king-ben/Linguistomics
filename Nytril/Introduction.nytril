@@ -195,18 +195,19 @@ class CognateWordFormsSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
+
     style.Par{
-      "The use of cognate words introduces several challenges, such as the alignment of homologous segments of cognate word forms. ";
-      "In a molecular phylogenetic analysis, the fine-scale homology of nucleotides sampled from different species is established using sequence alignment programs. ";
-      "However, even for molecular data in which long nucleotide sequences are the norm, there can be substantial uncertainty in the alignment";
-         Citep {Wong2008};  DotSpace;
-      "Alignment uncertainty is exacerbated for cognates because the word forms typically have only a handful of segments. ";
-      "We address this problem by marginalizing over segmental alignments. ";
-      "That is, we consider all possible word alignments, weighting each by its probability under the model. ";
-      "We do this by performing parameter estimation in a Bayesian framework, using Markov chain Monte Carlo, or MCMC";
-         Citep {Metropolis1953; Hastings1970};
-         ", to sample model parameters, including segmental alignments, in proportion to their posterior probabilities.";
-    };
+  "Working with cognate word forms presents specific methodological challenges, most notably the alignment of homologous segments across languages. ";
+  "In molecular phylogenetics, fine-grained homology among nucleotides is typically inferred using automated sequence-alignment algorithms. ";
+  "Even with long nucleotide sequences, however, alignment uncertainty can be substantial";
+  Citep{Wong2008};
+  DotSpace;
+  "This problem is amplified in lexical data, where word forms often contain only a small number of segments. ";
+  "To accommodate this uncertainty, we marginalize over possible segmental alignments rather than conditioning on a single fixed alignment. ";
+  "Concretely, all candidate alignments are integrated over, each weighted by its probability under the model. ";
+  "This integration is achieved within a Bayesian framework using MCMC";
+  ", which jointly samples model parameters and segmental alignments in proportion to their posterior probabilities.";
+};
   };
 }
 
