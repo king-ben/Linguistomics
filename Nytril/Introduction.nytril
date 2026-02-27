@@ -113,21 +113,22 @@ class RootMeaningTraitsSection: Content {
   "As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. ";
 };
 
-    style.Par {
-      "Third, the transformation of multistate cognate relationships into binary characters introduces dependencies into the data, in that the values of the binary characters are not independent of one another. ";
-      "For a given concept, if a language has a word belonging to one cognate class, it will not have words from other cognate classes (unless of course polymorphisms are included). ";
-      "The continuous-time Markov chains that model the evolution of lexical items in cognate classes assume that character evolution is independent and identically distributed (i.i.d.). ";
-      "Binary characters derived from multistate cognate data violate this assumption. ";
-    };
+style.Par {
+  "Third, recoding multistate cognate relationships as binary characters induces statistical dependencies among the resulting variables. ";
+  "For any given concept, the presence of one cognate class in a language entails the absence of the others, except in cases of polymorphism. ";
+  "However, the continuous-time Markov models typically employed assume that characters evolve independently and identically distributed (i.i.d.). ";
+  "Binary characters derived from multistate cognate data violate this independence assumption. ";
+};
 
-    style.Par {
-      "Finally, cognate-class designations such as those in ";
-          style.TableReference(TableFigures.CognateCoding); " serve as the observations for phylogenetic inference even though they are not observed. ";
-      "Cognacy judgments are hypotheses about ancestral relationships among words from related languages and cannot be observed any more than a phylogenetic tree can. ";
-      "The use of root-meaning traits is thus at odds with the fundamental principles of Bayesian inference, according to which the posterior distributions are conditioned on observed data. ";
-      "Our approach partially overcomes this inconsistency. Inferences are drawn from observable word forms and not abstract cognate relationships. ";
-      "At the same time, the input word-forms are selected on the basis of assumed cognacy. ";
-    };
+style.Par {
+  "Finally, cognate-class assignments such as those in ";
+  style.TableReference(TableFigures.CognateCoding); " are treated as observed data, even thought they are inferred. ";
+  "Cognacy judgments are hypotheses about ancestral relationships among lexical items and cannot be observed any more than a phylogenetic tree can. ";
+  "This practice sits uneasily with the principles of Bayesian inference, under which posterior distributions are conditioned on observable data. ";
+  "Our approach mitigates this tension by conditioning inference on attested word forms rather than abstract cognate classes. ";
+  "At the same time, the selection of word forms remains guided by prior assumptions of cognacy. ";
+};
+
   };
 }
 
@@ -146,14 +147,14 @@ class TKF91ApproachSection: Content {
     style.Par {
   "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
   Citep {BouchardCote2013; Abner2024}; DotSpace;
-  "The segmental history of these forms is modeled using a continuous-time Markov process that permits three types of instantaneous events: ";
+  "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
   "(i) substitution of one segment for another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
   "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
   "The model, first introduced by ";
   Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
   "Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. ";
   "This permits estimation of event rates by pooling information across lexical items and segmental positions. ";
-  "In doing so, the approach overcomes the principal limitations of trait-based coding. ";
+  "By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. ";
   "It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. ";
 };
 
