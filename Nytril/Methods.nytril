@@ -1119,15 +1119,12 @@ class AlignmentFigure: Content {
     HAlign: Center;
     HBox {
       VAlign: Top;
-      HAlign: Center;
-
       LabelBox(HomologyMap sub num);
       HBox(null, null, edge) {
         MapTable(style, data, example, map, false);
       };
     };
     Canvas {
-
       TextColor: ArrowColor;
       TextHeight: 20pt;
       HAlign: Center;
@@ -1139,8 +1136,6 @@ class AlignmentFigure: Content {
     };
     HBox {
       VAlign: Top;
-      HAlign: Center;
-
       LabelBox(SegmentalAlignment sub num);
       HBox(null, null, edge) {
         MapTable(style, data, example, map, true);

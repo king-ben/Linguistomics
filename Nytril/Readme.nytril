@@ -74,7 +74,9 @@ abstract class DialogView {
     BorderRadius: 5;
     HBox(100%, 30pt, BorderB(new(LineSize, 5, LineColor)) + PadAll(10)) {
       BorderRadius: new BorderRadius(5, 5, 0, 0);
+      VAlign: Center;
       Background: TitleColor;
+      TextHeight: 120%;
       Bold Title;
       HBox {
         HAlignment: Right;
@@ -267,6 +269,8 @@ class InstallGitDocument: DocumentEntry {
     TipAction: new URL(url);
   };
 
+  Heading = NytrilStyle.Heading2 {PageBreakBefore: true};
+
   override GetDocument = Document(0.75") {
     TextHeight: 12pt;
     SpaceAfter: 10pt;
@@ -279,7 +283,6 @@ class InstallGitDocument: DocumentEntry {
     Paragraph {
       "Follow the steps below to install the Linguistomics Repository on your computer. ";
     };
-
 
     NytrilStyle.Heading2 {
       "Download and install GitHub Desktop";
@@ -316,7 +319,7 @@ class InstallGitDocument: DocumentEntry {
     };
     Empty;
 
-    NytrilStyle.Heading2 {
+    Heading {
       "Download and install Nytril";
     };
     ListBlock {
@@ -339,7 +342,7 @@ class InstallGitDocument: DocumentEntry {
     };
     (new NytrilDesktop).Show;
 
-    NytrilStyle.Heading2 {
+    Heading {
       "Open Linguistomics Repo";
     };
     ListBlock {
@@ -349,7 +352,7 @@ class InstallGitDocument: DocumentEntry {
     };
     (new OpenRepoDialog).Show;
 
-    NytrilStyle.Heading2 {
+    Heading {
       "Open the \"Paper\" Project";
     };
     ListBlock {
@@ -367,7 +370,7 @@ class InstallGitDocument: DocumentEntry {
     };
     new OpenProjectDialog("Nytril/Create Data Files", "Create Data Files").Show;
 
-    NytrilStyle.Heading2 {
+    Heading {
       "Using the two projects";
     };
     Paragraph {

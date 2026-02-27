@@ -863,10 +863,12 @@ readonly namespace<DocReference> References {
     JournalLink to Organizations.Nature;
   };
 
-  Greenhill2021 = new(#08930e62-b176-4d0e-879b-4fbd7a920ec7#, Article) {
+  Greenhill2021 = new(#08930e62-b176-4d0e-879b-4fbd7a920ec7#, InBook) {
     Title     : "Bayesian phylolinguistics";
     BookTitle : "The handbook of historical linguistics";
     Date      : #2021#;
+    Chapter   : 11;
+    Pages     : 226-253;
     DOI       : "10.1002/9781118732168.ch11";
     AuthorLink to [People.Greenhill_Simon, People.Heggarty_Paul, People.Gray_Russell];
     EditorLink to [People.Joseph_Brian, People.Janda_Richard, People.Vance_Barbara];

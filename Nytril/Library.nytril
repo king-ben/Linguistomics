@@ -624,7 +624,6 @@ class WordPairClass {
     TextHeight: textheight;
     Paragraph {
       ParBackground: 90%;
-      Bold;
       Span {
         Word1.Cognate.Attribute.FullName[9..];
         Action: new Action(Actions.ToSource, Word1.Cognate.Attribute);
