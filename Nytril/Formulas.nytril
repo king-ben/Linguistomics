@@ -217,7 +217,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
   qii                     = new(#cb0fbe81-c587-43d8-a4fb-f355d5a5d9b5#, sym.q sub sym.ii, ("i,i" sup "th") " element of the rate matrix " RateMatrix, Empty);
   PValue                  = new(#8361fbec-7ffc-4eaf-a879-22ee8e8e250c#, Symbol("p"), "Probability Value", "The likelihood of obtaining a result at least as extreme, if the null hypothesis is true");
   DegreesFreedom          = new(#57314aa7-d5fc-49d7-9c9e-7a81875a5811#, Symbol("d.f."), "The degrees of freedom of a test statistic");
-  ChiSquareTest           = new(#1a989e38-847b-4c31-9175-252f75d78569#, Chi sup "2", "Chi Square Test", "Measures the degree of association between categorical variables");
+  ChiSquareTest           = new(#1a989e38-847b-4c31-9175-252f75d78569#, chi sup "2", "Chi Square Test", "Measures the degree of association between categorical variables");
   PPO                     = new(#bcb248d5-512f-48c9-af26-205ecf321256#, Prob("Parameter(s) | Observations"), "Conditional probability of Parameter(s) ocurring given that Observations occur");
   POP                     = new(#e32d9d5b-ada6-4245-9913-2894cce42cfb#, Prob("Observations | Parameter(s)"), "Conditional probability of Observations ocurring given that Parameter(s) occur");
   PP                      = new(#3163f384-448e-430d-aa72-67b2acde3a19#, Prob("Parameter(s)"), "Probability of this parameter");
