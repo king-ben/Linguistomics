@@ -1805,7 +1805,7 @@ class SoundChangeSection: Content {
       "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class. ";
       "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong. ";
       "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Citep{Abrego2013; Mueller2013}; DotSpace;
-      "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is with the short vowels"; DotSpace;
+      "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is found among the short vowels"; DotSpace;
       "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
       "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
       "In addition to diphthongs and short vowels, the highest rates are also found among short vowels and long vowels as well as nasal vowels and nasal consonants" DotSpace;
