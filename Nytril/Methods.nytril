@@ -1518,20 +1518,27 @@ class WordTransformationSection: Content {
 
 
     style.Par {
-      style.FigureReference(Figures.EquilibriumCharts);
-      " shows the estimated equilibrium frequencies of the "; NaturalModelName; " "; NaturalClassModel; DotSpace;
-      "These equilibrium frequencies play two roles in the calculation of the likelihood of the observed data. ";
-      "First, they define the prior probability distribution over segmental states at the root of the tree. ";
-      "Second, for models "; UnequalModel; " and "; NaturalClassModel;
-      ", they modulate the rates of change between segments, such that the rate of transition is proportional to the equilibrium frequency of the destination segment. ";
-      "Consistent with this formulation, transitions into ";
-      style.TextList {
-        TextCase: TextCases.AllLower;
-        diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
-      };
-      " have the highest estimated rates, corresponding to their elevated equilibrium frequencies. ";
-      "More generally, the estimated equilibrium frequencies closely track the empirical frequencies of segments in the data. ";
-    };
+  style.FigureReference(Figures.EquilibriumCharts);
+  " displays the estimated equilibrium frequencies under the ";
+  NaturalModelName;
+  " ";
+  NaturalClassModel;
+  DotSpace;
+  "These frequencies enter the likelihood in two ways. ";
+  "First, they determine the prior distribution over segmental states at the root of the tree. ";
+  "Second, in models ";
+  UnequalModel;
+  " and ";
+  NaturalClassModel;
+  ", they scale substitution rates so that transitions into a segment are proportional to its equilibrium frequency. ";
+  "Accordingly, transitions into ";
+  style.TextList {
+    TextCase: TextCases.AllLower;
+    diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
+  };
+  " exhibit the highest estimated rates, reflecting their comparatively large equilibrium weights. ";
+  "More broadly, the inferred equilibrium distribution closely mirrors the empirical segment frequencies observed in the dataset. ";
+};
 
     style.Par {
       style.FigureReference(Figures.RateChart);
