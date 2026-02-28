@@ -1471,30 +1471,38 @@ class WordTransformationSection: Content {
     }
 
     style.Par {
-      style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal elements of the rate matrix of the continuous-time Markov model describing phonemic ";
-          "change estimated under the "; NaturalModelName; DotSpace;
-      "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
-      "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
-      "The higher the rate, the more rapidly a change to another segment occurs on average. ";
-      "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, affricates, and nasal vowels, but this is an artefact of the visualization. ";
-      "The rates in these classes are not identical, but they they are sufficiently small that they are visually indistinguishable in this plot. ";
+      style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal entries of the substitution rate matrix estimated under the ";
+          NaturalModelName; DotSpace;
+      "These diagonal elements provide a measure of segmental volatility, as each diagonal element equals the sum of transition rates from a given segment to all alternative segments. ";
+      "When the process is in segment "; sym.i; ", the value"; -qii; " represents the instantaneous rate at which it changes state. ";
+      "Higher values therefore correspond to shorter expected residence times and greater diachronic instability. ";
+      "Several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to share identical rates (e.g., diphthongs, long vowels, affricates, and nasal vowels). ";
+      "This visual uniformity is an artifact of scale rather than exact equality. ";
+      "Although the rates in these classes are distinct, they are sufficiently small to be indistinguishable at the resolution of the plot. ";
     };
 
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
 
     style.Par {
-      "The most striking aspect of "; style.FigureReference(Figures.QRatesDiagonal); " is the division between vowels and consonants. ";
-      "With the exception of affricates, vowels are the most volatile segments and within this class diphthongs and long vowels are the least stable. ";
-      "Overall, the most stable segments are all consonants, with the stops the most stable of all. ";
-      "The rates of change are also remarkably similar within each class:";
-      " all the long vowels cluster together, as do the affricates, fricatives, short vowels, nasal vowels, fricatives, nasal consonants, and stops. ";
-      "The only exceptions are the liquid "; VocalSegments.r;
-      ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels. ";
-      "This clustering is driven by the exchangeability rates that are shared between classes of segments and the degree of variation in the equilibrium frequencies. ";
-      "When the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
+      "The most salient pattern in "; style.FigureReference(Figures.QRatesDiagonal);
+      " is the clear separation between vowels and consonants. ";
+      "With the exception of affricates, vowels exhibit the highest volatility, and within the vocalic domain diphthongs and long vowels are particularly unstable. ";
+  "By contrast, the most stable segments are consonants, with stops displaying the lowest overall rates of change. ";
+  "Rates also cluster tightly within natural classes: long vowels, affricates, fricatives, short vowels, nasal vowels, nasal consonants, and stops each form coherent groups. ";
+  "Two segments depart from this pattern: the liquid ";
+  VocalSegments.r;
+  ", which clusters with the fricatives, and the mid-front vowel ";
+  VocalSegments.ay;
+  ", which aligns with the nasal vowels. ";
+  "These patterns arise from the interaction between class-specific exchangeability parameters and the distribution of equilibrium frequencies. ";
+  "When equilibrium frequencies are relatively homogeneous within a class, the corresponding "; -qii;
+  " values tend to be similar. ";
+
       style.ReviewMark(ReviewComments.C42);
       style.ReviewNew {
-        "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
+        "The clustering observed in ";
+    style.FigureReference(Figures.QRatesDiagonal);
+    " thus reflects both the structural constraints of the model and regularities present in the empirical data. ";
       };
       //"In contrast to the rates in Figure [rate figure], those in ";
       //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
@@ -1510,62 +1518,70 @@ class WordTransformationSection: Content {
 
 
     style.Par {
-      style.FigureReference(Figures.EquilibriumCharts);
-      " shows the estimated equilibrium frequencies of the "; NaturalModelName; " "; NaturalClassModel; DotSpace;
-      "These equilibrium frequencies play two roles in the calculation of the likelihood of the observed data. ";
-      "First, they define the prior probability distribution over segmental states at the root of the tree. ";
-      "Second, for models "; UnequalModel; " and "; NaturalClassModel;
-      ", they modulate the rates of change between segments, such that the rate of transition is proportional to the equilibrium frequency of the destination segment. ";
-      "Consistent with this formulation, transitions into ";
-      style.TextList {
-        TextCase: TextCases.AllLower;
-        diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
-      };
-      " have the highest estimated rates, corresponding to their elevated equilibrium frequencies. ";
-      "More generally, the estimated equilibrium frequencies closely track the empirical frequencies of segments in the data. ";
-    };
+  style.FigureReference(Figures.EquilibriumCharts);
+  " displays the estimated equilibrium frequencies under the ";
+  NaturalModelName;
+  " ";
+  NaturalClassModel;
+  DotSpace;
+  "These frequencies enter the likelihood in two ways. ";
+  "First, they determine the prior distribution over segmental states at the root of the tree. ";
+  "Second, in models ";
+  UnequalModel;
+  " and ";
+  NaturalClassModel;
+  ", they scale substitution rates so that transitions into a segment are proportional to its equilibrium frequency. ";
+  "Accordingly, transitions into ";
+  style.TextList {
+    TextCase: TextCases.AllLower;
+    diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
+  };
+  " exhibit the highest estimated rates, which reflects their comparatively large equilibrium weights. ";
+  "More broadly, the inferred equilibrium distribution closely mirrors the empirical segment frequencies observed in the dataset. ";
+};
 
     style.Par {
       style.FigureReference(Figures.RateChart);
-      " shows the estimated rates of change between the "; rp; " groups of the "; NaturalModelName; DotSpace;
-      "Rates of change are generally highest among segments in the same class. ";
-      "The estimated rates of change from one segment to another under the "; NaturalModelName; " are ";
+      " shows the estimated substitution rates among the "; rp; " groups of the "; NaturalModelName; DotSpace;
+      "In general, rates are highest for transitions within the same class. ";
+      "Relative to an equal-rates Poisson model, the within-class rates are ";
 
-      style.TextList {
-        TextDigits: 2;
-        foreach (var p in partitions) {
-          var val = stats[p.Index, p.Index].Mean * numSegments;
-          if (val < 1.0)
-            smallOnes.Add(p);
-          val;
-        }
-      };
+  style.TextList {
+    TextDigits: 2;
+    foreach (var p in partitions) {
+      var val = stats[p.Index, p.Index].Mean * numSegments;
+      if (val < 1.0)
+        smallOnes.Add(p);
+      val;
+    }
+  };
 
-      " times higher than expected under an equal rates Poisson model for ";
-      style.TextList {
-        TextCase: TextCases.AllLower;
-        (each partitions).ShowPlural;
-      };
-      ", respectively. ";
-
-      "(In other words, the ";
-      style.TextList {
-        TextCase: TextCases.AllLower;
-        SelfArrow(each smallOnes);
-      };
-      " rates were lower than would be expected if all rates of change were the same.) ";
-      "Long vowels and diphthongs counter the general pattern as they transition more often to short vowels than to long vowels or diphthongs, a change ";
-        "we discuss further below" DotSpace;
+  " times larger for ";
+  style.TextList {
+    TextCase: TextCases.AllLower;
+    (each partitions).ShowPlural;
+  };
+  ", respectively. ";
+  "Equivalently, the ";
+  style.TextList {
+    TextCase: TextCases.AllLower;
+    SelfArrow(each smallOnes);
+  };
+  " within-class rates fall below the equal-rates expectation. ";
+  "Long vowels and diphthongs deviate from the general pattern, as they transition more frequently to short vowels than to members of their own class, a tendency discussed below";
+  DotSpace;
 
       var same = new IntRatio(cntSame, numClasses);
       var diff = new IntRatio(cntDiff, numClasses*(numClasses-1));
 
       if (same.Ratio > diff.Ratio) {
-        "Note that "; same; " of the changes within a class are higher than expected under an equal rates model, whereas ";
-        diff; " of the changes between different natural classes are higher than expected under an equal rates model, ";
-        "supporting the pattern of a generally higher rate of change between segments assigned to the same natural class. ";
-      }
-      else
+    "Overall, ";
+    same;
+    " of within-class transitions exceed the equal-rates expectation, compared to ";
+    diff;
+    " of transitions between distinct classes. ";
+    "This asymmetry reinforces the conclusion that segments are more likely to change within their own natural class than across class boundaries. ";
+  } else
         System.Assert(false, "Inconsistency between text and data!");
 
       //"Second, short vowels exhibit the highest rates along the diagonal and diphthongs the lowest. ";
@@ -1591,26 +1607,32 @@ class WordSegmentRelSection: Content {
       var align1 = Figures.AlignmentExample1;
       var index1 = align1.Examples[0].FindAlignment(MainResults.MainRun);
 
-      "Our method treats the homology relationships of segments between languages as a random variable. ";
-      "We summarize the posterior distribution by constructing a credible set of alignments, where a credible set of alignments is constructed by ordering the alignments for a cognate from the highest to lowest posterior probability. ";
-      "The alignments are then included in a credible set, starting with the alignment with the highest posterior probability, until the cumulative posterior probability is {0}. "(ExperimentResults.CutoffProbability);
-      style.FigureReference(align1); " shows alignments for the concept ";
-      style.SQuote {
-        TextCase: TextCases.AllLower;
-        align1.Examples[0].Concept;
-      };
-      ", which illustrates three key properties of all posterior alignments. ";
-      "First, the distributions of credible sets are heavily weighted in favor of a single alignment with most of the posterior probability. ";
-      "In this case, one alignment had a posterior probability of ";
-      Span {
-        TextDigits: 2;
-        index1.Alignments[0].Prob;
-      };
-      DotSpace;
-      "Second, insertions and deletions occur predominantly at word-end, where gaps are more frequent on average compared to other positions (";
-         style.FigureReference(Figures.GappinessChart); "). ";
-      "Finally, the alignments tend to assign segments from the same class to the same column in the alignment. ";
+       "In our framework, segmental homology across languages is treated as a latent random variable. ";
+    "Posterior uncertainty over alignments is summarized by constructing a credible set for each cognate word form. ";
+    "Alignments are ordered by posterior probability and the smallest set whose cumulative posterior mass reaches ";
+    ExperimentResults.CutoffProbability;
+    " is retained. ";
+    style.FigureReference(align1);
+    " illustrates this procedure for the concept ";
+    style.SQuote {
+      TextCase: TextCases.AllLower;
+      align1.Examples[0].Concept;
     };
+    DotSpace;
+    "Three general properties emerge. ";
+
+    "First, posterior mass is typically concentrated on a single dominant alignment. ";
+    "In the example shown, the highest-probability alignment alone accounts for ";
+    Span {
+      TextDigits: 2;
+      index1.Alignments[0].Prob;
+    };
+    " of the posterior. ";
+    "Second, insertion and deletion events occur disproportionately in word-final position, consistent with the distribution of gap frequencies shown in ";
+    style.FigureReference(Figures.GappinessChart);
+    DotSpace;
+    "Third, segments from the same natural class tend to be assigned to the same column in the alignment. ";
+  };
 
     style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Bottom, 80%);
 
@@ -1618,8 +1640,8 @@ class WordSegmentRelSection: Content {
       var align2 = Figures.AlignmentExample2;
 
       style.ReviewMark(ReviewComments.C5);
-      "Interestingly, the distribution of alignments depends on the model of segmental change. ";
-      style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
+      "The posterior distribution over alignments is sensitive to the substitution model. ";
+      style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
         TextCase: TextCases.AllLower;
         align2.Concept
@@ -1629,18 +1651,38 @@ class WordSegmentRelSection: Content {
         align2.Models;
       };
       " models. ";
-      "The credible set contains ";
-      align2.Poisson.ShowAlignmentNumber;
-      " model, but only ";
-      align2.NaturalClass.ShowAlignmentNumber;
-      " model. ";
-      "This difference is consistent with the rates estimated under the "
-      align2.NaturalClass; " ("; style.FigureReference(Figures.RateChart); "). ";
-      "For example, the rate of change between "; VocalSegments.u; " and "; VocalSegments.oh; " are estimated to be high, whereas the rate between consonants and "; VocalSegments.oh; " is low. ";
-      "The distribution of alignments under the ";
-      align2.Poisson; " often makes consonants homologous with "; VocalSegments.oh; ". ";
-      "Under the "; align2.NaturalClass;
-      " model, however, the same alignments are improbable, as the rates of substitution between those alignments are low.";
+
+
+      "Under the ";
+    align2.Poisson;
+    " model, the credible set contains ";
+    align2.Poisson.ShowAlignmentNumber;
+    ", whereas under the ";
+    align2.NaturalClass;
+    " model it contains only ";
+    align2.NaturalClass.ShowAlignmentNumber;
+    ". ";
+
+      "This reduction in alignment uncertainty accords with the substitution-rate structure estimated under the ";
+    align2.NaturalClass;
+    " model (";
+    style.FigureReference(Figures.RateChart);
+    "). ";
+    "For instance, transitions between ";
+    VocalSegments.u;
+    " and ";
+    VocalSegments.oh;
+    " are assigned relatively high rates, whereas substitutions between consonants and ";
+    VocalSegments.oh;
+    " are strongly disfavored. ";
+    "Consequently, the ";
+    align2.Poisson;
+    " model frequently aligns consonants with ";
+    VocalSegments.oh;
+    ", while such configurations receive negligible posterior weight under the ";
+    align2.NaturalClass;
+    " model. ";
+
     };
 
     style.AddFigure(Figures.RateChart, FigureOptions.Bottom | FigureOptions.Full, 60%);
@@ -1763,7 +1805,7 @@ class SoundChangeSection: Content {
       "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class. ";
       "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong. ";
       "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Citep{Abrego2013; Mueller2013}; DotSpace;
-      "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is with the short vowels"; DotSpace;
+      "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is found among the short vowels"; DotSpace;
       "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
       "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
       "In addition to diphthongs and short vowels, the highest rates are also found among short vowels and long vowels as well as nasal vowels and nasal consonants" DotSpace;
