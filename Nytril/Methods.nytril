@@ -1402,24 +1402,33 @@ class ModelComparisonSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We compared the fit of the three models described in section 3 to the data using the Bayes factor. ";
-      "The Bayes factor is the ratio of the marginal likelihoods, ";
+      "We assessed the relative fit of the three segmental-change models introduced in Section 3 using Bayes factors. ";
+      "The Bayes factor is the ratio of the marginal likelihoods of the models: ";
     };
 
     style.AlignEquation(Equations.BayesFactorEq);
 
     style.Par {
-      "with ratios greater than one favoring model "; ModelI; ". ";
-      "As the models examined are nested, we could calculate the Bayes factor using the Savage-Dickey ratio";
+      "Ratios greater than one indicate evidence in favor of model "; ModelI; ". ";
+      "Since the candidate models are nested, we computed the Bayes factor via the Savage-Dickey density ratio";
         Citep {Dickey1971}; ", ";
-        "which is the ratio of the posterior to prior densities evaluated at the restriction that makes the parameter-rich model equivalent to the simpler model. "
-      "The "; NaturalModelName; " explains the data substantially better than the two simpler models, with log Bayes ";
+        "which which evaluates the ratio of posterior to prior densities at the parameter restriction that reduces the richer model to the simpler one. ";
+      "The "; NaturalModelName; " explains the data substantially better than the two simpler alternatives. ";
+      "The log Bayes factors are ";
       // TODO: Maybe update the log bayes factor numbers dynamically, though this will be more tricky.
-      "factors of ";
-      EqSpan {Tex.ln; BayesFactor12; Tex.Equals; -1074.2}; " and ";
-      EqSpan {Tex.ln; BayesFactor23; Tex.Equals; -117.3};
-      ", respectively, for a comparison of "; PoissonModel; " to "; UnequalModel; " and "; UnequalModel; " to "; NaturalClassModel; ". ";
-      "This difference indicates overwhelming support for the more parameter-rich "; NaturalModelName;
+      EqSpan{Tex.ln; BayesFactor12; Tex.Equals; -1074.2};
+      " and ";
+      EqSpan{Tex.ln; BayesFactor23; Tex.Equals; -117.3};
+      ", comparing ";
+      PoissonModel;
+      " to ";
+      UnequalModel;
+      " and ";
+      UnequalModel;
+      " to ";
+      NaturalClassModel;
+      ", respectively. ";
+      "This difference constitutes overwhelming support for the more parameter-rich "; NaturalModelName;
       Citep {Jeffreys1939}; DotSpace;
     };
  };
