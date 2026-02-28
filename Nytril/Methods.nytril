@@ -1536,7 +1536,7 @@ class WordTransformationSection: Content {
     TextCase: TextCases.AllLower;
     diagonal.ToSortedArray(true, @PartitionValue.CompareFunction)[0..2]
   };
-  " exhibit the highest estimated rates, reflecting their comparatively large equilibrium weights. ";
+  " exhibit the highest estimated rates, which reflects their comparatively large equilibrium weights. ";
   "More broadly, the inferred equilibrium distribution closely mirrors the empirical segment frequencies observed in the dataset. ";
 };
 
