@@ -1484,18 +1484,25 @@ class WordTransformationSection: Content {
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
 
     style.Par {
-      "The most striking aspect of "; style.FigureReference(Figures.QRatesDiagonal); " is the division between vowels and consonants. ";
-      "With the exception of affricates, vowels are the most volatile segments and within this class diphthongs and long vowels are the least stable. ";
-      "Overall, the most stable segments are all consonants, with the stops the most stable of all. ";
-      "The rates of change are also remarkably similar within each class:";
-      " all the long vowels cluster together, as do the affricates, fricatives, short vowels, nasal vowels, fricatives, nasal consonants, and stops. ";
-      "The only exceptions are the liquid "; VocalSegments.r;
-      ", which appears with the fricatives, and the mid-front vowel "; VocalSegments.ay; ", which appears among the nasal vowels. ";
-      "This clustering is driven by the exchangeability rates that are shared between classes of segments and the degree of variation in the equilibrium frequencies. ";
-      "When the equilibrium frequencies of the segments in a given class vary less, the "; -qii; " values of the segments in that class exhibit greater similarity. ";
+      "The most salient pattern in "; style.FigureReference(Figures.QRatesDiagonal);
+      " is the clear separation between vowels and consonants. ";
+      "With the exception of affricates, vowels exhibit the highest volatility, and within the vocalic domain diphthongs and long vowels are particularly unstable. ";
+  "By contrast, the most stable segments are consonants, with stops displaying the lowest overall rates of change. ";
+  "Rates also cluster tightly within natural classes: long vowels, affricates, fricatives, short vowels, nasal vowels, nasal consonants, and stops each form coherent groups. ";
+  "Two segments depart from this pattern: the liquid ";
+  VocalSegments.r;
+  ", which clusters with the fricatives, and the mid-front vowel ";
+  VocalSegments.ay;
+  ", which aligns with the nasal vowels. ";
+  "These patterns arise from the interaction between class-specific exchangeability parameters and the distribution of equilibrium frequencies. ";
+  "When equilibrium frequencies are relatively homogeneous within a class, the corresponding "; -qii;
+  " values tend to be similar. ";
+
       style.ReviewMark(ReviewComments.C42);
       style.ReviewNew {
-        "The clustering in "; style.FigureReference(Figures.QRatesDiagonal); " thus reflects both the model structure and empirical patterns in the data. ";
+        "The clustering observed in ";
+    style.FigureReference(Figures.QRatesDiagonal);
+    " thus reflects both the structural constraints of the model and regularities present in the empirical data. ";
       };
       //"In contrast to the rates in Figure [rate figure], those in ";
       //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
