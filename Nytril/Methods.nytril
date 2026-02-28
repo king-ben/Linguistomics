@@ -182,7 +182,7 @@ class SingleAlignmentFigure: AlignmentExamplesFigure {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "Segments are colored according to the "; NaturalModelName; ". Dashes denote gaps where there is no homologous segment for the alignment position. ";
+    "Segments are colored according to natural class. Dashes denote gaps where there is no homologous segment for the alignment position. ";
     "The alignments are ordered from the highest posterior probability (top-left alignment) to the lowest posterior probability (bottom-right alignment) in row order. ";
   };
 
@@ -1239,10 +1239,11 @@ class PhylogenyResultsSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "Our statistical analysis treats all model parameters as random variables with prior probability distributions. ";
-      "The tree topology describing the relationships of the languages is also considered a random variable with a uniform prior probability in which all possible tree topologies are assigned equal prior probability. ";
-      "As described in the Methods section, we use MCMC to numerically approximate the posterior probability distribution of the model parameters. ";
-      "Our analyses consistently found a handful of topologies that best explained the data. Unfortunately, the MCMC algorithm poorly explored the tree space: ";
+      "All model parameters are treated as random variables endowed with prior distributions. ";
+      "The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possiboe topologies. ";
+      "As outlined in section 3.1, the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
+      "Our analyses consistently found a handful of topologies that best explained the data. ";
+      " Unfortunately, the MCMC algorithm poorly explored the tree space: ";
         "it would find a good tree then become stuck on it. ";
     };
 
@@ -1392,7 +1393,7 @@ class ModelComparisonSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We compared the fit of the three models described above in section 3 to the data using the Bayes factor. ";
+      "We compared the fit of the three models described in section 3 to the data using the Bayes factor. ";
       "The Bayes factor is the ratio of the marginal likelihoods, ";
     };
 
