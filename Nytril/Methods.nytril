@@ -1283,23 +1283,23 @@ class PhylogenyResultsSection: Content {
     style.Par {
       "Subsequent analyses therefore condition on the three fixed topologies in "
        style.FigureReference(Figures.ModelTreesUsed); ". ";
-      "Although the topology of Romance remains debated, many recent accounts posit Sardinian as the earliest branching lineage, followed by Romanian";
+      "Although the diversification of Romance remains debated, many recent accounts posit Sardinian as the earliest branching lineage, followed by Romanian";
        Citep {Hall1950; Hall1976; Dardel1985; Swiggers2001; Vallejo2012; Buchi2015; Dworkin2016a}; DotSpace;
       "Since Sardinian is not in our sample, Romanian occupies the earliest branching position in each topology in ";
        style.FigureReference(Figures.ModelTreesUsed); DotSpace;
-      "The sub-trees containing the remaining dialects differ in their topologies, but they all contain Spanish and Portuguese as a clade, as well as Catalan, French, and Walloon. ";
+       "The internal structure of the subtrees varies across the three configurations, but Spanish and Portuguese consistently form a clade, as do Catalan, French, and Walloon. ";
     };
 
     style.Par {
-      "There is extensive debate concerning the relationship between Classical Latin, Vulgar Latin, ";
+      "The relationship between Classical Latin, Vulgar Latin, ";
       style.ReviewNew {
         "Proto-Romance";
       };
-      ", and the Romance languages"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
-      "The central question is whether Latin (be it Classical or Vulgar) is a sampled ancestor of the Romance languages or their sibling"; DotSpace;
-      "In this study, we adopt the latter assumption and treat Latin as an outgroup to the Romance languages. ";
-      "This choice is motivated by practical rather than linguistic considerations, since phylogenetic models that allow for sampled ancestry are substantially more complex than the tree model employed here. ";
-      "Importantly, however, our treatment of Latin does not preclude an ancestral interpretation: if the estimated branch length leading to Latin is zero, Latin is effectively placed at the root of the Romance clade. ";
+      ", and the Romance languages remains the subject of ongoing debate"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
+      "A central issue is whether Latin (Classical or Vulgar) is a sampled ancestor of the Romance languages or their sister lineage"; DotSpace;
+      "For reasons of model tractability, we adopt the latter assumption and treat Latin as an outgroup. ";
+      "Tree models that incorporate sampled ancestors are considerably more complex than the framework employed here. ";
+      "This modeling choice does not exclude an ancestral interpretation, however: if the estimated branch length leading to Latin approaches zero, Latin is effectively positioned at the root of the Romance clade. ";
     };
 
     style.AddFigure(Figures.ModelTreesUsed, FigureOptions.Bottom, 70%);
