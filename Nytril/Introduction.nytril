@@ -175,10 +175,10 @@ class TKF91ApproachSection: Content {
 
     style.Par {
       "The remainder of this paper is structured as follows. ";
-      "Sections "; style.SectionReference(PaperSections.Data); " and "; style.SectionReference(PaperSections.MethodsSection); " describe the data and methodological framework. ";
-       "Section "; style.SectionReference(PaperSections.Results); " presents the empirical results. ";
-      "Section "; style.SectionReference(PaperSections.DiscussionSection); " situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
-      "Section "; style.SectionReference(PaperSections.Conclusion); " concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
+      "Sections "; style.SectionNumber(PaperSections.Data); " and "; style.SectionNumber(PaperSections.MethodsSection); " describe the data and methodological framework. ";
+      style.SectionReference(PaperSections.Results); " presents the empirical results. ";
+      style.SectionReference(PaperSections.DiscussionSection); " situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
+      style.SectionReference(PaperSections.Conclusion); " concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
     };
   };
 }
@@ -358,7 +358,7 @@ style.Par {
   TextIpa{"w"};
   ", an empty segmental position is introduced before the vowel in the remaining languages";
   DotSpace;
-  "As discussed in Section "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
+  "As discussed in "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
   "Inference does not condition on any fixed alignment and the posterior distribution integrates over alternative homology assignments. ";
   "Accordingly, explicit gap symbols are not required elements of the input. ";
 };
@@ -454,7 +454,7 @@ class PaperDataCuration: Content {
       "The MCMC analysis runs for "; Span {config.Generations; TextGroup: true}; " cycles, with independent runs performed to assess convergence. ";
       "Samples taken during the first "; Span {config.PreBurn; TextGroup: true}; " cycles of the chain are discarded as burn-in. ";
       "Upon completion, posterior samples are imported back into the control program for post-processing. ";
-  "All tables, trees, and graphical outputs are generated automatically from the MCMC results and integrated with author-supplied narrative to produce the final manuscript and supplementary materials. ";
+      "All tables, trees, and graphical outputs are generated automatically from the MCMC results and integrated with author-supplied narrative to produce the final manuscript and supplementary materials. ";
     }
   };
 }

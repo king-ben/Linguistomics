@@ -1240,8 +1240,8 @@ class PhylogenyResultsSection: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       "All model parameters are treated as random variables endowed with prior distributions. ";
-      "The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possiboe topologies. ";
-      "As outlined in section "; style.SectionReference(PaperSections.ModelInference); ", the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
+      "The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possible topologies. ";
+      "As outlined in "; style.SectionReference(PaperSections.ModelInference); ", the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
       "Across runs, a small set of topologies consistently achieved the highest posterior support. ";
       "However, the MCMC sampler exhibited limited mixing over tree space: once a high-probability topology was located, the chain tended to remain trapped in its vicinity. ";
     };
@@ -1251,7 +1251,7 @@ class PhylogenyResultsSection: Content {
       "Within a given cycle, either the tree topology or the segmental alignment is updated, but not both simultaneously. ";
       "This update scheme induces dependence between topology and alignment. ";
       "As improved topologies were accepted, the sampled alignments increasingly adapted to the current tree stored in memory. ";
-      "Once the alignment became well tuned to a particular topology, proposals involving alternative trees were rarely accepted, even when they would have been plausible under a different alignment configuration. ";
+      "Once the alignment became well-tuned to a particular topology, proposals involving alternative trees were rarely accepted, even when they would have been plausible under a different alignment configuration. ";
     };
 
     style.Par {
@@ -1402,7 +1402,7 @@ class ModelComparisonSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We assessed the relative fit of the three segmental-change models introduced in Section "; style.SectionReference(PaperSections.MethodsSection); " using Bayes factors. ";
+      "We assessed the relative fit of the three segmental-change models introduced in "; style.SectionReference(PaperSections.MethodsSection); " using Bayes factors. ";
       "The Bayes factor is the ratio of the marginal likelihoods of the models: ";
     };
 
@@ -1412,7 +1412,7 @@ class ModelComparisonSection: Content {
       "Ratios greater than one indicate evidence in favor of model "; ModelI; ". ";
       "Since the candidate models are nested, we computed the Bayes factor via the Savage-Dickey density ratio";
         Citep {Dickey1971}; ", ";
-        "which which evaluates the ratio of posterior to prior densities at the parameter restriction that reduces the richer model to the simpler one. ";
+        "which evaluates the ratio of posterior to prior densities at the parameter restriction that reduces the richer model to the simpler one. ";
       "The "; NaturalModelName; " explains the data substantially better than the two simpler alternatives. ";
       "The log Bayes factors are ";
       // TODO: Maybe update the log bayes factor numbers dynamically, though this will be more tricky.
@@ -1777,7 +1777,7 @@ class SoundChangeSection: Content {
     };
 
     style.Par {
-      "As noted above in Section "; style.SectionReference(PaperSections.MethodsSection); ", the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
+      "As noted above in "; style.SectionReference(PaperSections.MethodsSection); ", the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
       "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
       "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
       "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
