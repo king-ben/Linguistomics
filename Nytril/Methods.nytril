@@ -1364,18 +1364,18 @@ class SegmentModelsFigure: Content {
     var rp       = rule.Filters.Length;
 
     style.Par {
-      "We consider three models of segmental change: ";
-      PoissonModel; ", a model isomorphic to the model of DNA sequence evolution first described by Jukes and Cantor";
+      "We evaluate three models of segmental change. ";
+      PoissonModel; " is isomorphic to the Jukes–Cantor model of DNA sequence evolution";
       Citep {Jukes1969};
-      " with equal rates between all pairs of states and in which the number of substitutions follows a Poisson distribution (hereafter referred to as the "; style.SQuote{PoissonModel.Name}; " model); ";
-      UnequalModel; ", a model isomorphic to the model of DNA sequence evolution first described by Felsenstein";
+      ", which specifies equal transition rates among all pairs of states, with substitutions occurring according to a Poisson process (hereafter the "; style.SQuote{PoissonModel.Name}; " model). ";
+      UnequalModel; ", corresponds to the Felsenstein model";
       Citep {Felsenstein1981};
-      " in which the rate of change between a pair of segments is proportional to the equilibrium frequency of the destination segment; ";
-      "and "; NaturalClassModel; ", the "; NaturalModelName; ", in which segments that share articulatory properties are grouped together with different rates of change within and between these segmental classes. ";
-      "The number of estimated parameters varies across models. ";
-      "The first model, "; PoissonModel; ", has no free parameters. ";
-      "The second model, "; UnequalModel; ", has "; segments; " free parameters (one less than the number of segments). ";
-      "The "; NaturalModelName; ", "; NaturalClassModel; ", has "; rp*(rp-1)/2 + rp; " additional segmental class rate parameters: ";
+      ", in which the substitution rate from one segment to another is proportional to the equilibrium frequency of the destination segment. ";
+      "Finally, "; NaturalClassModel; ", the "; NaturalModelName; ", partitions segments into articulatorily defined natural classes and permits distinct rates of change within and between these classes. ";
+      "Model complexity differs substantially across these specifications. ";
+      PoissonModel; " contains no free parameters. ";
+      UnequalModel; " includes "; segments; " free parameters corresponding to the equilibrium frequencies (one fewer than the number of segments). ";
+      "The "; NaturalModelName; ", "; NaturalClassModel; ", has "; rp*(rp-1)/2 + rp; " additional rate parameters governing transitions among natural classes, which yields a total of ";
       EqSpan {segments; Tex.Plus; (rp*(rp-1)/2 + rp); Tex.Equals; segments + rp*(rp-1)/2 + rp}; " free parameters.";
     };
   };
