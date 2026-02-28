@@ -145,19 +145,18 @@ class TKF91ApproachSection: Content {
     var data = MainResults.Data;
 
     style.Par {
-  "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
-  Citep {BouchardCote2013; Abner2024}; DotSpace;
-  "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
-  "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
-  "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
-  "The model, first introduced by";
-  Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
-  "Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. ";
-  "This permits estimation of event rates by pooling information across lexical items and segmental positions. ";
-  "By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. ";
-  "It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. ";
-};
-
+      "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
+      Citep {BouchardCote2013; Abner2024}; DotSpace;
+      "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
+      "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
+      "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
+      "The model, first introduced by";
+      Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
+      "Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. ";
+      "This permits estimation of event rates by pooling information across lexical items and segmental positions. ";
+      "By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. ";
+      "It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. ";
+    };
 
     style.Par {
      "Although the TKF91 model can be used for tree estimation, we focus on its capacity to estimate rates of change among segments, a central question in both linguistic theory and phonological typology. ";
@@ -176,10 +175,10 @@ class TKF91ApproachSection: Content {
 
     style.Par {
       "The remainder of this paper is structured as follows. ";
-      "Sections 2 and 3 describe the data and methodological framework. ";
-       "Section 4 presents the empirical results. ";
-      "Section 5 situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
-      "Section 6 concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
+      "Sections "; style.SectionReference(PaperSections.Data); " and "; style.SectionReference(PaperSections.MethodsSection); " describe the data and methodological framework. ";
+       "Section "; style.SectionReference(PaperSections.Results); " presents the empirical results. ";
+      "Section "; style.SectionReference(PaperSections.DiscussionSection); " situates these results within historical phonology and phonological typology and compares our approach to the other views of sound change. ";
+      "Section "; style.SectionReference(PaperSections.Conclusion); " concludes with a summary of the principal contributions and outlines directions for further development of the TKF91 approach. ";
     };
   };
 }
@@ -197,17 +196,17 @@ class CognateWordFormsSection: Content {
   override GetBody(ContentStyle style) = Block {
 
     style.Par{
-  "Working with cognate word forms presents specific methodological challenges, most notably the alignment of homologous segments across languages. ";
-  "In molecular phylogenetics, fine-grained homology among nucleotides is typically inferred using automated sequence-alignment algorithms. ";
-  "Even with long nucleotide sequences, however, alignment uncertainty can be substantial";
-  Citep{Wong2008};
-  DotSpace;
-  "This problem is amplified in lexical data, where word forms often contain only a small number of segments. ";
-  "To accommodate this uncertainty, we marginalize over possible segmental alignments rather than conditioning on a single fixed alignment. ";
-  "Concretely, all candidate alignments are integrated over, each weighted by its probability under the model. ";
-  "This integration is achieved within a Bayesian framework using MCMC";
-  ", which jointly samples model parameters and segmental alignments in proportion to their posterior probabilities.";
-};
+      "Working with cognate word forms presents specific methodological challenges, most notably the alignment of homologous segments across languages. ";
+      "In molecular phylogenetics, fine-grained homology among nucleotides is typically inferred using automated sequence-alignment algorithms. ";
+      "Even with long nucleotide sequences, however, alignment uncertainty can be substantial";
+      Citep{Wong2008};
+      DotSpace;
+      "This problem is amplified in lexical data, where word forms often contain only a small number of segments. ";
+      "To accommodate this uncertainty, we marginalize over possible segmental alignments rather than conditioning on a single fixed alignment. ";
+      "Concretely, all candidate alignments are integrated over, each weighted by its probability under the model. ";
+      "This integration is achieved within a Bayesian framework using MCMC";
+      ", which jointly samples model parameters and segmental alignments in proportion to their posterior probabilities.";
+    };
   };
 }
 
@@ -359,7 +358,7 @@ style.Par {
   TextIpa{"w"};
   ", an empty segmental position is introduced before the vowel in the remaining languages";
   DotSpace;
-  "As discussed in Section 3, however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
+  "As discussed in Section "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
   "Inference does not condition on any fixed alignment and the posterior distribution integrates over alternative homology assignments. ";
   "Accordingly, explicit gap symbols are not required elements of the input. ";
 };

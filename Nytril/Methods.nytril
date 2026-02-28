@@ -1241,7 +1241,7 @@ class PhylogenyResultsSection: Content {
     style.Par {
       "All model parameters are treated as random variables endowed with prior distributions. ";
       "The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possiboe topologies. ";
-      "As outlined in section 3.1, the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
+      "As outlined in section "; style.SectionReference(PaperSections.ModelInference); ", the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
       "Across runs, a small set of topologies consistently achieved the highest posterior support. ";
       "However, the MCMC sampler exhibited limited mixing over tree space: once a high-probability topology was located, the chain tended to remain trapped in its vicinity. ";
     };
@@ -1402,7 +1402,7 @@ class ModelComparisonSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We assessed the relative fit of the three segmental-change models introduced in Section 3 using Bayes factors. ";
+      "We assessed the relative fit of the three segmental-change models introduced in Section "; style.SectionReference(PaperSections.MethodsSection); " using Bayes factors. ";
       "The Bayes factor is the ratio of the marginal likelihoods of the models: ";
     };
 
@@ -1735,7 +1735,7 @@ class SoundChangeSection: Content {
     };
 
     style.Par {
-      "As noted above in section 3, the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
+      "As noted above in Section "; style.SectionReference(PaperSections.MethodsSection); ", the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
       "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
       "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
       "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
@@ -1881,13 +1881,12 @@ class PaperMethodsSummary: Content {
     AddContent(PaperSections.DataCuration);
   }
 
-override GetBody(ContentStyle style) = Block {
-  style.Par {
-    "A comprehensive account of the model specification and computational implementation is provided in the Supplemental Material. ";
-    "The discussion here summarizes the essential components of the framework and the structure of the empirical analyses. ";
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "A comprehensive account of the model specification and computational implementation is provided in the Supplemental Material. ";
+      "The discussion here summarizes the essential components of the framework and the structure of the empirical analyses. ";
+    };
   };
-};
-
 }
 
 //======================================================================
