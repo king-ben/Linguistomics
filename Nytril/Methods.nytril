@@ -366,7 +366,7 @@ class NaturalClassRateChart: Content {
   };
 
   override GetCaption(ContentStyle style) = Span {
-    "The average rates of change between and within the ten segment groups of the "; NaturalModelName; DotSpace;
+    "The average rates of change between and within the ten groups of the "; NaturalModelName; DotSpace;
     "Circle area is proportional to the rate of change between groups ("; qij; "). ";
     "Shaded area represents the 95% credible interval. ";
   };
@@ -526,7 +526,7 @@ class GapFrequencyChart: Content {
     EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; MainResults.MainRun.TestStatistic}}; CommaSpace;
     EqSpan {DegreesFreedom; Tex.Equals; 16}; CommaSpace;
     EqSpan {PValue; Tex.lt; 0.001};
-     ") which confirms a statistically significant positional asymmetry. ";
+     "), which confirms a statistically significant positional asymmetry. ";
   };
 
   override GetBody(ContentStyle style) = HBox {
