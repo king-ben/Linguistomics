@@ -1607,26 +1607,32 @@ class WordSegmentRelSection: Content {
       var align1 = Figures.AlignmentExample1;
       var index1 = align1.Examples[0].FindAlignment(MainResults.MainRun);
 
-      "Our method treats the homology relationships of segments between languages as a random variable. ";
-      "We summarize the posterior distribution by constructing a credible set of alignments, where a credible set of alignments is constructed by ordering the alignments for a cognate from the highest to lowest posterior probability. ";
-      "The alignments are then included in a credible set, starting with the alignment with the highest posterior probability, until the cumulative posterior probability is {0}. "(ExperimentResults.CutoffProbability);
-      style.FigureReference(align1); " shows alignments for the concept ";
-      style.SQuote {
-        TextCase: TextCases.AllLower;
-        align1.Examples[0].Concept;
-      };
-      ", which illustrates three key properties of all posterior alignments. ";
-      "First, the distributions of credible sets are heavily weighted in favor of a single alignment with most of the posterior probability. ";
-      "In this case, one alignment had a posterior probability of ";
-      Span {
-        TextDigits: 2;
-        index1.Alignments[0].Prob;
-      };
-      DotSpace;
-      "Second, insertions and deletions occur predominantly at word-end, where gaps are more frequent on average compared to other positions (";
-         style.FigureReference(Figures.GappinessChart); "). ";
-      "Finally, the alignments tend to assign segments from the same class to the same column in the alignment. ";
+       "In our framework, segmental homology across languages is treated as a latent random variable. ";
+    "Posterior uncertainty over alignments is summarized by constructing a credible set for each cognate word form. ";
+    "Alignments are ordered by posterior probability and the smallest set whose cumulative posterior mass reaches ";
+    ExperimentResults.CutoffProbability;
+    " is retained. ";
+    style.FigureReference(align1);
+    " illustrates this procedure for the concept ";
+    style.SQuote {
+      TextCase: TextCases.AllLower;
+      align1.Examples[0].Concept;
     };
+    DotSpace;
+    "Three general properties emerge. ";
+
+    "First, posterior mass is typically concentrated on a single dominant alignment. ";
+    "In the example shown, the highest-probability alignment alone accounts for ";
+    Span {
+      TextDigits: 2;
+      index1.Alignments[0].Prob;
+    };
+    " of the posterior. ";
+    "Second, insertion and deletion events occur disproportionately in word-final position, consistent with the distribution of gap frequencies shown in ";
+    style.FigureReference(Figures.GappinessChart);
+    DotSpace;
+    "Third, segments from the same natural class tend to be assigned to the same column in the alignment. ";
+  };
 
     style.AddFigure(Figures.EquilibriumCharts, FigureOptions.Bottom, 80%);
 
@@ -1634,8 +1640,8 @@ class WordSegmentRelSection: Content {
       var align2 = Figures.AlignmentExample2;
 
       style.ReviewMark(ReviewComments.C5);
-      "Interestingly, the distribution of alignments depends on the model of segmental change. ";
-      style.FigureReference(align2); " shows the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
+      "The posterior distribution over alignments is sensitive to the substitution model. ";
+      style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
         TextCase: TextCases.AllLower;
         align2.Concept
@@ -1645,18 +1651,38 @@ class WordSegmentRelSection: Content {
         align2.Models;
       };
       " models. ";
-      "The credible set contains ";
-      align2.Poisson.ShowAlignmentNumber;
-      " model, but only ";
-      align2.NaturalClass.ShowAlignmentNumber;
-      " model. ";
-      "This difference is consistent with the rates estimated under the "
-      align2.NaturalClass; " ("; style.FigureReference(Figures.RateChart); "). ";
-      "For example, the rate of change between "; VocalSegments.u; " and "; VocalSegments.oh; " are estimated to be high, whereas the rate between consonants and "; VocalSegments.oh; " is low. ";
-      "The distribution of alignments under the ";
-      align2.Poisson; " often makes consonants homologous with "; VocalSegments.oh; ". ";
-      "Under the "; align2.NaturalClass;
-      " model, however, the same alignments are improbable, as the rates of substitution between those alignments are low.";
+
+
+      "Under the ";
+    align2.Poisson;
+    " model, the credible set contains ";
+    align2.Poisson.ShowAlignmentNumber;
+    ", whereas under the ";
+    align2.NaturalClass;
+    " model it contains only ";
+    align2.NaturalClass.ShowAlignmentNumber;
+    ". ";
+
+      "This reduction in alignment uncertainty accords with the substitution-rate structure estimated under the ";
+    align2.NaturalClass;
+    " model (";
+    style.FigureReference(Figures.RateChart);
+    "). ";
+    "For instance, transitions between ";
+    VocalSegments.u;
+    " and ";
+    VocalSegments.oh;
+    " are assigned relatively high rates, whereas substitutions between consonants and ";
+    VocalSegments.oh;
+    " are strongly disfavored. ";
+    "Consequently, the ";
+    align2.Poisson;
+    " model frequently aligns consonants with ";
+    VocalSegments.oh;
+    ", while such configurations receive negligible posterior weight under the ";
+    align2.NaturalClass;
+    " model. ";
+
     };
 
     style.AddFigure(Figures.RateChart, FigureOptions.Bottom | FigureOptions.Full, 60%);
