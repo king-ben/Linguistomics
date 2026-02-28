@@ -1242,41 +1242,50 @@ class PhylogenyResultsSection: Content {
       "All model parameters are treated as random variables endowed with prior distributions. ";
       "The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possiboe topologies. ";
       "As outlined in section 3.1, the posterior probability distributions of the model parameters are numerically approximate with MCMC. ";
-      "Our analyses consistently found a handful of topologies that best explained the data. ";
-      " Unfortunately, the MCMC algorithm poorly explored the tree space: ";
-        "it would find a good tree then become stuck on it. ";
+      "Across runs, a small set of topologies consistently achieved the highest posterior support. ";
+      "However, the MCMC sampler exhibited limited mixing over tree space: once a high-probability topology was located, the chain tended to remain trapped in its vicinity. ";
     };
 
     style.Par {
-      "In our MCMC implementation, parameters are updated in blocks. ";
-      "A parameter is randomly selected and then updated. In a single MCMC cycle, either the tree topology or the alignment is updated, but not both simultaneously. ";
-      "The tree topology and alignments are confounded. As the MCMC procedure found better trees, the alignments that were accepted by the MCMC procedure tended to fit the current tree in computer memory. ";
-      "As the alignment becomes better adapted to the current tree in memory, it becomes more difficult for the MCMC procedure to accept alternative topologies, even if they would be sensible on a different alignment.";
+      "In our implementation, parameters are updated in blocks, with each MCMC step randomly selecting a single component and proposing a modification to it. ";
+      "Within a given cycle, either the tree topology or the segmental alignment is updated, but not both simultaneously. ";
+      "This update scheme induces dependence between topology and alignment. ";
+      "As improved topologies were accepted, the sampled alignments increasingly adapted to the current tree stored in memory. ";
+      "Once the alignment became well tuned to a particular topology, proposals involving alternative trees were rarely accepted, even when they would have been plausible under a different alignment configuration. ";
     };
 
     style.Par {
       var run = MainResults.MainRun;
       TextDigits: 3;
-      "This problem was likely not encountered in the other implementations of the TKF91 model";
+      "This difficulty does not appear to have arisen in earlier applications of TKF91";
       Citep {Lunter2004}; ", which analyzed an alignment of amino acid sequences. ";
-      "In our analysis of cognate data, the insertion and deletion rates were estimated to be quite high relative to the substitution rate: ";
-      EqSpan {InsertionRate; Tex.Equals; run.InsertionRate}; " ("; run.InsertionRateLow; ", "; run.InsertionRateHigh; ") and ";
-      EqSpan {DeletionRate; Tex.Equals; run.DeletionRate}; " ("; run.DeletionRateLow; ", "; run.DeletionRateHigh; ") ";
-        "for the insertion and deletion rates, respectively. ";
-      "(The credible intervals in the parentheses contain the true value of the parameter with probability {0}.) "(ExperimentResults.CutoffProbability);
-      "Roughly speaking, this means that for every two segmental transitions there was one insertion or deletion event. ";
-      "Just like substitution events, insertion and deletion events can be informative about phylogeny. ";
-      "Unlike the earlier analysis of amino acid sequence data, the insertion and deletion events were strongly informative about ";
-       "specific tree topologies, and this tree support could change depending on the homology assignments for the alignment.";
+      "Our analysis of cognate data yielded insertion and deletion rates that were large relative to substitution rates: ";
+         EqSpan{InsertionRate; Tex.Equals; run.InsertionRate};
+      " (";
+      run.InsertionRateLow;
+      ", ";
+      run.InsertionRateHigh;
+      ") and ";
+      EqSpan{DeletionRate; Tex.Equals; run.DeletionRate};
+      " (";
+      run.DeletionRateLow;
+      ", ";
+      run.DeletionRateHigh;
+      "), respectively. ";
+      "(Each credible interval contains the true parameter value with probability ";
+      ExperimentResults.CutoffProbability;
+      ".) ";
+      "In approximate terms, this implies one insertion or deletion event for every two substitution events. ";
+      "Like substitution events, insertion and deletion events contribute phylogenetic signal. ";
+      "In contrast to the earlier analysis of amino acid sequence data, the insertion and deletion events exerted substantial influence on tree support and their contribution varied with the sampled homology assignments. ";
     };
 
     style.Par {
-      "In all subsequent analyses, we use the three topologies presented in "
+      "Subsequent analyses therefore condition on the three fixed topologies in "
        style.FigureReference(Figures.ModelTreesUsed); ". ";
-      "Although there is considerable debate about the topology of the Romance languages, in recent decades most specialists have converged on the view that the first two clades to ";
-       "form are Sardinian followed by Romanian";
+      "Although the topology of Romance remains debated, many recent accounts posit Sardinian as the earliest branching lineage, followed by Romanian";
        Citep {Hall1950; Hall1976; Dardel1985; Swiggers2001; Vallejo2012; Buchi2015; Dworkin2016a}; DotSpace;
-      "Since Sardinian is not in our study group, the clade containing Romanian is the first to form in each of the trees in ";
+      "Since Sardinian is not in our sample, Romanian occupies the earliest branching position in each topology in ";
        style.FigureReference(Figures.ModelTreesUsed); DotSpace;
       "The sub-trees containing the remaining dialects differ in their topologies, but they all contain Spanish and Portuguese as a clade, as well as Catalan, French, and Walloon. ";
     };
