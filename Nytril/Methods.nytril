@@ -1471,13 +1471,14 @@ class WordTransformationSection: Content {
     }
 
     style.Par {
-      style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal elements of the rate matrix of the continuous-time Markov model describing phonemic ";
-          "change estimated under the "; NaturalModelName; DotSpace;
-      "These diagonal elements can be interpreted as a measure of segmental volatility, since they are the sum of the rates at which they transition to other segments. ";
-      "When the process is in segment "; sym.i; ", "; -qii; " is the rate at which it changes to another segment. ";
-      "The higher the rate, the more rapidly a change to another segment occurs on average. ";
-      "The rates for several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to be identical (e.g., diphthongs, long vowels, affricates, and nasal vowels, but this is an artefact of the visualization. ";
-      "The rates in these classes are not identical, but they they are sufficiently small that they are visually indistinguishable in this plot. ";
+      style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal entries of the substitution rate matrix estimated under the ";
+          NaturalModelName; DotSpace;
+      "These diagonal elements provide a measure of segmental volatility, as each diagonal element equals the sum of transition rates from a given segment to all alternative segments. ";
+      "When the process is in segment "; sym.i; ", the value"; -qii; " represents the instantaneous rate at which it changes state. ";
+      "Higher values therefore correspond to shorter expected residence times and greater diachronic instability. ";
+      "Several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to share identical rates (e.g., diphthongs, long vowels, affricates, and nasal vowels). ";
+      "This visual uniformity is an artifact of scale rather than exact equality. ";
+      "Although the rates in these classes are distinct, they are sufficiently small to be indistinguishable at the resolution of the plot. ";
     };
 
     style.AddFigure(Figures.QRatesDiagonal, FigureOptions.Bottom | FigureOptions.Full);
