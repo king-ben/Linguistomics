@@ -2583,7 +2583,10 @@ style.Par {
   "For ";
   SampledLanguages(data.Taxa.Length);
   " languages, there are ";
-  BranchFormula(data.Taxa.Length);
+  Span {
+    TextGroup: true;
+    BranchFormula(data.Taxa.Length);
+  };
   " distinct rooted tree topologies. ";
   "In general, the number of rooted trees is given by the product of the odd integers up to ";
   MaxBranch;
