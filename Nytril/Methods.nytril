@@ -1922,15 +1922,27 @@ class LimitationsSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "Our results are based on a model of segmental transition in which the three possible events described above are applicable only to individual segments. ";
-      "Certain patterns of sound change cannot therefore be captured under such a model. ";
-      "For instance, metathesis, a change in which two segments exchange positions, is modeled as two separate transitions. ";
-      "Friulian "; TextIpa{"tarɔnt"}; " ultimately descends from Latin "; TextIpa{"rotundum"}; Space; style.SQuoteComma{"round"};
-      "with the initial sequence "; TextIpa{"rVt"}; " of Latin having metathesized to "; TextIpa{"tVr"}; DotSpace;
-      "Under the TKF91 model, this single event becomes two, with one change from /r/ to /t/ and another from /t/ to /r/ (leaving aside the possibility of intermediate transitions). ";
-      "A second limitation is that the context in which a segmental transition takes place plays no role in the estimation of transition rates. ";
-      "It is well known that the evolution of phonemes can be sensitive to neighboring sounds. ";
-      "Finally, there is currently no straightforward way to incorporate supra-segmental features such as stress, although it plays a crucial role in the phonological history of the Romance languages. ";
+
+          "The results reported here are derived from a model in which segmental change is represented as a sequence of independent insertion, deletion, and substitution events operating on individual segments. ";
+    "As a consequence, certain types of sound change are not naturally accommodated within this framework. ";
+    "Metathesis, for example—where two segments exchange positions—is not modeled as a single transition. ";
+    "Friulian ";
+    TextIpa{"tarɔnt"};
+    " ultimately derives from Latin ";
+    TextIpa{"rotundum"};
+    style.SQuote{"round"};
+    ", with the initial Latin sequence ";
+    TextIpa{"rVt"};
+    " corresponding to ";
+    TextIpa{"tVr"};
+    "in Friulian. ";
+    "Under TKF91, such a change is represented as two independent substitutions (/r/ → /t/ and /t/ → /r/), rather than as a single reordering event. ";
+    "A second limitation concerns contextual conditioning: transition rates are estimated independently of phonological environment, even though segmental change is often sensitive to adjacent sounds. ";
+    "Finally, the current implementation does not incorporate suprasegmental structure. ";
+    "Features such as stress, which are known to be central to Romance phonological developments, are therefore excluded from the model. ";
+
+
+
     };
   };
 }
