@@ -1958,15 +1958,24 @@ class AdvantagesSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
+
       style.ReviewMark(ReviewComments.C11);
-      "Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
+      "Despite these limitations, the event-based formulation offers distinct advantages. ";
+    "Since segmental change is modeled explicitly as a stochastic process, it becomes possible to investigate questions that are difficult to address within traditional frameworks. ";
+    "For example, one may ask whether the frequency of a phoneme influences its diachronic stability, how rates of change depend on the size and composition of a phonemic inventory, or to what extent natural classes constrain evolutionary trajectories. ";
+    "Such hypotheses can be evaluated formally through comparisons among models that differ in their parameterization of substitution rates. ";
+      //style.ReviewMark(ReviewComments.C11);
+      //"Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
      };
 
     style.AddFigure(Figures.GappinessChart, FigureOptions.Bottom, 70%);
 
-    style.Par {
-      "By casting the problem of language change in a statistical framework, we inherit the benefits of the statistical approach to estimate model parameters and, perhaps more importantly, to compare alternative models of language change to find the model that best explains the data. In this way, linguists can learn about language evolution by devising models that account for potential linguistic phenomena, then testing the model against models that do not account for the linguistic feature. This approach has proven successful in molecular evolution where models have been described and tested that account for many evolutionary processes of molecular change.";
-    };
+  style.Par {
+    "More broadly, embedding sound change within a statistical framework enables both parameter estimation and principled model comparison. ";
+    "Competing hypotheses about linguistic evolution can be formalized as alternative probabilistic models and evaluated using standard inferential criteria. ";
+    "This strategy mirrors the development of molecular evolutionary theory, where increasingly realistic models have been proposed and tested against simpler alternatives. ";
+    "By adopting a similar model-based approach, historical linguistics gains a systematic means of assessing the explanatory adequacy of competing accounts of sound change. ";
+  };
 
     style.AddFigure(Figures.AlignmentExample1, FigureOptions.Bottom | FigureOptions.Full);
   };
@@ -2318,18 +2327,21 @@ class ConclusionSection: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       style.ReviewMark(ReviewComments.C24);
-      "We present the first application of the TKF91 model to a linguistic dataset and argued that an event-based approach to language evolution offers significant advantages over current practices. ";
-      "We believe the method can be extended to handle more complex segmental changes (such as those involving context dependency). ";
-      "Moreover, the event-based approach has the potential to improve divergence-time ";
+        "This study provides the first application of the TKF91 model to a linguistic dataset and demonstrates the advantages of modeling language change as a sequence of explicitly defined events. ";
+        "By operating directly on segmental forms rather than abstract cognate relationships, the framework preserves the signal in word forms and permits inference about the dynamics of sound change. ";
+  "The framework can, in principle, be extended to accommodate more complex forms of segmental change, including context-dependent processes. ";
+  "An event-based approach may also improve divergence-time ";
       style.ReviewOld {
         "estinmation";
       };
       style.ReviewNew {
         "estimation";
       };
-      ", which relies on estimating the number of events that occurred along the branches of the tree. ";
-      "When applied to abstract cognate relationships, it is unclear what events are actually being counted along the branches. ";
-      "By contrast, the possible events in our event-based approach are well defined: segmental transitions, insertions, or deletions.";
+
+      ", which depends on quantifying the number of evolutionary events along the branches of a tree. ";
+  "When divergence times are estimated from abstract cognate characters, the nature of these events is often unclear. ";
+  "By contrast, the present model counts explicitly defined operations (segmental substitutions, insertions, and deletions) and thereby provides a more transparent basis for phylogenetic inference. ";
+
     };
 
     style.AddFigure(Figures.AlignmentExample2, FigureOptions.Bottom | FigureOptions.Full);
