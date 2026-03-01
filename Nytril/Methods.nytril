@@ -2685,12 +2685,13 @@ class PhylogenyDataSection: Content {
     var ec   = new ExampleConcept(data, data.ExampleConcept);
 
     style.Par {
-      "The similarities of words from different languages are informative about how the languages are related. ";
-      "In this study, we use statistical methods developed in the field of evolutionary biology to estimate the relationships of species based on either the morphological characteristics of the species or the DNA sequences sampled from the same gene and compared across the species. ";
-      "The methods assume that the characteristics compared across species are homologous. ";
-      "Homology, in evolutionary biology, is similarity in some characteristic that is caused by common ancestry. ";
-      "Consider as an example the following DNA sequences sampled from three species:";
-    };
+  "Lexical similarities across languages provide evidence about their historical relationships. ";
+  "In this study, we draw on statistical methods developed in evolutionary biology, where phylogenetic relationships among species are inferred from shared morphological traits or from homologous DNA sequences sampled from the same gene across taxa. ";
+  "These methods rely on the assumption that the characters being compared are homologous—that is, that their similarity is attributable to common ancestry rather than independent innovation. ";
+  "In evolutionary biology, homology refers to similarity among traits attributable to descent from a common ancestor. ";
+  "As an illustration, consider the following DNA sequences sampled from three species:";
+};
+
 
     style.BodyTable([1", 5"]) {
       foreach (var a in attribute(ExampleAnimals).Children) {
@@ -2912,8 +2913,8 @@ class PhylogenyModelSection: Content {
     };
 
     style.Par {
-      "The TKF91"; Citep {Thorne1991}; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
-      InsertDelete(" and "); DotSpace;
+      "The TKF91"; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
+      InsertDelete(" and "); Citep {Thorne1991}; DotSpace;
       "They introduced a convention for thinking about a DNA sequence in which nucleotides are connected by invisible links. ";
       "Each nucleotide is paired with the link to its right. ";
       "The left-most nucleotide has a special link to its left, which is known as the immortal link. ";
@@ -2929,7 +2930,7 @@ class PhylogenyModelSection: Content {
       InsertDelete(Tex.Divide); DotSpace;
       "This constraint is adopted in this study. ";
       "In fact, the model we use is precisely the same as the TKF91 model, but with a different continuous-time Markov model to describe segmental transitions. ";
-      "TKF91"; Citep {Thorne1991}; " uses a four-state process to describe nucleotide substitutions. ";
+      "TKF91 uses a four-state process to describe nucleotide substitutions. ";
     };
 
     style.Par {
