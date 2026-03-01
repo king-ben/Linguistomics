@@ -1800,68 +1800,83 @@ readonly SoundChangeSection PaperSections.InsightsSoundChange = new;
 
 class SoundChangeSection: Content {
   Constructor {
-    super.Constructor("Sound Change and Phonological Typology");
+    super.Constructor("Implications for Sound Change and Phonological Typology");
   }
+override GetBody(ContentStyle style) = Block {
+  style.Par {
+    "Traditional historical phonology is primarily concerned with identifying individual sound changes and establishing their relative chronology. ";
+    "By contrast, the TKF91 framework permits inference about broader systemic tendencies in the evolution of segmental inventories. ";
+    "We focus on three quantities that illuminate these tendencies: the diagonal elements of the substitution rate matrix, transition rates within and between natural classes, and the equilibrium distribution of segments. ";
+    "These quantities provide a quantitative characterization of sound change within an explicit phylogenetic model. ";
+  };
 
-  override GetBody(ContentStyle style) = Block {
-    style.Par {
-      "In contrast to traditional historical phonology, which is primarily concerned with individual sound changes and their relative chronologies, the TKF91 approach yields insights into broader systemic trends in the evolution of sounds and segmental inventories" DotSpace;
-      "We focus here on three measures that illuminate both aspects: the diagonal of the Q matrix, transition rates within and between natural classes, and equilibrium frequencies" DotSpace;
-      "Although a number of quantitative measures of sound change have been proposed in recent years, these measures constitute a novel contribution to the field" DotSpace;
-    };
+
+  style.Par {
+    "As discussed in ";
+    style.SectionReference(PaperSections.MethodsSection);
+    ", the diagonal entries of the Q matrix measure the instantaneous rate at which a segment transitions to any other state, and thus provide an index of diachronic stability. ";
+    "The pronounced separation between vowels and consonants in ";
+    style.FigureReference(Figures.QRatesDiagonal);
+    " aligns with established findings in Romance historical phonology. ";
+    "Among the major developments distinguishing Latin from the Romance languages is the loss of phonemic vowel length";
+    Citep{Janson1979; Loporcaro2015};
+    " and the early monophthongization of Classical Latin diphthongs";
+    Citep{Posner1996.OnPage(106)};
+    DotSpace;
+    "More broadly, our results accord with evidence that vowel inventories have evolved more rapidly than consonant inventories within Indo-European";
+    Citep{Moran2021.OnPage(92..95)};
+    DotSpace;
+  };
+
+  style.Par {
+    "The present findings also intersect with work in phonological typology that seeks to identify core or stable segment inventories. ";
+    "The basic consonant inventory proposed by ";
+    Citet{Nikolaev2020};
+    ", /p t k n l r/, is consistent with our results insofar as stops and nasals emerge as among the most stable classes. ";
+    "An even closer correspondence is found with the set of primal consonants identified by ";
+    Citet{Bybee2022};
+    ", /p t k b d g m n ŋ s l/. ";
+    "Two distinctions, however, are crucial. ";
+    "First, primal consonants are defined in terms of their rarity as outputs of sound change, whereas the diagonal of the Q matrix measures the rate of transition away from a segment—that is, its stability as an input to change. ";
+    "Second, typological proposals aim to identify cross-linguistic universals, whereas our estimates characterize tendencies within Romance. ";
+    "The results therefore inform typological debates, but should not be interpreted as cross-linguistic universals. ";
+  };
+
+  style.Par {
+  "The average rates summarized in ";
+  style.FigureReference(Figures.RateChart);
+  " provide a complementary perspective on segmental stability by comparing transitions within and between natural classes. ";
+  "Within-class rates exceed cross-class rates for short vowels, nasal consonants, and liquids. ";
+  "Liquids display the highest within-class rates, whereas diphthongs exhibit the lowest. ";
+  "A liquid is thus more likely to change into another liquid than into a segment of a different class, a pattern plausibly associated with processes such as liquid dissimilation, e.g., Latin ";
+  textit{"arbor"};
+  " > Spanish ";
+  textit{"árbol"};
+  Citep{Abrego2013; Mueller2013};
+  DotSpace;
+  "Transition rates between diphthongs and short vowels are the highest among all between-class rates, which is consistent with the reciprocal effects of vowel breaking and monophthongization in the history of Latin and Romance. ";
+  "More generally, the largest off-diagonal rates involve vowel classes, which reinforces the broader pattern of vocalic instability identified above. ";
+  "Elevated rates between nasal vowels and nasal consonants further reflects the development of nasalized vowels in French and Portuguese. ";
+};
+
+
 
     style.Par {
-      "As noted above in "; style.SectionReference(PaperSections.MethodsSection); ", the diagonal of the Q matrix represents the rate at which a given segment transitions to any other segment and therefore provides a measure of its diachronic stability" DotSpace;
-      "The clear division between vowels and consonants in "; style.FigureReference(Figures.QRatesDiagonal); " is consistent with results from previous research in Romance historical phonology" DotSpace;
-      "One of the major sound changes distinguishing Latin from the Romance languages is the loss of phonemic vowel length"; Citep{Janson1979; Loporcaro2015}; DotSpace;
-      "Likewise, the diphthongs of Classical Latin begin to undergo monophthongization already within Latin itself"; Citep {Posner1996.OnPage(106)}; DotSpace;
-      "Our results are also broadly consistent with the findings of"; Citet{Moran2021.OnPage(92..95)}; ", who show that vowel inventories have changed more rapidly than consonant inventories in Indo-European" DotSpace;
-    };
+    "The equilibrium frequencies in ";
+    style.FigureReference(Figures.EquilibriumCharts);
+    " illuminate the distributional consequences of these historical processes. ";
+    "Short vowels and stops together account for more than half of all segments, which indicates a pronounced skew toward these classes. ";
+    "This distribution reflects the reduction of diphthongs and long vowels and the concomitant expansion of short vowels within Romance. ";
+  };
 
     style.Par {
-      "Our findings also overlap with work in phonological typology that has sought to identify core sound inventories across the world’s languages. ";
-      "For example, the basic consonant inventory proposed by "; Citet{Nikolaev2020}; ", /p t k n l r/, aligns with the trends we identify in Romance, insofar as the most stable classes in our analysis are stops and nasals" DotSpace;
-      "There is even stronger convergence with the set of primal consonants proposed by";
-      Citet{Bybee2022}; ", /p t k b d g m n ŋ s l/. ";
-      "There are, however, two important differences between their notion of primal consonants and diachronic stability as measured by the diagonal of the Q matrix" DotSpace;
-      "First, these consonants are considered primal because they are only rarely created through sound change. ";
-      "That is, they infrequently arise as the output of sound change processes. ";
-      "Under our framework, by contrast, segmental stability is associated with the input to sound change, insofar as the diagonal of the Q matrix reflects the rate of transition "; textit{"away"}; " from a given phoneme" DotSpace;
-      "Second, both the basic and primal consonant inventories are intended to represent a core set of universal consonants across the world’s languages" DotSpace;
-      "While our results are relevant to the typology of diachronic phonology in that they capture broad tendencies in segmental evolution, they should not be interpreted as universal laws of sound change" DotSpace;
-    };
+    "Finally, model comparison provides quantitative support for the role of natural classes in sound change";
+    Citep{King1969.OnPage(201)};
+    DotSpace;
+    "Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the"; style.ReviewNew{"Proto-Germanic reflexes of "}; "Proto-Indo-European stops. ";
+    "The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. ";
+  };
 
-    style.Par {
-      "The average transition rates in "; style.FigureReference(Figures.RateChart); " profile a different aspect of segmental stability, as they refer to specific classes of inputs and outputs"; DotSpace;
-      "In addition, the focus is not on transitions among individual segments, but rather transitions within and between natural classes" DotSpace;
-      "For instance, the circles on the diagonal represent the average transition rate within each natural class. ";
-      "The liquids exhibit the highest rate and the diphthongs the lowest. ";
-      "A liquid is thus on average more prone to transition to another liquid than to a segment from any other class. ";
-      "At the opposite end of the spectrum, when a diphthong changes it is least likely to transition to another diphthong. ";
-      "This trend is due at least in part to liquid dissimilation, as in the change from Latin "; textit{"arbor"}; " to Spanish "; textit{"árbol"}; Citep{Abrego2013; Mueller2013}; DotSpace;
-      "Looking across the row for diphthongs in "; style.FigureReference(Figures.RateChart); ", the highest rate of change is found among the short vowels"; DotSpace;
-      "These rates are driven by two common sound changes in the history of Latin and Romance, namely vowel breaking, whereby a monophthong becomes a diphthong, and monophthongization of diphthongs"; DotSpace;
-      "The highest off-diagonal rates in "; style.FigureReference(Figures.RateChart); " all involve vowels, which is in line with the results discussed above" DotSpace;
-      "In addition to diphthongs and short vowels, the highest rates are also found among short vowels and long vowels as well as nasal vowels and nasal consonants" DotSpace;
-      "This latter trend is driven by the emergence of nasalized vowels in French and Portuguese. ";
-    };
-
-    style.Par {
-     "The equilibrium frequencies presented in " style.FigureReference(Figures.EquilibriumCharts); " provide insight into the distribution of phonemic segments across major segment classes in Romance languages"; DotSpace;
-     "The combined frequency of short vowels and stop consonants exceeds 0.5, indicating that on average more than half of the segments in a word are drawn from these two classes"; DotSpace;
-     "This distributional skew reflects the diachronic developments discussed above. ";
-     "In particular, the reduction of diphthongs and long vowels leads to a decrease in their frequency of occurrence, with a corresponding increase in the frequency of short vowels"; DotSpace;
-    };
-
-    style.Par {
-      "Finally, the results of model comparison support the relevance of natural classes in sound change"; Citep{King1969.OnPage(201)}; DotSpace;
-      "It is well established that sound changes often target natural classes of segments. ";
-      "Grimm’s Law, for instance, systematically affects all ";
-      style.ReviewNew{"Proto-Germanic reflexes of "};
-      "Proto-Indo-European stops—voiceless, voiced, and voiced aspirated. ";
-      "The regularity and non-randomness of the segments affected by such changes are due ultimately their phonetic grounding,";
-      " as natural classes are groupings of sounds that pattern together in phonological processes precisely because of shared articulatory and acoustic features"; DotSpace;
-    };
   };
 }
 
