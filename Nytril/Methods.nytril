@@ -1543,7 +1543,9 @@ class WordTransformationSection: Content {
     style.Par {
       style.FigureReference(Figures.RateChart);
       " shows the estimated substitution rates among the "; rp; " groups of the "; NaturalModelName; DotSpace;
-      "In general, rates are highest for transitions within the same class. ";
+
+      "Within-class exchange rates are elevated for short vowels, nasal consonants, and liquids. ";
+
       "Relative to an equal-rates Poisson model, the within-class rates are ";
 
   style.TextList {
@@ -1562,14 +1564,19 @@ class WordTransformationSection: Content {
     (each partitions).ShowPlural;
   };
   ", respectively. ";
-  "Equivalently, the ";
-  style.TextList {
-    TextCase: TextCases.AllLower;
-    SelfArrow(each smallOnes);
-  };
-  " within-class rates fall below the equal-rates expectation. ";
-  "Long vowels and diphthongs deviate from the general pattern, as they transition more frequently to short vowels than to members of their own class, a tendency discussed below";
-  DotSpace;
+
+  "Thus within-class exchange falls below the equal-rates expectation for long vowels, diphthongs, approximants, and affricates, ";
+  " while it exceeds expectation for nasal vowels, short vowels, nasal consonants, liquids, fricatives, and stops. ";
+
+  //"Equivalently, the ";
+  //style.TextList {
+  //  TextCase: TextCases.AllLower;
+  //  SelfArrow(each smallOnes);
+  //};
+  //" within-class rates fall below the equal-rates expectation. ";
+
+  "Exchange rates between long vowels and short vowels, and between diphthongs and short vowels, exceed the corresponding within-class rates, a tendency discussed in section 5.2 below. ";
+
 
       var same = new IntRatio(cntSame, numClasses);
       var diff = new IntRatio(cntDiff, numClasses*(numClasses-1));
@@ -1580,6 +1587,7 @@ class WordTransformationSection: Content {
     " of within-class transitions exceed the equal-rates expectation, compared to ";
     diff;
     " of transitions between distinct classes. ";
+    "This asymmetry indicates that, although not universal across classes, substitution rates are more frequently higher within natural classes than between them. ";
     "This asymmetry reinforces the conclusion that segments are more likely to change within their own natural class than across class boundaries. ";
   } else
         System.Assert(false, "Inconsistency between text and data!");
@@ -1830,10 +1838,10 @@ override GetBody(ContentStyle style) = Block {
 
   style.Par {
     "The present findings also intersect with work in phonological typology that seeks to identify core or stable segment inventories. ";
-    "The basic consonant inventory proposed by ";
+    "The basic consonant inventory proposed by";
     Citet{Nikolaev2020};
     ", /p t k n l r/, is consistent with our results insofar as stops and nasals emerge as among the most stable classes. ";
-    "An even closer correspondence is found with the set of primal consonants identified by ";
+    "An even closer correspondence is found with the set of primal consonants identified by";
     Citet{Bybee2022};
     ", /p t k b d g m n ŋ s l/. ";
     "Two distinctions, however, are crucial. ";
