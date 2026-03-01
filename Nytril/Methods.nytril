@@ -1566,7 +1566,7 @@ class WordTransformationSection: Content {
   ", respectively. ";
 
   "Thus within-class exchange falls below the equal-rates expectation for long vowels, diphthongs, approximants, and affricates, ";
-  " while it exceeds expectation for nasal vowels, short vowels, nasal consonants, liquids, fricatives, and stops. ";
+  "while it exceeds expectation for nasal vowels, short vowels, nasal consonants, liquids, fricatives, and stops. ";
 
   //"Equivalently, the ";
   //style.TextList {
