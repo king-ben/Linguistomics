@@ -2616,52 +2616,59 @@ style.Par {
   DotSpace;
 };
 
-
-
-
-    style.Par {
-     "The interior nodes of the tree represent language divergence events that occurred at specific times in the past and are denoted ";
-     EqSpan {
-       Span {Bold; Time};
-       Tex.Equals;
-       SpanParens {
-         EllipsisList {
-           Time sub (NumLanguages Tex.Plus 1);
-           Time sub (NumLanguages Tex.Plus 2);
-           Time sub TipLastLabel;
-         };
-       }
-     }; DotSpace;
-
-     "The tip nodes are all assigned the time ";
-     EqSpan {
-       Time; Tex.Equals; 0;
-     }; DotSpace;
-
-     "We discuss in more detail below a stochastic model of language change. ";
-     "However, the model we use, along with every other stochastic model for phylogenies, has an all-important parameter that describes the rate at which the language changes. ";
-     "This parameter is called the substitution rate and denoted "; SubstitutionRate; DotSpace;
-
-     "Without external information to constrain the divergence times, such as one language divergence time that is considered known, it is impossible to estimate divergence times. ";
-     "The problem is that one obtains the same net divergence between two languages from a high rate of language evolution and a short divergence time separating the languages, or a low rate of language evolution and a long time separating the languages. ";
-     "In fact, the expected number of evolutionary events that occurred between two languages that diverged at time "; Time; " is ";
-     EqSpan {
-       ExpectedEvents;
-       Tex.Equals;
-       2;
-       Time;
-       SubstitutionRate;
-     }; DotSpace;
-
-     "(The factor of two is introduced because the path between the two languages is the time from one language to the common ancestor, and then back up the tree to the other language.) ";
-     "In this paper, we allow each of the "; MaxBranches; " branches of the tree to have an independent substitution rate. ";
-     "The expected number of evolutionary events on the "; Ith; " branch of the tree is ";
-     ExpectedEventsPerBranch;
-     DotSpace;
-     "In this study, we do not estimate the divergence times on the tree, but rather the compound parameter representing the branch lengths ";
-     EqSpan {ExpectedEvents sub sym.i};
-     ", which are in units of expected number of substitutions per segment (as described below). ";
+  style.Par {
+  "The interior nodes of the tree correspond to divergence events that occurred at specific times in the past. ";
+  "These divergence times are denoted ";
+  EqSpan{
+    Span{Bold; Time};
+    Tex.Equals;
+    SpanParens{
+      EllipsisList{
+        Time sub (NumLanguages Tex.Plus 1);
+        Time sub (NumLanguages Tex.Plus 2);
+        Time sub TipLastLabel;
+      };
     };
+  };
+  DotSpace;
+
+  "All tip nodes are assigned time ";
+  EqSpan{Time; Tex.Equals; 0};
+  DotSpace;
+
+  "We describe below a stochastic model of language change operating along the branches of the tree. ";
+  "Such models include a rate parameter governing the tempo of evolution, denoted ";
+  SubstitutionRate;
+  ", which represents the instantaneous rate of segmental substitution. ";
+  "In the absence of external calibration (such as a known divergence time) divergence times and substitution rates are not separately identifiable. ";
+  "A high substitution rate combined with a short divergence time produces the same expected amount of change as a low rate combined with a long divergence time. ";
+  "For two languages that diverged at time ";
+  Time;
+  ", the expected number of substitution events along the path connecting them is ";
+  EqSpan{
+    ExpectedEvents;
+    Tex.Equals;
+    2;
+    Time;
+    SubstitutionRate;
+  };
+  DotSpace;
+
+  "(The factor of two reflects the fact that the evolutionary path runs from one language to their common ancestor and then to the other language.) ";
+  "In the present study, each of the ";
+  MaxBranches;
+  " branches is allowed to have its own substitution rate. ";
+  "Accordingly, the expected number of substitution events along the ";
+  Ith;
+  " branch is ";
+  ExpectedEventsPerBranch;
+  DotSpace;
+  "Rather than estimating divergence times directly, we estimate the compound branch-length parameters ";
+  EqSpan{ExpectedEvents sub sym.i};
+  ", measured in units of expected substitutions per segment. ";
+};
+
+
   };
 }
 //======================================================================
@@ -2682,7 +2689,7 @@ class PhylogenyDataSection: Content {
       "In this study, we use statistical methods developed in the field of evolutionary biology to estimate the relationships of species based on either the morphological characteristics of the species or the DNA sequences sampled from the same gene and compared across the species. ";
       "The methods assume that the characteristics compared across species are homologous. ";
       "Homology, in evolutionary biology, is similarity in some characteristic that is caused by common ancestry. ";
-      "Consider as an example the following DNA sequences sampled from three species,";
+      "Consider as an example the following DNA sequences sampled from three species:";
     };
 
     style.BodyTable([1", 5"]) {
@@ -2827,15 +2834,12 @@ class PhylogenyModelSection: Content {
   const StateCount = 5;
 
   Constructor {
-    super.Constructor("Language evolution model");
+    super.Constructor("Segmental evolution model");
   }
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
       "We assume that cognate words evolve along the branches of a phylogenetic tree through substitution of one segment by another, insertion of a new segment, or deletion of a segment.";
-    };
-
-    style.Par {
       "Substitution of one segment for another is modeled using a continuous-time Markov model in which the possible states are the set of segments in the phonemic representations. ";
       "At the heart of a continuous-time Markov chain is a rate matrix describing the rate of change between all pairs of states. ";
       "Consider, for example, a simplified Markov process with only "; Enumerators.Cardinal(StateCount); " segments as states. ";
@@ -3215,9 +3219,9 @@ class MCMCComparisonSection: Content {
 
     style.Par {
       "Three models describing how word segments evolve along the branches of the tree are compared in this study. ";
-      "The first model is isomorphic to the model of molecular evolution first described by Jukes and Cantor ";
-      Citep{Jukes1969}; ", and assumes that the rates of change between all IPA segments is equal. ";
-      "The second model, isomorphic to the model first described by Felsenstein"; Citep{Felsenstein1981}; ",  assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions the IPA segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
+      "The first model is isomorphic to the model of molecular evolution first described by";
+      Citet{Jukes1969}; " and assumes that the rates of change between all segments is equal. ";
+      "The second model, isomorphic to the model first described by"; Citet{Felsenstein1981}; ", assumes that the rate of change to a state is proportional to its stationary frequency. "; "The third model, our Natural Class Model, partitions segments into 10 sets according to their articulatory properties. The model allows there to be independently-estimated rates of change for changes to a segment in the same class and also independently-estimated rates for changes between classes.";
     };
   };
 }
@@ -3228,7 +3232,7 @@ readonly UsedCognatesSection PaperSections.UsedCognates = new;
 
 class UsedCognatesSection: Content {
   Constructor {
-    super.Constructor("Cognates Used in the Paper");
+    super.Constructor("Cognates Sets");
   }
 
   override GetBody(ContentStyle style) = Block {
