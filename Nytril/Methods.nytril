@@ -2542,7 +2542,7 @@ class PhylogenySection: Content {
       "This common ancestor is the node numbered 12 in "; style.FigureReference(Figures.ExampleTree); DotSpace;
       "There are many possible ways in which the languages in our study group can be related to one another, with the tree of ";
       style.FigureReference(Figures.ExampleTree);
-      " depicting only one of the possibilities. ";
+      " depicting only one possible topology. ";
       "In fact, for ";
       SampledLanguages(data.Taxa.Length);
       " languages, there are "
