@@ -2563,57 +2563,61 @@ style.Par {
   ", for example, the branch connecting nodes 13 and 14 is labeled 15. ";
 };
 
-
-
-
-    style.Par {
-      "The branches connect the nodes of the tree and are represented as lines in "; style.FigureReference(Figures.ExampleTree); DotSpace;
-      "The branch is assigned the label from its descendant node. In "; style.FigureReference(Figures.ExampleTree);
-      ", for instance, the branch connecting nodes 13 and 14 is labeled 15. ";
+style.Par {
+  "A phylogeny is an information-rich graph encoding both ancestry and divergence. ";
+  "Its topological component, denoted ";
+  Topology;
+  ", specifies the pattern of relationships among the languages. ";
+  style.FigureReference(Figures.ExampleTree);
+  " indicates, for instance, that ";
+  French;
+  " and ";
+  Walloon;
+  " are each other's closest relatives. ";
+  "They share a more recent common ancestor with one another than with any other language in the tree (specifically, node 12 in ";
+  style.FigureReference(Figures.ExampleTree);
+  "). ";
+  "The tree shown in ";
+  style.FigureReference(Figures.ExampleTree);
+  " represents only one possible topology among many. ";
+  "For ";
+  SampledLanguages(data.Taxa.Length);
+  " languages, there are ";
+  BranchFormula(data.Taxa.Length);
+  " distinct rooted tree topologies. ";
+  "In general, the number of rooted trees is given by the product of the odd integers up to ";
+  MaxBranch;
+  ", namely ";
+  PossibleTrees;
+  DotSpace;
+  "We index these topologies as ";
+  EqSpan{
+    EllipsisList{
+      Topology sub 1;
+      Topology sub 2;
+      Topology sub BN;
     };
+  };
+  DotSpace;
+  "The number of possible topologies grows extremely rapidly. ";
+  "For ";
+  var langnumber = 60;
+  SampledLanguages(langnumber);
+  " languages, for example, there are ";
+  Span{
+    TextEquation: true;
+    TextScientific: true;
+    TextDigits: 2;
+    BranchFormula(langnumber);
+  };
+  " distinct rooted trees. ";
+  "For comparison, the number of atoms in the observable universe is on the order of ";
+  10 sup 80;
+  DotSpace;
+};
 
-    style.Par {
-      "A phylogeny is an information-rich graph. ";
-      "For one, it contains information on the relationships of the languages. ";
-      "This topological information is denoted "; Topology; DotSpace;
-      style.FigureReference(Figures.ExampleTree);
-      " for example, suggests that "; French; " and ";  Walloon; " are each other's closest relatives. ";
-      "They are more closely related to each other than they are to any other language on the tree because they share a more recent common ancestor that is not shared with any other languages. ";
-      "This common ancestor is the node numbered 12 in "; style.FigureReference(Figures.ExampleTree); DotSpace;
-      "There are many possible ways in which the languages in our study group can be related to one another, with the tree of ";
-      style.FigureReference(Figures.ExampleTree);
-      " depicting only one possible topology. ";
-      "In fact, for ";
-      SampledLanguages(data.Taxa.Length);
-      " languages, there are "
-      BranchFormula(data.Taxa.Length);
-      " possible trees. ";
-      "In general, the number of possible rooted trees is the product of the odd numbers up to, and including, ";
-      MaxBranch;
-      ": ";
-      PossibleTrees; DotSpace;
-      "Each topology is given a unique label, ";
-      EqSpan {
-        EllipsisList {
-          Topology sub 1;
-          Topology sub 2;
-          Topology sub BN;
-        };
-      }; DotSpace;
-      "The number of possible tree topologies becomes quite large very quickly. ";
-      "Given ";
-      var langnumber = 60;
-      SampledLanguages(langnumber);
-      " languages, for example, there are ";
-      Span {
-        TextEquation: true;
-        TextScientific: true;
-        TextDigits: 2;
-        BranchFormula(langnumber);
-      };
-      " possible topologies, each depicting a unique and different way the languages can be related. ";
-      "For comparison, the number of atoms in the universe is on the order of "; 10 sup 80; DotSpace;
-    };
+
+
 
     style.Par {
      "The interior nodes of the tree represent language divergence events that occurred at specific times in the past and are denoted ";
