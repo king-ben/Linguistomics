@@ -2522,7 +2522,7 @@ class PhylogenySection: Content {
       "Each tip is labeled "; (TipLabelNumbers); ". ";
       "The interior nodes are labeled "; TipLabelInterior; " in preorder sequence (i.e., ordered sequentially from the tips to the root). ";
       "The root node is always assigned the label "; TipLastLabel; DotSpace;
-      "We denote the ancestor of node "; NodeIndex; " as "; AncestorNode(NodeIndex); DotSpace;
+      "We denote the ancestor of node "; NodeIndex; " "; AncestorNode(NodeIndex); DotSpace;
       "In the tree of "; style.FigureReference(Figures.ExampleTree); ", the ancestor of node 3 is "; EqSpan {AncestorNode(3); Tex.Equals; 13}; DotSpace;
     };
 
@@ -2543,11 +2543,11 @@ class PhylogenySection: Content {
       "There are many possible ways in which the languages in our study group can be related to one another, with the tree of ";
       style.FigureReference(Figures.ExampleTree);
       " depicting only one of the possibilities. ";
-      "In fact, for the case in which ";
+      "In fact, for ";
       SampledLanguages(data.Taxa.Length);
-      " languages are considered, there are "
+      " languages, there are "
       BranchFormula(data.Taxa.Length);
-      " possible trees relating the languages. ";
+      " possible trees. ";
       "In general, the number of possible rooted trees is the product of the odd numbers up to, and including, ";
       MaxBranch;
       ": ";
