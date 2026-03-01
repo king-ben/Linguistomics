@@ -3107,7 +3107,7 @@ class MCMCComparisonSection: Content {
       "In a Bayesian analysis, parameter estimates are based on the joint posterior probability distribution of the parameters, which we numerically approximate using the Metropolis-Hastings algorithm. ";
       "Often, however, the linguist is interested in the comparison of two or more models with the goal of evaluating which of the models best explains the observations. ";
       "Bayesian model comparison is based on the marginal likelihoods of the models. ";
-      "Consider two different linguistics models, ";
+      "Consider two different linguistic models, ";
       Model sub 1; " and "; Model sub 2;
       " with marginal likelihoods, "; PSM(1); " and "; PSM(2);
       " (note the marginal likelihoods are calculated for the same observations). The ratio of the marginal likelihoods is known as the Bayes Factor:";
@@ -3119,9 +3119,9 @@ class MCMCComparisonSection: Content {
       "The Bayes Factor measures the relative support of the two models. ";
       "A Bayes Factor less than one favors ";
       Model sub 1;
-      ", whereas the oppose is true for a Bayes factor greater than one. ";
-      "In contrast to frequentist statistics, Bayesian model comparison does not involve p-values. ";
-      "The Bayes Factor is instead interpreted as is or on a log scale. ";
+      ", whereas the opposite is true for a Bayes factor greater than one. ";
+      "In contrast to frequentist statistics, Bayesian model comparison does not involve "; textit{"p"};"-values. ";
+      "The Bayes Factor is instead interpreted either directly or on a log scale. ";
       Citep{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
     };
 
