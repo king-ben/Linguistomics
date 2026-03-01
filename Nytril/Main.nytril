@@ -57,8 +57,8 @@ readonly namespace Main.Documents {
   HomePage            HomePage           = new;
   StyleDocument       PaperJOLE          = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, FinalStyle);
   StyleDocument       PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
-  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", SupplementalPaper, FinalStyle);
-  StyleDocument       SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplemental (Review)", SupplementalPaper, ReviewStyle);
+  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplementary", SupplementalPaper, FinalStyle);
+  StyleDocument       SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplementary (Review)", SupplementalPaper, ReviewStyle);
   StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, FinalStyle);
   DavidSlideShow      DavidPresentation  = new;
   JohnSlideShow       JohnPresentation   = new;
@@ -126,8 +126,8 @@ class HomePage: SitePage {
     Tiles = [
       new DocTile(Main.Documents.PaperJOLE, Icons.article),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
-      new DocTile(Main.Documents.DavidPresentation, Icons.slideshow),
-      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
+//      new DocTile(Main.Documents.DavidPresentation, Icons.slideshow),
+//      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
     ];
   }

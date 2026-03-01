@@ -1474,7 +1474,7 @@ class WordTransformationSection: Content {
       style.FigureReference(Figures.QRatesDiagonal); " presents the absolute values of the diagonal entries of the substitution rate matrix estimated under the ";
           NaturalModelName; DotSpace;
       "These diagonal elements provide a measure of segmental volatility, as each diagonal element equals the sum of transition rates from a given segment to all alternative segments. ";
-      "When the process is in segment "; sym.i; ", the value"; -qii; " represents the instantaneous rate at which it changes state. ";
+      "When the process is in segment "; sym.i; ", the value "; -qii; " represents the instantaneous rate at which it changes state. ";
       "Higher values therefore correspond to shorter expected residence times and greater diachronic instability. ";
       "Several segmental classes in "; style.FigureReference(Figures.QRatesDiagonal); " appear to share identical rates (e.g., diphthongs, long vowels, affricates, and nasal vowels). ";
       "This visual uniformity is an artifact of scale rather than exact equality. ";
@@ -1662,35 +1662,34 @@ class WordSegmentRelSection: Content {
 
 
       "Under the ";
-    align2.Poisson;
-    " model, the credible set contains ";
-    align2.Poisson.ShowAlignmentNumber;
-    ", whereas under the ";
-    align2.NaturalClass;
-    " model it contains only ";
-    align2.NaturalClass.ShowAlignmentNumber;
-    ". ";
+      align2.Poisson;
+      " model, the credible set contains ";
+      align2.Poisson.ShowAlignmentNumber;
+      ", whereas under the ";
+      align2.NaturalClass;
+      " model it contains only ";
+      align2.NaturalClass.ShowAlignmentNumber;
+      DotSpace;
 
-      "This reduction in alignment uncertainty accords with the substitution-rate structure estimated under the ";
-    align2.NaturalClass;
-    " model (";
-    style.FigureReference(Figures.RateChart);
-    "). ";
-    "For instance, transitions between ";
-    VocalSegments.u;
-    " and ";
-    VocalSegments.oh;
-    " are assigned relatively high rates, whereas substitutions between consonants and ";
-    VocalSegments.oh;
-    " are strongly disfavored. ";
-    "Consequently, the ";
-    align2.Poisson;
-    " model frequently aligns consonants with ";
-    VocalSegments.oh;
-    ", while such configurations receive negligible posterior weight under the ";
-    align2.NaturalClass;
-    " model. ";
-
+        "This reduction in alignment uncertainty accords with the substitution-rate structure estimated under the ";
+      align2.NaturalClass;
+      " model (";
+      style.FigureReference(Figures.RateChart);
+      "). ";
+      "For instance, transitions between ";
+      VocalSegments.u;
+      " and ";
+      VocalSegments.oh;
+      " are assigned relatively high rates, whereas substitutions between consonants and ";
+      VocalSegments.oh;
+      " are strongly disfavored. ";
+      "Consequently, the ";
+      align2.Poisson;
+      " model frequently aligns consonants with ";
+      VocalSegments.oh;
+      ", while such configurations receive negligible posterior weight under the ";
+      align2.NaturalClass;
+      " model. ";
     };
 
     style.AddFigure(Figures.RateChart, FigureOptions.Bottom | FigureOptions.Full, 60%);
@@ -1810,81 +1809,77 @@ class SoundChangeSection: Content {
   Constructor {
     super.Constructor("Implications for Sound Change and Phonological Typology");
   }
-override GetBody(ContentStyle style) = Block {
-  style.Par {
-    "Traditional historical phonology is primarily concerned with identifying individual sound changes and establishing their relative chronology. ";
-    "By contrast, the TKF91 framework permits inference about broader systemic tendencies in the evolution of segmental inventories. ";
-    "We focus on three quantities that illuminate these tendencies: the diagonal elements of the substitution rate matrix, transition rates within and between natural classes, and the equilibrium distribution of segments. ";
-    "These quantities provide a quantitative characterization of sound change within an explicit phylogenetic model. ";
-  };
-
-
-  style.Par {
-    "As discussed in ";
-    style.SectionReference(PaperSections.MethodsSection);
-    ", the diagonal entries of the Q matrix measure the instantaneous rate at which a segment transitions to any other state, and thus provide an index of diachronic stability. ";
-    "The pronounced separation between vowels and consonants in ";
-    style.FigureReference(Figures.QRatesDiagonal);
-    " aligns with established findings in Romance historical phonology. ";
-    "Among the major developments distinguishing Latin from the Romance languages is the loss of phonemic vowel length";
-    Citep{Janson1979; Loporcaro2015};
-    " and the early monophthongization of Classical Latin diphthongs";
-    Citep{Posner1996.OnPage(106)};
-    DotSpace;
-    "More broadly, our results accord with evidence that vowel inventories have evolved more rapidly than consonant inventories within Indo-European";
-    Citep{Moran2021.OnPage(92..95)};
-    DotSpace;
-  };
-
-  style.Par {
-    "The present findings also intersect with work in phonological typology that seeks to identify core or stable segment inventories. ";
-    "The basic consonant inventory proposed by";
-    Citet{Nikolaev2020};
-    ", /p t k n l r/, is consistent with our results insofar as stops and nasals emerge as among the most stable classes. ";
-    "An even closer correspondence is found with the set of primal consonants identified by";
-    Citet{Bybee2022};
-    ", /p t k b d g m n ŋ s l/. ";
-    "Two distinctions, however, are crucial. ";
-    "First, primal consonants are defined in terms of their rarity as outputs of sound change, whereas the diagonal of the Q matrix measures the rate of transition away from a segment—that is, its stability as an input to change. ";
-    "Second, typological proposals aim to identify cross-linguistic universals, whereas our estimates characterize tendencies within Romance. ";
-    "The results therefore inform typological debates, but should not be interpreted as cross-linguistic universals. ";
-  };
-
-  style.Par {
-  "The average rates summarized in ";
-  style.FigureReference(Figures.RateChart);
-  " provide a complementary perspective on segmental stability by comparing transitions within and between natural classes. ";
-  "Within-class rates exceed cross-class rates for short vowels, nasal consonants, and liquids. ";
-  "Liquids display the highest within-class rates, whereas diphthongs exhibit the lowest. ";
-  "A liquid is thus more likely to change into another liquid than into a segment of a different class, a pattern plausibly associated with processes such as liquid dissimilation, e.g., Latin ";
-  textit{"arbor"};
-  " > Spanish ";
-  textit{"árbol"};
-  Citep{Abrego2013; Mueller2013};
-  DotSpace;
-  "Transition rates between diphthongs and short vowels are the highest among all between-class rates, which is consistent with the reciprocal effects of vowel breaking and monophthongization in the history of Latin and Romance. ";
-  "More generally, the largest off-diagonal rates involve vowel classes, which reinforces the broader pattern of vocalic instability identified above. ";
-  "Elevated rates between nasal vowels and nasal consonants further reflects the development of nasalized vowels in French and Portuguese. ";
-};
-
-
+  override GetBody(ContentStyle style) = Block {
+    style.Par {
+      "Traditional historical phonology is primarily concerned with identifying individual sound changes and establishing their relative chronology. ";
+      "By contrast, the TKF91 framework permits inference about broader systemic tendencies in the evolution of segmental inventories. ";
+      "We focus on three quantities that illuminate these tendencies: the diagonal elements of the substitution rate matrix, transition rates within and between natural classes, and the equilibrium distribution of segments. ";
+      "These quantities provide a quantitative characterization of sound change within an explicit phylogenetic model. ";
+    };
 
     style.Par {
-    "The equilibrium frequencies in ";
-    style.FigureReference(Figures.EquilibriumCharts);
-    " illuminate the distributional consequences of these historical processes. ";
-    "Short vowels and stops together account for more than half of all segments, which indicates a pronounced skew toward these classes. ";
-    "This distribution reflects the reduction of diphthongs and long vowels and the concomitant expansion of short vowels within Romance. ";
-  };
+      "As discussed in ";
+      style.SectionReference(PaperSections.MethodsSection);
+      ", the diagonal entries of the Q matrix measure the instantaneous rate at which a segment transitions to any other state, and thus provide an index of diachronic stability. ";
+      "The pronounced separation between vowels and consonants in ";
+      style.FigureReference(Figures.QRatesDiagonal);
+      " aligns with established findings in Romance historical phonology. ";
+      "Among the major developments distinguishing Latin from the Romance languages is the loss of phonemic vowel length";
+      Citep{Janson1979; Loporcaro2015};
+      " and the early monophthongization of Classical Latin diphthongs";
+      Citep{Posner1996.OnPage(106)};
+      DotSpace;
+      "More broadly, our results accord with evidence that vowel inventories have evolved more rapidly than consonant inventories within Indo-European";
+      Citep{Moran2021.OnPage(92..95)};
+      DotSpace;
+    };
 
     style.Par {
-    "Finally, model comparison provides quantitative support for the role of natural classes in sound change";
-    Citep{King1969.OnPage(201)};
-    DotSpace;
-    "Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the"; style.ReviewNew{"Proto-Germanic reflexes of "}; "Proto-Indo-European stops. ";
-    "The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. ";
-  };
+      "The present findings also intersect with work in phonological typology that seeks to identify core or stable segment inventories. ";
+      "The basic consonant inventory proposed by";
+      Citet{Nikolaev2020};
+      ", "; TextIpa{"p t k n l r"}; ", is consistent with our results insofar as stops and nasals emerge as among the most stable classes. ";
+      "An even closer correspondence is found with the set of primal consonants identified by";
+      Citet{Bybee2022};
+      ", "; TextIpa{"p t k b d g m n ŋ s l"}; DotSpace;
+      "Two distinctions, however, are crucial. ";
+      "First, primal consonants are defined in terms of their rarity as outputs of sound change, whereas the diagonal of the Q matrix measures the rate of transition away from a segment—that is, its stability as an input to change. ";
+      "Second, typological proposals aim to identify cross-linguistic universals, whereas our estimates characterize tendencies within Romance. ";
+      "The results therefore inform typological debates, but should not be interpreted as cross-linguistic universals. ";
+    };
 
+    style.Par {
+      "The average rates summarized in ";
+      style.FigureReference(Figures.RateChart);
+      " provide a complementary perspective on segmental stability by comparing transitions within and between natural classes. ";
+      "Within-class rates exceed cross-class rates for short vowels, nasal consonants, and liquids. ";
+      "Liquids display the highest within-class rates, whereas diphthongs exhibit the lowest. ";
+      "A liquid is thus more likely to change into another liquid than into a segment of a different class, a pattern plausibly associated with processes such as liquid dissimilation, e.g., Latin ";
+      textit{"arbor"};
+      " > Spanish ";
+      textit{"árbol"};
+      Citep{Abrego2013; Mueller2013};
+      DotSpace;
+      "Transition rates between diphthongs and short vowels are the highest among all between-class rates, which is consistent with the reciprocal effects of vowel breaking and monophthongization in the history of Latin and Romance. ";
+      "More generally, the largest off-diagonal rates involve vowel classes, which reinforces the broader pattern of vocalic instability identified above. ";
+      "Elevated rates between nasal vowels and nasal consonants further reflects the development of nasalized vowels in French and Portuguese. ";
+    };
+
+    style.Par {
+      "The equilibrium frequencies in ";
+      style.FigureReference(Figures.EquilibriumCharts);
+      " illuminate the distributional consequences of these historical processes. ";
+      "Short vowels and stops together account for more than half of all segments, which indicates a pronounced skew toward these classes. ";
+      "This distribution reflects the reduction of diphthongs and long vowels and the concomitant expansion of short vowels within Romance. ";
+    };
+
+    style.Par {
+      "Finally, model comparison provides quantitative support for the role of natural classes in sound change";
+      Citep{King1969.OnPage(201)};
+      DotSpace;
+      "Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the"; style.ReviewNew{"Proto-Germanic reflexes of "}; "Proto-Indo-European stops. ";
+      "The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. ";
+    };
   };
 }
 
@@ -1902,17 +1897,17 @@ class SegmentalSamplingSection: Content {
     style.Par {
       "Under our framework, a new issue emerges: segmental sampling"; Citep {References.Dockum2019}; DotSpace;
       "Specific sound changes can be pivotal for recovering tree topology, yet a dataset assembled on the basis of a Swadesh list does not ensure that such diagnostic patterns are adequately represented. ";
-      "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/. ";
-      "By contrast, Italo-Western Proto-Romance (the common ancestor of the remaining languages in our sample) merges */ʊ/ and */o/ to /o/. ";
-      "Consequently, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the " VocalSegments.oh; " reflex found, for instance, in Italian "; textit{"bocca"}; DotSpace;
+      "For instance, Romanian merges Proto-Romance "; TextIpaStar{"ɔ"}; " and "; TextIpaStar{"o"}; " to "; TextIpa{"o"}; " and "; TextIpaStar{"ʊ"}; " and "; TextIpaStar{"u"}; " to "; TextIpa{"u"}; DotSpace;
+      "By contrast, Italo-Western Proto-Romance (the common ancestor of the remaining languages in our sample) merges "; TextIpaStar{"ʊ"}; " and "; TextIpaStar{"o"}; " to "; TextIpa{"o"}; DotSpace;
+      "Consequently, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the "; VocalSegments.oh; " reflex found, for instance, in Italian "; textit{"bocca"}; DotSpace;
       "This change constitutes key evidence for the placement of Romanian within the Romance tree"; Citep {Janson1979.OnPage(25); Herman2000.OnPage(32..34)}; DotSpace;
       "If such correspondences are underrepresented in the sample, the topology may be estimated incorrectly"; DotSpace;
       "A related issue concerns the representativeness of the segment-frequency distributions in ";
-  style.FigureReference(Figures.SegmentOccuranceRates);
-  DotSpace;
-  "These distributions are derived from word forms sampled under specific selection criteria and may not faithfully approximate the segment frequencies of each language. ";
-  "Systematic discrepancies of this kind can bias estimates of substitution rates and, in turn, influence inferences about sound-change dynamics and phylogenetic structure. ";
-    };
+      style.FigureReference(Figures.SegmentOccuranceRates);
+      DotSpace;
+      "These distributions are derived from word forms sampled under specific selection criteria and may not faithfully approximate the segment frequencies of each language. ";
+      "Systematic discrepancies of this kind can bias estimates of substitution rates and, in turn, influence inferences about sound-change dynamics and phylogenetic structure. ";
+        };
 
     style.AddFigure(Figures.SegmentOccuranceRates, FigureOptions.Bottom | FigureOptions.Full);
   };
@@ -1928,29 +1923,32 @@ class LimitationsSection: Content {
     super.Constructor("Limitations of the Model");
   }
 
+  Substitution(left, right) = Span {
+    TextIpa {left};
+    Tex.rightarrow;
+    TextIpa {right};
+  };
+
   override GetBody(ContentStyle style) = Block {
     style.Par {
-
-          "The results reported here are derived from a model in which segmental change is represented as a sequence of independent insertion, deletion, and substitution events operating on individual segments. ";
+    "The results reported here are derived from a model in which segmental change is represented as a sequence of independent insertion, deletion, and substitution events operating on individual segments. ";
     "As a consequence, certain types of sound change are not naturally accommodated within this framework. ";
     "Metathesis, for example—where two segments exchange positions—is not modeled as a single transition. ";
     "Friulian ";
     TextIpa{"tarɔnt"};
     " ultimately derives from Latin ";
     TextIpa{"rotundum"};
+    Space;
     style.SQuote{"round"};
     ", with the initial Latin sequence ";
     TextIpa{"rVt"};
     " corresponding to ";
     TextIpa{"tVr"};
-    "in Friulian. ";
-    "Under TKF91, such a change is represented as two independent substitutions (/r/ → /t/ and /t/ → /r/), rather than as a single reordering event. ";
+    " in Friulian. ";
+    "Under TKF91, such a change is represented as two independent substitutions ("; Substitution("r", "t"); " and "; Substitution("t", "r"); "), rather than as a single reordering event. ";
     "A second limitation concerns contextual conditioning: transition rates are estimated independently of phonological environment, even though segmental change is often sensitive to adjacent sounds. ";
     "Finally, the current implementation does not incorporate suprasegmental structure. ";
     "Features such as stress, which are known to be central to Romance phonological developments, are therefore excluded from the model. ";
-
-
-
     };
   };
 }
@@ -2697,9 +2695,9 @@ class PhylogenyDataSection: Content {
 
     style.Par {
       "The word for "; style.SQuote {ec.Name}; " in "; ec.Taxon.Language; ", for example, is "
-      "/"; ec.LangWord; "/. ";
+      TextIpa{ec.LangWord}; DotSpace;
       "The matrix assumes that the fine-scale homology of the segments has been established. ";
-      "For example, it assumes that the glide /j/ of Romanian, Spanish, French, Friulian, and Italian are homologous. ";
+      "For example, it assumes that the glide "; TextIpa{"j"}; " of Romanian, Spanish, French, Friulian, and Italian are homologous. ";
       "The dashes indicate that there is no homologous segment at that potential position in the word. ";
       "As discussed in more detail below, this is not the only possible alignment and "; style.FigureReference(Figures.Alignment);
       " shows two further possibilities. ";

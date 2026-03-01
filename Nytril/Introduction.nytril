@@ -370,10 +370,7 @@ style.Par {
   "Nouns, adjectives, and pronouns are represented by singular forms in either the accusative or, less frequently, the nominative case, as these are the case forms directly continued in the Romance languages. ";
   "The selection of citation form is not methodologically neutral, as it can influence estimated transition rates. ";
   "For example, most masculine singular nominative adjectives in Latin end in ";
-  TextIpa{"-us"}; ", ";
-  "whereas feminine singular nominative adjectives end in ";
-  TextIpa{"-a"};
-  DotSpace;
+  TextIpa{"-us"}; ", whereas feminine singular nominative adjectives end in "; TextIpa{"-a"}; DotSpace;
   "Systematic inclusion of feminine forms would increase the number of transitions originating in this vowel. ";
 };
 
