@@ -2537,8 +2537,8 @@ class PhylogenySection: Content {
       "For one, it contains information on the relationships of the languages. ";
       "This topological information is denoted "; Topology; DotSpace;
       style.FigureReference(Figures.ExampleTree);
-      " for example, suggests that "; French; " and ";  Walloon; " are each others’ closest relatives. ";
-      "They are more closely related to each other than they are to any another language on the tree because they share a more recent common ancestor that is not shared with any other languages. ";
+      " for example, suggests that "; French; " and ";  Walloon; " are each other's closest relatives. ";
+      "They are more closely related to each other than they are to any other language on the tree because they share a more recent common ancestor that is not shared with any other languages. ";
       "This common ancestor is the node numbered 12 in "; style.FigureReference(Figures.ExampleTree); DotSpace;
       "There are many possible ways in which the languages in our study group can be related to one another, with the tree of ";
       style.FigureReference(Figures.ExampleTree);
