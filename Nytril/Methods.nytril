@@ -1750,30 +1750,47 @@ style.Par {
   };
 
     style.Par {
-      "The application of the TKF91 model to linguistic data is similar to the analysis of Bouchard-Côté et al.";
-      Citep{BouchardCote2013};
-      ", who also treat cognate word-forms as observations. Their approach differs, however, in that they applied a string transducer model";
-      Citep{Holmes2001};
-      " to characterize segmental transitions. The transducer model has the advantage that it can account for many of the processes that are known to influence segmental change, such as context dependence. Our method, as currently implemented, does not consider the environment of segmental changes. However, unlike the transducer model, the TKF91 model is a historical model with well-defined events that can transform a word. In fact, the likelihood accounts for all the histories of insertion, deletion, and segmental substitution that could have led to the observed words sampled from the ";
-      Enumerators.Cardinal(MainResults.Data.Taxa.Length);
-      " languages. ";
-      "These events occur at rates that can be estimated. ";
-      "Since the TKF91 model is event-based, it is a natural starting point for modeling sound change even if that starting point does not account for processes that are accommodated for in other models, such as the string transducer model. ";
-    };
+    "Our use of TKF91 parallels the approach of Bouchard-Côté ";
+    textit{"et al."};
+    Citep{BouchardCote2013};
+    ", who likewise treat cognate word forms as the observed data. ";
+    "Their framework employs a string transducer model";
+    Citep{Holmes2001};
+    " to characterize segmental correspondences, which thereby accommodates context-dependent processes. ";
+    "By contrast, the current implementation of TKF91 does not incorporate contextual conditioning. ";
+    "Its advantage lies elsewhere: TKF91 is an explicitly historical, event-based model in which insertion, deletion, and substitution are well-defined stochastic events. ";
+    "The likelihood integrates over all possible sequences of such events that could have generated the observed forms in the ";
+    Enumerators.Cardinal(MainResults.Data.Taxa.Length);
+    " languages. ";
+    "Since these events are parameterized by estimable rates, the model provides a direct quantitative account of segmental evolution. ";
+    "Even though it does not yet capture contextual phonological processes, its event-based structure offers a principled foundation for modeling sound change. ";
+  };
 
-    style.Par {
-      style.ReviewMark(ReviewComments.C29);
-      "The complexity of the likelihood calculations under the TKF91 model is exponential in the number of taxa and word length. Specifically, the complexity is of order ";
-      Equations.LikelihoodComplexity;
-      " where "; NumTreeLeaves; " is the number of leaves on the tree and "; GMLength; " is the geometric mean of the word lengths";
-      Citep{Lunter2003}; DotSpace;
-      "The application of the TKF91 model to linguistic data is not as problematic as it is for DNA sequence data because words are much shorter than DNA sequences, with ";
-      Equations.TypicalWordLength; DotSpace;
-      "However, one can obtain likelihood calculations that are linear in the number of tips if one assumes that the insertion rate is independent of the word length, instead of the overall insertion rate being ";
-      Equations.OverallInsertionRate; " as it is under the TKF91 model";
-      Citep{BouchardCote2013b}; DotSpace;
-      "This model—the Poisson Indel Process (PIP)—could be applied to linguistic data sets that are composed of many more languages than we analyzed here. Since the alignments visited by the MCMC procedure are similar in length, the PIP model might be a sensible option for linguistic data. ";
-    };
+  style.Par {
+    style.ReviewMark(ReviewComments.C29);
+    "A practical limitation of TKF91 is computational complexity. ";
+    "Likelihood evaluation scales exponentially with the number of taxa and word length, with complexity on the order of ";
+    Equations.LikelihoodComplexity;
+    ", where ";
+    NumTreeLeaves;
+    " denotes the number of tips and ";
+    GMLength;
+    " the geometric mean word length";
+    Citep{Lunter2003};
+    DotSpace;
+    "For linguistic datasets, this burden is mitigated by the brevity of word forms, typically ";
+    Equations.TypicalWordLength;
+    DotSpace;
+    "Nevertheless, alternative formulations can reduce computational cost. ";
+    "If insertion events are assumed to occur independently of word length, rather than at rate ";
+    Equations.OverallInsertionRate;
+    " as in TKF91, the likelihood becomes linear in the number of taxa";
+    Citep{BouchardCote2013b};
+    DotSpace;
+    "This variant, known as the Poisson Indel Process (PIP), may be preferable for datasets comprising substantially larger language samples. ";
+    "Given that sampled alignments in our analyses exhibit comparable lengths, PIP constitutes a plausible direction for scaling the framework to broader comparative datasets. ";
+  };
+
   };
 }
 
