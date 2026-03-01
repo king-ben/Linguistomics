@@ -1892,17 +1892,18 @@ class SegmentalSamplingSection: Content {
 
    override GetBody(ContentStyle style) = Block {
     style.Par {
-      "Under our framework a new issue in linguistic phylogenetics emerges, segmental sampling"; Citep {References.Dockum2019}; DotSpace;
-      "Certain segmental transitions can play a crucial role in topological inference, but under a sampling scheme such as ours, in which selection of concepts is guided by a Swadesh list, ";
-      "there is no guarantee that the necessary segmental correspondences will be sampled. ";
-      "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/ (in terms of classical Latin, it neutralizes vowel length distinctions). ";
-      "By contrast, Italo-Western Proto-Romance (i.e., the common ancestor of all other languages in our sample) merges */ʊ/ and */o/ to /o/ (in terms of classical Latin, it merged short <u> and long <o>). ";
-      "As a result, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the " VocalSegments.oh; " of, for instance, Italian "; textit{"bocca"}; DotSpace;
-      "This correspondence is a key piece of evidence for the topological position of Romanian"; Citep {Janson1979.OnPage(25); Herman2000.OnPage(32..34)};
-      " and if it is not sufficiently represented in the dataset it may not be possible to infer its place in the tree accurately"; DotSpace;
-      "There is the further question of how representative the frequency distributions of segments, which are presented in " ; style.FigureReference(Figures.SegmentOccuranceRates); ", are in the languages in our sample. ";
-      "These distributions are based on sets of word-forms sampled according to specific criteria and it is unclear how much they diverge from the true frequency distribution of each language. ";
-      "This potential divergence is important because it can impact the estimates of the transition rates. ";
+      "Under our framework, a new issue emerges: segmental sampling"; Citep {References.Dockum2019}; DotSpace;
+      "Specific sound changes can be pivotal for recovering tree topology, yet a dataset assembled on the basis of a Swadesh list does not ensure that such diagnostic patterns are adequately represented. ";
+      "For instance, Romanian merges Proto-Romance */ɔ/ and */o/ to /o/ and */ʊ/ and */u/ to /u/. ";
+      "By contrast, Italo-Western Proto-Romance (the common ancestor of the remaining languages in our sample) merges */ʊ/ and */o/ to /o/. ";
+      "Consequently, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the " VocalSegments.oh; " reflex found, for instance, in Italian "; textit{"bocca"}; DotSpace;
+      "This change constitutes key evidence for the placement of Romanian within the Romance tree"; Citep {Janson1979.OnPage(25); Herman2000.OnPage(32..34)}; DotSpace;
+      "If such correspondences are underrepresented in the sample, the topology may be estimated incorrectly"; DotSpace;
+      "A related issue concerns the representativeness of the segment-frequency distributions in ";
+  style.FigureReference(Figures.SegmentOccuranceRates);
+  DotSpace;
+  "These distributions are derived from word forms sampled under specific selection criteria and may not faithfully approximate the segment frequencies of each language. ";
+  "Systematic discrepancies of this kind can bias estimates of substitution rates and, in turn, influence inferences about sound-change dynamics and phylogenetic structure. ";
     };
 
     style.AddFigure(Figures.SegmentOccuranceRates, FigureOptions.Bottom | FigureOptions.Full);
