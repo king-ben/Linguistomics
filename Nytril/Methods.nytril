@@ -2506,8 +2506,8 @@ class PhylogenySection: Content {
     var data = MainResults.Data;
 
     style.Par {
-      "We assume that the languages in our study group are related by an unknown evolutionary tree, called a ";
-      style.SQuote {Phylogeny.Name}; ", which we denote "; Phylogeny; DotSpace;
+      "We assume that the languages in our study group are related by an unknown evolutionary tree, called a phylogeny";
+      ", which we denote "; Phylogeny; DotSpace;
       "The phylogeny contains information on the topological relationships among "; NumLanguages;
       " sampled languages, as well as the divergence times of the languages or the amount of change that occurred between the languages. ";
     };
@@ -3217,7 +3217,7 @@ class WorkflowSection: Content {
       style.Par {
         "The first step in the experiment was to create a dictionary of IPA segment information. ";
         "The files "; code {"IPA.nytril"}; "  and  "; code {"Segments.nytril"}; " contain the definitions of these classes and the information about each segment is encoded in separate instances of these classes. ";
-        "The definition of a segment includes the IPA symbol string {e.g. "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. Vowel, Sibilant, Fricative, etc...) ";
+        "The definition of a segment includes the IPA symbol string (e.g., "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. vowel, sibilant, fricative, etc.) ";
         "These files are designed to be reusable for future experiments, and by other researchers. ";
       };
       style.Par {
@@ -3245,7 +3245,7 @@ class WorkflowSection: Content {
         "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
       };
       style.Par {
-        "TongueTwister performs the MCMC calculations (that run for several days) and produce a large series of tree files and other data. ";
+        "TongueTwister performs the MCMC calculations (that run for several days) and produce a large set of tree files and related output. ";
         "After this is complete, these files are read by another program called TongueTwisterReader that does the final statistical aggregation and produces final output files in the nytril format. ";
       };
 
