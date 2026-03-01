@@ -2749,7 +2749,7 @@ class PhylogenyDataSection: Content {
     style.AddFigure(Figures.Alignment, FigureOptions.Bottom | FigureOptions.Full, 80%);
 
     style.Par {
-      "The word for "; style.SQuote {ec.Name}; " in "; ec.Taxon.Language; ", for example, is "
+      "The word for "; style.SQuote {ec.Name}; " in "; ec.Taxon.Language; ", for example, is ";
       TextIpa{ec.LangWord}; DotSpace;
       "The matrix assumes that the fine-scale homology of the segments has been established. ";
       "For example, it assumes that the glide "; TextIpa{"j"}; " of Romanian, Spanish, French, Friulian, and Italian are homologous. ";
