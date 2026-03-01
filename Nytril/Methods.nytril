@@ -2486,7 +2486,7 @@ class MethodsSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We describe the assumptions of the models, how their parameters are estimated, and how different models of segmental evolution can be compared in a statistical framework.";
+      "This section outlines the assumptions of the evolutionary models, the procedures used for parameter estimation, and the statistical framework for comparing alternative models of segmental evolution. ";
     };
   };
 }
@@ -2497,32 +2497,74 @@ readonly PhylogenySection PaperSections.Phylogeny = new;
 
 class PhylogenySection: Content {
   Constructor {
-    super.Constructor("Phylogeny relating languages");
+    super.Constructor("Phylogeny");
   }
 
   override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
-    style.Par {
-      "We assume that the languages in our study group are related by an unknown evolutionary tree, called a phylogeny";
-      ", which we denote "; Phylogeny; DotSpace;
-      "The phylogeny contains information on the topological relationships among "; NumLanguages;
-      " sampled languages, as well as the divergence times of the languages or the amount of change that occurred between the languages. ";
-    };
+      style.Par {
+    "We assume that the languages in our study group are related by an unknown evolutionary tree, or phylogeny, denoted ";
+    Phylogeny;
+    DotSpace;
+    "The phylogeny encodes both the topological relationships among the ";
+    NumLanguages;
+    " sampled languages and either their divergence times or the amount of evolutionary change accumulated along each branch. ";
+  };
+
+
 
     style.AddFigure(Figures.ExampleTree, FigureOptions.Bottom | FigureOptions.Full, 70%);
 
-    style.Par {
-      style.FigureReference(Figures.ExampleTree); " shows an example of a phylogeny for "; SampledLanguages(data.Taxa.Length); " languages. ";
-      "In the terminology of evolutionary biology, the tree is composed of "; style.SQuote{"nodes"}; " and "; style.SQuoteEnd{"branches"};
-      "(By contrast, mathematicians call nodes and branches "; style.SQuote{"vertices"} " and "; style.SQuote{"edges,"}; " respectively.) ";
-      "The nodes represent the tips of the tree, each of which is assigned a language, and the points on the tree where languages diverge. ";
-      "Each tip is labeled "; (TipLabelNumbers); ". ";
-      "The interior nodes are labeled "; TipLabelInterior; " in preorder sequence (i.e., ordered sequentially from the tips to the root). ";
-      "The root node is always assigned the label "; TipLastLabel; DotSpace;
-      "We denote the ancestor of node "; NodeIndex; " "; AncestorNode(NodeIndex); DotSpace;
-      "In the tree of "; style.FigureReference(Figures.ExampleTree); ", the ancestor of node 3 is "; EqSpan {AncestorNode(3); Tex.Equals; 13}; DotSpace;
-    };
+
+         style.Par {
+    style.FigureReference(Figures.ExampleTree);
+    " illustrates an example phylogeny for ";
+    SampledLanguages(data.Taxa.Length);
+    " languages. ";
+    "In evolutionary biology, trees are described as consisting of ";
+    style.SQuote{"nodes"};
+    " and ";
+    style.SQuoteEnd{"branches"};
+    " (Mathematicians instead use the terms ";
+    style.SQuote{"vertices"};
+    " and ";
+    style.SQuote{"edges"};
+    ", respectively.) ";
+    "The terminal nodes, or tips, correspond to the sampled languages, while interior nodes represent divergence events. ";
+    "The tips are labeled ";
+    TipLabelNumbers;
+    ", and the interior nodes are labeled ";
+    TipLabelInterior;
+    " in preorder sequence (i.e., sequentially from the tips toward the root). ";
+    "The root node is assigned the label ";
+    TipLastLabel;
+    DotSpace;
+    "For any node ";
+    NodeIndex;
+    ", its immediate ancestor is denoted ";
+    AncestorNode(NodeIndex);
+    DotSpace;
+    "In ";
+    style.FigureReference(Figures.ExampleTree);
+    ", for example, the ancestor of node 3 is ";
+    EqSpan{AncestorNode(3); Tex.Equals; 13};
+    DotSpace;
+  };
+
+
+style.Par {
+  "Branches connect the nodes of the tree and are represented as line segments in ";
+  style.FigureReference(Figures.ExampleTree);
+  DotSpace;
+  "Each branch is labeled by its descendant node. ";
+  "In ";
+  style.FigureReference(Figures.ExampleTree);
+  ", for example, the branch connecting nodes 13 and 14 is labeled 15. ";
+};
+
+
+
 
     style.Par {
       "The branches connect the nodes of the tree and are represented as lines in "; style.FigureReference(Figures.ExampleTree); DotSpace;
@@ -3118,7 +3160,7 @@ class MCMCComparisonSection: Content {
       "The Bayes Factor measures the relative support of the two models. ";
       "A Bayes Factor greater than one favors ";
       Model sub 1;
-      ", whereas the opposite is true for a Bayes factor less than one. ";
+      ", whereas a value less than one favors M2. ";
       "In contrast to frequentist statistics, Bayesian model comparison does not involve "; textit{"p"};"-values. ";
       "The Bayes Factor is instead interpreted either directly or on a log scale. ";
       Citep{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
