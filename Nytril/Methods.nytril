@@ -1710,27 +1710,44 @@ readonly OtherApproachesSection PaperSections.OtherApproaches = new;
 
 class OtherApproachesSection: Content {
   Constructor {
-    super.Constructor("The TKF91 Framework Compared to Other Approaches");
+    super.Constructor("Event-Based Modeling of Sound Change: The TKF91 Approach");
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.Par {
-      "Approaches to sound change in the linguistics literature vary. ";
-      "One prominent view identifies phonemes as the basic units of change"; Citep {Bloomfield1933}; ", ";
-      "according to which sound change is abrupt and non-independent. ";
-      "It is abrupt in that there are no intermediary stages in a transition from "; VocalSegments.ah; " to "; VocalSegments.oh; ", for instance. ";
-      "It is non-independent since the change from one phoneme to another across all lexical items is regarded as a single event. ";
-      "Other scholars emphasize the role of acoustic and auditory phonetics in sound change";
-      Citep {Ohala2003; Blevins2004a; Ohala2012};
-      ", while yet another view contends that sound change occurs by gradually making its way through the lexicon in a process known as lexical diffusion"; Citep {Chen1975a; Phillips2015}; DotSpace;
-    };
 
-    style.Par {
-      "Our framework is not situated within any one of these traditions, but rather has affinities with the phonemic approach and lexical diffusion. Since our observations are phonemic strings, it is phonemes that undergo insertions, deletions, and transitions. ";
-      "In contrast to the standard assumption of historical linguistics, however, these changes are treated as independent. ";
-      "For instance, a change from "; VocalSegments.ah; " to "; VocalSegments.oh; " is not modeled as a single transition across all word-forms in our study. ";
-      "Instead, a rate of change is inferred based on the homologies of "; VocalSegments.ah; " and "; VocalSegments.oh; " in the data and how often the former transitions to the latter. ";
-    };
+   style.Par {
+    "Theories of sound change exhibit substantial differences in their assumptions about units and mechanisms. ";
+    "One influential tradition treats phonemes as the primary units of change";
+    Citep{Bloomfield1933};
+    ". Under this view, sound change is abrupt and non-independent. ";
+    "For instance, a transition from ";
+    VocalSegments.ah;
+    " to ";
+    VocalSegments.oh;
+    " proceeds without intermediate stages and the shift is conceived as a single systemic event affecting all relevant lexical items simultaneously. ";
+    "Other approaches emphasize the role of phonetic factors, particularly acoustic and perceptual pressures, in driving change";
+    Citep{Ohala2003; Blevins2004a; Ohala2012};
+    ", while still others argue that sound change diffuses gradually through the lexicon in a process known as lexical diffusion";
+    Citep{Chen1975a; Phillips2015};
+    DotSpace;
+  };
+
+style.Par {
+    "The TKF91 framework does not align fully with any single tradition, though it shares features with both phoneme-based accounts and lexical diffusion. ";
+    "Since the observations are phonemic strings, insertions, deletions, and substitutions operate over phonemes. ";
+    "Unlike classical historical models, however, changes are not treated as globally synchronized events. ";
+    "A shift from ";
+    VocalSegments.ah;
+    " to ";
+    VocalSegments.oh;
+    " is not modeled as a single transformation applied uniformly across the lexicon. ";
+    "Instead, a substitution rate is inferred from the observed homologies, which captures how frequently ";
+    VocalSegments.ah;
+    " transitions to ";
+    VocalSegments.oh;
+    " across cognate sets. ";
+    "In this respect, sound change is modeled as a stochastic process operating independently across lexical items. ";
+  };
 
     style.Par {
       "The application of the TKF91 model to linguistic data is similar to the analysis of Bouchard-Côté et al.";

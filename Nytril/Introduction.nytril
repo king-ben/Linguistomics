@@ -126,7 +126,7 @@ style.Par {
   "Cognacy judgments are hypotheses about ancestral relationships among lexical items and cannot be observed any more than a phylogenetic tree can. ";
   "This practice sits uneasily with the principles of Bayesian inference, under which posterior distributions are conditioned on observable data. ";
   "Our approach mitigates this tension by conditioning inference on attested word forms rather than abstract cognate classes. ";
-  "At the same time, the selection of word forms remains guided by prior assumptions of cognacy. ";
+  "The selection of word forms, however, remains guided by prior assumptions of cognacy. ";
 };
 
   };
