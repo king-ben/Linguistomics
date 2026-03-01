@@ -2662,7 +2662,8 @@ class PhylogenyDataSection: Content {
       " primate species and the sequences were each 898 nucleotides in length. ";
       "In a phylogenetic analysis of DNA sequences, homology is assumed at two levels. ";
       "First, one assumes that the sequences that are compared are homologous. ";
-      "Typically, homology at this level is established by sequence similarity and synteny of the gene (i.e., the gene that is compared across species is in the same, or at least similar, position along the chromosome when compared across species, which is another way of saying the gene that is compared has the same neighboring genes in all the species in the analysis). "
+      "Typically, homology at this level is established by sequence similarity and synteny of the gene (i.e., the gene that is compared across species is in the same, or at least similar, position along the chromosome when compared across species, ";
+      " which is another way of saying the gene that is compared has the same neighboring genes in all the species in the analysis). "
     };
 
     style.Par {
@@ -2929,7 +2930,7 @@ class BayesianParametersSection: Content {
     style.Par {
       "where the pipe indicates a conditional statement. ";
       "In words, the posterior probability distribution of the parameters is equal to the likelihood ";
-      InBrackets {PPO};
+      InBrackets {POP};
       " times the prior probability distribution ";
       InBrackets {PP};
       ", divided by the marginal likelihood ";
@@ -2989,7 +2990,7 @@ class BayesianParametersSection: Content {
 
     style.Par {
       "The likelihood is calculated on a per-word basis using the algorithm described by"; Citep{Lunter2003} ", which conditions on an alignment. ";
-      "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high dimensional summations and integrals required for the posterior probability is unfeasible. ";
+      "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high-dimensional summations and integrals required for the posterior probability is unfeasible. ";
       "Instead, we numerically approximate the joint posterior probability distribution of the parameters using Markov chain Monte Carlo.";
     };
   };
@@ -3103,21 +3104,21 @@ class MCMCComparisonSection: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       "In a Bayesian analysis, parameter estimates are based on the joint posterior probability distribution of the parameters, which we numerically approximate using the Metropolis-Hastings algorithm. ";
-      "Often, however, the linguist is interested in the comparison of two or more models with the goal of evaluating which of the models best explains the observations. ";
+      "Often, however, linguists are interested in the comparison of two or more models with the goal of evaluating which of the models best explains the observations. ";
       "Bayesian model comparison is based on the marginal likelihoods of the models. ";
       "Consider two different linguistic models, ";
       Model sub 1; " and "; Model sub 2;
-      " with marginal likelihoods, "; PSM(1); " and "; PSM(2);
-      " (note the marginal likelihoods are calculated for the same observations). The ratio of the marginal likelihoods is known as the Bayes Factor:";
+      ", with marginal likelihoods, "; PSM(1); " and "; PSM(2);
+      ". (Note the marginal likelihoods are calculated for the same observations.) The ratio of the marginal likelihoods is known as the Bayes Factor:";
     };
 
     style.AlignEquation(ModelComparison);
 
     style.Par {
       "The Bayes Factor measures the relative support of the two models. ";
-      "A Bayes Factor less than one favors ";
+      "A Bayes Factor greater than one favors ";
       Model sub 1;
-      ", whereas the opposite is true for a Bayes factor greater than one. ";
+      ", whereas the opposite is true for a Bayes factor less than one. ";
       "In contrast to frequentist statistics, Bayesian model comparison does not involve "; textit{"p"};"-values. ";
       "The Bayes Factor is instead interpreted either directly or on a log scale. ";
       Citep{Jeffreys1961}; " devised the following categories to interpret Bayes Factors:";
