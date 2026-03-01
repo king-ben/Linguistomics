@@ -2662,7 +2662,7 @@ class PhylogenyDataSection: Content {
       "In the original paper, the complete data had ";
       SampledLanguages(12);
       " primate species and the sequences were each 898 nucleotides in length. ";
-      "In a phylogenetic analysis of DNA sequenes, homology is assumed at two levels. ";
+      "In a phylogenetic analysis of DNA sequences, homology is assumed at two levels. ";
       "First, one assumes that the sequences that are compared are homologous. ";
       "Typically, homology at this level is established by sequence similarity and synteny of the gene (i.e., the gene that is compared across species is in the same, or at least similar, position along the chromosome when compared across species, which is another way of saying the gene that is compared has the same neighboring genes in all the species in the analysis). "
     };
@@ -2678,7 +2678,7 @@ class PhylogenyDataSection: Content {
     };
 
     style.Par {
-      "Our approach to the underyling data for phylogenetic inference is novel within linguistics. ";
+      "Our approach to the underlying data for phylogenetic inference is novel within linguistics. ";
       "Like others, we concentrate on the so-called "; style.SQuote{"basic vocabulary"}; " of a language";
       Citep{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023;};
       ", since the lexical items that instantiate concepts in this domain are less prone to horizontal transmission (i.e., linguistic borrowing). ";
@@ -2871,7 +2871,7 @@ class PhylogenyModelSection: Content {
       "When a nucleotide is inserted, it is inserted to the right of a link and contributes its own link to its right. ";
       "Deletions remove a nucleotide and its associated link, but the immortal link is never deleted. ";
       "As a result, the process does not go extinct, even when "; InsertDelete(Tex.lt); ". ";
-      "Instead, a nucleotide (and its link) can be inserted to to the right of the immortal link. ";
+      "Instead, a nucleotide (and its link) can be inserted to the right of the immortal link. ";
       };
      style.Par {
       "The TKF91 model constrains the insertion rate to be less than the deletion rate ";
@@ -3008,13 +3008,12 @@ class MCMCSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "The aim of Markov chain Monte Carlo (MCMC) is to construct a Markov chain that has as its possible states the parameter values of the statistical model and a stationary distribution that is the posterior probability distribution of the parameters. ";
-      "Metropolis et al. (1953)";
-      Citep {Metropolis1953};
-      " and Hastings (1970)";
-      Citep {Hastings1970};
+      "The aim of Markov chain Monte Carlo (MCMC) is to construct a Markov chain that has as its possible states the parameter values of the statistical model and a stationary distribution that is the posterior probability distribution of the parameters.";
+      Citet {Metropolis1953};
+      " and";
+      Citet {Hastings1970};
       " describe rules for constructing such a chain. ";
-      "When at stationarity, samples from this chain form valid, albeit dependent, samples from the posterior probability distribution. ";
+      "At stationarity, samples from this chain form valid, albeit dependent, samples from the posterior probability distribution. ";
       "The Metropolis-Hastings algorithm constructs the Markov chain using the following algorithm:";
     };
 
@@ -3089,7 +3088,7 @@ class MCMCSection: Content {
     };
 
     style.Par {
-      "The general strategy behind a MCMC analysis is to run the chain for many thousands or millions of cycles. Each cycle, the chain proposes a new state that may accepted or rejected as the next state of the chain. Every so often, the state of the chain is printed to a file. In our study, we sampled the chain every 100 cycles. The samples contained in the output files can be used to reconstruct the marginal posterior probability distributions of parameters. As an example, the fraction of the time a particular alignment of a cognate is found in the file is a valid approximation of that alignment's posterior probability. Similarly, the fraction of the time a particular tree topology is found in the output file is a valid approximation of that tree's posterior probability. Probability distributions for continuous parameters can be approximated by constructing a frequency histogram for the parameter from the output files produced by the MCMC analysis.";
+      "The general strategy behind a MCMC analysis is to run the chain for many thousands or millions of cycles. Each cycle, the chain proposes a new state that may be accepted or rejected as the next state of the chain. Every so often, the state of the chain is printed to a file. In our study, we sampled the chain every 100 cycles. The samples contained in the output files can be used to reconstruct the marginal posterior probability distributions of parameters. As an example, the fraction of the time a particular alignment of a cognate is found in the file is a valid approximation of that alignment's posterior probability. Similarly, the fraction of the time a particular tree topology is found in the output file is a valid approximation of that tree's posterior probability. Probability distributions for continuous parameters can be approximated by constructing a frequency histogram for the parameter from the output files produced by the MCMC analysis.";
     };
   };
 }
