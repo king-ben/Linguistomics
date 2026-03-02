@@ -3141,76 +3141,65 @@ class MCMCSection: Content {
     };
 
 
-
-
     style.NumberedList {
       Paragraph {
-        "The current state of the chain is denoted ";
-        RateMatrixParams; DotSpace;
-        "If this is the first cycle of the Markov chain, initialize ";
+        "Let the current state of the chain be denoted ";
         RateMatrixParams;
-        " (e.g., by choosing a value from the prior distribution).";
+        ". If this is the initial iteration, initialize ";
+        RateMatrixParams;
+        ", for example by drawing from the prior distribution.";
       };
 
       Paragraph {
-        "Propose a new value for "; RateMatrixParams; ", denoted "; NewValueProposal; DotSpace;
-        "The proposal mechanism is up to the programmer, but must involve the generation of random numbers ";
-        RandomNumber;
-        " such that the proposed value is a function of the current value and the random numbers, ";
-        EqSpan {
-          NewValueProposal;
-          Tex.Equals;
-          "h"; Arguments {
-            RateMatrixParams;
-            RandomNumber;
-          };
-        }; DotSpace;
-
-        "The probability of proposing the new value is ";
-        NewProposal(RateMatrixParams, RateMatrixParams);
-        " whereas the probability of the imagined reverse move, not actually made in computer memory, is ";
-        NewProposal(NewValueProposal, RateMatrixParams); DotSpace;
+        "Propose a new state, denoted ";
+NewValueProposal;
+", by generating a random vector ";
+RandomNumber;
+" from a specified proposal distribution and defining ";
+EqSpan{
+  NewValueProposal;
+  Tex.Equals;
+  "h"; Arguments{RateMatrixParams; RandomNumber;}
+};
+". ";
+"Let ";
+NewProposal(RateMatrixParams, NewValueProposal);
+" denote the proposal density for the forward move and ";
+NewProposal(NewValueProposal, RateMatrixParams);
+" the corresponding reverse-move density.";
       };
 
       ListItem {
         FirstIndent: 0;
-        "Calculate the probability of accepting the proposed value:";
+        "Compute the Metropolis–Hastings acceptance probability:";
         ProbOfAcceptingProposal;
-        "In other words, the acceptance probability is the product of the likelihood, prior, and proposal ratios.";
+        "This quantity equals the product of the likelihood ratio, prior ratio, and proposal ratio.";
       };
 
       Paragraph {
-        "Generate a uniform(0,1) random variable, ";
-        EqSpan {
-          RandomNumber
-        }; DotSpace;
+        "Draw a uniform random variable ";
+        EqSpan{RandomNumber};
+        " from the interval (0,1). ";
         "If ";
-        EqSpan {
-          RandomNumber;
-          Tex.lt;
-          ProbOfAccepting;
-        };
-        ", accept the proposed state, setting ";
-        EqSpan {
-          RateMatrixParams;
-          Tex.Equals;
-          NewValueProposal;
-        }; DotSpace;
-        "Otherwise, the proposed state is said to be rejected and the chain remains in state ";
-        EqSpan {
-          RateMatrixParams;
-        }; DotSpace;
+        EqSpan{RandomNumber; Tex.lt; ProbOfAccepting};
+        ", accept the proposal and set ";
+        EqSpan{RateMatrixParams; Tex.Equals; NewValueProposal};
+        ". Otherwise, reject the proposal and retain the current state.";
       };
 
       Paragraph {
-        "Return to Step # 1.";
+        "Repeat from step 1.";
       };
     };
 
-    style.Par {
-      "The proposals we implement in this study are all typical for phylogenetic models, such as the LOCAL mechanism to update the tree and branch lengths"; Citep{Larget1999}; DotSpace;
-      "The unique aspect of this study is a proposal mechanism for the alignments of the segments for various words. ";
-      "Here, we use the proposal mechanism described by Lunter et al."; Citep{Lunter2005}; DotSpace;
+        style.Par {
+      "The proposal mechanisms employed here are standard in phylogenetic inference, including the LOCAL move for updating tree topologies and branch lengths ";
+      Citep{Larget1999};
+      DotSpace;
+      "The distinctive feature of the present analysis is the inclusion of proposals for segmental alignments. ";
+      "We implement the alignment proposal strategy described by";
+      Citet{Lunter2005};
+      DotSpace;
     };
 
     style.Par {
