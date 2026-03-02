@@ -3097,22 +3097,27 @@ class BayesianParametersSection: Content {
 
     style.AlignEquation(MarginalizationOverAlignments);
 
-    style.Par {
-      "where the sum is over all possible alignment maps. Our inferences are therefore not conditioned on any particular alignment of segments being correct. ";
-      "In a similar vein, the marginal likelihood accounts for all possible combinations of model parameters:";
+     style.Par {
+      "Since the summation extends over all admissible alignment maps, ";
+      "inference does not condition on any single alignment being correct. ";
+      "Similarly, the marginal likelihood integrates over all possible parameter values:";
     };
+
+
 
     style.AlignEquation(MarginalLikelihoodParameters);
 
     style.Par {
-      "where the integrals represent integration over all possible combinations of branch lengths, rate matrix parameters, and insertion/deletion rates.";
+      "The integrals represent integration over branch lengths, substitution-model parameters, and insertion-deletion rates, subject to the constraint ";
+      SpanParens{InsertDelete(Tex.lt)};
+      DotSpace;
+      "The likelihood itself is computed on a per-word basis using the dynamic programming algorithm of ";
+      Citet{Lunter2003};
+      ", which conditions on a specific alignment. ";
+      "Although the posterior distribution can be expressed analytically, the high-dimensional summations and integrals required for exact evaluation are intractable. ";
+      "We therefore approximate the joint posterior distribution numerically using Markov chain Monte Carlo (MCMC). ";
     };
 
-    style.Par {
-      "The likelihood is calculated on a per-word basis using the algorithm described by"; Citet{Lunter2003} ", which conditions on an alignment. ";
-      "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high-dimensional summations and integrals required for the posterior probability is unfeasible. ";
-      "Instead, we numerically approximate the joint posterior probability distribution of the parameters using Markov chain Monte Carlo.";
-    };
   };
 }
 
