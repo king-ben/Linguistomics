@@ -79,7 +79,7 @@ class RootMeaningTraitsSection: Content {
     style.Par {
     style.TableReference(TableFigures.CognateCoding);
     " presents a root-meaning trait for the concept ";
-    style.SQuoteEnd{"hand"};
+    style.SQuote{"hand"};
     " in a sample of Indo-European languages. ";
     "Lexical items that descend from a common ancestor are grouped into the same cognate class, with class membership determined on the basis of regular sound correspondences. ";
     "The resulting multistate cognate classifications are typically recoded as a set of binary characters, where 0 and 1 indicate the absence or presence, respectively, of a lexeme belonging to a given cognate class. ";
