@@ -358,7 +358,7 @@ style.Par {
   TextIpa{"w"};
   ", an empty segmental position is introduced before the vowel in the remaining languages";
   DotSpace;
-  "As discussed in "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo (MCMC) procedure. ";
+  "As discussed in "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo procedure. ";
   "Inference does not condition on any fixed alignment and the posterior distribution integrates over alternative homology assignments. ";
   "Accordingly, explicit gap symbols are not required elements of the input. ";
 };
@@ -413,7 +413,7 @@ class PaperDataCuration: Content {
 
     style.Par {
       "All analyses are orchestrated by a control program written in the Nytril programming language"; Citep {Nytrilprogram}; DotSpace;
-      "We developed an automated experimental pipeline comprising a reusable IPA library, curated word-form datasets, data-validation routines, typeset output generation, and input-file construction for the MCMC engine (implemented in C++). ";
+      "We developed an automated experimental pipeline comprising a reusable IPA library, curated word-form datasets, data-validation routines, typeset output generation, and input-file construction for the MCMC engine, which is implemented in C++. ";
     };
 
     style.Par {

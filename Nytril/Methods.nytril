@@ -779,10 +779,10 @@ class ConsensusTree: Content {
 SegmentOccuranceCaption(ExperimentData data) = Span {
   var l0 = data.Taxa[0].Language;
 
-  "Comparison of occurence rates of segments in each language. Segments are sorted by the rates in ";
-  l0;
-  ". Bars are normalized to the rate of the most frequently ocurring segment in each language. ";
-  "Languages are ordered by their Euclidian distance from "; l0; " indicated by the red line.";
+  "Comparison of segmental occurrence rates across languages. ";
+  "Segments are ordered according to their frequency in "; l0; DotSpace;
+  "For each language, bar heights are normalized to the most frequent segment in that language. ";
+  "Languages are arranged by increasing Euclidean distance from "; l0; " (indicated by the red line). ";
 };
 
 readonly SegmentOccuranceFigure Figures.SegmentOccuranceRates = new(MainResults.Data);
@@ -1375,7 +1375,7 @@ class SegmentModelsFigure: Content {
 
     style.Par {
       "We evaluate three models of segmental change. ";
-      PoissonModel; " is isomorphic to the Jukes–Cantor model of DNA sequence evolution";
+      PoissonModel; " is isomorphic to the Jukes-Cantor model of DNA sequence evolution";
       Citep {Jukes1969};
       ", which specifies equal transition rates among all pairs of states, with substitutions occurring according to a Poisson process (hereafter the "; style.SQuote{PoissonModel.Name}; " model). ";
       UnequalModel; ", corresponds to the Felsenstein model";
@@ -2142,7 +2142,7 @@ style.Par {
   " denotes the observed segmental sequences of the cognate word forms. ";
   "The likelihood function, ";
   LiklihoodFunction;
-  ", is evaluated using the dynamic programming algorithm of ";
+  ", is evaluated using the dynamic programming algorithm of";
   Citet{Lunter2003};
   DotSpace;
   "Prior distributions for most parameters follow conventions standard in phylogenetic modeling. ";
