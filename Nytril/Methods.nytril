@@ -3037,21 +3037,23 @@ class BayesianParametersSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
+
     style.Par {
-      "We estimate the parameters of the model in a Bayesian framework. ";
-      "Bayesians base inferences on the posterior probability distribution of a parameter, which can be calculated using Bayes’ theorem as:";
+      "Model parameters are estimated within a Bayesian framework. ";
+      "Inference is based on the posterior distribution of the parameters, obtained via Bayes’ rule:";
     };
+
 
     style.AlignEquation(BayesTheorem);
 
-    style.Par {
-      "where the pipe indicates a conditional statement. ";
-      "In words, the posterior probability distribution of the parameters is equal to the likelihood ";
-      InBrackets {POP};
-      " times the prior probability distribution ";
-      InBrackets {PP};
-      ", divided by the marginal likelihood ";
-      InBrackets {PO}; DotSpace;
+        style.Par {
+      "In words, the posterior distribution conditional on the observations is proportional to the likelihood ";
+      InBrackets{POP};
+      " multiplied by the prior distribution ";
+      InBrackets{PP};
+      " and normalized by the marginal likelihood ";
+      InBrackets{PO};
+      DotSpace;
     };
 
     style.Par {
@@ -3065,7 +3067,7 @@ class BayesianParametersSection: Content {
       };
       ParamRow {
         ParamList(ExpectedEvents);
-        "Branch length parameters";
+        "Branch-length parameters";
       };
       ParamRow {
         EqSpan {RateMatrixParams};
@@ -3073,7 +3075,7 @@ class BayesianParametersSection: Content {
       };
       ParamRow {
         EqSpan {InsertDelete(", "); Space; SpanParens {InsertDelete(Tex.lt)}};
-        "The insertion and deletion rates of  segments";
+        "Insertion and deletion rates";
       };
       ParamRow {
         HomologyMap;
@@ -3081,15 +3083,16 @@ class BayesianParametersSection: Content {
       };
     };
 
-    style.Par {
-      "We assign prior probability distributions to all parameters of the model (see Table 1). ";
-      "The posterior probability distribution of the model parameters is then";
+       style.Par {
+      "Prior distributions are assigned to all parameters (see Table 1). ";
+      "The joint posterior distribution of the parameters is therefore:";
     };
+
 
     style.AlignEquation(PosteriorProbabilityDistribution);
 
     style.Par {
-      "We highlight that the likelihood is marginalized over all possible alignments: "
+      "We highlight that the likelihood is marginalized over all possible segmental alignments: "
     };
 
     style.AlignEquation(MarginalizationOverAlignments);
