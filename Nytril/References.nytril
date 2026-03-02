@@ -869,7 +869,7 @@ readonly namespace<DocReference> References {
     Date   : #1995#;
     DOI    : "10.1093/biomet/82.4.711";
     Volume : "82";
-    //Issue  : "4";
+    Number : "4";
     Pages  : 711..732;
     AuthorLink to [People.Green_Peter];
     JournalLink to Organizations.Biometrika;
@@ -879,7 +879,6 @@ readonly namespace<DocReference> References {
     Title     : "Bayesian phylolinguistics";
     BookTitle : "The handbook of historical linguistics";
     Date      : #2021#;
-    Chapter   : 11;
     Pages     : 226..253;
     DOI       : "10.1002/9781118732168.ch11";
     AuthorLink to [People.Greenhill_Simon, People.Heggarty_Paul, People.Gray_Russell];
@@ -1529,7 +1528,7 @@ readonly namespace<DocReference> References {
     Volume : 60;
     Number : 2;
     Pages  : 150..160;
-    Date   : #2010-12#;
+    Date   : #2010#;
     ISSN   : "1063-5157";
     AuthorLink to [People.Xie_Wangang, People.Lewis_Paul, People.Fan_Yu, People.Kuo_Lynn, People.Chen_MingHui];
     JournalLink to Organizations.SystematicBiology;
