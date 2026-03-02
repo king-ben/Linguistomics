@@ -2779,74 +2779,77 @@ style.Par {
 };
 
 
+style.Par {
+  "Formally, a segmental alignment, denoted ";
+  SegmentalAlignment;
+  ", is obtained by combining the observed segmental strings with a specification of segmental homology. ";
+  "Let the segmental information for the ";
+  NumLanguages;
+  " languages be denoted ";
+  EqSpan{
+    SegmentalInfo;
+    Tex.Equals;
+    SpanParens{
+      EllipsisList{
+        Segment sub 1;
+        Segment sub 2;
+        Segment sub NumLanguages;
+      }
+    }
+  };
+  ", where ";
+  Segment sub sym.i;
+  " represents the segmental string of the ";
+  Ith;
+  " language. ";
+  "For the cognate class ";
+  style.SQuote{ec.Name};
+  ", the observed segmental strings are:";
+};
 
-
-    style.Par {
-      "Note that a segmental alignment, denoted ";
-      SegmentalAlignment;
-      ", is constructed by combining the segmental information for the languages of interest with information on the homology of the segments. ";
-      "The segmental information for the ";
-      NumLanguages;
-      " languages of interest is denoted ";
-      EqSpan {
-        SegmentalInfo;
-        Tex.Equals;
-        SpanParens {
-          EllipsisList {
-            Segment sub 1;
-            Segment sub 2;
-            Segment sub NumLanguages;
-          }
-        }
-      };
-      ", where ";
-      Segment sub sym.i;
-      " is the segmental string for the ";
-      Ith;
-      " language. ";
-      "The segmental information for the ";
-      SampledLanguages(MainResults.Data.Taxa.Length);
-      " languages for the cognate class above for ";
-      style.SQuote {ec.Name}; " is:";
-    };
 
     SegmentTable(style, ec, MainResults.Data, false);
 
     style.Par {
-      "Here, the segments for "; ec.Taxon.Language; " would be ";
-      EqSpan {
-        Segment sub 1;
-        Tex.Equals;
-        SpanParens {
-          ec.LangWord
-        }; DotSpace;
-      };
-      "The alignment of the segments is accomplished by the use of a map, ";
+  "For example, for ";
+  ec.Taxon.Language;
+  " we have ";
+  EqSpan{
+    Segment sub 1;
+    Tex.Equals;
+    SpanParens{ec.LangWord}
+  };
+  DotSpace;
+  "An alignment is determined by a homology map ";
+  HomologyMap;
+  ", which specifies which segmental positions correspond across languages. ";
+  "The alignment is therefore given by ";
+  EqSpan{
+    SegmentalAlignment;
+    Tex.Equals;
+    Arguments{
+      SegmentalInfo;
       HomologyMap;
-      ", describing the homology of the segments. ";
-      "The alignment is formed by combining the segment information with the homology map, ";
-      EqSpan {
-        SegmentalAlignment;
-        Tex.Equals;
-        Arguments {
-          SegmentalInfo;
-          HomologyMap;
-        };
-      }; DotSpace;
-      style.FigureReference(Figures.Alignment);
-      " shows an example of two alignments for the word ";
-      ec.Name;
-      " that can be formed using two different homology maps. ";
-    };
+    }
+  };
+  DotSpace;
+  style.FigureReference(Figures.Alignment);
+  " provides two examples of alignments for ";
+  style.SQuote{ec.Name};
+  " arising from different homology maps. ";
+};
 
-    style.Par {
-      "Spoken and written word-forms can be observed, but alignments cannot. ";
-      "There are many different ways in which the segments of a cognate word can be homologous. ";
-      "The example from the word "; ec.Name; ", above, shows only one such way. ";
-      "In this study, we develop the statistical and analytical machinery that allow us to marginalize over the segmental alignments. ";
-      "Our method considers all possible segmental alignments of the word-forms in a cognate class, weighting each such possibility by its probability under a model. ";
-      "In this way, our method does not condition on any specific segmental alignment.";
-    };
+
+style.Par {
+  "Word forms are directly observable, whereas segmental alignments are not. ";
+  "Multiple homology assignments are often compatible with a given set of cognate forms, and the alignment for ";
+  style.SQuote{ec.Name};
+  " shown above represents only one such possibility. ";
+  "In this study, we develop a statistical framework that treats segmental homology as a latent variable and integrates over its uncertainty. ";
+  "Rather than conditioning on a single alignment, the method considers all possible segmental alignments within a cognate class, weighting each by its posterior probability under the model. ";
+  "Inference is therefore averaged over alignment uncertainty rather than predicated on a fixed homology assignment. ";
+};
+
   };
 }
 
@@ -2863,7 +2866,7 @@ class PhylogenyModelSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "We assume that cognate words evolve along the branches of a phylogenetic tree through substitution of one segment by another, insertion of a new segment, or deletion of a segment.";
+      "We assume that cognate words evolve along the branches of a phylogenetic tree through substitution of one segment by another, insertion of a new segment, or deletion of a segment. ";
       "Substitution of one segment for another is modeled using a continuous-time Markov model in which the possible states are the set of segments in the phonemic representations. ";
       "At the heart of a continuous-time Markov chain is a rate matrix describing the rate of change between all pairs of states. ";
       "Consider, for example, a simplified Markov process with only "; Enumerators.Cardinal(StateCount); " segments as states. ";
