@@ -2550,10 +2550,7 @@ class PhylogenySection: Content {
     ", for example, the ancestor of node 3 is ";
     EqSpan{AncestorNode(3); Tex.Equals; 13};
     DotSpace;
-  };
 
-
-style.Par {
   "Branches connect the nodes of the tree and are represented as line segments in ";
   style.FigureReference(Figures.ExampleTree);
   DotSpace;
@@ -3131,15 +3128,20 @@ class MCMCSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
+
     style.Par {
-      "The aim of Markov chain Monte Carlo (MCMC) is to construct a Markov chain that has as its possible states the parameter values of the statistical model and a stationary distribution that is the posterior probability distribution of the parameters.";
-      Citet {Metropolis1953};
-      " and";
-      Citet {Hastings1970};
-      " describe rules for constructing such a chain. ";
-      "At stationarity, samples from this chain form valid, albeit dependent, samples from the posterior probability distribution. ";
-      "The Metropolis-Hastings algorithm constructs the Markov chain using the following algorithm:";
+      "Markov chain Monte Carlo (MCMC) provides a numerical method for approximating the posterior distribution of model parameters. ";
+      "The goal is to construct a Markov chain whose state space consists of parameter values and whose stationary distribution coincides with the posterior distribution of interest. ";
+      Citet{Metropolis1953};
+      " and ";
+      Citet{Hastings1970};
+      " describe general procedures for constructing such chains. ";
+      "Once stationarity has been reached, successive samples from the chain constitute dependent but asymptotically valid draws from the posterior distribution. ";
+      "We implement the Metropolis–Hastings algorithm as follows:";
     };
+
+
+
 
     style.NumberedList {
       Paragraph {
