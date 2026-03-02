@@ -2712,54 +2712,74 @@ class PhylogenyDataSection: Content {
       }
     };
 
-    style.Par {
-      "These are partial mitochondrial sequences from Gojobori"; Citep {Hayasaka1988}; DotSpace;
-      "In the original paper, the complete data had ";
-      SampledLanguages(12);
-      " primate species and the sequences were each 898 nucleotides in length. ";
-      "In a phylogenetic analysis of DNA sequences, homology is assumed at two levels. ";
-      "First, one assumes that the sequences that are compared are homologous. ";
-      "Typically, homology at this level is established by sequence similarity and synteny of the gene (i.e., the gene that is compared across species is in the same, or at least similar, position along the chromosome when compared across species, ";
-      " which is another way of saying the gene that is compared has the same neighboring genes in all the species in the analysis). "
-    };
+   style.Par {
+  "These sequences are partial mitochondrial DNA sequences reported by Gojobori ";
+  Citep{Hayasaka1988};
+  DotSpace;
+  "In the original study, the dataset comprised ";
+  SampledLanguages(12);
+  " primate species and each sequence was 898 nucleotides in length. ";
+  "In phylogenetic analyses of DNA data, homology is assumed at two distinct levels. ";
+  "First, the sequences themselves must be homologous—that is, they must derive from the same gene in a common ancestor. ";
+  "At this level, homology is typically established through sequence similarity and synteny: the gene compared across species occupies the same genomic context, which means that it is located in the same or a closely corresponding position on the chromosome and flanked by the same neighboring genes. ";
+};
 
-    style.Par {
-      "Not only must the DNA sequences be homologous, but the fine-scale homology of the sequences must also be established. ";
-      "The DNA sequences above are in an aligned form in which the fine-scale homology has been established; ";
-      "each column of the alignment is considered to be homologous. ";
-      "So, for example, the first column of the alignment which happens to be the nucleotide A in all three species is assumed to be homologous. ";
-      "It is assumed that the common ancestor of gorillas, chimpanzees, and humans had the same gene, which also had a position that was homologous to the first column in the alignment. ";
-      "Fine-scale homology is established using computer programs in a process called "; style.SQuoteEnd{"alignment"};
-      "Importantly, phylogenetic methods assume that the homology established by the alignment program is correct.";
-    };
 
-    style.Par {
-      "Our approach to the underlying data for phylogenetic inference is novel within linguistics. ";
-      "Like others, we concentrate on the so-called "; style.SQuote{"basic vocabulary"}; " of a language";
-      Citep{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023;};
-      ", since the lexical items that instantiate concepts in this domain are less prone to horizontal transmission (i.e., linguistic borrowing). ";
-      "In contrast to every study of linguistic phylogenetics that we are aware of, however, our investigation draws inferences directly from word-forms. ";
-      "For each concept in our dataset, homologous lexical items are assigned to a ";
-      Definition("cognate class"); DotSpace;
-      "The word-forms within each cognate class are phonemic representations based on the International Phonetic Alphabet";
-      Citep{IPA1999}; DotSpace;
-      "Consider the cognate class for the concept ";
-      style.SQuote {ec.Name}; ":";
-    };
+style.Par {
+  "Second, fine-scale homology must be determined within the sequences. ";
+  "The DNA sequences shown above are presented in aligned form, where each column is treated as homologous across species. ";
+  "For example, the first column, which contains the nucleotide A in all three species, is assumed to correspond to a single ancestral position. ";
+  "Under this assumption, the common ancestor of gorillas, chimpanzees, and humans possessed a nucleotide at that position homologous to the aligned column. ";
+  "Fine-scale homology is inferred computationally in a procedure known as ";
+  style.SQuoteEnd{"alignment"};
+  "Phylogenetic methods then proceed under the assumption that the inferred alignment correctly reflects true positional homology. ";
+};
+
+style.Par {
+  "Our treatment of linguistic data follows the general phylogenetic framework outlined above but differs from previous work in several important respects. ";
+  "As in most studies of linguistic phylogenetics, we restrict attention to the so-called ";
+  style.SQuote{"basic vocabulary"};
+  Citep{Swadesh1952; Chang2015; Greenhill2021; Auderset2023; Heggarty2023};
+  ", as lexical items in this domain are comparatively resistant to borrowing. ";
+  "Unlike nearly all prior approaches, however, we base inference directly on phonemic word forms rather than on abstract cognate codings. ";
+  "For each concept in the dataset, homologous lexical items are grouped into a ";
+  Definition("cognate class");
+  DotSpace;
+  "Within each class, word forms are represented phonemically using the International Phonetic Alphabet ";
+  Citep{IPA1999};
+  DotSpace;
+  "As an illustration, consider the cognate class for the concept ";
+  style.SQuote{ec.Name};
+  ":";
+};
+
 
     SegmentTable(style, ec, data, true);
 
     style.AddFigure(Figures.Alignment, FigureOptions.Bottom | FigureOptions.Full, 80%);
 
-    style.Par {
-      "The word for "; style.SQuote {ec.Name}; " in "; ec.Taxon.Language; ", for example, is ";
-      TextIpa{ec.LangWord}; DotSpace;
-      "The matrix assumes that the fine-scale homology of the segments has been established. ";
-      "For example, it assumes that the glide "; TextIpa{"j"}; " of Romanian, Spanish, French, Friulian, and Italian are homologous. ";
-      "The dashes indicate that there is no homologous segment at that potential position in the word. ";
-      "As discussed in more detail below, this is not the only possible alignment and "; style.FigureReference(Figures.Alignment);
-      " shows two further possibilities. ";
-    };
+
+
+style.Par {
+  "The word for ";
+  style.SQuote{ec.Name};
+  " in ";
+  ec.Taxon.Language;
+  ", for example, is ";
+  TextIpa{ec.LangWord};
+  DotSpace;
+  "The alignment matrix presupposes that fine-scale segmental homology has been specified. ";
+  "For instance, it treats the glide ";
+  TextIpa{"j"};
+  " in Romanian, Spanish, French, Friulian, and Italian as homologous across these languages. ";
+  "Dashes indicate the absence of a segment homologous to those present in other forms at that alignment position. ";
+  "As discussed below, this alignment is not unique. ";
+  style.FigureReference(Figures.Alignment);
+  " presents two alternative homology assignments. ";
+};
+
+
+
 
     style.Par {
       "Note that a segmental alignment, denoted ";
