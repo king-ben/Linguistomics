@@ -106,6 +106,7 @@ readonly namespace<Person> People {
   };
   Granville_Daniel       = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
   Gray_Russell           = new(#d85e29f9-d606-47cc-ad09-4769a12ff1ab#, "Russell", "D.", "Gray");
+  Green_Peter            = new(#3ccd11a4-531b-487f-acc7-9d207dbe3da8#, "Peter", "J.", "Green");
   Greenhill_Simon        = new(#2b084456-74a8-4555-ad59-3c18c1740784#, "Simon", "J.", "Greenhill");
   Griffiths_Thomas       = new(#e7f67e70-f78b-4076-8269-7a45d624d091#, "Thomas", "L.", "Griffiths");
   Grossman_Eitan         = new(#ba8dc929-1b50-40cf-9db2-ef42f70ac020#, "Eitan", null, "Grossman");
@@ -861,6 +862,17 @@ readonly namespace<DocReference> References {
     Volume: 405;
     AuthorLink to [People.Gray_Russell, People.Jordan_Fiona];
     JournalLink to Organizations.Nature;
+  };
+
+  Green1995 = new(#846161f5-2ae2-40da-873e-98224951f92c#, Article) {
+    Title  : "Reversible jump Markov chain Monte Carlo computation and Bayesian model determination";
+    Date   : #1995#;
+    DOI    : "10.1093/biomet/82.4.711";
+    Volume : "82";
+    //Issue  : "4";
+    Pages  : 711..732;
+    AuthorLink to [People.Green_Peter];
+    JournalLink to Organizations.Biometrika;
   };
 
   Greenhill2021 = new(#08930e62-b176-4d0e-879b-4fbd7a920ec7#, InBook) {
