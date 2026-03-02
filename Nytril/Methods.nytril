@@ -1493,7 +1493,7 @@ class WordTransformationSection: Content {
   VocalSegments.r;
   ", which clusters with the fricatives, and the mid-front vowel ";
   VocalSegments.ay;
-  ", which aligns with the nasal vowels. ";
+  ", which patterns with the nasal vowels. ";
   "These patterns arise from the interaction between class-specific exchangeability parameters and the distribution of equilibrium frequencies. ";
   "When equilibrium frequencies are relatively homogeneous within a class, the corresponding "; -qii;
   " values tend to be similar. ";
@@ -1757,9 +1757,8 @@ style.Par {
   };
 
     style.Par {
-    "Our use of TKF91 parallels the approach of Bouchard-Côté ";
-    textit{"et al."};
-    Citep{BouchardCote2013};
+    "Our use of TKF91 parallels the approach of";
+    Citet{BouchardCote2013};
     ", who likewise treat cognate word forms as the observed data. ";
     "Their framework employs a string transducer model";
     Citep{Holmes2001};
@@ -2382,10 +2381,10 @@ class AcknowledgementsSection: Content {
       if (style.IsAnonymous)
         DocLang.Anonymous;
       else {
-        "We thank "; style.ShowPerson(People.Lunter_Gerton); " for help with the TKF91 model. ";
-        "Earlier versions of this work were presented at the Computational Phylogenetics and Language (Pre)history Workshop, EvoLang 2024, and the UCLA Phonology Seminar. ";
-        "We are grateful to audiences at all three venues for their feedback and in particular to Chundra Cathcart, Frederik Hartmann, Simon Greenhill, and Gerhard Jäger. ";
-        "We would also like to thank the three anonymous reviewers for insightful comments that improved several aspects of the paper.";
+        "We thank "; style.ShowPerson(People.Lunter_Gerton); " for guidance on the implementation of the TKF91 model. ";
+        "Earlier versions of this work were presented at the Computational Phylogenetics and Language (Pre)history Workshop in Rethymno, EvoLang 2024, and the UCLA Phonology Seminar. ";
+        "We are grateful to the audiences at these three venues for their valuable feedback, and especially to Chundra Cathcart, Frederik Hartmann, Simon Greenhill, and Gerhard Jäger for their thoughtful comments. ";
+        "We also thank the three anonymous reviewers for insightful crticism, which substantially improved the paper.";
       }
     }
   };
