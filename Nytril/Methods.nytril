@@ -2967,26 +2967,35 @@ class PhylogenyModelSection: Content {
   ", deletions dominate and word forms shrink progressively, eventually collapsing to length zero. ";
 };
 
-    style.Par {
-      "The TKF91"; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
-      InsertDelete(" and "); Citep {Thorne1991}; DotSpace;
-      "They introduced a convention for thinking about a DNA sequence in which nucleotides are connected by invisible links. ";
-      "Each nucleotide is paired with the link to its right. ";
-      "The left-most nucleotide has a special link to its left, which is known as the immortal link. ";
-      "When a nucleotide is inserted, it is inserted to the right of a link and contributes its own link to its right. ";
-      "Deletions remove a nucleotide and its associated link, but the immortal link is never deleted. ";
-      "As a result, the process does not go extinct, even when "; InsertDelete(Tex.lt); ". ";
-      "Instead, a nucleotide (and its link) can be inserted to the right of the immortal link. ";
-      };
-     style.Par {
-      "The TKF91 model constrains the insertion rate to be less than the deletion rate ";
-      SpanParens {InsertDelete(Tex.lt)};
-      ", so the equilibrium distribution of a sequence length is geometrically distributed with parameter ";
-      InsertDelete(Tex.Divide); DotSpace;
-      "This constraint is adopted in this study. ";
-      "In fact, the model we use is precisely the same as the TKF91 model, but with a different continuous-time Markov model to describe segmental transitions. ";
-      "TKF91 uses a four-state process to describe nucleotide substitutions. ";
-    };
+
+style.Par {
+  "The TKF91 model of DNA sequence evolution permits single nucleotides to be inserted and deleted at rates ";
+  InsertDelete(" and ");
+  Citep{Thorne1991};
+  DotSpace;
+  "To formalize this process, Thorne et al. introduced a representation in which adjacent nucleotides are connected by invisible links. ";
+  "Each nucleotide is associated with the link immediately to its right and the left-most position is preceded by a special link known as the immortal link. ";
+  "Insertions occur to the right of an existing link and generate a new nucleotide together with a new link. ";
+  "Deletions remove a nucleotide and its associated link, but the immortal link itself is never deleted. ";
+  "This construction prevents the process from going extinct, even when ";
+  InsertDelete(Tex.lt);
+  ", because a new nucleotide (and its link) may always be inserted to the right of the immortal link. ";
+};
+
+
+style.Par {
+  "The TKF91 model assumes that the insertion rate is strictly less than the deletion rate ";
+  SpanParens{InsertDelete(Tex.lt)};
+  ", which ensures that sequence length has a stationary distribution. ";
+  "Under this condition, the equilibrium distribution of sequence length is geometric with parameter ";
+  InsertDelete(Tex.Divide);
+  DotSpace;
+  "We adopt this constraint in the present study. ";
+  "The model implemented here is in fact identical to TKF91 with respect to insertions and deletions. ";
+  "It differs only in the substitution component. ";
+  "Whereas TKF91 employs a four-state nucleotide substitution process, we replace it with a continuous-time Markov model defined over the phonemic segment inventory. ";
+};
+
 
     style.Par {
       "The overall substitution and insertion/deletion process can be described as follows. ";
@@ -3095,7 +3104,7 @@ class BayesianParametersSection: Content {
     };
 
     style.Par {
-      "The likelihood is calculated on a per-word basis using the algorithm described by"; Citep{Lunter2003} ", which conditions on an alignment. ";
+      "The likelihood is calculated on a per-word basis using the algorithm described by"; Citet{Lunter2003} ", which conditions on an alignment. ";
       "Although the posterior probability distribution can be written down and individual components such as the prior probability or likelihood for a particular combination of parameters can be calculated, analytically solving the high-dimensional summations and integrals required for the posterior probability is unfeasible. ";
       "Instead, we numerically approximate the joint posterior probability distribution of the parameters using Markov chain Monte Carlo.";
     };
