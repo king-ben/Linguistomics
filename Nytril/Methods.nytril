@@ -3193,7 +3193,7 @@ NewProposal(NewValueProposal, RateMatrixParams);
     };
 
         style.Par {
-      "The proposal mechanisms employed here are standard in phylogenetic inference, including the LOCAL move for updating tree topologies and branch lengths ";
+      "The proposal mechanisms employed here are standard in phylogenetic inference, including the LOCAL move for updating tree topologies and branch lengths";
       Citep{Larget1999};
       DotSpace;
       "The distinctive feature of the present analysis is the inclusion of proposals for segmental alignments. ";
