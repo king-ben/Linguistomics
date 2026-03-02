@@ -3208,7 +3208,7 @@ style.Par {
   "States are recorded at regular intervals. ";
   "In our analysis, every 100th iteration was retained. ";
   "Posterior summaries are derived from the retained samples. ";
-  "For example, the proportion of samples in which a particular alignment appears approximates its posterior probability and the proportion supporting a given tree topology approximates the posterior probability of that topology. ";
+  "For example, the proportion of samples in which a particular alignment appears provides a Monte Carlo estimate of its posterior probability and the proportion supporting a given tree topology provides a corresponding estimate for that topology. " ;
   "Marginal posterior distributions for continuous parameters are estimated from the empirical distribution of sampled values. ";
 };
 
