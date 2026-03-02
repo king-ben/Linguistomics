@@ -2979,7 +2979,7 @@ style.Par {
   "Deletions remove a nucleotide and its associated link, but the immortal link itself is never deleted. ";
   "This construction prevents the process from going extinct, even when ";
   InsertDelete(Tex.lt);
-  ", because a new nucleotide (and its link) may always be inserted to the right of the immortal link. ";
+  ", because a new nucleotide (and its link) can always be inserted to the right of the immortal link. ";
 };
 
 
@@ -2997,31 +2997,33 @@ style.Par {
 };
 
 
-    style.Par {
-      "The overall substitution and insertion/deletion process can be described as follows. ";
-      "In a sequence ";
-      WordLength;
-      " segments in length, of which ";
-      WordLength sub sym.i;
-      " are of segment type ";
-      sym.i;
-      ", the time until the next event occurs follows an exponential distribution with parameter ";
-    };
+style.Par {
+  "The combined substitution and insertion–deletion process can be described as follows. ";
+  "Consider a sequence of length ";
+  WordLength;
+  ", with ";
+  WordLength sub sym.i;
+  " instances of segment type ";
+  sym.i;
+  ". ";
+  "The waiting time until the next evolutionary event (substitution, insertion, or deletion) is exponentially distributed with rate parameter: ";
+};
 
     style.AlignEquation(InDelDistribution);
 
     style.Par {
-      "When an event occurs, it is a substitution with probability ";
-      InDelProbability;
-      ", an insertion with probability ";
-      EventInsertionProbability;
-      ", and a deletion with probability ";
-      EventDeletionProbability;
-      DotSpace;
-      "Crucially, the process allows the alignment map ";
-      SpanParens {HomologyMap};
-      " to be treated as a parameter of the model. ";
-    };
+  "Conditional on an event occurring, the probability that it is a substitution equals ";
+  InDelProbability;
+  ", the probability of an insertion equals ";
+  EventInsertionProbability;
+  ", and the probability of a deletion equals ";
+  EventDeletionProbability;
+  DotSpace;
+  "Since insertions and deletions operate on links that define positional homology, the alignment map ";
+  HomologyMap;
+  " crucially becomes an explicit parameter of the model rather than a fixed input. ";
+};
+
   };
 }
 
