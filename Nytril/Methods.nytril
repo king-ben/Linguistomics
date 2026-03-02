@@ -2915,33 +2915,44 @@ class PhylogenyModelSection: Content {
     "Under this normalization, a branch length equals the expected number of substitutions per segment along that branch. ";
   };
 
-
-    style.Par {
-      "A continuous-time Markov model has a simple physical interpretation. ";
-      "Specifically, when the process is in state "; sym.i; ", one waits an exponentially-distributed time with parameter ";
-      -qii; " until the next segmental substitution occurs. ";
-      "When a change occurs, it is to state ";
-      sym.j;
-      " with probability ";
-      EqSpan {-qij; Tex.Divide; qii;}; DotSpace;
-      "Several important quantities can be calculated using the information contained in the rate matrix ";
-      RateMatrix; DotSpace;
-      "For one, the probability of the process ending in state ";
-      sym.j;
-      " conditional on starting in state ";
-      sym.i;
-      " after a period ";
-      ExpectedEvents;
-      " can be calculated through exponentiation of the rate matrix, ";
-      ExponentiationOfRateMatrix; DotSpace;
-      "In addition, the equilibrium distribution of the process can be calculated. ";
-      "This distribution is denoted ";
-      EquilibriumDistribution;
-      " and represents the probability of capturing the process in a particular state after a very long time (technically, an infinite amount of time) has passed. ";
-      "The equilibrium distribution is calculated by solving the system of equations defined by ";
-      RateMatrixSolution; DotSpace;
-      "Both the transition probabilities and equilibrium probability distribution play an important role in calculating the likelihood (see below).";
-    };
+  style.Par {
+  "A continuous-time Markov process admits a straightforward probabilistic interpretation. ";
+  "When the process occupies state ";
+  sym.i;
+  ", the waiting time until the next substitution event is exponentially distributed with rate parameter ";
+  "-";
+  qii;
+  ". ";
+  "Conditional on a substitution occurring, the probability that the next state is ";
+  sym.j;
+  " (for ";
+  sym.i;
+  " ≠ ";
+  sym.j;
+  ") is ";
+  EqSpan{-qij; Tex.Divide; qii;};
+  DotSpace;
+  "Several quantities of interest follow directly from the rate matrix ";
+  RateMatrix;
+  ". ";
+  "For example, the probability of transitioning from state ";
+  sym.i;
+  " to state ";
+  sym.j;
+  " over an interval of length ";
+  ExpectedEvents;
+  " is obtained by matrix exponentiation, ";
+  ExponentiationOfRateMatrix;
+  ". ";
+  "The process also admits a stationary, or equilibrium, distribution ";
+  EquilibriumDistribution;
+  ", which represents the long-run probability of observing each state. ";
+  "This distribution is characterized as the solution to ";
+  RateMatrixSolution;
+  ". ";
+  "Both the transition probabilities and the equilibrium distribution enter into the likelihood calculation described below. ";
+};
+  
 
     style.Par {
       "Insertions and deletions of single segments occur at rates ";
