@@ -2865,13 +2865,16 @@ class PhylogenyModelSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.Par {
-      "We assume that cognate words evolve along the branches of a phylogenetic tree through substitution of one segment by another, insertion of a new segment, or deletion of a segment. ";
-      "Substitution of one segment for another is modeled using a continuous-time Markov model in which the possible states are the set of segments in the phonemic representations. ";
-      "At the heart of a continuous-time Markov chain is a rate matrix describing the rate of change between all pairs of states. ";
-      "Consider, for example, a simplified Markov process with only "; Enumerators.Cardinal(StateCount); " segments as states. ";
-      "The rates of change between the pairs of states can be represented in tabular form as follows:";
-    };
+
+      style.Par {
+    "We model the evolution of cognate word forms along the branches of a phylogenetic tree as a sequence of segmental substitutions, insertions, and deletions. ";
+    "Substitution events are described by a continuous-time Markov process whose state space consists of the phonemic segments in the inventory. ";
+    "Central to this process is a rate matrix specifying the instantaneous rate of change between all ordered pairs of states. ";
+    "For illustration, consider a simplified model with ";
+    Enumerators.Cardinal(StateCount);
+    " segments as states. ";
+    "The instantaneous transition rates can be represented in tabular form as follows:";
+  };
 
     style.CenterFigure {
       Frame {
@@ -2879,23 +2882,39 @@ class PhylogenyModelSection: Content {
       };
     };
 
-    style.Par {
-      "where ";
-      RateChange;
-      " is the rate of change from segment "; sym.i; " to segment "; sym.j; DotSpace;
-      "The diagonal elements of the rate matrix "; qii; " are specified such that each row sums to zero (i.e., ";
-      DiagonalElements;
-      "). This negative value can be interpreted as the rate at which the process moves away from state "; sym.i; DotSpace;
-      "Rates of change between all pairs of states are typically represented in matrix form as follows:";
-    };
+
+  style.Par {
+    "In this table, ";
+    RateChange;
+    " denotes the instantaneous rate of change from segment ";
+    sym.i;
+    " to segment ";
+    sym.j;
+    ". The diagonal elements ";
+    qii;
+    " are defined so that each row of the matrix sums to zero, i.e., ";
+    DiagonalElements;
+    ". ";
+    "Since these diagonal entries are negative, the quantity ";
+    "-";
+    qii;
+    " can be interpreted as the total rate at which the process leaves state ";
+    sym.i;
+    ". ";
+    "In matrix notation, the substitution process is summarized as:";
+  };
+
+
 
     style.AlignEquation(RatesOfChangeBetweenStates);
 
-    style.Par {
-      "The additional parameter ";
-      RateMatrixScale;
-      " scales the rate matrix such that the average rate of segmental substitution is 1.0.";
-    };
+      style.Par {
+    "The scalar parameter ";
+    RateMatrixScale;
+    " rescales the matrix so that the equilibrium-weighted average substitution rate equals 1.0. ";
+    "Under this normalization, a branch length equals the expected number of substitutions per segment along that branch. ";
+  };
+
 
     style.Par {
       "A continuous-time Markov model has a simple physical interpretation. ";
