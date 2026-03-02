@@ -2952,21 +2952,20 @@ class PhylogenyModelSection: Content {
   ". ";
   "Both the transition probabilities and the equilibrium distribution enter into the likelihood calculation described below. ";
 };
-  
 
-    style.Par {
-      "Insertions and deletions of single segments occur at rates ";
-      InsertDelete(" and ");
-      ", respectively. ";
-      "Consider the long-term behavior of a process in which ";
-      InsertDelete(Tex.gt); DotSpace;
-      "On average, segments would be inserted more frequently than they would be deleted, ";
-      "as a result of which the length of word-forms would increase without bounds. ";
-      "The opposite situation occurs when ";
-      InsertDelete(Tex.lt);
-      ", as segments are deleted at a higher rate than they are inserted. ";
-      "In this case, the words of a language would be reduced to silence. ";
-    };
+
+  style.Par {
+  "Insertions and deletions of individual segments occur at rates ";
+  InsertDelete(" and ");
+  ", respectively. ";
+  "The long-term behavior of the process depends critically on the relationship between these rates. ";
+  "If ";
+  InsertDelete(Tex.gt);
+  ", insertions occur more frequently than deletions on average and word lengths increase without bound. ";
+  "Conversely, if ";
+  InsertDelete(Tex.lt);
+  ", deletions dominate and word forms shrink progressively, eventually collapsing to length zero. ";
+};
 
     style.Par {
       "The TKF91"; " model of DNA sequence evolution allows single nucleotides to be inserted and deleted at rates ";
