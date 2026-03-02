@@ -3202,9 +3202,17 @@ NewProposal(NewValueProposal, RateMatrixParams);
       DotSpace;
     };
 
-    style.Par {
-      "The general strategy behind a MCMC analysis is to run the chain for many thousands or millions of cycles. Each cycle, the chain proposes a new state that may be accepted or rejected as the next state of the chain. Every so often, the state of the chain is printed to a file. In our study, we sampled the chain every 100 cycles. The samples contained in the output files can be used to reconstruct the marginal posterior probability distributions of parameters. As an example, the fraction of the time a particular alignment of a cognate is found in the file is a valid approximation of that alignment's posterior probability. Similarly, the fraction of the time a particular tree topology is found in the output file is a valid approximation of that tree's posterior probability. Probability distributions for continuous parameters can be approximated by constructing a frequency histogram for the parameter from the output files produced by the MCMC analysis.";
-    };
+style.Par {
+  "In practice, the Markov chain is run for a large number of iterations. ";
+  "At each iteration, a proposed move is either accepted or rejected, which produces a stochastic sequence of parameter states. ";
+  "States are recorded at regular intervals. ";
+  "In our analysis, every 100th iteration was retained. ";
+  "Posterior summaries are derived from the retained samples. ";
+  "For example, the proportion of samples in which a particular alignment appears approximates its posterior probability and the proportion supporting a given tree topology approximates the posterior probability of that topology. ";
+  "Marginal posterior distributions for continuous parameters are estimated from the empirical distribution of sampled values. ";
+};
+
+
   };
 }
 
