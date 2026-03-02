@@ -10,18 +10,17 @@ class AbstractSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
+
     style.Par {
-      "Linguistic phylogenies are typically inferred from abstract cognate relationships among lexemes. ";
-      style.ReviewMark(ReviewComments.C41);
-      "Despite the prevalence of this practice, it suffers from well-known drawbacks: ";
-          "it disregards the phylogenetic signal in the segmental form of words; ";
-          "the types of questions that can be addressed are limited; ";
-          "and it treats cognate judgments, which are hypotheses, as observations. ";
-      "We present a framework for comparative linguistic analysis that overcomes these deficiencies. ";
-      "At the heart of our approach is the TKF91 model, which is a model of molecular evolution originally developed to account for insertion and deletion events in DNA sequences. ";
-      "With this model, phylogenetic inferences can be drawn directly from cognate word forms, which opens a new horizon of possibilities for historical and evolutionary linguistics. ";
-      "We showcase in particular the ability of this framework to deliver new insights into sound change and the evolution of segmental inventories.";
-    };
+  "Linguistic phylogenies are commonly inferred from abstract cognate classifications that encode relationships among lexemes. ";
+  style.ReviewMark(ReviewComments.C41);
+  "Although widespread, this practice has well-recognized limitations: it discards the phylogenetic signal contained in segmental word forms; restricts the range of evolutionary questions that can be addressed; and treats cognacy judgments, which are hypotheses, as observed data. ";
+  "We introduce a comparative framework that addresses these limitations by modeling the evolution of aligned cognate word forms directly. ";
+  "Our approach adapts the TKF91 model of molecular evolution, originally developed to account for insertion and deletion events in DNA sequences, to the domain of linguistic data. ";
+  "By operating on segmental strings rather than abstract character codings, the framework enables phylogenetic inference from observable word forms and supports quantitative investigation of sound change. ";
+  "We demonstrate its utility through analyses that illuminate patterns of segmental stability and the evolution of phonological inventories.";
+};
+    
   };
 }
 
