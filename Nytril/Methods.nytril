@@ -3332,9 +3332,9 @@ class UsedCognatesSection: Content {
     style.ReviewNewBlock {
       style.Par {
         "The dataset contains "; data.UsedCognates.Length;
-        " cognate sets that comprise "; data.WordCount;
-        " word-forms containing "; data.UniqueSegments.Length;
-        " unique segments drawn from the following "; data.UsedConcepts.Length; " concepts: ";
+        " cognate sets comprising "; data.WordCount;
+        " word forms and "; data.UniqueSegments.Length;
+        " distinct phonemic segments distributed across "; data.UsedConcepts.Length; " concepts: ";
         PaperDataSection.ConceptList(data, style); DotSpace;
       };
     };
@@ -3354,48 +3354,74 @@ class WorkflowSection: Content {
     var code = Span {TextFace: TextFaces.Mono};
 
     style.ReviewNewBlock {
-      style.Par {
-        "The first step in the experiment was to create a dictionary of IPA segment information. ";
-        "The files "; code {"IPA.nytril"}; "  and  "; code {"Segments.nytril"}; " contain the definitions of these classes and the information about each segment is encoded in separate instances of these classes. ";
-        "The definition of a segment includes the IPA symbol string (e.g., "; VocalSegments.nya; ") and a variety of flags and properties indicating the vocal attributes of the segment (e.g. vowel, sibilant, fricative, etc.) ";
-        "These files are designed to be reusable for future experiments, and by other researchers. ";
+
+
+        style.Par {
+        "The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. ";
+        "The files ";
+        code{"IPA.nytril"};
+        " and ";
+        code{"Segments.nytril"};
+        " define segment classes, with each segment represented as an instance containing its IPA symbol (e.g., ";
+        VocalSegments.nya;
+        ") and a set of phonological attributes (e.g., vowel, sibilant, fricative). ";
+        "These files were designed for reuse in future experiments and by other researchers. ";
       };
-      style.Par {
-        "Next is the aggregation of cognate words, stored in nytril source files as strings, organized by category and language. ";
-        "The strings contain UCS code points encoding the IPA symbol for each segment, making it easy to copy and paste from different sources. ";
-        "The dashes between the IPA characters serve to align the positions of the segments vertically, providing the initial alignment for the experiment. ";
-        "The words also may contain syllable stress marks, but these are ignored for this experiment. ";
-        "The format of this file was created to facilitate the collection and editing by the researchers. ";
-        "Although these word files are organized by parts of speech (e.g. "; code{"Nouns.nytril"}; ", "; code{"Adjectives.nytril"}; ", etc..), this has no effect other than to break them up into smaller chunks for easier editing. ";
-        "In other words, it is organized in the way that makes the most sense to a linguist, but when processed, they are aggregated and sorted in a different way. ";
+
+
+         style.Par {
+        "The next stage consisted of assembling the cognate word forms. ";
+        "These are stored as strings in nytril source files organized by concept and language. ";
+        "Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. ";
+        "Dashes between IPA symbols provide an initial vertical alignment of segments. ";
+        "Syllable stress marks may appear in the strings but are ignored in the present analysis. ";
+        "Although the word files are grouped by part of speech (e.g., ";
+        code{"Nouns.nytril"};
+        ", ";
+        code{"Adjectives.nytril"};
+        "), this organization is purely editorial. ";
+        "During processing, all forms are aggregated and reorganized programmatically. ";
       };
-      style.Par {
-        "The next step involves software. The strings are decoded and the UCS code points are turned into an array of VocalSegment objects. ";
-        "Since the IPA characters contain diacritic marks and have a variable length, the code points in the strings must be normalized to a specific form before being compared. ";
-        "We chose Form C (NFC - Canonical precomposition), but the goal is that the diacritics are in the same relative position in all strings, for accurate comparison. ";
-        "Once these strings are parsed to object pointers, they are tested by converting them back to a string to confirm that they produce the same sequence as the starting point. ";
-        "The segment objects are next grouped into words, and associated by category, cognate and language until the final result is a large conventional data structure representing all of the raw data in the experiment. ";
+
+
+        style.Par {
+        "The strings are then decoded and converted into arrays of ";
+        code{"VocalSegment"};
+        " objects. ";
+        "Since IPA characters may consist of multiple Unicode code points and include combining diacritics, all strings are normalized to Unicode Form C (NFC) prior to comparison. ";
+        "This ensures that diacritics occupy consistent relative positions across strings. ";
+        "After parsing, each word is reconstructed from its object representation to verify fidelity to the original encoding. ";
+        "The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. ";
       };
-      style.Par {
-        "The next step is to produce a series of diagnostic documents that show the data in a variety of tables and charts. ";
-        "The goal is to slice the words and data in different ways to allow the researcher to spot any mistakes in alignments or composition. ";
+
+         style.Par {
+        "Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. ";
+        "These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. ";
+        "Once the dataset has been validated, an experiment snapshot is generated. ";
+        "This process produces a directory of nytril and JSON files that serve as input to the program ";
+        code{"TongueTwister"};
+        ". ";
       };
-      style.Par {
-        "When the team is statisfied that the data is well formed, a process is run to take all of the data and create an experiment snapshot. ";
-        "This builds a folder full of various files in nytril and JSON format, that are read by the TongueTwister program. ";
+
+
+    style.Par {
+        code{"TongueTwister"};
+        " performs the MCMC analysis, which may run for several days and produces tree files and associated output. ";
+        "The resulting files are then processed by ";
+        code{"TongueTwisterReader"};
+        ", which aggregates posterior summaries and generates formatted output files in nytril format. ";
+                "Finally, a nytril-based program reads the processed output and produces the tables, charts, and figures included in the manuscript. ";
+        "These graphical outputs are integrated with narrative text to generate the final paper and presentation materials. ";
+        style.FigureReference(Figures.Workflow);
+        " provides a schematic overview of the workflow. ";
       };
-      style.Par {
-        "TongueTwister performs the MCMC calculations (that run for several days) and produce a large set of tree files and related output. ";
-        "After this is complete, these files are read by another program called TongueTwisterReader that does the final statistical aggregation and produces final output files in the nytril format. ";
-      };
+
+
 
       style.AddFigure(Figures.Workflow, FigureOptions.Bottom | FigureOptions.Full);
 
-      style.Par {
-        "Finally, these files are read by a program written in nytril that takes the final output files and produces a series of tables, charts and figures. ";
-        "These figures are combined with narrative from the researchers, to produce the final paper and presentation slide decks. ";
-        style.FigureReference(Figures.Workflow); " shows a model of this workflow. ";
-      };
+
+
     };
   };
 }

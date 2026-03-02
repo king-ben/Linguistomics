@@ -880,7 +880,7 @@ readonly namespace<DocReference> References {
     BookTitle : "The handbook of historical linguistics";
     Date      : #2021#;
     Chapter   : 11;
-    Pages     : 226-253;
+    Pages     : 226..253;
     DOI       : "10.1002/9781118732168.ch11";
     AuthorLink to [People.Greenhill_Simon, People.Heggarty_Paul, People.Gray_Russell];
     EditorLink to [People.Joseph_Brian, People.Janda_Richard, People.Vance_Barbara];
