@@ -452,7 +452,9 @@ readonly namespace<Organization> Organizations {
     Link to new City(#a4335259-e592-4f3c-96ba-5571d05a3646#, "Stroudsburg") {Link to USStates.Pennsylvania};
   };
 
-  WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika");
+  WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika") {
+     Link to new City(#bfc512da-660a-48fd-9a55-0bcb07c4b1ce#, "Toruń")
+  };
 
 
   Udlr = new(#038f2ab8-df07-44ba-b4ce-6f01e27c7f7d#, "Universidad de la República");
@@ -1210,15 +1212,16 @@ readonly namespace<DocReference> References {
     Volume : 55;
     Number : 1;
     Pages  : 79..103;
-    DOI    : "10.1007%2Fs10579-019-09483-3";
+    DOI    : "10.1007/s10579-019-09483-3";
     AuthorLink to [People.Moran_Steven, People.Grossman_Eitan, People.Verkerk_Annemarie];
     JournalLink to Organizations.LanguageResourcesAndEvaluation;
   };
 
   Moran2018 = new(#6d6ce635-8ca1-4469-a37c-2aba99b9e0f3#, InProceedings) {
     Title    : "Differential rates of change in consonant and vowel systems";
-    BookTitle: "Proceedings of the 12th International Conference on the Evolution of Language (Evolang12)";
+    BookTitle: "Proceedings of the 12th International Conference on the Evolution of Language (EvoLang12)";
     Date     : #2018#;
+    Pages    : 322..325;
     AuthorLink to [People.Moran_Steven, People.Verkerk_Annemarie];
     PublisherLink to Organizations.WydawnictwoNaukoweUniwersytetuMikołajaKopernika;
   };
@@ -1247,9 +1250,6 @@ readonly namespace<DocReference> References {
     Title    : "Phonetics and historical phonology";
     DOI      : "10.1002/9780470756393.ch22";
     Date     : #2003#;
-    Chapter  : 22;
-
-    Link to new URL("onlinelibrary.wiley.com/doi/abs/10.1002/9780470756393.ch22");
     AuthorLink to People.Ohala_John;
     EditorLink to [People.Joseph_Brian, People.Janda_Richard];
     PublisherLink to Organizations.WileyBlackwell;
@@ -1426,9 +1426,9 @@ readonly namespace<DocReference> References {
 
   Tadmor2010 = new(#1efbe8ed-4d76-4876-8487-ae8e0b9e7b53#, Article) {
     Title       : "Borrowability and the notion of basic vocabulary";
-    Date        : #2010-10#;
+    Date        : #2010#;
     Volume      : 27;
-    Number       : 2;
+    Number      : 2;
     Pages       : 226..246;
     DOI         : "10.1075/dia.27.2.04tad";
     AuthorLink to [People.Tadmor_Uri, People.Haspelmath_Martin, People.Taylor_Bradley];
@@ -1449,6 +1449,7 @@ readonly namespace<DocReference> References {
     Date   : #1991#;
     Volume : 33;
     Pages  : 114..124;
+    DOI    : "10.1007/BF02193625";
     AuthorLink to [People.Thorne_Jeffrey, People.Kishino_Hirohisa, People.Felsenstein_Joseph];
     JournalLink to Organizations.JournalMolecularEvolution;
   };
