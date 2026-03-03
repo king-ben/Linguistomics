@@ -586,7 +586,7 @@ readonly namespace<DocReference> References {
     BookTitle: "Creole studies";
     Date     : #2017#;
     Pages    : 35..58;
-    DOI      : "10.1080/10635150590950317";
+    DOI      : "10.1075/Z.211.03Bor";
     AuthorLink to [People.Borchsenius_Finn, People.DavalMarkussen_Aymeric, People.Bakker_Peter];
     EditorLink to [People.Bakker_Peter, People.Borchsenius_Finn, People.Levisen_Carsten, People.Sippola_Eeva];
     PublisherLink to Organizations.JohnBenjamins;
@@ -597,6 +597,7 @@ readonly namespace<DocReference> References {
     Date   : #2013#;
     Volume : 110;
     Pages  : 4224..4229;
+    DOI    : "10.1073/pnas.1204678110";
     AuthorLink to [People.BouchardCôté_Alexandre, People.Hall_David, People.Griffiths_Thomas, People.Klein_Dan];
     JournalLink to Organizations.PNAS;
   };
@@ -607,13 +608,14 @@ readonly namespace<DocReference> References {
     Volume : 110;
     Number : 4;
     Pages  : 1160..1166;
+    DOI    : "10.1073/pnas.1220450110";
     AuthorLink to [People.BouchardCôté_Alexandre, People.Jordan_Michael];
     JournalLink to Organizations.PNAS;
   };
 
   Bouckaert2012 = new(#e5bb8a1b-9f10-4962-8121-c24e26171a99#, Article) {
     Title  : "Mapping the origins and expansion of the Indo-European language family";
-    Date   : #2012-8#;
+    Date   : #2012#;
     Volume : 337;
     Number : 6097;
     Pages  : 957..960;
@@ -625,7 +627,7 @@ readonly namespace<DocReference> References {
 
   Bowern2012 = new(#a9f4ab68-e73f-4e0c-9259-a27671329a55#, Article) {
     Title  : "Computational phylogenetics and the internal structure of Pama-Nyungan";
-    Date   : #2012-12#;
+    Date   : #2012#;
     Number : 4;
     Pages  : 817..845;
     Volume : 88;
@@ -636,7 +638,7 @@ readonly namespace<DocReference> References {
 
   Bromham2017 = new(#9fb22e28-2140-44a8-94b1-ca96209af1d2#, Article) {
     Title  : "Curiously the same: Swapping tools between linguistics and evolutionary biology";
-    Date   : #2017-12#;
+    Date   : #2017#;
     Volume : 32;
     Number : 6;
     Pages  : 855..886;
@@ -655,10 +657,11 @@ readonly namespace<DocReference> References {
 
   Bybee2022 = new(#357d563a-c463-4723-b48f-bea18898dd80#, Article) {
     Title  : "Primal consonants and the evolution of consonant inventories";
-    Date   : #2022-06#;
+    Date   : #2022#;
     Volume : 13;
     Pages  : 1..33;
     Number : 1;
+    DOI    : "10.1163/22105832-bja10020";
     AuthorLink to [People.Bybee_Joan, People.Easterday_Shelece];
     JournalLink to Organizations.LanguageDynamicsAndChange;
   };
@@ -669,8 +672,9 @@ readonly namespace<DocReference> References {
     Date: #2019#;
     Volume : 14;
     Number : 10;
-    Pages: "e0223588";
-    DOI : "10.1371/journal.pone.0223588";
+    EID    : "e0223588";
+    Pages  : 1..33;
+    DOI    : "10.1371/journal.pone.0223588";
     JournalLink to Organizations.PlosOne;
     AuthorLink to [People.Carling_Gerd, People.Cronhamm_Sandra, People.Farren_Robert, People.Aliyev_Elnur];
   };
@@ -730,6 +734,7 @@ readonly namespace<DocReference> References {
     Number : 1;
     Volume : 37;
     Pages  : 219..234;
+    DOI    : "10.1146/annurev.anthro.37.081407.085156";
     AuthorLink to [People.Croft_William];
     JournalLink to Organizations.AnnualReviewOfAnthropology;
   };
@@ -775,8 +780,6 @@ readonly namespace<DocReference> References {
     Pages: 35..54;
     Date : #2019-08#;
     Volume: 16;
-    ISSN : "2756-1224";
-    Link to new URL("www.lddjournal.org/article/id/1204/");
     AuthorLink to [People.Dockum_Rikker, People.Bowern_Claire];
     JournalLink to Organizations.LanguageDocumentationAndDescription;
     EditorLink to People.Austin_Peter;
@@ -1530,7 +1533,9 @@ readonly namespace<DocReference> References {
     Title  : "Alignment uncertainty and genomic analysis";
     Date   : #2008#;
     Volume : 319;
+    Number : 5682;
     Pages  : 473..476;
+    DOI    : "10.1126/science.1151532";
     AuthorLink to [People.Wong_Karen, People.Suchard_Marc, People.Huelsenbeck_John];
     JournalLink to Organizations.Science;
   };
