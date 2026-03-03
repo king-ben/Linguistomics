@@ -1143,19 +1143,18 @@ readonly namespace<DocReference> References {
     JournalLink to Organizations.JournalComputationalBiology;
   };
 
-  Lunter2004 = new(#9004afba-3ffc-4da5-83e8-a5d90a3fef6f#, InCollection) {
+  Lunter2005a = new(#9004afba-3ffc-4da5-83e8-a5d90a3fef6f#, InCollection) {
     Title    : "Statistical alignment";
     Subtitle : "Recent progress, new applications, and challenges";
-    Date     : #2004#;
+    Date     : #2005#;
     BookTitle: "Statistical methods in molecular evolution";
-    Series   : "Series in Statistics in Health and Medicine";
-
+    Pages    : 375..405;
     AuthorLink to [People.Lunter_Gerton, People.Drummond_Alexei, People.Miklós_István, People.Hein_Jotun];
     EditorLink to People.Nielsen_Rasmus;
     PublisherLink to Organizations.SpringerVerlag;
   };
 
-  Lunter2005 = new(#5315c136-a908-452d-aa88-e431a9c0ff79#, Article) {
+  Lunter2005b = new(#5315c136-a908-452d-aa88-e431a9c0ff79#, Article) {
     Title  : "Bayesian coestimation of phylogeny and sequence alignment";
     Date   : #2005#;
     Volume : 6;

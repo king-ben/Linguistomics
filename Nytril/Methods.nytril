@@ -1258,7 +1258,7 @@ class PhylogenyResultsSection: Content {
       var run = MainResults.MainRun;
       TextDigits: 3;
       "This difficulty does not appear to have arisen in earlier applications of TKF91";
-      Citep {Lunter2004}; ", which analyzed an alignment of amino acid sequences. ";
+      Citep {Lunter2005a}; ", which analyzed an alignment of amino acid sequences. ";
       "Our analysis of cognate data yielded insertion and deletion rates that were large relative to substitution rates: ";
          EqSpan{InsertionRate; Tex.Equals; run.InsertionRate};
       " (";
@@ -2168,7 +2168,7 @@ style.Par {
   "We construct a Markov chain whose state space consists of the full set of model parameters and whose stationary distribution coincides with the posterior distribution of interest. ";
   "After convergence, the samples drawn from this chain constitute dependent but valid draws from the posterior. ";
   "In addition to phylogenetic parameters, the MCMC algorithm jointly samples segmental alignments";
-  Citep{Lunter2004};
+  Citep{Lunter2005a};
   DotSpace;
 };
 
@@ -3196,7 +3196,7 @@ NewProposal(NewValueProposal, RateMatrixParams);
       DotSpace;
       "The distinctive feature of the present analysis is the inclusion of proposals for segmental alignments. ";
       "We implement the alignment proposal strategy described by";
-      Citet{Lunter2005};
+      Citet{Lunter2005b};
       DotSpace;
     };
 
