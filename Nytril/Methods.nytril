@@ -789,7 +789,7 @@ readonly SegmentOccuranceFigure Figures.SegmentOccuranceRates = new(MainResults.
 
 class SegmentOccuranceFigure: ExperimentContent {
   Constructor(ExperimentData data) {
-    super.Constructor(data, "Segment Occurence Rates");
+    super.Constructor(data, "Segment Occurrence Rates");
     Data = data;
   }
 

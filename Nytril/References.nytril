@@ -745,7 +745,7 @@ readonly namespace<DocReference> References {
   };
 
   DistinctiveFeature = new(#1b2dd73f-1dfc-4ca7-b0cd-a81dc18afbfc#, Misc) {
-    Title: "Distinctive Feature";
+    Title: "Distinctive feature";
     Date : #2020#;
     WikipediaLink("Distinctive_feature");
     PublisherLink to Organizations.Wikipedia;
@@ -803,7 +803,6 @@ readonly namespace<DocReference> References {
     Date      : #2016-06#;
     Pages     : 577..587;
     DOI       : "10.1093/acprof:oso/9780199677108.003.0032";
-    ISBN      : "9780199677108";
     AuthorLink to [People.Dworkin_Steven];
     EditorLink to [People.Ledgeway_Adam,People.Maiden_Martin];
     PublisherLink to Organizations.OxfordPress;
@@ -887,7 +886,7 @@ readonly namespace<DocReference> References {
   };
 
   Harris2003 = new(#cf468e54-8e72-4e57-9e9d-5299f9ecd983#, Book) {
-    Title: "The Romance Languages";
+    Title: "The Romance languages";
     Date : #2003#;
     AuthorLink to [People.Harris_Martin, People.Vincent_Nigel];
     PublisherLink to Organizations.Routledge;
@@ -955,7 +954,7 @@ readonly namespace<DocReference> References {
     Number : 6656;
     Volume : 381;
     EID    : "eabg0818";
-    DOI    : "10.1126%2Fscience.abg0818";
+    DOI    : "10.1126/science.abg0818";
     AuthorLink to [People.Heggarty_Paul, People.Anderson_Cormac, People.Scarborough_Matthew, People.King_Benedict, People.Bouckaert_Remco, People.Jocz_Lechosław,
                    People.Kümmel_Martin, People.Jügel_Thomas, People.Irslinger_Britta, People.Pooth_Roland, People.Liljegren_Henrik, People.Strand_Richard,
                    People.Haig_Geoffrey, People.Macák_Martin, People.Kim_Ronald, People.Anonby_Erik, People.Pronk_Tijmen, People.Belyaev_Oleg, People.DeweyFindell_Tonya,
@@ -1000,7 +999,7 @@ readonly namespace<DocReference> References {
   };
 
   IPAInformation = new(#7aa3f54f-7454-487f-bbd4-afaeb7ded0f0#, Misc) {
-    Title: "IPA Symbols Chart Complete";
+    Title: "IPA symbols chart complete";
     Date : #2019#;
 
     Link to new URL("www.internationalphoneticalphabet.org/ipa-charts/ipa-symbols-chart-complete");
@@ -1037,14 +1036,14 @@ readonly namespace<DocReference> References {
   };
 
   Jeffreys1939 = new(#c74553a3-0bd3-4dd0-a7b3-a46556e067cb#, Book) {
-    Title: "Theory of Probability";
+    Title: "Theory of probability";
     Date : #1939#;
     AuthorLink to People.Jeffreys_Harold;
     PublisherLink to Organizations.OxfordPress;
   };
 
   Jeffreys1961 = new(#8aa5050c-b02e-417c-be4f-c95ca8d817c4#, Book) {
-    Title: "Theory of Probability";
+    Title: "Theory of probability";
     Date : #1961#;
     Edition: 3;
     AuthorLink to People.Jeffreys_Harold;
@@ -1147,7 +1146,7 @@ readonly namespace<DocReference> References {
     Title    : "Statistical Alignment";
     Subtitle : "Recent progress, new applications, and challenges";
     Date     : #2004#;
-    BookTitle: "Statistical methods in Molecular Evolution";
+    BookTitle: "Statistical methods in molecular evolution";
     Series   : "Series in Statistics in Health and Medicine";
 
     AuthorLink to [People.Lunter_Gerton, People.Drummond_Alexei, People.Miklós_István, People.Hein_Jotun];
@@ -1235,7 +1234,7 @@ readonly namespace<DocReference> References {
   };
 
   Nytrilprogram = new(#2df60d8c-4e4c-4978-854c-26aba70f6bb8#, Misc) {
-    Title: "The Nytril Programming Language";
+    Title: "The Nytril programming language";
     Date : #2024#;
     AuthorLink to [People.McCreight_Shawn,People.Colbert_John];
     PublisherLink to Organizations.NytrilLLC;
@@ -1249,7 +1248,6 @@ readonly namespace<DocReference> References {
     DOI      : "10.1002/9780470756393.ch22";
     Date     : #2003#;
     Chapter  : 22;
-    ISBN     : "9780470756393";
 
     Link to new URL("onlinelibrary.wiley.com/doi/abs/10.1002/9780470756393.ch22");
     AuthorLink to People.Ohala_John;
@@ -1324,7 +1322,7 @@ readonly namespace<DocReference> References {
   };
 
   Posner1996 = new(#a3d4fe36-5d02-404a-a795-b78c78af4717#, Book) {
-    Title: "The Romance Languages";
+    Title: "The Romance languages";
     Date : #1996#;
     AuthorLink to People.Posner_Rebecca;
     PublisherLink to Organizations.CambridgePress;
@@ -1383,12 +1381,12 @@ readonly namespace<DocReference> References {
   };
 
   SoundComparisons = new(#187b7119-5e3e-42e7-a7a4-d05113d27c43#, Misc) {
-    Title: "Sound Comparisons: Romance";
+    Title: "Sound comparisons: Romance";
     Link to new URL("soundcomparisons.com/Romance");
     Accessed: #2022-3-7#;
     AuthorLink to [People.Heggarty_Paul, People.Abete_Giovanni];
     Date: #2019#;
-    DOI: "heggarty_sound_2019-1";
+    //DOI: "heggarty_sound_2019-1";
   };
 
   SpanishMap = new(#7f13abe8-4c71-4d5a-a46e-440a183cb879#, Art) {
@@ -1535,7 +1533,7 @@ readonly namespace<DocReference> References {
   };
 
   XSAMPA = new(#2f6f840e-1b25-4963-9517-391252e6e80e#, Book) {
-    Title: "Extended Speech Assessment Methods Phonetic Alphabet";
+    Title: "Extended speech assessment methods phonetic alphabet";
     Date : #2019#;
     WikipediaLink("X-SAMPA");
     PublisherLink to Organizations.Wikipedia;
