@@ -370,10 +370,6 @@ readonly namespace<Equation> Equations {
       Equals;
       SpanParens {MaxBranch};
       "!!";
-      Equals;
-      ProductList {
-        1; 3; MaxBranch;
-      };
     };
     DefinitionLink to BN;
   };

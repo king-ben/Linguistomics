@@ -954,7 +954,7 @@ readonly namespace<DocReference> References {
     Date   : #2023-7#;
     Number : 6656;
     Volume : 381;
-    Pages  : "eabg0818";
+    EID    : "eabg0818";
     DOI    : "10.1126%2Fscience.abg0818";
     AuthorLink to [People.Heggarty_Paul, People.Anderson_Cormac, People.Scarborough_Matthew, People.King_Benedict, People.Bouckaert_Remco, People.Jocz_Lechosław,
                    People.Kümmel_Martin, People.Jügel_Thomas, People.Irslinger_Britta, People.Pooth_Roland, People.Liljegren_Henrik, People.Strand_Richard,
