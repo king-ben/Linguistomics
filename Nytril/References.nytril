@@ -1078,6 +1078,7 @@ readonly namespace<DocReference> References {
     Date     : #1969#;
     Pages    : 21..123;
     Volume   : 3;
+    DOI      : " 10.1016/B978-1-4832-3211-9.50009-7";
     AuthorLink to [People.Jukes_Thomas, People.Cantor_Charles];
     EditorLink to People.Munro_H;
     PublisherLink to Organizations.AcademicPress;
@@ -1135,6 +1136,7 @@ readonly namespace<DocReference> References {
     Date   : #2001#;
     Volume : 50;
     Pages  : 913..925;
+    DOI    : "10.1080/106351501753462876";
     AuthorLink to People.Lewis_Paul;
     JournalLink to Organizations.SystematicBiology;
   };
@@ -1150,8 +1152,9 @@ readonly namespace<DocReference> References {
   };
 
   Loporcaro2015 = new(#e37d002a-d402-4fc6-b670-db77bce9a80e#, Book) {
-    Title: "Vowel length from Latin to Romance";
-    Date : #2015#;
+    Title : "Vowel length from Latin to Romance";
+    Date  : #2015#;
+    DOI   : "10.1093/acprof:oso/9780199656554.001.0001";
     AuthorLink to People.Loporcaro_Michele;
     PublisherLink to Organizations.OxfordPress;
   };
@@ -1173,6 +1176,7 @@ readonly namespace<DocReference> References {
     Date     : #2005#;
     BookTitle: "Statistical methods in molecular evolution";
     Pages    : 375..405;
+    DOI      : "10.1007/0-387-27733-1_14";
     AuthorLink to [People.Lunter_Gerton, People.Drummond_Alexei, People.Miklós_István, People.Hein_Jotun];
     EditorLink to People.Nielsen_Rasmus;
     PublisherLink to Organizations.SpringerVerlag;
@@ -1293,20 +1297,22 @@ readonly namespace<DocReference> References {
 
    Pagel2009 = new(#45def98c-7622-4960-b2ec-3cebe0ee3dca#, Article) {
     Title  : "Human language as a culturally transmitted replicator";
-    Date   : #2009-6#;
+    Date   : #2009#;
     Volume : 10;
     Number : 6;
     Pages  : 405..415;
+    DOI    : "10.1038/nrg2560";
     JournalLink to Organizations.NatureReviewsGenetics;
     AuthorLink to People.Pagel_Mark;
   };
 
   Pagel2017 = new(#ef0fc146-9c3c-427a-afbd-f653d3050fcc#, Article) {
     Title  : "Darwinian perspectives on the evolution of human languages";
-    Date   : #2017-2#;
+    Date   : #2017#;
     Volume : 24;
     Pages  : 151..157;
     Number : 1;
+    DOI    : "Darwinian perspectives on the evolution of human languages";
     JournalLink to Organizations.PsychonomicBulletinAndReview;
     AuthorLink to People.Pagel_Mark;
   };
@@ -1376,7 +1382,7 @@ readonly namespace<DocReference> References {
 
   Ringe2002 = new(#ea2b92dc-a0d4-483f-9785-a8948788a8c2#, Article) {
     Title  : "Indo-European and computational cladistics";
-    Date   : #2002-03#;
+    Date   : #2002#;
     Number : 1;
     Pages  : 59..129;
     Volume : 100;
@@ -1394,7 +1400,7 @@ readonly namespace<DocReference> References {
 
   Sagart2019 = new(#9370e2a8-ea2c-4458-afe8-873f072de4e8#, Article) {
      Title  : "Dated language phylogenies shed light on the ancestry of Sino-Tibetan";
-     Date   : #2019-5#;
+     Date   : #2019#;
      Volume : 116;
      Number : 21;
      Pages  : 10317..10322;
@@ -1443,6 +1449,7 @@ readonly namespace<DocReference> References {
     Pages    : 21..44;
     Number   : 3;
     Volume   : 43;
+    DOI      : "10.4000/ml.1459";
     AuthorLink to [People.Swiggers_Pierre];
     JournalLink to Organizations.ModelesLinguistiques;
   };
