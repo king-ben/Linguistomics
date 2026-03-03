@@ -503,7 +503,7 @@ readonly namespace<DocReference> References {
 
  Atkinson2005 = new(#7600bd35-0d53-4392-a198-07c2ad9a0118#, Article) {
     Title  : "Curious parallels and curious connections—phylogenetic thinking in biology and historical linguistics";
-    Date   : #2005-08#;
+    Date   : #2005#;
     Volume : 54;
     Number : 4;
     Pages  : 513..526;
@@ -701,7 +701,7 @@ readonly namespace<DocReference> References {
 
   Chang2015 = new(#6078c1d3-bcb1-4b95-81c8-870d89cda832#, Article) {
     Title  : "Ancestry-constrained phylogenetic analysis supports the Indo-European steppe hypothesis";
-    Date   : #2015-3#;
+    Date   : #2015#;
     DOI    : "10.1353/lan.2015.0005";
     Number : 1;
     Pages  : 194..244;
@@ -949,7 +949,7 @@ readonly namespace<DocReference> References {
 
   Hall1950 = new(#4b9e7a42-024d-4a13-9121-5eaf99e5ebf8#, Article) {
     Title: "The reconstruction of Proto-Romance";
-    Date : #1950-3#;
+    Date : #1950#;
     Volume : 26;
     Number : 1;
     Pages  : 6..27;
@@ -970,7 +970,7 @@ readonly namespace<DocReference> References {
 
   Heggarty2023 = new(#b5f8b9a4-13dc-4f5e-8d4c-49855c5745d5#, Article) {
     Title  : "Language trees with sampled ancestors support a hybrid model for the origin of Indo-European languages";
-    Date   : #2023-7#;
+    Date   : #2023#;
     Number : 6656;
     Volume : 381;
     Pages  : 1..12;
@@ -994,7 +994,7 @@ readonly namespace<DocReference> References {
   Hoffmann2021 = new(#db333a9a-b456-47e4-88e7-123d89df3a81#, Article) {
     Title  : "Bayesian phylogenetic analysis of linguistic data using BEAST";
     DOI    : "10.1093/jole/lzab005";
-    Date   : #2021-9#;
+    Date   : #2021#;
     AuthorLink to [ People.Hoffmann, People.Konstantin, People.Bouckaert_Remco, People.Greenhill_Simon, People.Kühnert_Denise];
     JournalLink to Organizations.JournalLanguageEvolution;
   };
@@ -1012,7 +1012,7 @@ readonly namespace<DocReference> References {
 
   Hruschka2015 = new(#f5c25561-e5f9-4e5c-82a2-baf12aa75ce4#, Article) {
     Title  : "Detecting regular sound changes in linguistics as events of concerted evolution";
-    Date   : #2015-1#;
+    Date   : #2015#;
     Volume : "25.5";
     Pages  : 1..9;
     DOI    : "10.1016/j.cub.2014.10.064";
@@ -1118,7 +1118,7 @@ readonly namespace<DocReference> References {
     Volume : 55;
     Number : 2;
     Pages  : 195..207;
-    Date   : #2006-4#;
+    Date   : #2006#;
     DOI    : "10.1080/10635150500433722";
     AuthorLink to [People.Lartillot_Nicolas, People.Philippe_Hervé];
     JournalLink to Organizations.SystematicBiology;
@@ -1444,7 +1444,7 @@ readonly namespace<DocReference> References {
   Swiggers2001 = new(#edd1944f-ab32-4453-b0a7-c9f76c4c27f5#, Article) {
     Title    : "De Prague à Strasbourg";
     Subtitle : "Phonétique et phonologie du français chez Georges Gougenheim et Georges Straka";
-    Date     : #2001-1#;
+    Date     : #2001#;
     Volume   : 43;
     Pages    : 21..44;
     Number   : 3;
@@ -1510,7 +1510,7 @@ readonly namespace<DocReference> References {
 
   Wedel2019 = new(#e46c6097-719c-4e96-8cc0-7cd02ffd7f1e#, Article) {
     Title   : "Crosslinguistic evidence for a strong statistical universal. Phonological neutralization targets word-ends over beginnings";
-    Date    : #2019-12#;
+    Date    : #2019#;
     Volume  : "95.4";
     Pages   : "e428-e446";
     AuthorLink to [People.Wedel_Andrew, People.Ussishkin_Adam, People.King_Adam];
