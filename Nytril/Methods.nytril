@@ -3352,9 +3352,7 @@ class WorkflowSection: Content {
     var code = Span {TextFace: TextFaces.Mono};
 
     style.ReviewNewBlock {
-
-
-        style.Par {
+      style.Par {
         "The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. ";
         "The files ";
         code{"IPA.nytril"};
@@ -3366,8 +3364,9 @@ class WorkflowSection: Content {
         "These files were designed for reuse in future experiments and by other researchers. ";
       };
 
+      style.AddFigure(Figures.Workflow, FigureOptions.Bottom | FigureOptions.Full);
 
-         style.Par {
+      style.Par {
         "The next stage consisted of assembling the cognate word forms. ";
         "These are stored as strings in nytril source files organized by concept and language. ";
         "Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. ";
@@ -3381,8 +3380,7 @@ class WorkflowSection: Content {
         "During processing, all forms are aggregated and reorganized programmatically. ";
       };
 
-
-        style.Par {
+      style.Par {
         "The strings are then decoded and converted into arrays of ";
         code{"VocalSegment"};
         " objects. ";
@@ -3392,7 +3390,7 @@ class WorkflowSection: Content {
         "The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. ";
       };
 
-         style.Par {
+      style.Par {
         "Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. ";
         "These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. ";
         "Once the dataset has been validated, an experiment snapshot is generated. ";
@@ -3402,7 +3400,7 @@ class WorkflowSection: Content {
       };
 
 
-    style.Par {
+      style.Par {
         code{"TongueTwister"};
         " performs the MCMC analysis, which may run for several days and produces tree files and associated output. ";
         "The resulting files are then processed by ";
@@ -3413,13 +3411,6 @@ class WorkflowSection: Content {
         style.FigureReference(Figures.Workflow);
         " provides a schematic overview of the workflow. ";
       };
-
-
-
-      style.AddFigure(Figures.Workflow, FigureOptions.Bottom | FigureOptions.Full);
-
-
-
     };
   };
 }
