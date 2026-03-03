@@ -313,7 +313,9 @@ readonly namespace<City> Cities {
 }
 
 readonly namespace<Organization> Organizations {
-  AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press");
+  AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press") {
+    Link to Cities.Charlottesville;
+  };
 
   InternationalPhoneticAlphabet = new(#b825acb6-e103-49b7-96b8-d7183d0223ff#, "InternationalPhoneticAlphabet.org");
 
@@ -556,7 +558,7 @@ readonly namespace<DocReference> References {
 
   Blevins2004a = new(#102f0e7a-e6ea-4a61-ac65-008e2bd04777#, Book) {
     Title    : "Evolutionary Phonology";
-    Subtitle : "The Emergence of Sound Patterns";
+    Subtitle : "The emergence of sound patterns";
     Date     : #2004#;
     Subtitle : "The emergence of sound patterns";
     DOI      : "10.1017/CBO9780511486357";
@@ -753,6 +755,7 @@ readonly namespace<DocReference> References {
     Date   : #1971#;
     Volume : 42;
     Pages  : 204..223;
+    DOI    : "10.1214/aoms/1177693507";
     AuthorLink to [People.Dickey_James];
     JournalLink to Organizations.TheAnnalsOfMathematicalStatistics;
   };
@@ -769,7 +772,7 @@ readonly namespace<DocReference> References {
     Title: "Dictionnaire Étymologique Roman";
     Subtitle: "Les mots d’origine latine dans les langues romanes";
     Date: #2008#;
-    Link to new URL("http://www.atilf.fr/DERom,");
+    Link to new URL("http://www.atilf.fr/DERom");
     Accessed: #2025-07-04#;
     PublisherLink to Organizations.ATILF;
   };
@@ -778,7 +781,7 @@ readonly namespace<DocReference> References {
     Title: "Swadesh lists are not long enough";
     Subtitle: "Drawing phonological generalizations from limited data";
     Pages: 35..54;
-    Date : #2019-08#;
+    Date : #2019#;
     Volume: 16;
     AuthorLink to [People.Dockum_Rikker, People.Bowern_Claire];
     JournalLink to Organizations.LanguageDocumentationAndDescription;
@@ -789,7 +792,7 @@ readonly namespace<DocReference> References {
   Dunn2017 = new(#f71960df-29a6-470d-9bfd-e789d0b39415#, Article) {
    Title    : "Dative sickness";
    Subtitle : "A phylogenetic analysis of argument structure evolution in Germanic";
-   Date     : #2017-3#;
+   Date     : #2017#;
    Volume   : 93;
    Number   : 1;
    Pages    : "e1–e22";
@@ -804,14 +807,15 @@ readonly namespace<DocReference> References {
     Volume  : 132;
     Pages   : 1..19;
     Number  : 1;
+    DOI     : "10.1515/zrp-2016-0001";
     AuthorLink to [People.Dworkin_Steven];
     JournalLink to Organizations.ZeitschriftFurRomanischePhilologie;
   };
 
   Dworkin2016b = new(#801fc071-4630-4950-a6ed-ae6fa7fecd40#, InCollection) {
     Title     : "Lexical stability and shared lexicon";
-    BookTitle : "The Oxford Guide to the Romance Languages";
-    Date      : #2016-06#;
+    BookTitle : "The Oxford guide to the Romance languages";
+    Date      : #2016#;
     Pages     : 577..587;
     DOI       : "10.1093/acprof:oso/9780199677108.003.0032";
     AuthorLink to [People.Dworkin_Steven];
@@ -850,6 +854,7 @@ readonly namespace<DocReference> References {
     Date     : #2024#;
     Volume   : 41;
     Pages    : 1..45;
+    DOI      : "10.1075/dia.22031.gol";
     AuthorLink to People.Goldstein_David;
     JournalLink to Organizations.Diachronica;
   };
@@ -948,6 +953,7 @@ readonly namespace<DocReference> References {
     Volume : 26;
     Number : 1;
     Pages  : 6..27;
+    DOI    : "10.2307/410406";
     AuthorLink to People.Hall_Robert;
     JournalLink to Organizations.Language;
   };
@@ -996,9 +1002,10 @@ readonly namespace<DocReference> References {
   Holmes2001 = new(#bfa4668f-e0e9-4ae2-b6f8-b8ce9afd637d#, Article) {
     Title   : "Evolutionary HMMs";
     Subtitle: "A Bayesian approach to multiple alignment";
-    Date    : #2001-10#;
+    Date    : #2001#;
     Volume  : "17";
     Pages   : 803..820;
+    DOI     : "10.1093/bioinformatics/17.9.803";
     JournalLink to Organizations.Bioinformatics;
     AuthorLink to [People.Holmes_Ian, People.Bruno_William];
   };
@@ -1098,7 +1105,7 @@ readonly namespace<DocReference> References {
     Date        : #1990#;
     Volume      : 1;
     Pages       : 287..300;
-    BookSubtitle: "Antiquitity-17th century";
+    BookSubtitle: "Antiquitity–17th century";
     BookTitle   : "History and historiography of linguistics. Proceedings of the Fourth International Conference on the History of the Language Sciences (ICHoLS IV), Trier, 24..28 August 1987.";
     DOI         : "10.1075/sihols.51.1.31kou";
     AuthorLink to [People.Koutna_Olga, People.Niederehe_HansJosef, People.Koerner_Konrad];
