@@ -598,6 +598,7 @@ readonly namespace<DocReference> References {
     Title  : "Evolutionary inference via the Poisson Indel Process";
     Date   : #2013#;
     Volume : 110;
+    Number : 4; 
     Pages  : 1160..1166;
     AuthorLink to [People.BouchardCôté_Alexandre, People.Jordan_Michael];
     JournalLink to Organizations.PNAS;
