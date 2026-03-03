@@ -482,6 +482,7 @@ readonly namespace<DocReference> References {
     Volume : 383;
     Number : 6682;
     Pages  : 519..523;
+    DOI    : "10.1126/science.add7766";
     AuthorLink to [People.Abner_Natasha, People.Clarte_Gregoire, People.Geraci_Carlo, People.Ryder_Robin, People.Mertz_Justine, People.Salgat_Anah, People.Yu_Shi];
     JournalLink to Organizations.Science;
   };
@@ -490,6 +491,7 @@ readonly namespace<DocReference> References {
    Title: "Liquid dissimilation as listener hypocorrection";
    Date : #2013#;
    Pages : 3..17;
+   DOI   : "10.3765/bls.v37i1.3195";
    BookTitle : "Proceedings of the 37th Annual Meeting of the Berkeley Linguistics Society";
    AuthorLink to [People.Abrego_Carissa];
    EditorLink to [People.Cathcart_Chundra, People.Chen_IHsuan, People.Finley_Greg, People.Kang_Shinae, People.Sandy_Clare, People.Stickles_Elise];
@@ -503,6 +505,7 @@ readonly namespace<DocReference> References {
     Volume : 54;
     Number : 4;
     Pages  : 513..526;
+    DOI    : "10.1080/10635150590950317";
     AuthorLink to [People.Atkinson_Quentin, People.Gray_Russell];
     JournalLink to Organizations.SystematicBiology;
   };
@@ -530,11 +533,12 @@ readonly namespace<DocReference> References {
   };
 
   Larget1999 = new(#e198cdcd-03fe-469b-bc25-f995faa471fd#, Article) {
-    Title  : "Markov Chain Monte Carlo Algorithms for the Bayesian Analysis of Phylogenetic Trees";
+    Title  : "Markov chain Monte Carlo algorithms for the Bayesian analysis of phylogenetic trees";
     Date   : #1999#;
     Volume : 16;
     Number : 6;
     Pages  : 750..759;
+    DOI    : "10.1093/oxfordjournals.molbev.a026160";
     AuthorLink to [People.Larget_Bret, People.Simon_Donald];
     JournalLink to Organizations.MolBioEvo;
   };
@@ -582,6 +586,7 @@ readonly namespace<DocReference> References {
     BookTitle: "Creole studies";
     Date     : #2017#;
     Pages    : 35..58;
+    DOI      : "10.1080/10635150590950317";
     AuthorLink to [People.Borchsenius_Finn, People.DavalMarkussen_Aymeric, People.Bakker_Peter];
     EditorLink to [People.Bakker_Peter, People.Borchsenius_Finn, People.Levisen_Carsten, People.Sippola_Eeva];
     PublisherLink to Organizations.JohnBenjamins;
@@ -817,6 +822,7 @@ readonly namespace<DocReference> References {
     Date     : #1981#;
     Volume   : 17;
     Pages    : 368..376;
+    DOI      : "10.1007/BF01734359";
     AuthorLink to [People.Felsenstein_Joseph];
     JournalLink to Organizations.JournalMolecularEvolution;
   };
@@ -873,6 +879,7 @@ readonly namespace<DocReference> References {
     Volume : "82";
     Number : "4";
     Pages  : 711..732;
+    DOI: "10.1093/biomet/82.4.711";
     AuthorLink to [People.Green_Peter];
     JournalLink to Organizations.Biometrika;
   };
@@ -947,6 +954,7 @@ readonly namespace<DocReference> References {
     Date   : #1970#;
     Volume : 57;
     Pages  : 97..109;
+    DOI    : "10.2307/2334940";
     AuthorLink to People.Hastings_Wilfred;
     JournalLink to Organizations.Biometrika;
   };
@@ -956,6 +964,7 @@ readonly namespace<DocReference> References {
     Date   : #2023-7#;
     Number : 6656;
     Volume : 381;
+    Pages  : 1..12;
     EID    : "eabg0818";
     DOI    : "10.1126/science.abg0818";
     AuthorLink to [People.Heggarty_Paul, People.Anderson_Cormac, People.Scarborough_Matthew, People.King_Benedict, People.Bouckaert_Remco, People.Jocz_Lechosław,
@@ -1058,6 +1067,7 @@ readonly namespace<DocReference> References {
     BookTitle: "Mammalian protein metabolism";
     Date     : #1969#;
     Pages    : 21..123;
+    Volume   : 3;
     AuthorLink to [People.Jukes_Thomas, People.Cantor_Charles];
     EditorLink to People.Munro_H;
     PublisherLink to Organizations.AcademicPress;
@@ -1098,6 +1108,7 @@ readonly namespace<DocReference> References {
     Number : 2;
     Pages  : 195..207;
     Date   : #2006-4#;
+    DOI    : "10.1080/10635150500433722";
     AuthorLink to [People.Lartillot_Nicolas, People.Philippe_Hervé];
     JournalLink to Organizations.SystematicBiology;
   };
@@ -1141,6 +1152,7 @@ readonly namespace<DocReference> References {
     Volume : 10;
     Pages  : 869..889;
     Number : 6;
+    DOI    : "10.1089/106652703322756122";
     AuthorLink to [People.Lunter_Gerton, People.Miklós_István, People.Song_Yun, People.Hein_Jotun];
     JournalLink to Organizations.JournalComputationalBiology;
   };
@@ -1202,6 +1214,7 @@ readonly namespace<DocReference> References {
     Date   : #1953#;
     Volume : 21;
     Pages  : 1087..1092;
+    DOI    : "10.1063/1.1699114";
     AuthorLink to [People.Metropolis_Nicholas, People.Rosenbluth_Arianna, People.Rosenbluth_Marshall, People.Teller_Augusta, People.Teller_Edward];
     JournalLink to Organizations.JournalChemicalPhysics;
   };
@@ -1528,7 +1541,7 @@ readonly namespace<DocReference> References {
     Number : 2;
     Pages  : 150..160;
     Date   : #2010#;
-    ISSN   : "1063-5157";
+    DOI    : "10.1093/sysbio/syq085";
     AuthorLink to [People.Xie_Wangang, People.Lewis_Paul, People.Fan_Yu, People.Kuo_Lynn, People.Chen_MingHui];
     JournalLink to Organizations.SystematicBiology;
   };
