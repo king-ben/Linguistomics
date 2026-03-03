@@ -309,7 +309,8 @@ readonly namespace<Person> People {
 //======================================================================
 
 readonly namespace<City> Cities {
-  Passau = new(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
+  Passau          = new(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
+  Charlottesville = new(#a7ef7900-4886-4c56-ab23-b1b0ccb13f84#, "Charlottesville") {Link to USStates.Virginia};
 }
 
 readonly namespace<Organization> Organizations {
