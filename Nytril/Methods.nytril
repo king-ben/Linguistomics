@@ -996,6 +996,16 @@ class AlignmentFigure: Content {
     super.Constructor(Lang.Alignment);
   }
 
+  override GetCaption(ContentStyle style) = Span {
+    "Alignments (";
+    SegmentalAlignment;
+    ") are formed from the observed segments (";
+    SegmentalInfo;
+    ") and a homology map (";
+    HomologyMap;
+    "). ";
+  };
+
   TName(ContentStyle style, Taxon taxon) = Span {
     style.SansSerif;
     taxon.Language;
@@ -1104,16 +1114,6 @@ class AlignmentFigure: Content {
         MapTable(style, data, example, map, true);
       };
     };
-  };
-
-  override GetCaption(ContentStyle style) = Span {
-    "Alignments (";
-    SegmentalAlignment;
-    ") are formed from the observed segments (";
-    SegmentalInfo;
-    ") and a homology map (";
-    HomologyMap;
-    "). ";
   };
 
   override GetBody(ContentStyle style)= VBox {
@@ -2504,8 +2504,6 @@ class PhylogenySection: Content {
       " sampled languages and either their divergence times or the amount of evolutionary change accumulated along each branch. ";
     };
 
-    style.AddFigure(Figures.ExampleTree, Bottom | Full, 70%);
-
     style.Par {
       style.FigureReference(Figures.ExampleTree);
       " illustrates an example phylogeny for ";
@@ -2604,6 +2602,8 @@ class PhylogenySection: Content {
       DotSpace;
     };
 
+    style.AddFigure(Figures.ExampleTree, Bottom | Full, 80%);
+
     style.Par {
       "The interior nodes of the tree correspond to divergence events that occurred at specific times in the past. ";
       "These divergence times are denoted ";
@@ -2679,9 +2679,9 @@ class PhylogenyDataSection: Content {
     };
 
     style.BodyTable([1", 5"]) {
+      TextHeight: 10pt;
       foreach (var a in attribute(ExampleAnimals).Children) {
         Row {
-          TextHeight: 10pt;
           a.Name;
           Cell {
             Span {
@@ -2736,8 +2736,6 @@ class PhylogenyDataSection: Content {
 
     SegmentTable(style, ec, data, true);
 
-    style.AddFigure(Figures.Alignment, Bottom | Full, 80%);
-
     style.Par {
       "The word for ";
       style.SQuote{ec.Name};
@@ -2785,6 +2783,8 @@ class PhylogenyDataSection: Content {
     };
 
     SegmentTable(style, ec, MainResults.Data, false);
+
+    style.AddFigure(Figures.Alignment, Bottom | Full, 80%);
 
     style.Par {
       "For example, for ";
@@ -3320,7 +3320,7 @@ class WorkflowSection: Content {
         "These files were designed for reuse in future experiments and by other researchers. ";
       };
 
-      style.AddFigure(Figures.Workflow, Bottom | Full);
+      style.AddFigure(Figures.Workflow, Top | Full);
 
       style.Par {
         "The next stage consisted of assembling the cognate word forms. ";

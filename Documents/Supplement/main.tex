@@ -209,7 +209,7 @@ $$
 R= \min (1, \frac{f(\textit{$\theta$}' \vert \mathbf{X})f(\textit{$\theta$}\vert \mathbf{X})}{f(\textit{$\theta$}\vert \mathbf{X})}\times \frac{f(\textit{$\theta$}' )f(\textit{$\theta$})}{f(\textit{$\theta$})}\times \frac{q(\textit{$\theta$}' \rightarrow \textit{$\theta$})q(\textit{$\theta$}\rightarrow \textit{$\theta$}' )}{q(\textit{$\theta$}\rightarrow \textit{$\theta$}' )})
 $$This quantity equals the product of the likelihood ratio, prior ratio, and proposal ratio.Draw a uniform random variable $u$ from the interval (0,1). If $u< R$, accept the proposal and set $\textit{$\theta$}= \textit{$\theta$}' $. Otherwise, reject the proposal and retain the current state.
 
-Repeat from step 1.The proposal mechanisms employed here are standard in phylogenetic inference, including the LOCAL move for updating tree topologies and branch lengths \citep{Larget1999}. The distinctive feature of the present analysis is the inclusion of proposals for segmental alignments. We implement the alignment proposal strategy described by \citet{Lunter2005}. 
+Repeat from step 1.The proposal mechanisms employed here are standard in phylogenetic inference, including the LOCAL move for updating tree topologies and branch lengths \citep{Larget1999}. The distinctive feature of the present analysis is the inclusion of proposals for segmental alignments. We implement the alignment proposal strategy described by \citet{Lunter2005b}. 
 
 In practice, the Markov chain is run for a large number of iterations. At each iteration, a proposed move is either accepted or rejected, which produces a stochastic sequence of parameter states. States are recorded at regular intervals. In our analysis, every 100th iteration was retained. Posterior summaries are derived from the retained samples. For example, the proportion of samples in which a particular alignment appears provides a Monte Carlo estimate of its posterior probability and the proportion supporting a given tree topology provides a corresponding estimate for that topology. Marginal posterior distributions for continuous parameters are estimated from the empirical distribution of sampled values. 
 
@@ -247,14 +247,6 @@ The dataset contains 102 cognate sets comprising 918 word forms and 79 distinct 
 \label{PaperSections_Workflow}
 The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. The files IPA.nytril and Segments.nytril define segment classes, with each segment represented as an instance containing its IPA symbol (e.g., /ŋ/) and a set of phonological attributes (e.g., vowel, sibilant, fricative). These files were designed for reuse in future experiments and by other researchers. 
 
-The next stage consisted of assembling the cognate word forms. These are stored as strings in nytril source files organized by concept and language. Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. Dashes between IPA symbols provide an initial vertical alignment of segments. Syllable stress marks may appear in the strings but are ignored in the present analysis. Although the word files are grouped by part of speech (e.g., Nouns.nytril, Adjectives.nytril), this organization is purely editorial. During processing, all forms are aggregated and reorganized programmatically. 
-
-The strings are then decoded and converted into arrays of VocalSegment objects. Since IPA characters may consist of multiple Unicode code points and include combining diacritics, all strings are normalized to Unicode Form C (NFC) prior to comparison. This ensures that diacritics occupy consistent relative positions across strings. After parsing, each word is reconstructed from its object representation to verify fidelity to the original encoding. The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. 
-
-Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. Once the dataset has been validated, an experiment snapshot is generated. This process produces a directory of nytril and JSON files that serve as input to the program TongueTwister. 
-
-TongueTwister performs the MCMC analysis, which may run for several days and produces tree files and associated output. The resulting files are then processed by TongueTwisterReader, which aggregates posterior summaries and generates formatted output files in nytril format. Finally, a nytril-based program reads the processed output and produces the tables, charts, and figures included in the manuscript. These graphical outputs are integrated with narrative text to generate the final paper and presentation materials. Figure$~$\ref{Workflow} provides a schematic overview of the workflow. 
-
 \begin{figure*}[b]
 \centering
 \includegraphics[width=495.9pt]{Figures/Workflow.pdf}
@@ -262,7 +254,13 @@ TongueTwister performs the MCMC analysis, which may run for several days and pro
 \label{Workflow}
 \end{figure*}
 
+The next stage consisted of assembling the cognate word forms. These are stored as strings in nytril source files organized by concept and language. Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. Dashes between IPA symbols provide an initial vertical alignment of segments. Syllable stress marks may appear in the strings but are ignored in the present analysis. Although the word files are grouped by part of speech (e.g., Nouns.nytril, Adjectives.nytril), this organization is purely editorial. During processing, all forms are aggregated and reorganized programmatically. 
 
+The strings are then decoded and converted into arrays of VocalSegment objects. Since IPA characters may consist of multiple Unicode code points and include combining diacritics, all strings are normalized to Unicode Form C (NFC) prior to comparison. This ensures that diacritics occupy consistent relative positions across strings. After parsing, each word is reconstructed from its object representation to verify fidelity to the original encoding. The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. 
+
+Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. Once the dataset has been validated, an experiment snapshot is generated. This process produces a directory of nytril and JSON files that serve as input to the program TongueTwister. 
+
+TongueTwister performs the MCMC analysis, which may run for several days and produces tree files and associated output. The resulting files are then processed by TongueTwisterReader, which aggregates posterior summaries and generates formatted output files in nytril format. Finally, a nytril-based program reads the processed output and produces the tables, charts, and figures included in the manuscript. These graphical outputs are integrated with narrative text to generate the final paper and presentation materials. Figure$~$\ref{Workflow} provides a schematic overview of the workflow. 
 
 
 \bibliographystyle{abbrvnat}
