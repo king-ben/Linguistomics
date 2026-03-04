@@ -561,7 +561,6 @@ readonly namespace<DocReference> References {
     Title    : "Evolutionary Phonology";
     Subtitle : "The emergence of sound patterns";
     Date     : #2004#;
-    Subtitle : "The emergence of sound patterns";
     DOI      : "10.1017/CBO9780511486357";
     PublisherLink to Organizations.CambridgePress;
     AuthorLink to People.Blevins_Juliette;
