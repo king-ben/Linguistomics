@@ -3047,7 +3047,6 @@ class BayesianParametersSection: Content {
     };
 
     style.Par {
-      "Prior distributions are assigned to all parameters (see Table 1). ";
       "The joint posterior distribution of the parameters is therefore:";
     };
 
@@ -3241,6 +3240,8 @@ class MCMCComparisonSection: Content {
       };
     };
 
+    style.AddFigure(Figures.Workflow, Bottom | Full);
+
     style.Par {
       "Bayesian model comparison automatically accounts for model complexity through integration over parameter space. ";
       "More complex models distribute prior probability mass over a higher-dimensional space, which effectively penalizes unnecessary parameters. ";
@@ -3319,8 +3320,6 @@ class WorkflowSection: Content {
         ") and a set of phonological attributes (e.g., vowel, sibilant, fricative). ";
         "These files were designed for reuse in future experiments and by other researchers. ";
       };
-
-      style.AddFigure(Figures.Workflow, Top | Full);
 
       style.Par {
         "The next stage consisted of assembling the cognate word forms. ";
