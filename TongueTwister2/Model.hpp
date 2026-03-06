@@ -60,13 +60,13 @@ class Model {
         std::vector<LikelihoodCalculator*>      calculators;
         std::set<unsigned>                      uniqueTaxonCombinations;
         
-        // current state: cached log-likelihoods (the accepted/known-good values)
+                                                // current state: cached log-likelihoods (the accepted/known-good values)
         std::vector<double>                     cachedLnL;          // one entry per cognate
         std::vector<bool>                       dirtyFlags;         // which cognates need recomputation
         double                                  cachedTotalLnL;     // sum of cachedLnL
         
-        /* Proposed state: new values computed during lnLikelihood()
-           These only become the cached values if the proposal is accepted */
+                                                /* Proposed state: new values computed during lnLikelihood()
+                                                   These only become the cached values if the proposal is accepted */
         std::vector<double>                     proposedLnL;        // proposed new values
         double                                  proposedTotalLnL;   // proposed new total
         bool                                    cacheInitialized;   // flag to track if cache is initialized
