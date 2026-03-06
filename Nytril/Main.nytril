@@ -47,8 +47,10 @@ readonly ReviewComment[] CommentList {
 
 readonly LinguisticsPaper    MainPaper         = new;
 readonly SupplementalContent SupplementalPaper = new;
-ContentStyle                 ReviewStyle       = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
 ContentStyle                 FinalStyle        = new JOLEStyle(None);
+ContentStyle                 SupplementStyle   = new PlainStyle;
+
+//==================================================
 
 readonly RealmSite           Main.Site  = new LinguistomicsSite;
 readonly                     Main.Facts = [People, References, Equations, WorldLanguages, CommentList];
@@ -56,16 +58,17 @@ readonly                     Main.Facts = [People, References, Equations, WorldL
 readonly namespace Main.Documents {
   HomePage            HomePage           = new;
   StyleDocument       PaperJOLE          = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, FinalStyle);
-  StyleDocument       PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
-  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplemental", SupplementalPaper, FinalStyle);
-  StyleDocument       SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplemental (Review)", SupplementalPaper, ReviewStyle);
-  StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, FinalStyle);
+  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplement", SupplementalPaper, SupplementStyle);
+  StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, SupplementStyle);
   DavidSlideShow      DavidPresentation  = new;
   JohnSlideShow       JohnPresentation   = new;
   DiagnosticsDocument Diagnostic         = new(FinalStyle, MainResults.Data);
-  StyleDocument       TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
 
-//  TexDocument       TexPaper          = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
+//  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
+//  StyleDocument     TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
+//  StyleDocument     PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
+//  StyleDocument     SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplement (Review)", SupplementalPaper, ReviewStyle);
+//  TexDocument       TexPaper           = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
 }
 
 class BioSummary: Fact {
@@ -90,11 +93,26 @@ readonly namespace<BioSummary> BioSummaries {
 
 class JOLEStyle: OUPStyle {
   Constructor(TemplateOptions options) {
-    super.Constructor("Journal of Language Evolution", options | TemplateOptions.SectionNumbers);
+    super.Constructor("Journal of Language Evolution", options | SectionNumbers);
     TexPackages.AddEach(["fontspec"]);
-    TexFont            = "Libertinus Serif";
-    SansSerif          = TextFamily: TextFamilies.LibertinusSans;
-    FigureStartPage    = 2;
+    TexFont   = "Libertinus Serif";
+    SansSerif = TextFamily: TextFamilies.LibertinusSans;
+  }
+
+  override SetTextStyle = {
+    TextHeight: 12pt;
+    TextFamily: TextFamilies.LibertinusSerif;
+  };
+}
+
+//===============================================================
+
+class PlainStyle: ContentStyle {
+  Constructor {
+    super.Constructor(ReferenceStyles.IEEE, null, 0.75", SectionNumbers);
+    TexPackages.AddEach(["fontspec"]);
+    TexFont   = "Libertinus Serif";
+    SansSerif = TextFamily: TextFamilies.LibertinusSans;
   }
 
   override SetTextStyle = {
@@ -107,7 +125,7 @@ class JOLEStyle: OUPStyle {
 
 class OtherStyle: PNASStyle {
   Constructor {
-    super.Constructor(LineNumbers | TwoColumn);
+    super.Constructor(null, LineNumbers | TwoColumn);
     TexPackages.AddEach(["jabbrv", "fontspec", "noto", "xspace"]);
   }
 
@@ -126,9 +144,9 @@ class HomePage: SitePage {
     Tiles = [
       new DocTile(Main.Documents.PaperJOLE, Icons.article),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
-      new DocTile(Main.Documents.DavidPresentation, Icons.slideshow),
-      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
+//      new DocTile(Main.Documents.DavidPresentation, Icons.slideshow),
+//      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
     ];
   }
 
@@ -139,7 +157,7 @@ class HomePage: SitePage {
       Info.Title;
     };
 
-    new JOLEStyle(None).ShowAuthorList(MainPaper, true);
+    FinalStyle.ShowAuthorList(MainPaper, true);
     Paragraph {
       SpaceAfter: 20pt;
     };

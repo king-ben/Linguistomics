@@ -106,6 +106,7 @@ readonly namespace<Person> People {
   };
   Granville_Daniel       = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
   Gray_Russell           = new(#d85e29f9-d606-47cc-ad09-4769a12ff1ab#, "Russell", "D.", "Gray");
+  Green_Peter            = new(#3ccd11a4-531b-487f-acc7-9d207dbe3da8#, "Peter", "J.", "Green");
   Greenhill_Simon        = new(#2b084456-74a8-4555-ad59-3c18c1740784#, "Simon", "J.", "Greenhill");
   Griffiths_Thomas       = new(#e7f67e70-f78b-4076-8269-7a45d624d091#, "Thomas", "L.", "Griffiths");
   Grossman_Eitan         = new(#ba8dc929-1b50-40cf-9db2-ef42f70ac020#, "Eitan", null, "Grossman");
@@ -308,11 +309,14 @@ readonly namespace<Person> People {
 //======================================================================
 
 readonly namespace<City> Cities {
-  Passau = new(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
+  Passau          = new(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
+  Charlottesville = new(#a7ef7900-4886-4c56-ab23-b1b0ccb13f84#, "Charlottesville") {Link to USStates.Virginia};
 }
 
 readonly namespace<Organization> Organizations {
-  AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press");
+  AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press") {
+    Link to Cities.Charlottesville;
+  };
 
   InternationalPhoneticAlphabet = new(#b825acb6-e103-49b7-96b8-d7183d0223ff#, "InternationalPhoneticAlphabet.org");
 
@@ -451,7 +455,9 @@ readonly namespace<Organization> Organizations {
     Link to new City(#a4335259-e592-4f3c-96ba-5571d05a3646#, "Stroudsburg") {Link to USStates.Pennsylvania};
   };
 
-  WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika");
+  WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika") {
+     Link to new City(#bfc512da-660a-48fd-9a55-0bcb07c4b1ce#, "Toruń")
+  };
 
 
   Udlr = new(#038f2ab8-df07-44ba-b4ce-6f01e27c7f7d#, "Universidad de la República");
@@ -479,6 +485,7 @@ readonly namespace<DocReference> References {
     Volume : 383;
     Number : 6682;
     Pages  : 519..523;
+    DOI    : "10.1126/science.add7766";
     AuthorLink to [People.Abner_Natasha, People.Clarte_Gregoire, People.Geraci_Carlo, People.Ryder_Robin, People.Mertz_Justine, People.Salgat_Anah, People.Yu_Shi];
     JournalLink to Organizations.Science;
   };
@@ -487,6 +494,7 @@ readonly namespace<DocReference> References {
    Title: "Liquid dissimilation as listener hypocorrection";
    Date : #2013#;
    Pages : 3..17;
+   DOI   : "10.3765/bls.v37i1.3195";
    BookTitle : "Proceedings of the 37th Annual Meeting of the Berkeley Linguistics Society";
    AuthorLink to [People.Abrego_Carissa];
    EditorLink to [People.Cathcart_Chundra, People.Chen_IHsuan, People.Finley_Greg, People.Kang_Shinae, People.Sandy_Clare, People.Stickles_Elise];
@@ -496,10 +504,11 @@ readonly namespace<DocReference> References {
 
  Atkinson2005 = new(#7600bd35-0d53-4392-a198-07c2ad9a0118#, Article) {
     Title  : "Curious parallels and curious connections—phylogenetic thinking in biology and historical linguistics";
-    Date   : #2005-08#;
+    Date   : #2005#;
     Volume : 54;
     Number : 4;
     Pages  : 513..526;
+    DOI    : "10.1080/10635150590950317";
     AuthorLink to [People.Atkinson_Quentin, People.Gray_Russell];
     JournalLink to Organizations.SystematicBiology;
   };
@@ -527,11 +536,12 @@ readonly namespace<DocReference> References {
   };
 
   Larget1999 = new(#e198cdcd-03fe-469b-bc25-f995faa471fd#, Article) {
-    Title  : "Markov Chain Monte Carlo Algorithms for the Bayesian Analysis of Phylogenetic Trees";
+    Title  : "Markov chain Monte Carlo algorithms for the Bayesian analysis of phylogenetic trees";
     Date   : #1999#;
     Volume : 16;
     Number : 6;
     Pages  : 750..759;
+    DOI    : "10.1093/oxfordjournals.molbev.a026160";
     AuthorLink to [People.Larget_Bret, People.Simon_Donald];
     JournalLink to Organizations.MolBioEvo;
   };
@@ -549,9 +559,8 @@ readonly namespace<DocReference> References {
 
   Blevins2004a = new(#102f0e7a-e6ea-4a61-ac65-008e2bd04777#, Book) {
     Title    : "Evolutionary Phonology";
-    Subtitle : "The Emergence of Sound Patterns";
-    Date     : #2004#;
     Subtitle : "The emergence of sound patterns";
+    Date     : #2004#;
     DOI      : "10.1017/CBO9780511486357";
     PublisherLink to Organizations.CambridgePress;
     AuthorLink to People.Blevins_Juliette;
@@ -579,6 +588,7 @@ readonly namespace<DocReference> References {
     BookTitle: "Creole studies";
     Date     : #2017#;
     Pages    : 35..58;
+    DOI      : "10.1075/Z.211.03Bor";
     AuthorLink to [People.Borchsenius_Finn, People.DavalMarkussen_Aymeric, People.Bakker_Peter];
     EditorLink to [People.Bakker_Peter, People.Borchsenius_Finn, People.Levisen_Carsten, People.Sippola_Eeva];
     PublisherLink to Organizations.JohnBenjamins;
@@ -589,6 +599,7 @@ readonly namespace<DocReference> References {
     Date   : #2013#;
     Volume : 110;
     Pages  : 4224..4229;
+    DOI    : "10.1073/pnas.1204678110";
     AuthorLink to [People.BouchardCôté_Alexandre, People.Hall_David, People.Griffiths_Thomas, People.Klein_Dan];
     JournalLink to Organizations.PNAS;
   };
@@ -597,14 +608,16 @@ readonly namespace<DocReference> References {
     Title  : "Evolutionary inference via the Poisson Indel Process";
     Date   : #2013#;
     Volume : 110;
+    Number : 4;
     Pages  : 1160..1166;
+    DOI    : "10.1073/pnas.1220450110";
     AuthorLink to [People.BouchardCôté_Alexandre, People.Jordan_Michael];
     JournalLink to Organizations.PNAS;
   };
 
   Bouckaert2012 = new(#e5bb8a1b-9f10-4962-8121-c24e26171a99#, Article) {
     Title  : "Mapping the origins and expansion of the Indo-European language family";
-    Date   : #2012-8#;
+    Date   : #2012#;
     Volume : 337;
     Number : 6097;
     Pages  : 957..960;
@@ -616,7 +629,7 @@ readonly namespace<DocReference> References {
 
   Bowern2012 = new(#a9f4ab68-e73f-4e0c-9259-a27671329a55#, Article) {
     Title  : "Computational phylogenetics and the internal structure of Pama-Nyungan";
-    Date   : #2012-12#;
+    Date   : #2012#;
     Number : 4;
     Pages  : 817..845;
     Volume : 88;
@@ -627,7 +640,7 @@ readonly namespace<DocReference> References {
 
   Bromham2017 = new(#9fb22e28-2140-44a8-94b1-ca96209af1d2#, Article) {
     Title  : "Curiously the same: Swapping tools between linguistics and evolutionary biology";
-    Date   : #2017-12#;
+    Date   : #2017#;
     Volume : 32;
     Number : 6;
     Pages  : 855..886;
@@ -646,10 +659,11 @@ readonly namespace<DocReference> References {
 
   Bybee2022 = new(#357d563a-c463-4723-b48f-bea18898dd80#, Article) {
     Title  : "Primal consonants and the evolution of consonant inventories";
-    Date   : #2022-06#;
+    Date   : #2022#;
     Volume : 13;
     Pages  : 1..33;
     Number : 1;
+    DOI    : "10.1163/22105832-bja10020";
     AuthorLink to [People.Bybee_Joan, People.Easterday_Shelece];
     JournalLink to Organizations.LanguageDynamicsAndChange;
   };
@@ -660,8 +674,9 @@ readonly namespace<DocReference> References {
     Date: #2019#;
     Volume : 14;
     Number : 10;
-    Pages: "e0223588";
-    DOI : "10.1371/journal.pone.0223588";
+    EID    : "e0223588";
+    Pages  : 1..33;
+    DOI    : "10.1371/journal.pone.0223588";
     JournalLink to Organizations.PlosOne;
     AuthorLink to [People.Carling_Gerd, People.Cronhamm_Sandra, People.Farren_Robert, People.Aliyev_Elnur];
   };
@@ -686,7 +701,7 @@ readonly namespace<DocReference> References {
 
   Chang2015 = new(#6078c1d3-bcb1-4b95-81c8-870d89cda832#, Article) {
     Title  : "Ancestry-constrained phylogenetic analysis supports the Indo-European steppe hypothesis";
-    Date   : #2015-3#;
+    Date   : #2015#;
     DOI    : "10.1353/lan.2015.0005";
     Number : 1;
     Pages  : 194..244;
@@ -721,6 +736,7 @@ readonly namespace<DocReference> References {
     Number : 1;
     Volume : 37;
     Pages  : 219..234;
+    DOI    : "10.1146/annurev.anthro.37.081407.085156";
     AuthorLink to [People.Croft_William];
     JournalLink to Organizations.AnnualReviewOfAnthropology;
   };
@@ -739,12 +755,13 @@ readonly namespace<DocReference> References {
     Date   : #1971#;
     Volume : 42;
     Pages  : 204..223;
+    DOI    : "10.1214/aoms/1177693507";
     AuthorLink to [People.Dickey_James];
     JournalLink to Organizations.TheAnnalsOfMathematicalStatistics;
   };
 
   DistinctiveFeature = new(#1b2dd73f-1dfc-4ca7-b0cd-a81dc18afbfc#, Misc) {
-    Title: "Distinctive Feature";
+    Title: "Distinctive feature";
     Date : #2020#;
     WikipediaLink("Distinctive_feature");
     PublisherLink to Organizations.Wikipedia;
@@ -755,7 +772,7 @@ readonly namespace<DocReference> References {
     Title: "Dictionnaire Étymologique Roman";
     Subtitle: "Les mots d’origine latine dans les langues romanes";
     Date: #2008#;
-    Link to new URL("http://www.atilf.fr/DERom,");
+    Link to new URL("http://www.atilf.fr/DERom");
     Accessed: #2025-07-04#;
     PublisherLink to Organizations.ATILF;
   };
@@ -764,10 +781,8 @@ readonly namespace<DocReference> References {
     Title: "Swadesh lists are not long enough";
     Subtitle: "Drawing phonological generalizations from limited data";
     Pages: 35..54;
-    Date : #2019-08#;
+    Date : #2019#;
     Volume: 16;
-    ISSN : "2756-1224";
-    Link to new URL("www.lddjournal.org/article/id/1204/");
     AuthorLink to [People.Dockum_Rikker, People.Bowern_Claire];
     JournalLink to Organizations.LanguageDocumentationAndDescription;
     EditorLink to People.Austin_Peter;
@@ -777,7 +792,7 @@ readonly namespace<DocReference> References {
   Dunn2017 = new(#f71960df-29a6-470d-9bfd-e789d0b39415#, Article) {
    Title    : "Dative sickness";
    Subtitle : "A phylogenetic analysis of argument structure evolution in Germanic";
-   Date     : #2017-3#;
+   Date     : #2017#;
    Volume   : 93;
    Number   : 1;
    Pages    : "e1–e22";
@@ -792,17 +807,17 @@ readonly namespace<DocReference> References {
     Volume  : 132;
     Pages   : 1..19;
     Number  : 1;
+    DOI     : "10.1515/zrp-2016-0001";
     AuthorLink to [People.Dworkin_Steven];
     JournalLink to Organizations.ZeitschriftFurRomanischePhilologie;
   };
 
   Dworkin2016b = new(#801fc071-4630-4950-a6ed-ae6fa7fecd40#, InCollection) {
     Title     : "Lexical stability and shared lexicon";
-    BookTitle : "The Oxford Guide to the Romance Languages";
-    Date      : #2016-06#;
+    BookTitle : "The Oxford guide to the Romance languages";
+    Date      : #2016#;
     Pages     : 577..587;
     DOI       : "10.1093/acprof:oso/9780199677108.003.0032";
-    ISBN      : "9780199677108";
     AuthorLink to [People.Dworkin_Steven];
     EditorLink to [People.Ledgeway_Adam,People.Maiden_Martin];
     PublisherLink to Organizations.OxfordPress;
@@ -814,6 +829,7 @@ readonly namespace<DocReference> References {
     Date     : #1981#;
     Volume   : 17;
     Pages    : 368..376;
+    DOI      : "10.1007/BF01734359";
     AuthorLink to [People.Felsenstein_Joseph];
     JournalLink to Organizations.JournalMolecularEvolution;
   };
@@ -838,6 +854,7 @@ readonly namespace<DocReference> References {
     Date     : #2024#;
     Volume   : 41;
     Pages    : 1..45;
+    DOI      : "10.1075/dia.22031.gol";
     AuthorLink to People.Goldstein_David;
     JournalLink to Organizations.Diachronica;
   };
@@ -863,12 +880,23 @@ readonly namespace<DocReference> References {
     JournalLink to Organizations.Nature;
   };
 
+  Green1995 = new(#846161f5-2ae2-40da-873e-98224951f92c#, Article) {
+    Title  : "Reversible jump Markov chain Monte Carlo computation and Bayesian model determination";
+    Date   : #1995#;
+    DOI    : "10.1093/biomet/82.4.711";
+    Volume : "82";
+    Number : "4";
+    Pages  : 711..732;
+    DOI: "10.1093/biomet/82.4.711";
+    AuthorLink to [People.Green_Peter];
+    JournalLink to Organizations.Biometrika;
+  };
+
   Greenhill2021 = new(#08930e62-b176-4d0e-879b-4fbd7a920ec7#, InBook) {
     Title     : "Bayesian phylolinguistics";
     BookTitle : "The handbook of historical linguistics";
     Date      : #2021#;
-    Chapter   : 11;
-    Pages     : 226-253;
+    Pages     : 226..253;
     DOI       : "10.1002/9781118732168.ch11";
     AuthorLink to [People.Greenhill_Simon, People.Heggarty_Paul, People.Gray_Russell];
     EditorLink to [People.Joseph_Brian, People.Janda_Richard, People.Vance_Barbara];
@@ -876,7 +904,7 @@ readonly namespace<DocReference> References {
   };
 
   Harris2003 = new(#cf468e54-8e72-4e57-9e9d-5299f9ecd983#, Book) {
-    Title: "The Romance Languages";
+    Title: "The Romance languages";
     Date : #2003#;
     AuthorLink to [People.Harris_Martin, People.Vincent_Nigel];
     PublisherLink to Organizations.Routledge;
@@ -921,10 +949,11 @@ readonly namespace<DocReference> References {
 
   Hall1950 = new(#4b9e7a42-024d-4a13-9121-5eaf99e5ebf8#, Article) {
     Title: "The reconstruction of Proto-Romance";
-    Date : #1950-3#;
+    Date : #1950#;
     Volume : 26;
     Number : 1;
     Pages  : 6..27;
+    DOI    : "10.2307/410406";
     AuthorLink to People.Hall_Robert;
     JournalLink to Organizations.Language;
   };
@@ -934,17 +963,19 @@ readonly namespace<DocReference> References {
     Date   : #1970#;
     Volume : 57;
     Pages  : 97..109;
+    DOI    : "10.2307/2334940";
     AuthorLink to People.Hastings_Wilfred;
     JournalLink to Organizations.Biometrika;
   };
 
   Heggarty2023 = new(#b5f8b9a4-13dc-4f5e-8d4c-49855c5745d5#, Article) {
     Title  : "Language trees with sampled ancestors support a hybrid model for the origin of Indo-European languages";
-    Date   : #2023-7#;
+    Date   : #2023#;
     Number : 6656;
     Volume : 381;
-    Pages  : "eabg0818";
-    DOI    : "10.1126%2Fscience.abg0818";
+    Pages  : 1..12;
+    EID    : "eabg0818";
+    DOI    : "10.1126/science.abg0818";
     AuthorLink to [People.Heggarty_Paul, People.Anderson_Cormac, People.Scarborough_Matthew, People.King_Benedict, People.Bouckaert_Remco, People.Jocz_Lechosław,
                    People.Kümmel_Martin, People.Jügel_Thomas, People.Irslinger_Britta, People.Pooth_Roland, People.Liljegren_Henrik, People.Strand_Richard,
                    People.Haig_Geoffrey, People.Macák_Martin, People.Kim_Ronald, People.Anonby_Erik, People.Pronk_Tijmen, People.Belyaev_Oleg, People.DeweyFindell_Tonya,
@@ -963,7 +994,7 @@ readonly namespace<DocReference> References {
   Hoffmann2021 = new(#db333a9a-b456-47e4-88e7-123d89df3a81#, Article) {
     Title  : "Bayesian phylogenetic analysis of linguistic data using BEAST";
     DOI    : "10.1093/jole/lzab005";
-    Date   : #2021-9#;
+    Date   : #2021#;
     AuthorLink to [ People.Hoffmann, People.Konstantin, People.Bouckaert_Remco, People.Greenhill_Simon, People.Kühnert_Denise];
     JournalLink to Organizations.JournalLanguageEvolution;
   };
@@ -971,16 +1002,17 @@ readonly namespace<DocReference> References {
   Holmes2001 = new(#bfa4668f-e0e9-4ae2-b6f8-b8ce9afd637d#, Article) {
     Title   : "Evolutionary HMMs";
     Subtitle: "A Bayesian approach to multiple alignment";
-    Date    : #2001-10#;
+    Date    : #2001#;
     Volume  : "17";
     Pages   : 803..820;
+    DOI     : "10.1093/bioinformatics/17.9.803";
     JournalLink to Organizations.Bioinformatics;
     AuthorLink to [People.Holmes_Ian, People.Bruno_William];
   };
 
   Hruschka2015 = new(#f5c25561-e5f9-4e5c-82a2-baf12aa75ce4#, Article) {
     Title  : "Detecting regular sound changes in linguistics as events of concerted evolution";
-    Date   : #2015-1#;
+    Date   : #2015#;
     Volume : "25.5";
     Pages  : 1..9;
     DOI    : "10.1016/j.cub.2014.10.064";
@@ -989,7 +1021,7 @@ readonly namespace<DocReference> References {
   };
 
   IPAInformation = new(#7aa3f54f-7454-487f-bbd4-afaeb7ded0f0#, Misc) {
-    Title: "IPA Symbols Chart Complete";
+    Title: "IPA symbols chart complete";
     Date : #2019#;
 
     Link to new URL("www.internationalphoneticalphabet.org/ipa-charts/ipa-symbols-chart-complete");
@@ -1026,14 +1058,14 @@ readonly namespace<DocReference> References {
   };
 
   Jeffreys1939 = new(#c74553a3-0bd3-4dd0-a7b3-a46556e067cb#, Book) {
-    Title: "Theory of Probability";
+    Title: "Theory of probability";
     Date : #1939#;
     AuthorLink to People.Jeffreys_Harold;
     PublisherLink to Organizations.OxfordPress;
   };
 
   Jeffreys1961 = new(#8aa5050c-b02e-417c-be4f-c95ca8d817c4#, Book) {
-    Title: "Theory of Probability";
+    Title: "Theory of probability";
     Date : #1961#;
     Edition: 3;
     AuthorLink to People.Jeffreys_Harold;
@@ -1045,6 +1077,8 @@ readonly namespace<DocReference> References {
     BookTitle: "Mammalian protein metabolism";
     Date     : #1969#;
     Pages    : 21..123;
+    Volume   : 3;
+    DOI      : " 10.1016/B978-1-4832-3211-9.50009-7";
     AuthorLink to [People.Jukes_Thomas, People.Cantor_Charles];
     EditorLink to People.Munro_H;
     PublisherLink to Organizations.AcademicPress;
@@ -1072,7 +1106,7 @@ readonly namespace<DocReference> References {
     Date        : #1990#;
     Volume      : 1;
     Pages       : 287..300;
-    BookSubtitle: "Antiquitity-17th century";
+    BookSubtitle: "Antiquitity–17th century";
     BookTitle   : "History and historiography of linguistics. Proceedings of the Fourth International Conference on the History of the Language Sciences (ICHoLS IV), Trier, 24..28 August 1987.";
     DOI         : "10.1075/sihols.51.1.31kou";
     AuthorLink to [People.Koutna_Olga, People.Niederehe_HansJosef, People.Koerner_Konrad];
@@ -1084,7 +1118,8 @@ readonly namespace<DocReference> References {
     Volume : 55;
     Number : 2;
     Pages  : 195..207;
-    Date   : #2006-4#;
+    Date   : #2006#;
+    DOI    : "10.1080/10635150500433722";
     AuthorLink to [People.Lartillot_Nicolas, People.Philippe_Hervé];
     JournalLink to Organizations.SystematicBiology;
   };
@@ -1101,6 +1136,7 @@ readonly namespace<DocReference> References {
     Date   : #2001#;
     Volume : 50;
     Pages  : 913..925;
+    DOI    : "10.1080/106351501753462876";
     AuthorLink to People.Lewis_Paul;
     JournalLink to Organizations.SystematicBiology;
   };
@@ -1116,8 +1152,9 @@ readonly namespace<DocReference> References {
   };
 
   Loporcaro2015 = new(#e37d002a-d402-4fc6-b670-db77bce9a80e#, Book) {
-    Title: "Vowel length from Latin to Romance";
-    Date : #2015#;
+    Title : "Vowel length from Latin to Romance";
+    Date  : #2015#;
+    DOI   : "10.1093/acprof:oso/9780199656554.001.0001";
     AuthorLink to People.Loporcaro_Michele;
     PublisherLink to Organizations.OxfordPress;
   };
@@ -1128,23 +1165,24 @@ readonly namespace<DocReference> References {
     Volume : 10;
     Pages  : 869..889;
     Number : 6;
+    DOI    : "10.1089/106652703322756122";
     AuthorLink to [People.Lunter_Gerton, People.Miklós_István, People.Song_Yun, People.Hein_Jotun];
     JournalLink to Organizations.JournalComputationalBiology;
   };
 
-  Lunter2004 = new(#9004afba-3ffc-4da5-83e8-a5d90a3fef6f#, InCollection) {
-    Title    : "Statistical Alignment";
+  Lunter2005a = new(#9004afba-3ffc-4da5-83e8-a5d90a3fef6f#, InCollection) {
+    Title    : "Statistical alignment";
     Subtitle : "Recent progress, new applications, and challenges";
-    Date     : #2004#;
-    BookTitle: "Statistical methods in Molecular Evolution";
-    Series   : "Series in Statistics in Health and Medicine";
-
+    Date     : #2005#;
+    BookTitle: "Statistical methods in molecular evolution";
+    Pages    : 375..405;
+    DOI      : "10.1007/0-387-27733-1_14";
     AuthorLink to [People.Lunter_Gerton, People.Drummond_Alexei, People.Miklós_István, People.Hein_Jotun];
     EditorLink to People.Nielsen_Rasmus;
     PublisherLink to Organizations.SpringerVerlag;
   };
 
-  Lunter2005 = new(#5315c136-a908-452d-aa88-e431a9c0ff79#, Article) {
+  Lunter2005b = new(#5315c136-a908-452d-aa88-e431a9c0ff79#, Article) {
     Title  : "Bayesian coestimation of phylogeny and sequence alignment";
     Date   : #2005#;
     Volume : 6;
@@ -1190,6 +1228,7 @@ readonly namespace<DocReference> References {
     Date   : #1953#;
     Volume : 21;
     Pages  : 1087..1092;
+    DOI    : "10.1063/1.1699114";
     AuthorLink to [People.Metropolis_Nicholas, People.Rosenbluth_Arianna, People.Rosenbluth_Marshall, People.Teller_Augusta, People.Teller_Edward];
     JournalLink to Organizations.JournalChemicalPhysics;
   };
@@ -1200,15 +1239,16 @@ readonly namespace<DocReference> References {
     Volume : 55;
     Number : 1;
     Pages  : 79..103;
-    DOI    : "10.1007%2Fs10579-019-09483-3";
+    DOI    : "10.1007/s10579-019-09483-3";
     AuthorLink to [People.Moran_Steven, People.Grossman_Eitan, People.Verkerk_Annemarie];
     JournalLink to Organizations.LanguageResourcesAndEvaluation;
   };
 
   Moran2018 = new(#6d6ce635-8ca1-4469-a37c-2aba99b9e0f3#, InProceedings) {
     Title    : "Differential rates of change in consonant and vowel systems";
-    BookTitle: "Proceedings of the 12th International Conference on the Evolution of Language (Evolang12)";
+    BookTitle: "Proceedings of the 12th International Conference on the Evolution of Language (EvoLang12)";
     Date     : #2018#;
+    Pages    : 322..325;
     AuthorLink to [People.Moran_Steven, People.Verkerk_Annemarie];
     PublisherLink to Organizations.WydawnictwoNaukoweUniwersytetuMikołajaKopernika;
   };
@@ -1224,7 +1264,7 @@ readonly namespace<DocReference> References {
   };
 
   Nytrilprogram = new(#2df60d8c-4e4c-4978-854c-26aba70f6bb8#, Misc) {
-    Title: "The Nytril Programming Language";
+    Title: "The Nytril programming language";
     Date : #2024#;
     AuthorLink to [People.McCreight_Shawn,People.Colbert_John];
     PublisherLink to Organizations.NytrilLLC;
@@ -1237,10 +1277,6 @@ readonly namespace<DocReference> References {
     Title    : "Phonetics and historical phonology";
     DOI      : "10.1002/9780470756393.ch22";
     Date     : #2003#;
-    Chapter  : 22;
-    ISBN     : "9780470756393";
-
-    Link to new URL("onlinelibrary.wiley.com/doi/abs/10.1002/9780470756393.ch22");
     AuthorLink to People.Ohala_John;
     EditorLink to [People.Joseph_Brian, People.Janda_Richard];
     PublisherLink to Organizations.WileyBlackwell;
@@ -1261,20 +1297,22 @@ readonly namespace<DocReference> References {
 
    Pagel2009 = new(#45def98c-7622-4960-b2ec-3cebe0ee3dca#, Article) {
     Title  : "Human language as a culturally transmitted replicator";
-    Date   : #2009-6#;
+    Date   : #2009#;
     Volume : 10;
     Number : 6;
     Pages  : 405..415;
+    DOI    : "10.1038/nrg2560";
     JournalLink to Organizations.NatureReviewsGenetics;
     AuthorLink to People.Pagel_Mark;
   };
 
   Pagel2017 = new(#ef0fc146-9c3c-427a-afbd-f653d3050fcc#, Article) {
     Title  : "Darwinian perspectives on the evolution of human languages";
-    Date   : #2017-2#;
+    Date   : #2017#;
     Volume : 24;
     Pages  : 151..157;
     Number : 1;
+    DOI    : "Darwinian perspectives on the evolution of human languages";
     JournalLink to Organizations.PsychonomicBulletinAndReview;
     AuthorLink to People.Pagel_Mark;
   };
@@ -1313,7 +1351,7 @@ readonly namespace<DocReference> References {
   };
 
   Posner1996 = new(#a3d4fe36-5d02-404a-a795-b78c78af4717#, Book) {
-    Title: "The Romance Languages";
+    Title: "The Romance languages";
     Date : #1996#;
     AuthorLink to People.Posner_Rebecca;
     PublisherLink to Organizations.CambridgePress;
@@ -1344,7 +1382,7 @@ readonly namespace<DocReference> References {
 
   Ringe2002 = new(#ea2b92dc-a0d4-483f-9785-a8948788a8c2#, Article) {
     Title  : "Indo-European and computational cladistics";
-    Date   : #2002-03#;
+    Date   : #2002#;
     Number : 1;
     Pages  : 59..129;
     Volume : 100;
@@ -1362,7 +1400,7 @@ readonly namespace<DocReference> References {
 
   Sagart2019 = new(#9370e2a8-ea2c-4458-afe8-873f072de4e8#, Article) {
      Title  : "Dated language phylogenies shed light on the ancestry of Sino-Tibetan";
-     Date   : #2019-5#;
+     Date   : #2019#;
      Volume : 116;
      Number : 21;
      Pages  : 10317..10322;
@@ -1372,12 +1410,12 @@ readonly namespace<DocReference> References {
   };
 
   SoundComparisons = new(#187b7119-5e3e-42e7-a7a4-d05113d27c43#, Misc) {
-    Title: "Sound Comparisons: Romance";
+    Title: "Sound comparisons: Romance";
     Link to new URL("soundcomparisons.com/Romance");
     Accessed: #2022-3-7#;
     AuthorLink to [People.Heggarty_Paul, People.Abete_Giovanni];
     Date: #2019#;
-    DOI: "heggarty_sound_2019-1";
+    //DOI: "heggarty_sound_2019-1";
   };
 
   SpanishMap = new(#7f13abe8-4c71-4d5a-a46e-440a183cb879#, Art) {
@@ -1406,20 +1444,21 @@ readonly namespace<DocReference> References {
   Swiggers2001 = new(#edd1944f-ab32-4453-b0a7-c9f76c4c27f5#, Article) {
     Title    : "De Prague à Strasbourg";
     Subtitle : "Phonétique et phonologie du français chez Georges Gougenheim et Georges Straka";
-    Date     : #2001-1#;
+    Date     : #2001#;
     Volume   : 43;
     Pages    : 21..44;
     Number   : 3;
     Volume   : 43;
+    DOI      : "10.4000/ml.1459";
     AuthorLink to [People.Swiggers_Pierre];
     JournalLink to Organizations.ModelesLinguistiques;
   };
 
   Tadmor2010 = new(#1efbe8ed-4d76-4876-8487-ae8e0b9e7b53#, Article) {
     Title       : "Borrowability and the notion of basic vocabulary";
-    Date        : #2010-10#;
+    Date        : #2010#;
     Volume      : 27;
-    Number       : 2;
+    Number      : 2;
     Pages       : 226..246;
     DOI         : "10.1075/dia.27.2.04tad";
     AuthorLink to [People.Tadmor_Uri, People.Haspelmath_Martin, People.Taylor_Bradley];
@@ -1440,6 +1479,7 @@ readonly namespace<DocReference> References {
     Date   : #1991#;
     Volume : 33;
     Pages  : 114..124;
+    DOI    : "10.1007/BF02193625";
     AuthorLink to [People.Thorne_Jeffrey, People.Kishino_Hirohisa, People.Felsenstein_Joseph];
     JournalLink to Organizations.JournalMolecularEvolution;
   };
@@ -1470,7 +1510,7 @@ readonly namespace<DocReference> References {
 
   Wedel2019 = new(#e46c6097-719c-4e96-8cc0-7cd02ffd7f1e#, Article) {
     Title   : "Crosslinguistic evidence for a strong statistical universal. Phonological neutralization targets word-ends over beginnings";
-    Date    : #2019-12#;
+    Date    : #2019#;
     Volume  : "95.4";
     Pages   : "e428-e446";
     AuthorLink to [People.Wedel_Andrew, People.Ussishkin_Adam, People.King_Adam];
@@ -1507,7 +1547,9 @@ readonly namespace<DocReference> References {
     Title  : "Alignment uncertainty and genomic analysis";
     Date   : #2008#;
     Volume : 319;
+    Number : 5682;
     Pages  : 473..476;
+    DOI    : "10.1126/science.1151532";
     AuthorLink to [People.Wong_Karen, People.Suchard_Marc, People.Huelsenbeck_John];
     JournalLink to Organizations.Science;
   };
@@ -1517,14 +1559,14 @@ readonly namespace<DocReference> References {
     Volume : 60;
     Number : 2;
     Pages  : 150..160;
-    Date   : #2010-12#;
-    ISSN   : "1063-5157";
+    Date   : #2010#;
+    DOI    : "10.1093/sysbio/syq085";
     AuthorLink to [People.Xie_Wangang, People.Lewis_Paul, People.Fan_Yu, People.Kuo_Lynn, People.Chen_MingHui];
     JournalLink to Organizations.SystematicBiology;
   };
 
   XSAMPA = new(#2f6f840e-1b25-4963-9517-391252e6e80e#, Book) {
-    Title: "Extended Speech Assessment Methods Phonetic Alphabet";
+    Title: "Extended speech assessment methods phonetic alphabet";
     Date : #2019#;
     WikipediaLink("X-SAMPA");
     PublisherLink to Organizations.Wikipedia;

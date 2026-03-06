@@ -610,7 +610,7 @@ class SegmentDisplay {
         HBox(100%, null, BorderT(1pt) + PadT(16pt)) {
           VAlign: Center;
           Frame(40%) {
-            style.Heading2 {
+            style.HeadingPar(0) {
               language.Name;
             };
             Block {

@@ -63,7 +63,7 @@ class LinguisticsTitle: LinguisticsContent {
 
 class SupplementalContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Supplemental Material");
+    super.Constructor("Supplementary Material");
 
     Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
     Description = "Extra derivations and charts to supplement the main paper";
@@ -86,7 +86,7 @@ class GraphSection: Content {
   }
 
   AddGraph(ContentStyle style, title, facts) = Block {
-    style.Heading2 {
+    style.HeadingPar(0) {
       title;
     };
     new Graph() {

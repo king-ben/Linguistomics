@@ -40,7 +40,13 @@ class AlignIndexClass {
   }
 
   string TableName {
-    return ConceptName;
+    var b = new StringBuilder;
+    foreach (var c in ConceptName) {
+      if (each0 > 0 and c.IsUpper)
+        b.Append(Space);
+      b.Append(c);
+    }
+    return b.ToString;
   }
 }
 
