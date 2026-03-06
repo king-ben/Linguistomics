@@ -66,7 +66,7 @@ class ExperimentalRunFigure: Content {
     };
 
     foreach (var treeset in data.TreeSets) {
-      style.Heading3 {
+      style.HeadingPar(1) {
         Lang.Tree;
         each1;
       };
@@ -1217,15 +1217,7 @@ class ResultsSection: Content {
     AddContent(PaperSections.ModelComparison);
     AddContent(PaperSections.WordTransformation);
     AddContent(PaperSections.WordSegmentRelationships);
- }
-
-/*
-  override GetBody(ContentStyle style) = Block {
-    style.TitlePar(title) {
-
-    };
-  };
-  */
+  }
 }
 
 //======================================================================
@@ -1238,7 +1230,7 @@ class PhylogenyResultsSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.AddFigure(Figures.ModelTreesUsed, Top | Bottom, 70%);
+    style.AddFigure(Figures.ModelTreesUsed, Top | Bottom| Full, 70%);
 
     style.Par {
       "All model parameters are treated as random variables endowed with prior distributions. ";
@@ -1263,17 +1255,9 @@ class PhylogenyResultsSection: Content {
       Citep {Lunter2005a}; ", which analyzed an alignment of amino acid sequences. ";
       "Our analysis of cognate data yielded insertion and deletion rates that were large relative to substitution rates: ";
          EqSpan{InsertionRate; Tex.Equals; run.InsertionRate};
-      " (";
-      run.InsertionRateLow;
-      ", ";
-      run.InsertionRateHigh;
-      ") and ";
+      " ("; run.InsertionRateLow; CommaSpace; run.InsertionRateHigh; ") and ";
       EqSpan{DeletionRate; Tex.Equals; run.DeletionRate};
-      " (";
-      run.DeletionRateLow;
-      ", ";
-      run.DeletionRateHigh;
-      "), respectively. ";
+      " ("; run.DeletionRateLow; CommaSpace; run.DeletionRateHigh; "), respectively. ";
       "(Each credible interval contains the true parameter value with probability ";
       ExperimentResults.CutoffProbability;
       ".) ";
@@ -1296,10 +1280,7 @@ class PhylogenyResultsSection: Content {
 
     style.Par {
       "The relationship between Classical Latin, Vulgar Latin, ";
-      style.ReviewNew {
-        "Proto-Romance";
-      };
-      ", and the Romance languages remains the subject of ongoing debate"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
+      "Proto-Romance, and the Romance languages remains the subject of ongoing debate"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
       "A central issue is whether Latin (Classical or Vulgar) is a sampled ancestor of the Romance languages or their sister lineage"; DotSpace;
       "For reasons of model tractability, we adopt the latter assumption and treat Latin as an outgroup. ";
       "Tree models that incorporate sampled ancestors are considerably more complex than the framework employed here. ";
@@ -1374,10 +1355,6 @@ class SegmentModelsFigure: Content {
     var rule     = data.Rule;
     var segments = data.UniqueSegments.Length - 1;
     var rp       = rule.Filters.Length;
-
-    style.AddFigure(Figures.ConceptEncoding, Top | Bottom);
-
-    style.AddFigure(Figures.SegmentEncoding, Top | Bottom, 50%);
 
     style.Par {
       "We evaluate three models of segmental change. ";
@@ -1503,23 +1480,9 @@ class WordTransformationSection: Content {
       "These patterns arise from the interaction between class-specific exchangeability parameters and the distribution of equilibrium frequencies. ";
       "When equilibrium frequencies are relatively homogeneous within a class, the corresponding "; -qii;
       " values tend to be similar. ";
-
-      style.ReviewMark(ReviewComments.C42);
-      style.ReviewNew {
-        "The clustering observed in ";
-        style.FigureReference(Figures.QRatesDiagonal);
-        " thus reflects both the structural constraints of the model and regularities present in the empirical data. ";
-      };
-      //"In contrast to the rates in Figure [rate figure], those in ";
-      //style.FigureReference(Figures.QRatesDiagonal); " assume the process is in segment "; sym.i;
-      // " and measures the rate of flow away from it (to any other segment). ";
-
-      //style.FigureReference(Figures.QRatesTop); " presents the "; Enumerators.Cardinal(TopCount); " transitions with the highest instantaneous rates of change. ";
-      //"In contrast to "; style.FigureReference(Figures.QRatesDiagonal); " above, the focus here is on individual sound changes. ";
-      //"The results paint a similar picture, however. The input segments in ";
-      //style.FigureReference(Figures.QRatesTop); " are either long vowels or diphthongs. ";
-      //"The output segments are similarly restricted. ";
-      //"Although there are eight transitions in the graph, there are only two output segments, the mid-high front vowel /e/ and the high back vowel /u/. ";
+      "The clustering observed in ";
+      style.FigureReference(Figures.QRatesDiagonal);
+      " thus reflects both the structural constraints of the model and regularities present in the empirical data. ";
     };
 
     style.AddFigure(Figures.RateChart, Top | Bottom | Full, 60%);
@@ -1659,7 +1622,6 @@ class WordSegmentRelSection: Content {
     style.Par {
       var align2 = Figures.AlignmentExample2;
 
-      style.ReviewMark(ReviewComments.C5);
       "The posterior distribution over alignments is sensitive to the substitution model. ";
       style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
       style.SQuote {
@@ -1781,7 +1743,6 @@ class OtherApproachesSection: Content {
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C29);
       "A practical limitation of TKF91 is computational complexity. ";
       "Likelihood evaluation scales exponentially with the number of taxa and word length, with complexity on the order of ";
       Equations.LikelihoodComplexity;
@@ -1833,11 +1794,9 @@ class SoundChangeSection: Content {
       "Among the major developments distinguishing Latin from the Romance languages is the loss of phonemic vowel length";
       Citep{Janson1979; Loporcaro2015};
       " and the early monophthongization of Classical Latin diphthongs";
-      Citep{Posner1996.OnPage(106)};
-      DotSpace;
+      Citep{Posner1996.OnPage(106)}; DotSpace;
       "More broadly, our results accord with evidence that vowel inventories have evolved more rapidly than consonant inventories within Indo-European";
-      Citep{Moran2021.OnPage(92..95)};
-      DotSpace;
+      Citep{Moran2021.OnPage(92..95)}; DotSpace;
     };
 
     style.Par {
@@ -1864,8 +1823,7 @@ class SoundChangeSection: Content {
       textit{"arbor"};
       " > Spanish ";
       textit{"árbol"};
-      Citep{Abrego2013; Mueller2013};
-      DotSpace;
+      Citep{Abrego2013; Mueller2013}; DotSpace;
       "Transition rates between diphthongs and short vowels are the highest among all between-class rates, which is consistent with the reciprocal effects of vowel breaking and monophthongization in the history of Latin and Romance. ";
       "More generally, the largest off-diagonal rates involve vowel classes, which reinforces the broader pattern of vocalic instability identified above. ";
       "Elevated rates between nasal vowels and nasal consonants further reflects the development of nasalized vowels in French and Portuguese. ";
@@ -1881,9 +1839,8 @@ class SoundChangeSection: Content {
 
     style.Par {
       "Finally, model comparison provides quantitative support for the role of natural classes in sound change";
-      Citep{King1969.OnPage(201)};
-      DotSpace;
-      "Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the"; style.ReviewNew{"Proto-Germanic reflexes of "}; "Proto-Indo-European stops. ";
+      Citep{King1969.OnPage(201)}; DotSpace;
+      "Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the Proto-Germanic reflexes of Proto-Indo-European stops. ";
       "The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. ";
     };
   };
@@ -1970,13 +1927,10 @@ class AdvantagesSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      style.ReviewMark(ReviewComments.C11);
       "Despite these limitations, the event-based formulation offers distinct advantages. ";
       "Since segmental change is modeled explicitly as a stochastic process, it becomes possible to investigate questions that are difficult to address within traditional frameworks. ";
       "For example, one may ask whether the frequency of a phoneme influences its diachronic stability, how rates of change depend on the size and composition of a phonemic inventory, or to what extent natural classes constrain evolutionary trajectories. ";
       "Such hypotheses can be evaluated formally through comparisons among models that differ in their parameterization of substitution rates. ";
-      //style.ReviewMark(ReviewComments.C11);
-      //"Our event-based approach to linguistic history has the power to transform the discipline by offering an inroad into questions that were previously intractable. For example, questions related to the relationship between phonological change and the phonemic inventory of a language can now be addressed. Does the frequency of a phoneme affect its diachronic stability? To what extent is phonemic change sensitive to the size and structure of the phonemic inventory of a language? What is the role of natural classes in sound change? This last question can be addressed through the comparison of models with different numbers of rate parameters.";
     };
 
     style.Par {
@@ -2151,18 +2105,16 @@ class ModelInferenceSection: Content {
       "The insertion and deletion rate parameters, however, are assigned independent exponential priors subject to the constraint ";
       InsertionRateCondition;
       DotSpace;
-      style.ReviewNew{
-        "An alignment of length ";
-        AlignmentLength;
-        " is assigned a geometric prior with parameter ";
-        InsertionProbability;
-        DotSpace;
-        "Under the TKF91 process, the equilibrium distribution of alignment lengths is geometric with parameter ";
-        InsertionProbability;
-        ", which motivates this choice. ";
-        "A more principled alternative would specify a fully generative prior over alignments conditional on the insertion and deletion rates, derived directly from the TKF91 process. ";
-        "The development of such priors for segmental homology structures remains an important objective for future research. ";
-      }
+      "An alignment of length ";
+      AlignmentLength;
+      " is assigned a geometric prior with parameter ";
+      InsertionProbability;
+      DotSpace;
+      "Under the TKF91 process, the equilibrium distribution of alignment lengths is geometric with parameter ";
+      InsertionProbability;
+      ", which motivates this choice. ";
+      "A more principled alternative would specify a fully generative prior over alignments conditional on the insertion and deletion rates, derived directly from the TKF91 process. ";
+      "The development of such priors for segmental homology structures remains an important objective for future research. ";
     };
 
     style.Par {
@@ -2176,7 +2128,6 @@ class ModelInferenceSection: Content {
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C44);
       var number = Enumerators.Cardinal(rule.Filters.Length);
       "Segmental substitution is parameterized with reference to phonological natural classes, which are defined as sets of segments sharing phonetic features. ";
       "The segment inventory is exhaustively partitioned into ";
@@ -2331,19 +2282,10 @@ class ConclusionSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      style.ReviewMark(ReviewComments.C24);
       "This study provides the first application of the TKF91 model to a linguistic dataset and demonstrates the advantages of modeling language change as a sequence of explicitly defined events. ";
       "By operating directly on segmental forms rather than abstract cognate relationships, the framework preserves the signal in word forms and permits inference about the dynamics of sound change. ";
       "The framework can, in principle, be extended to accommodate more complex forms of segmental change, including context-dependent processes. ";
-      "An event-based approach may also improve divergence-time ";
-      style.ReviewOld {
-        "estinmation";
-      };
-      style.ReviewNew {
-        "estimation";
-      };
-
-      ", which depends on quantifying the number of evolutionary events along the branches of a tree. ";
+      "An event-based approach may also improve divergence-time estimation, which depends on quantifying the number of evolutionary events along the branches of a tree. ";
       "When divergence times are estimated from abstract cognate characters, the nature of these events is often unclear. ";
       "By contrast, the present model counts explicitly defined operations (segmental substitutions, insertions, and deletions) and thereby provides a more transparent basis for phylogenetic inference. ";
     };
@@ -3284,14 +3226,12 @@ class UsedCognatesSection: Content {
   override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
-    style.ReviewNewBlock {
-      style.Par {
-        "The dataset contains "; data.UsedCognates.Length;
-        " cognate sets comprising "; data.WordCount;
-        " word forms and "; data.UniqueSegments.Length;
-        " distinct phonemic segments distributed across "; data.UsedConcepts.Length; " concepts: ";
-        PaperDataSection.ConceptList(data, style); DotSpace;
-      };
+    style.Par {
+      "The dataset contains "; data.UsedCognates.Length;
+      " cognate sets comprising "; data.WordCount;
+      " word forms and "; data.UniqueSegments.Length;
+      " distinct phonemic segments distributed across "; data.UsedConcepts.Length; " concepts: ";
+      PaperDataSection.ConceptList(data, style); DotSpace;
     };
   };
 }
@@ -3308,63 +3248,61 @@ class WorkflowSection: Content {
   override GetBody(ContentStyle style) = Block {
     var code = Span {TextFace: TextFaces.Mono};
 
-    style.ReviewNewBlock {
-      style.Par {
-        "The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. ";
-        "The files ";
-        code{"IPA.nytril"};
-        " and ";
-        code{"Segments.nytril"};
-        " define segment classes, with each segment represented as an instance containing its IPA symbol (e.g., ";
-        VocalSegments.nya;
-        ") and a set of phonological attributes (e.g., vowel, sibilant, fricative). ";
-        "These files were designed for reuse in future experiments and by other researchers. ";
-      };
+    style.Par {
+      "The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. ";
+      "The files ";
+      code{"IPA.nytril"};
+      " and ";
+      code{"Segments.nytril"};
+      " define segment classes, with each segment represented as an instance containing its IPA symbol (e.g., ";
+      VocalSegments.nya;
+      ") and a set of phonological attributes (e.g., vowel, sibilant, fricative). ";
+      "These files were designed for reuse in future experiments and by other researchers. ";
+    };
 
-      style.Par {
-        "The next stage consisted of assembling the cognate word forms. ";
-        "These are stored as strings in nytril source files organized by concept and language. ";
-        "Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. ";
-        "Dashes between IPA symbols provide an initial vertical alignment of segments. ";
-        "Syllable stress marks may appear in the strings but are ignored in the present analysis. ";
-        "Although the word files are grouped by part of speech (e.g., ";
-        code{"Nouns.nytril"};
-        ", ";
-        code{"Adjectives.nytril"};
-        "), this organization is purely editorial. ";
-        "During processing, all forms are aggregated and reorganized programmatically. ";
-      };
+    style.Par {
+      "The next stage consisted of assembling the cognate word forms. ";
+      "These are stored as strings in nytril source files organized by concept and language. ";
+      "Each string contains UCS code points encoding the IPA symbols for its segments, which allows for consistent copying across sources. ";
+      "Dashes between IPA symbols provide an initial vertical alignment of segments. ";
+      "Syllable stress marks may appear in the strings but are ignored in the present analysis. ";
+      "Although the word files are grouped by part of speech (e.g., ";
+      code{"Nouns.nytril"};
+      ", ";
+      code{"Adjectives.nytril"};
+      "), this organization is purely editorial. ";
+      "During processing, all forms are aggregated and reorganized programmatically. ";
+    };
 
-      style.Par {
-        "The strings are then decoded and converted into arrays of ";
-        code{"VocalSegment"};
-        " objects. ";
-        "Since IPA characters may consist of multiple Unicode code points and include combining diacritics, all strings are normalized to Unicode Form C (NFC) prior to comparison. ";
-        "This ensures that diacritics occupy consistent relative positions across strings. ";
-        "After parsing, each word is reconstructed from its object representation to verify fidelity to the original encoding. ";
-        "The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. ";
-      };
+    style.Par {
+      "The strings are then decoded and converted into arrays of ";
+      code{"VocalSegment"};
+      " objects. ";
+      "Since IPA characters may consist of multiple Unicode code points and include combining diacritics, all strings are normalized to Unicode Form C (NFC) prior to comparison. ";
+      "This ensures that diacritics occupy consistent relative positions across strings. ";
+      "After parsing, each word is reconstructed from its object representation to verify fidelity to the original encoding. ";
+      "The segment objects are subsequently grouped into words and organized by concept, cognate class, and language, yielding a structured representation of the full dataset. ";
+    };
 
-      style.Par {
-        "Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. ";
-        "These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. ";
-        "Once the dataset has been validated, an experiment snapshot is generated. ";
-        "This process produces a directory of nytril and JSON files that serve as input to the program ";
-        code{"TongueTwister"};
-        ". ";
-      };
+    style.Par {
+      "Diagnostic tables and visualizations are then generated to inspect the data from multiple perspectives. ";
+      "These diagnostics facilitate detection of alignment errors, encoding inconsistencies, or structural anomalies. ";
+      "Once the dataset has been validated, an experiment snapshot is generated. ";
+      "This process produces a directory of nytril and JSON files that serve as input to the program ";
+      code{"TongueTwister"};
+      ". ";
+    };
 
-      style.Par {
-        code{"TongueTwister"};
-        " performs the MCMC analysis, which may run for several days and produces tree files and associated output. ";
-        "The resulting files are then processed by ";
-        code{"TongueTwisterReader"};
-        ", which aggregates posterior summaries and generates formatted output files in nytril format. ";
-                "Finally, a nytril-based program reads the processed output and produces the tables, charts, and figures included in the manuscript. ";
-        "These graphical outputs are integrated with narrative text to generate the final paper and presentation materials. ";
-        style.FigureReference(Figures.Workflow);
-        " provides a schematic overview of the workflow. ";
-      };
+    style.Par {
+      code{"TongueTwister"};
+      " performs the MCMC analysis, which may run for several days and produces tree files and associated output. ";
+      "The resulting files are then processed by ";
+      code{"TongueTwisterReader"};
+      ", which aggregates posterior summaries and generates formatted output files in nytril format. ";
+              "Finally, a nytril-based program reads the processed output and produces the tables, charts, and figures included in the manuscript. ";
+      "These graphical outputs are integrated with narrative text to generate the final paper and presentation materials. ";
+      style.FigureReference(Figures.Workflow);
+      " provides a schematic overview of the workflow. ";
     };
   };
 }

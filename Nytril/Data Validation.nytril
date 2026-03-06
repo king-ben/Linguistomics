@@ -45,7 +45,7 @@ class DiagnosticGraphSection: Content {
   }
 
   AddGraph(ContentStyle style, title, fact, int depth=1) = Block {
-    style.Heading2 {
+    style.HeadingPar(0) {
       title;
     };
     var graph = new Graph();
@@ -141,7 +141,7 @@ class DiagnosticsDocument: DocumentEntry {
     }
 
     foreach (var c in content) {
-      Style.Heading1 {
+      Style.TitlePar {
         PageBreakBefore: true;
         c.Title;
       };
@@ -239,7 +239,7 @@ class CognateCoverage: ExperimentContent {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.Heading1 {
+    style.HeadingPar(0) {
       "By Language";
     };
 
@@ -261,7 +261,7 @@ class CognateCoverage: ExperimentContent {
     Paragraph;
 
 
-    style.Heading1 {
+    style.HeadingPar(0) {
       "By Number of Languages";
     };
 

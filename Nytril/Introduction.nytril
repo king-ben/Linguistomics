@@ -12,7 +12,6 @@ class AbstractSection: Content {
   override GetBody(ContentStyle style) = Block {
     style.Par {
       "Linguistic phylogenies are commonly inferred from abstract cognate classifications that encode relationships among lexemes. ";
-      style.ReviewMark(ReviewComments.C41);
       "Although widespread, this practice has well-recognized limitations: it discards the phylogenetic signal contained in segmental word forms; restricts the range of evolutionary questions that can be addressed; and treats cognacy judgments, which are hypotheses, as observed data. ";
       "We introduce a comparative framework that addresses these limitations by modeling the evolution of aligned cognate word forms directly. ";
       "Our approach adapts the TKF91 model of molecular evolution, originally developed to account for insertion and deletion events in DNA sequences, to the domain of linguistic data. ";
@@ -95,7 +94,6 @@ class RootMeaningTraitsSection: Content {
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C47);
       "Second, since root-meaning traits are analyzed analogously to morphological characters in biology";
       Citep{Lewis2001}; ", they inherit the same methodological constraints. ";
       "(i) The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. ";
@@ -275,7 +273,6 @@ class PaperDataSection: Content {
     var langcount = Enumerators.Cardinal(data.Taxa.Length-1);
 
     style.Par {
-      style.ReviewMark(ReviewComments.C4);
       "The dataset consists of cognate word forms drawn from a sample of ";
       langcount;
       " Romance languages and Latin, ";
@@ -302,25 +299,19 @@ class PaperDataSection: Content {
       "The decision to anchor the dataset in Latin was motivated by practical considerations. ";
       "Since we only used complete cognate sets, ";
       "beginning with Latin maximized the chances of having cognates in all of the Romance languages in our sample. ";
-      style.ReviewMark(ReviewComments.C45);
-      style.ReviewNew {
-        "(In principle, incomplete cognate sets, i.e., those lacking a reflex in one or more languages, could be incorporated. However, restricting the dataset to complete sets simplifies parameter estimation and was therefore adopted for this initial investigation.)";
-      }
+      "(In principle, incomplete cognate sets, i.e., those lacking a reflex in one or more languages, could be incorporated. However, restricting the dataset to complete sets simplifies parameter estimation and was therefore adopted for this initial investigation.)";
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C23);
       "The dataset comprises ";
       data.UsedCognates.Length;
       " cognate sets, totaling ";
       data.WordCount;
       " word forms and ";
       data.UniqueSegments.Length;
-      style.ReviewNew {
-        " distinct segments distributed across ";
-        data.UsedConcepts.Length;
-        " concepts. ";
-      };
+      " distinct segments distributed across ";
+      data.UsedConcepts.Length;
+      " concepts. ";
       "Word forms may be represented either phonetically or phonemically; in this study, we adopt phonemic representations for two reasons"; DotSpace;
       "First, detailed phonetic transcriptions are not consistently available, particularly for a corpus language such as Latin"; DotSpace;
       "Second, the current implementation of the model does not accommodate within-language phonetic variation"; DotSpace;
@@ -365,7 +356,6 @@ class PaperDataSection: Content {
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C4);
       "The lexical histories of the Romance languages are complex";
       Citep{Stefenelli1992; Dworkin2016b};
       ", as they reflect not only vertical inheritance but also substantial borrowing both from within Romance and from Latin itself. ";
@@ -399,32 +389,26 @@ class PaperDataCuration: Content {
   override GetBody(ContentStyle style) = Block {
     var data = MainResults.Data;
 
+    style.AddFigure(Figures.ConceptEncoding, Top | Bottom);
+
     style.Par {
       "All analyses are orchestrated by a control program written in the Nytril programming language"; Citep {Nytrilprogram}; DotSpace;
       "We developed an automated experimental pipeline comprising a reusable IPA library, curated word-form datasets, data-validation routines, typeset output generation, and input-file construction for the MCMC engine, which is implemented in C++. ";
     };
 
     style.Par {
-      style.ReviewMark(ReviewComments.C38);
       "Word forms from the "; Enumerators.Cardinal(data.Taxa.Length); " languages are organized hierarchically by concept and cognate class. ";
       style.FigureReference(Figures.ConceptEncoding); " illustrates the raw encoding for the concept "; style.SQuoteEnd {Figures.ConceptEncoding.Concept.Name};
       "A central technical challenge arises from the fact that IPA transcriptions are encoded in Unicode (UCS), which cannot be represented in single-byte encodings such as ASCII. ";
       "Accordingly, all data are stored in UTF-8, a cross-platform multibyte encoding of UCS. ";
       "To ensure reliable string comparison, diacritic composition must be standardized; we adopt Unicode Normalization Form C, although consistency across files is the critical requirement. ";
       "Moreover, a single IPA segment may consist of multiple UCS code points, so the correspondence between characters and phonological segments is not one-to-one. ";
-      //style.ReviewOld {
-      //  "not ASCII or ANSI. This requires care with file formats, text encoding, and diacritic compositional form. ";
-      //};
-      //style.ReviewNew {
-      //  "which cannot be represented in a single-byte encoding such as ASCII. ";
-      //  "Instead, it is best stored in UTF-8 which is a common, cross-platform, multibyte encoding for UCS. ";
-      //  "Diacritic compositional form must be standardized to facilitate string equality testing. We selected Form C, but what matters is that the form is consistent across files. ";
-      //};
     };
 
+    style.AddFigure(Figures.SegmentEncoding, Top | Bottom, 50%);
+
     style.Par {
-      style.FigureReference(Figures.SegmentEncoding);
-      " provides an example of a complex encoding in which the grey numerals indicate hexadecimal UCS code points for base characters and diacritics. ";
+      style.FigureReference(Figures.SegmentEncoding); " provides an example of a complex encoding in which the grey numerals indicate hexadecimal UCS code points for base characters and diacritics. ";
       "Since the analysis operates at the segmental level, a parser converts each word string into an array of segment objects. ";
       "These objects are implemented in a reusable library that associates each segment with linguistic features. ";
       "Subsequent processing steps operate on abstract properties such as "; style.SQuote{"vowel"};

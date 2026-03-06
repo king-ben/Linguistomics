@@ -86,7 +86,7 @@ class GraphSection: Content {
   }
 
   AddGraph(ContentStyle style, title, facts) = Block {
-    style.Heading2 {
+    style.HeadingPar(0) {
       title;
     };
     new Graph() {

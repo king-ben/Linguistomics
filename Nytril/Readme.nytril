@@ -72,7 +72,7 @@ abstract class DialogView {
 
   Show = VBox(Width, null, new Edge(BorderSize, 0, LineColor)) {
     BorderRadius: 5;
-    HBox(100%, 30pt, BorderB(new(LineSize, 5, LineColor)) + PadAll(10)) {
+    HBox(100%, 30pt, BorderB(new(LineSize, 5, LineColor)) + PadLR(10)) {
       BorderRadius: new BorderRadius(5, 5, 0, 0);
       VAlign: Center;
       Background: TitleColor;
