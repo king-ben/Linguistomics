@@ -67,7 +67,7 @@ Table$~$\ref{CognateCoding} presents a root-meaning trait for the concept ‘han
 
 Despite their widespread use, root-meaning traits exhibit several well-known limitations. The most serious is that the reduction of word forms to abstract cognate classes results in substantial information loss. For example, the lexemes for ‘hand’ in Spanish, French, and Italian are assigned the same state in Table$~$\ref{CognateCoding}. Since this representation exhibits no variation across these languages, no inferences can be drawn about their historical relationships. The segmental forms themselves, however, preserve phylogenetic signal: French /m\~{ɛ}/, Spanish /mano/, and Italian /mano/ each represent distinct reflexes of Latin /manum/. Standard trait-based methods in linguistic phylogenetics are not designed to incorporate such fine-grained segmental divergence into the inference process. 
 
-Second, since root-meaning traits are analyzed analogously to morphological characters in biology \citep{Lewis2001}, they inherit the same methodological constraints. (i) The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. (ii) Moreover, state labels are not comparable across lexical items. State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. (iii) Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. Likelihood calculations must therefore condition on the exclusion of constant patterns from the data matrix. As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. 
+Second, since root-meaning traits are analyzed analogously to morphological characters in biology \citep{Lewis2001}, they inherit the same methodological constraints. (i)$~$The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. (ii)$~$Moreover, state labels are not comparable across lexical items. State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. (iii)$~$Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. Likelihood calculations must therefore condition on the exclusion of constant patterns from the data matrix. As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. 
 
 Third, recoding multistate cognate relationships as binary characters induces statistical dependencies among the resulting variables. For any given concept, the presence of one cognate class in a language entails the absence of the others, except in cases of polymorphism. However, the continuous-time Markov models typically employed assume that characters evolve independently and identically distributed (i.i.d.). Binary characters derived from multistate cognate data violate this independence assumption. 
 
@@ -82,7 +82,7 @@ Finally, cognate-class assignments such as those in Table$~$\ref{CognateCoding} 
 \label{LanguageDistribution}
 \end{figure*}
 
-We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms \citep{BouchardCote2013,Abner2024}. The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: (i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. The model, first introduced by \citet{Thorne1991}, is known in the molecular evolution literature as TKF91. Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. This permits estimation of event rates by pooling information across lexical items and segmental positions. By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. 
+We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms \citep{BouchardCote2013,Abner2024}. The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: (i)$~$substitution of one segment by another; (ii)$~$insertion of a segment; (iii)$~$deletion of a segment. This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. The model, first introduced by \citet{Thorne1991}, is known in the molecular evolution literature as TKF91. Just as nucleotides are treated as equivalent states irrespective of genomic position, our method treats segments as equivalent states across words. This permits estimation of event rates by pooling information across lexical items and segmental positions. By operating directly on segmental strings, the approach overcomes the principal limitations of trait-based coding. It preserves segmental structure, avoids arbitrary state labels, accommodates invariant data, and conditions inference on observable word forms. 
 
 Although the TKF91 model can be used for tree estimation, we focus on its capacity to estimate rates of change among segments, a central question in both linguistic theory and phonological typology. Several quantitative measures of diachronic segment stability have been proposed \citep{Wichmann2009,Moran2018,Moran2021}, but these approaches are not embedded within an explicit phylogenetic framework and do not model segment-to-segment transitions. A key advantage of our method is that it accommodates a broad class of transition models unconstrained by arbitrary state codings. We demonstrate the power of the TKF91 model with a sample of eight Romance languages together with Latin. The analysis yields three principal findings concerning sound change from Latin to Romance. First, vowels exhibit greater diachronic volatility than consonants. Second, models that parameterize transition rates over phonological natural classes provide a substantially better fit than simpler alternatives. Third, the inferred equilibrium frequencies indicate a disproportionate representation of stops and short vowels in Romance lexical forms relative to other segment classes. 
 
@@ -123,7 +123,7 @@ Within each cognate set, word forms were manually aligned. An illustrative examp
 
 Latin is a highly synthetic language in which most lexical items exhibit multiple inflected forms. For purposes of analysis, each lexical item in the dataset is represented by a single form. Verbs are represented by the present active infinitive. Nouns, adjectives, and pronouns are represented by singular forms in either the accusative or, less frequently, the nominative case, as these are the case forms directly continued in the Romance languages. The selection of citation form is not methodologically neutral, as it can influence estimated transition rates. For example, most masculine singular nominative adjectives in Latin end in /-us/, whereas feminine singular nominative adjectives end in /-a/. Systematic inclusion of feminine forms would increase the number of transitions originating in this vowel. 
 
-The lexical histories of the Romance languages are complex \citep{Stefenelli1992,Dworkin2016b}, as they reflect not only vertical inheritance but also substantial borrowing both from within Romance and from Latin itself. Given this non-tree-like component of their evolution, one might question the suitability of Romance data for phylogenetic modeling. In fact, Romance cognates are particularly well suited to our objectives for two reasons. First, the dataset is restricted to basic vocabulary, a domain in which borrowing is relatively infrequent \citep{Tadmor2010,Carling2019}. $Second, the phonological development of the Romance languages, which are attested in written sources from as early as the 9^{th}$$ and 10^{th}$ centuries, is sufficiently well understood that borrowings and Latinisms can often be identified. All forms for which evidence of borrowing was detected were excluded. Romance cognates are thus appropriate for our analysis for the same reason that the traditional comparative method has successfully reconstructed Proto-Romance forms. For example, the \textit{Dictionnaire \'{E}tymologique Roman} \citep{Derom} reconstructs portions of the Proto-Romance lexicon from a dataset comparable in scope and design to ours. 
+The lexical histories of the Romance languages are complex \citep{Stefenelli1992,Dworkin2016b}, as they reflect not only vertical inheritance but also substantial borrowing both from within Romance and from Latin itself. Given this non-tree-like component of their evolution, one might question the suitability of Romance data for phylogenetic modeling. In fact, Romance cognates are particularly well suited to our objectives for two reasons. First, the dataset is restricted to basic vocabulary, a domain in which borrowing is relatively infrequent \citep{Tadmor2010,Carling2019}. Second, the phonological development of the Romance languages, which are attested in written sources from as early as the 9\textsuperscript{th} and 10\textsuperscript{th} centuries, is sufficiently well understood that borrowings and Latinisms can often be identified. All forms for which evidence of borrowing was detected were excluded. Romance cognates are thus appropriate for our analysis for the same reason that the traditional comparative method has successfully reconstructed Proto-Romance forms. For example, the \textit{Dictionnaire \'{E}tymologique Roman} \citep{Derom} reconstructs portions of the Proto-Romance lexicon from a dataset comparable in scope and design to ours. 
 
 \section{Methods}
 \label{PaperSections_MethodsSection}
@@ -173,6 +173,10 @@ Working with cognate word forms presents specific methodological challenges, mos
 
 \subsection{Models of segmental change}
 \label{PaperSections_SegmentModels}
+We evaluate three models of segmental change. $\textit{M}_1$ is isomorphic to the Jukes-Cantor model of DNA sequence evolution \citep{Jukes1969}, which specifies equal transition rates among all pairs of states, with substitutions occurring according to a Poisson process (hereafter the ‘Poisson’ model). $\textit{M}_2$, corresponds to the Felsenstein model \citep{Felsenstein1981}, in which the substitution rate from one segment to another is proportional to the equilibrium frequency of the destination segment. Finally, $\textit{M}_3$, the Natural Class model, partitions segments into articulatorily defined natural classes and permits distinct rates of change within and between these classes. Model complexity differs substantially across these specifications. $\textit{M}_1$ contains no free parameters. $\textit{M}_2$ includes 78 free parameters corresponding to the equilibrium frequencies (one fewer than the number of segments). The Natural Class model, $\textit{M}_3$, has 55 additional rate parameters governing transitions among natural classes, which yields a total of $78+ 55= 133$ free parameters.
+
+\subsection{Data Curation and Analysis}
+\label{PaperSections_DataCuration}
 \begin{figure}[tb]
 \centering
 \includegraphics[width=480.938pt]{Figures/ConceptEncoding.pdf}
@@ -180,11 +184,9 @@ Working with cognate word forms presents specific methodological challenges, mos
 \label{ConceptEncoding}
 \end{figure}
 
-We evaluate three models of segmental change. $\textit{M}_1$ is isomorphic to the Jukes-Cantor model of DNA sequence evolution \citep{Jukes1969}, which specifies equal transition rates among all pairs of states, with substitutions occurring according to a Poisson process (hereafter the ‘Poisson’ model). $\textit{M}_2$, corresponds to the Felsenstein model \citep{Felsenstein1981}, in which the substitution rate from one segment to another is proportional to the equilibrium frequency of the destination segment. Finally, $\textit{M}_3$, the Natural Class model, partitions segments into articulatorily defined natural classes and permits distinct rates of change within and between these classes. Model complexity differs substantially across these specifications. $\textit{M}_1$ contains no free parameters. $\textit{M}_2$ includes 78 free parameters corresponding to the equilibrium frequencies (one fewer than the number of segments). The Natural Class model, $\textit{M}_3$, has 55 additional rate parameters governing transitions among natural classes, which yields a total of $78+ 55= 133$ free parameters.
-
-\subsection{Data Curation and Analysis}
-\label{PaperSections_DataCuration}
 All analyses are orchestrated by a control program written in the Nytril programming language \citep{Nytrilprogram}. We developed an automated experimental pipeline comprising a reusable IPA library, curated word-form datasets, data-validation routines, typeset output generation, and input-file construction for the MCMC engine, which is implemented in C++. 
+
+Word forms from the nine languages are organized hierarchically by concept and cognate class. Figure$~$\ref{ConceptEncoding} illustrates the raw encoding for the concept ‘mountain.’ A central technical challenge arises from the fact that IPA transcriptions are encoded in Unicode (UCS), which cannot be represented in single-byte encodings such as ASCII. Accordingly, all data are stored in UTF-8, a cross-platform multibyte encoding of UCS. To ensure reliable string comparison, diacritic composition must be standardized; we adopt Unicode Normalization Form C, although consistency across files is the critical requirement. Moreover, a single IPA segment may consist of multiple UCS code points, so the correspondence between characters and phonological segments is not one-to-one. 
 
 \begin{figure}[b]
 \centering
@@ -192,8 +194,6 @@ All analyses are orchestrated by a control program written in the Nytril program
 \caption{The IPA-Unicode encoding of a segment.}
 \label{SegmentEncoding}
 \end{figure}
-
-Word forms from the nine languages are organized hierarchically by concept and cognate class. Figure$~$\ref{ConceptEncoding} illustrates the raw encoding for the concept ‘mountain.’ A central technical challenge arises from the fact that IPA transcriptions are encoded in Unicode (UCS), which cannot be represented in single-byte encodings such as ASCII. Accordingly, all data are stored in UTF-8, a cross-platform multibyte encoding of UCS. To ensure reliable string comparison, diacritic composition must be standardized; we adopt Unicode Normalization Form C, although consistency across files is the critical requirement. Moreover, a single IPA segment may consist of multiple UCS code points, so the correspondence between characters and phonological segments is not one-to-one. 
 
 Figure$~$\ref{SegmentEncoding} provides an example of a complex encoding in which the grey numerals indicate hexadecimal UCS code points for base characters and diacritics. Since the analysis operates at the segmental level, a parser converts each word string into an array of segment objects. These objects are implemented in a reusable library that associates each segment with linguistic features. Subsequent processing steps operate on abstract properties such as ‘vowel’ and ‘nasal,’  rather than on raw character strings. 
 
@@ -203,12 +203,12 @@ Following parsing, the control program aggregates and partitions the data and ge
 \label{PaperSections_Results}
 \subsection{Phylogeny}
 \label{PaperSections_PhylogenyResults}
-\begin{figure}[tb]
+\begin{figure*}[tb]
 \centering
-\includegraphics[width=242pt]{Figures/ModelTreesUsed.pdf}
+\includegraphics[width=352.688pt]{Figures/ModelTreesUsed.pdf}
 \caption{Model trees used in all analyses}
 \label{ModelTreesUsed}
-\end{figure}
+\end{figure*}
 
 All model parameters are treated as random variables endowed with prior distributions. The tree topology describing the relationships of the languages is likewise modeled as a random variable under a uniform prior over all possible topologies. As outlined in Section$~$\ref{PaperSections_ModelInference}, the posterior probability distributions of the model parameters are numerically approximate with MCMC. Across runs, a small set of topologies consistently achieved the highest posterior support. However, the MCMC sampler exhibited limited mixing over tree space: once a high-probability topology was located, the chain tended to remain trapped in its vicinity. 
 
@@ -241,16 +241,16 @@ Ratios greater than one indicate evidence in favor of model $\textit{M}_i$. Sinc
 \label{PaperSections_WordTransformation}
 Figure$~$\ref{QRatesDiagonal} presents the absolute values of the diagonal entries of the substitution rate matrix estimated under the Natural Class model. These diagonal elements provide a measure of segmental volatility, as each diagonal element equals the sum of transition rates from a given segment to all alternative segments. When the process is in segment $i$, the value $- q_{ii}$ represents the instantaneous rate at which it changes state. Higher values therefore correspond to shorter expected residence times and greater diachronic instability. Several segmental classes in Figure$~$\ref{QRatesDiagonal} appear to share identical rates (e.g., diphthongs, long vowels, affricates, and nasal vowels). This visual uniformity is an artifact of scale rather than exact equality. Although the rates in these classes are distinct, they are sufficiently small to be indistinguishable at the resolution of the plot. 
 
-\begin{figure}[b]
+\begin{figure}[tb]
 \centering
-\includegraphics[width=300pt]{Figures/EquilibriumCharts.pdf}
+\includegraphics[width=388.312pt]{Figures/EquilibriumCharts.pdf}
 \caption{The equilibrium frequencies $\pi $ of each natural class}
 \label{EquilibriumCharts}
 \end{figure}
 
 The most salient pattern in Figure$~$\ref{QRatesDiagonal} is the clear separation between vowels and consonants. With the exception of affricates, vowels exhibit the highest volatility, and within the vocalic domain diphthongs and long vowels are particularly unstable. By contrast, the most stable segments are consonants, with stops displaying the lowest overall rates of change. Rates also cluster tightly within natural classes: long vowels, affricates, fricatives, short vowels, nasal vowels, nasal consonants, and stops each form coherent groups. Two segments depart from this pattern: the liquid /r/, which clusters with the fricatives, and the mid-front vowel /e/, which patterns with the nasal vowels. These patterns arise from the interaction between class-specific exchangeability parameters and the distribution of equilibrium frequencies. When equilibrium frequencies are relatively homogeneous within a class, the corresponding $- q_{ii}$ values tend to be similar. The clustering observed in Figure$~$\ref{QRatesDiagonal} thus reflects both the structural constraints of the model and regularities present in the empirical data. 
 
-\begin{figure*}[b]
+\begin{figure*}[tb]
 \centering
 \includegraphics[width=304.95pt]{Figures/RateChart.pdf}
 \caption{The average rates of change between and within the ten groups of the Natural Class model. Circle area is proportional to the rate of change between groups ($q_{ij}$). Shaded area represents the 95\% credible interval. }
@@ -259,7 +259,7 @@ The most salient pattern in Figure$~$\ref{QRatesDiagonal} is the clear separatio
 
 Figure$~$\ref{EquilibriumCharts} displays the estimated equilibrium frequencies under the Natural Class model $\textit{M}_3$. These frequencies enter the likelihood in two ways. First, they determine the prior distribution over segmental states at the root of the tree. Second, in models $\textit{M}_2$ and $\textit{M}_3$, they scale substitution rates so that transitions into a segment are proportional to its equilibrium frequency. Accordingly, transitions into liquids$~$(0.188), short vowels$~$(0.110), and nasal consonants$~$(0.0758) exhibit the highest estimated rates, which reflects their comparatively large equilibrium weights. More broadly, the inferred equilibrium distribution closely mirrors the empirical segment frequencies observed in the dataset. 
 
-\begin{figure*}[b]
+\begin{figure*}[tb]
 \centering
 \includegraphics[width=495.9pt]{Figures/AlignmentExample1.pdf}
 \caption{Segments are colored according to natural class. Dashes denote gaps where there is no homologous segment for the alignment position. The alignments are ordered from the highest posterior probability (top-left alignment) to the lowest posterior probability (bottom-right alignment) in row order. }
@@ -270,9 +270,9 @@ Figure$~$\ref{RateChart} shows the estimated substitution rates among the 10 gro
 
 \subsection{Segmental Alignments}
 \label{PaperSections_WordSegmentRelationships}
-\begin{figure}[b]
+\begin{figure}[tb]
 \centering
-\includegraphics[width=300pt]{Figures/GappinessChart.pdf}
+\includegraphics[width=342pt]{Figures/GappinessChart.pdf}
 \caption{Distribution of alignment gaps across word positions for the 102 cognate sets analyzed in this study. The top panel shows the proportion of alignments with a given number of gaps at the word-initial segment, the middle panel at word-internal segments, and the bottom panel at the word-final segment. Since nine languages are analyzed, at most eight gaps can occur at a given position: a deletion event affecting all nine languages would not appear in the alignment and is explicitly conditioned on in the likelihood calculation \citep{Lunter2003}. Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions, ($\chi ^2= 425.62$, $d.f.= 16$, $p< 0.001$), which confirms a statistically significant positional asymmetry. }
 \label{GappinessChart}
 \end{figure}
@@ -298,7 +298,7 @@ The TKF91 framework does not align fully with any single tradition, though it sh
 
 Our use of TKF91 parallels the approach of \citet{BouchardCote2013}, who likewise treat cognate word forms as the observed data. Their framework employs a string transducer model \citep{Holmes2001} to characterize segmental correspondences, which thereby accommodates context-dependent processes. By contrast, the current implementation of TKF91 does not incorporate contextual conditioning. Its advantage lies elsewhere: TKF91 is an explicitly historical, event-based model in which insertion, deletion, and substitution are well-defined stochastic events. The likelihood integrates over all possible sequences of such events that could have generated the observed forms in the nine languages. Since these events are parameterized by estimable rates, the model provides a direct quantitative account of segmental evolution. Even though it does not yet capture contextual phonological processes, its event-based structure offers a principled foundation for modeling sound change. 
 
-A practical limitation of TKF91 is computational complexity. Likelihood evaluation scales exponentially with the number of taxa and word length, with complexity on the order of $O(2^{\textit{N}}L^{\textit{N}})$, where $\textit{N}$ denotes the number of tips and $L$ the geometric mean word length \citep{Lunter2003}. For linguistic datasets, this burden is mitigated by the brevity of word forms, typically $1\leq L\leq 10$. Nevertheless, alternative formulations can reduce computational cost. If insertion events are assumed to occur independently of word length, rather than at rate $\lambda (L+ 1)$ as in TKF91, the likelihood becomes linear in the number of taxa \citep{BouchardCote2013b}. This variant, known as the Poisson Indel Process (PIP), may be preferable for datasets comprising substantially larger language samples. Given that sampled alignments in our analyses exhibit comparable lengths, PIP constitutes a plausible direction for scaling the framework to broader comparative datasets. 
+A practical limitation of TKF91 is computational complexity. Likelihood evaluation scales exponentially with the number of taxa and word length, with complexity on the order of $O(2^{\textit{N}}\overline L^{\textit{N}})$, where $\textit{N}$ denotes the number of tips and $\overline L$ the geometric mean word length \citep{Lunter2003}. For linguistic datasets, this burden is mitigated by the brevity of word forms, typically $1\leq L\leq 10$. Nevertheless, alternative formulations can reduce computational cost. If insertion events are assumed to occur independently of word length, rather than at rate $\lambda (L+ 1)$ as in TKF91, the likelihood becomes linear in the number of taxa \citep{BouchardCote2013b}. This variant, known as the Poisson Indel Process (PIP), may be preferable for datasets comprising substantially larger language samples. Given that sampled alignments in our analyses exhibit comparable lengths, PIP constitutes a plausible direction for scaling the framework to broader comparative datasets. 
 
 \subsection{Implications for Sound Change and Phonological Typology}
 \label{PaperSections_InsightsSoundChange}
@@ -312,7 +312,7 @@ The average rates summarized in Figure$~$\ref{RateChart} provide a complementary
 
 The equilibrium frequencies in Figure$~$\ref{EquilibriumCharts} illuminate the distributional consequences of these historical processes. Short vowels and stops together account for more than half of all segments, which indicates a pronounced skew toward these classes. This distribution reflects the reduction of diphthongs and long vowels and the concomitant expansion of short vowels within Romance. 
 
-Finally, model comparison provides quantitative support for the role of natural classes in sound change \citep[p. 201]{King1969}. Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected theProto-Germanic reflexes of Proto-Indo-European stops. The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. 
+Finally, model comparison provides quantitative support for the role of natural classes in sound change \citep[p. 201]{King1969}. Sound change frequently targets segments that share articulatory or acoustic properties, as exemplified by Grimm’s Law, which systematically affected the Proto-Germanic reflexes of Proto-Indo-European stops. The superior fit of the natural-class model thus reinforces the long-standing view that phonetic grounding constrains the trajectory of phonological change. 
 
 \subsection{Segmental Sampling}
 \label{PaperSections_SegmentalSampling}
@@ -320,7 +320,7 @@ Under our framework, a new issue emerges: segmental sampling \citep{Dockum2019}.
 
 \subsection{Limitations of the Model}
 \label{PaperSections_Limitations}
-\begin{figure*}[b]
+\begin{figure*}[tb]
 \centering
 \includegraphics[width=495.9pt]{Figures/SegmentOccuranceRates.pdf}
 \caption{Comparison of segmental occurrence rates across languages. Segments are ordered according to their frequency in Latin. For each language, bar heights are normalized to the most frequent segment in that language. Languages are arranged by increasing Euclidean distance from Latin (indicated by the red line). }
