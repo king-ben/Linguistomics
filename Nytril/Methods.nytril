@@ -637,7 +637,6 @@ class LanguageDistributionFigure: Content {
         foreach (var l in MainResults.Data.LanguageSet) {
           if (l != WorldLanguages.Latin) {
             HBox {
-              VAlign: Center;
               Separation: 3pt;
               Canvas(8pt, 8pt, 0.5pt) {
                 BorderRadius: 2pt;

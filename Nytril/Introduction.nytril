@@ -56,7 +56,7 @@ class RootMeaningTraitsSection: Content {
       "Most linguistic phylogenies are inferred from abstract cognate relationships";
           Citep {Gray2000; Holden2002; Ringe2002; Gray2003; Bouckaert2012; Bowern2012; Chang2015}; DotSpace;
       "Cognates are linguistic units at different levels (e.g., segments, morphemes, words) that share a common ancestor. An example from the lexical domain is Spanish "; textit{"mano"}; " "; style.SQuoteComma{"hand"};
-          "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance */manu/"; DotSpace;
+          "French "; textit{"main"}; ", and Italian "; textit{"mano"}; ", which all descend from Proto-Romance "; TextIpaStar{"manu"}; DotSpace;
       "Four types of lexical cognacy have been identified in the literature"; Citep {Chang2015};
       ", but phylogenetic studies rely overwhelmingly on one: root-meaning traits.";
     };
@@ -96,12 +96,18 @@ class RootMeaningTraitsSection: Content {
     style.Par {
       "Second, since root-meaning traits are analyzed analogously to morphological characters in biology";
       Citep{Lewis2001}; ", they inherit the same methodological constraints. ";
-      "(i) The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. ";
-      "Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. ";
-      "That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. ";
-      "(ii) Moreover, state labels are not comparable across lexical items. ";
-      "State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. ";
-      "(iii) Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. ";
+      style.SpanList {
+        Span {
+          "The state labels, whether binary or multistate, are arbitrary and carry no intrinsic interpretation beyond distinguishing cognate classes. ";
+          "Consequently, linguistic phylogenetic analyses are effectively limited to models with symmetric transition rates, so that the likelihood is invariant to permutations of the state labels. ";
+          "That is, the probability of the data must remain unchanged if 0s and 1s are interchanged. ";
+        };
+        Span {
+          "Moreover, state labels are not comparable across lexical items. ";
+          "State 0 for one concept does not correspond to state 0 for another, which precludes pooling information across characters to estimate shared evolutionary dynamics. ";
+        };
+        "Invariant root-meaning traits (those exhibiting a single state across all languages) are relatively rare. ";
+     };
       "Likelihood calculations must therefore condition on the exclusion of constant patterns from the data matrix. ";
       "As a result, phylogenetic analyses based on such traits are largely confined to estimating tree topology and divergence times, while providing limited access to the dynamics of segmental change. ";
     };
@@ -109,7 +115,7 @@ class RootMeaningTraitsSection: Content {
     style.Par {
       "Third, recoding multistate cognate relationships as binary characters induces statistical dependencies among the resulting variables. ";
       "For any given concept, the presence of one cognate class in a language entails the absence of the others, except in cases of polymorphism. ";
-      "However, the continuous-time Markov models typically employed assume that characters evolve independently and identically distributed (i.i.d.). ";
+      "However, the continuous-time Markov models typically employed assume that characters evolve independently and identically distributed "; LitSpan{"(i.i.d.)"}; DotSpace;
       "Binary characters derived from multistate cognate data violate this independence assumption. ";
     };
 
@@ -142,7 +148,11 @@ class TKF91ApproachSection: Content {
       "We introduce an approach to linguistic phylogenetics in which the observations are aligned cognate word forms";
       Citep {BouchardCote2013; Abner2024}; DotSpace;
       "The segmental evolution of these forms is modeled as a continuous-time Markov process that permits three types of instantaneous events: ";
-      "(i) substitution of one segment by another; (ii) insertion of a segment; and (iii) deletion of a segment. ";
+      style.SpanList {
+        "substitution of one segment by another; ";
+        "insertion of a segment; ";
+        "deletion of a segment. ";
+      };
       "This framework enables analysis in a manner directly analogous to molecular phylogenetic inference. ";
       "The model, first introduced by";
       Citet{Thorne1991}; ", is known in the molecular evolution literature as TKF91. ";
