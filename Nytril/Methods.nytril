@@ -2214,7 +2214,7 @@ class WorkflowFigure: Content {
     arrow;
   };
 
-  Box(index, text) = VBox(110, 96, new Edge(2, 3, Colors.DarkGray)) {
+  Box(index, text) = VBox(114, 96, new Edge(2, 0, Colors.DarkGray)) {
     TextFace: TextFaces.SansSerif;
     TextHeight: 14pt;
     VAlign: Center;
@@ -2248,15 +2248,14 @@ class WorkflowFigure: Content {
         Box(3, ["Create", "MCMC", "Dataset"]);
       };
 
-      Span {
+      HBox {
+        Margin: PadR(49);
         HAlignment: Right;
         TextHeight: 30;
         Tex.downarrow;
-        Space*5;
       };
 
       HBox {
-        Margin: PadT(5);
         VAlign: Center;
         Box(7, ["Manuscript", "&", "Supplements"]);
         Arrow(Tex.leftarrow);
