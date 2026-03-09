@@ -637,7 +637,6 @@ class LanguageDistributionFigure: Content {
         foreach (var l in MainResults.Data.LanguageSet) {
           if (l != WorldLanguages.Latin) {
             HBox {
-              VAlign: Center;
               Separation: 3pt;
               Canvas(8pt, 8pt, 0.5pt) {
                 BorderRadius: 2pt;
@@ -2215,7 +2214,7 @@ class WorkflowFigure: Content {
     arrow;
   };
 
-  Box(index, text) = VBox(110, 96, new Edge(2, 3, Colors.DarkGray)) {
+  Box(index, text) = VBox(114, 96, new Edge(2, 0, Colors.DarkGray)) {
     TextFace: TextFaces.SansSerif;
     TextHeight: 14pt;
     VAlign: Center;
@@ -2249,15 +2248,14 @@ class WorkflowFigure: Content {
         Box(3, ["Create", "MCMC", "Dataset"]);
       };
 
-      Span {
+      HBox {
+        Margin: PadR(49);
         HAlignment: Right;
         TextHeight: 30;
         Tex.downarrow;
-        Space*5;
       };
 
       HBox {
-        Margin: PadT(5);
         VAlign: Center;
         Box(7, ["Manuscript", "&", "Supplements"]);
         Arrow(Tex.leftarrow);
@@ -3182,8 +3180,6 @@ class MCMCComparisonSection: Content {
       };
     };
 
-    style.AddFigure(Figures.Workflow, Bottom | Full);
-
     style.Par {
       "Bayesian model comparison automatically accounts for model complexity through integration over parameter space. ";
       "More complex models distribute prior probability mass over a higher-dimensional space, which effectively penalizes unnecessary parameters. ";
@@ -3247,6 +3243,8 @@ class WorkflowSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     var code = Span {TextFace: TextFaces.Mono};
+
+    style.AddFigure(Figures.Workflow, Bottom | Full);
 
     style.Par {
       "The first stage of the experiment involved constructing a reusable dictionary of IPA segment definitions. ";
