@@ -2214,7 +2214,7 @@ class WorkflowFigure: Content {
     arrow;
   };
 
-  Box(index, text) = VBox(114, 96, new Edge(2, 0, Colors.DarkGray)) {
+  Box(index, text) = VBox(120, 96, new Edge(2, 0, Colors.DarkGray)) {
     TextFace: TextFaces.SansSerif;
     TextHeight: 14pt;
     VAlign: Center;
@@ -2249,7 +2249,7 @@ class WorkflowFigure: Content {
       };
 
       HBox {
-        Margin: PadR(49);
+        Margin: PadR(52);
         HAlignment: Right;
         TextHeight: 30;
         Tex.downarrow;

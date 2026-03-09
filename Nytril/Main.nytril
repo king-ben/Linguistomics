@@ -63,6 +63,7 @@ readonly namespace Main.Documents {
   DavidSlideShow      DavidPresentation  = new;
   JohnSlideShow       JohnPresentation   = new;
   DiagnosticsDocument Diagnostic         = new(FinalStyle, MainResults.Data);
+  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new LinguisticsTitle, FinalStyle);
 
 //  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
 //  StyleDocument     TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
