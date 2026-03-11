@@ -1269,7 +1269,7 @@ class PhylogenyResultsSection: Content {
 
     style.Par {
       "Subsequent analyses therefore condition on the three fixed topologies in "
-       style.FigureReference(Figures.ModelTreesUsed); ". ";
+       style.FigureReference(Figures.ModelTreesUsed); DotSpace;
       "Although the diversification of Romance remains debated, many recent accounts posit Sardinian as the earliest branching lineage, followed by Romanian";
        Citep {Hall1950; Hall1976; Dardel1985; Swiggers2001; Vallejo2012; Buchi2015; Dworkin2016a}; DotSpace;
       "Since Sardinian is not in our sample, Romanian occupies the earliest branching position in each topology in ";
@@ -1391,7 +1391,7 @@ class ModelComparisonSection: Content {
     };
 
     style.Par {
-      "Ratios greater than one indicate evidence in favor of model "; ModelI; ". ";
+      "Ratios greater than one indicate evidence in favor of model "; ModelI; DotSpace;
       "Since the candidate models are nested, we computed the Bayes factor via the Savage-Dickey density ratio";
         Citep {Dickey1971}; ", ";
         "which evaluates the ratio of posterior to prior densities at the parameter restriction that reduces the richer model to the simpler one. ";
@@ -2806,13 +2806,12 @@ class PhylogenyModelSection: Content {
       qii;
       " are defined so that each row of the matrix sums to zero, i.e., ";
       DiagonalElements;
-      ". ";
+      DotSpace;
       "Since these diagonal entries are negative, the quantity ";
-      "-";
-      qii;
+      -qii;
       " can be interpreted as the total rate at which the process leaves state ";
       sym.i;
-      ". ";
+      DotSpace;
       "In matrix notation, the substitution process is summarized as:";
     };
 
@@ -2830,36 +2829,27 @@ class PhylogenyModelSection: Content {
       "When the process occupies state ";
       sym.i;
       ", the waiting time until the next substitution event is exponentially distributed with rate parameter ";
-      "-";
-      qii;
-      ". ";
+      -qii; DotSpace;
       "Conditional on a substitution occurring, the probability that the next state is ";
       sym.j;
       " (for ";
-      sym.i;
-      " ≠ ";
-      sym.j;
+      EqSpan {sym.i;Tex.neq; sym.j};
       ") is ";
       EqSpan{-qij; Tex.Divide; qii;};
       DotSpace;
       "Several quantities of interest follow directly from the rate matrix ";
-      RateMatrix;
-      ". ";
+      RateMatrix; DotSpace;
       "For example, the probability of transitioning from state ";
-      sym.i;
-      " to state ";
-      sym.j;
+      sym.i; " to state "; sym.j;
       " over an interval of length ";
       ExpectedEvents;
       " is obtained by matrix exponentiation, ";
-      ExponentiationOfRateMatrix;
-      ". ";
+      ExponentiationOfRateMatrix; DotSpace;
       "The process also admits a stationary, or equilibrium, distribution ";
       EquilibriumDistribution;
       ", which represents the long-run probability of observing each state. ";
       "This distribution is characterized as the solution to ";
-      RateMatrixSolution;
-      ". ";
+      RateMatrixSolution; DotSpace;
       "Both the transition probabilities and the equilibrium distribution enter into the likelihood calculation described below. ";
     };
 
@@ -2911,7 +2901,7 @@ class PhylogenyModelSection: Content {
       WordLength sub sym.i;
       " instances of segment type ";
       sym.i;
-      ". ";
+      DotSpace;
       "The waiting time until the next evolutionary event (substitution, insertion, or deletion) is exponentially distributed with rate parameter: ";
     };
 
@@ -3060,7 +3050,7 @@ class MCMCSection: Content {
           Tex.Equals;
           "h"; Arguments{RateMatrixParams; RandomNumber;}
         };
-        ". ";
+        DotSpace;
         "Let ";
         NewProposal(RateMatrixParams, NewValueProposal);
         " denote the proposal density for the forward move and ";
@@ -3143,7 +3133,7 @@ class MCMCComparisonSection: Content {
       Model sub 1;
       ", whereas a value less than one favors ";
       Model sub 2;
-      ". ";
+      DotSpace;
       "Unlike frequentist model comparison, Bayesian inference does not rely on ";
       textit{"p"};
       "-values. ";
@@ -3169,8 +3159,8 @@ class MCMCComparisonSection: Content {
         "Substantial";
       };
       Row {
-        Span {10 Tex.Minus 100};
-        Span {1 Tex.Minus 2};
+        Span {10; Tex.Minus; 100};
+        Span {1; Tex.Minus; 2};
         "Strong";
       };
       Row {
@@ -3191,10 +3181,10 @@ class MCMCComparisonSection: Content {
       "Several strategies are available. ";
       "One approach constructs a Markov chain that moves between models of differing dimensionality via reversible-jump MCMC";
       Citep{Green1995};
-      ". ";
+      DotSpace;
       "Another approach estimates marginal likelihoods using path-sampling or thermodynamic integration, in which a series of MCMC chains explores intermediate distributions between the prior and posterior";
       Citep{Lartillot2006; Xie2010};
-      ". ";
+      DotSpace;
     };
 
    style.Par {
@@ -3288,7 +3278,7 @@ class WorkflowSection: Content {
       "Once the dataset has been validated, an experiment snapshot is generated. ";
       "This process produces a directory of nytril and JSON files that serve as input to the program ";
       code{"TongueTwister"};
-      ". ";
+      DotSpace;
     };
 
     style.Par {
