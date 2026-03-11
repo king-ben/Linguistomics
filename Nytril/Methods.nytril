@@ -1280,7 +1280,7 @@ class PhylogenyResultsSection: Content {
     style.Par {
       "The relationship between Classical Latin, Vulgar Latin, ";
       "Proto-Romance, and the Romance languages remains the subject of ongoing debate"; Citep {Posner1996; Harris2003; Chang2015; Heggarty2023; Goldstein2024}; DotSpace;
-      "A central issue is whether Latin (Classical or Vulgar) is a sampled ancestor of the Romance languages or their sister lineage"; DotSpace;
+      "A central issue is whether Latin (Classical or Vulgar) is a sampled ancestor of the Romance languages or their sister lineage. ";
       "For reasons of model tractability, we adopt the latter assumption and treat Latin as an outgroup. ";
       "Tree models that incorporate sampled ancestors are considerably more complex than the framework employed here. ";
       "This modeling choice does not exclude an ancestral interpretation, however: if the estimated branch length leading to Latin approaches zero, Latin is effectively positioned at the root of the Romance clade. ";
@@ -1863,7 +1863,7 @@ class SegmentalSamplingSection: Content {
       "By contrast, Italo-Western Proto-Romance (the common ancestor of the remaining languages in our sample) merges "; TextIpaStar{"ʊ"}; " and "; TextIpaStar{"o"}; " to "; TextIpa{"o"}; DotSpace;
       "Consequently, Latin "; textit{"buccam"}; Space; style.SQuote{"mouth"}; " and Romanian "; textit{"bucă"}; " preserve "; VocalSegments.u; " against the "; VocalSegments.oh; " reflex found, for instance, in Italian "; textit{"bocca"}; DotSpace;
       "This change constitutes key evidence for the placement of Romanian within the Romance tree"; Citep {Janson1979.OnPage(25); Herman2000.OnPage(32..34)}; DotSpace;
-      "If such correspondences are underrepresented in the sample, the topology may be estimated incorrectly"; DotSpace;
+      "If such correspondences are underrepresented in the sample, the topology may be estimated incorrectly. ";
       "A related issue concerns the representativeness of the segment-frequency distributions in ";
       style.FigureReference(Figures.SegmentOccuranceRates);
       DotSpace;

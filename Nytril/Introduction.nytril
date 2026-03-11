@@ -291,7 +291,7 @@ class PaperDataSection: Content {
       style.FigureReference(Figures.LanguageDistribution); DotSpace;
       "The word forms are cognate in the traditional sense: they descend from a common ancestor"; Citep {Chang2015.OnPage(201)}; DotSpace;
       "In contrast to root-meaning traits (such as the one illustrated in ";
-         style.TableReference(TableFigures.CognateCoding); "), cognacy does not depend on semantic equivalence"; DotSpace;
+         style.TableReference(TableFigures.CognateCoding); "), cognacy does not depend on semantic equivalence. ";
       "For instance, the Latin adjective "; textit{"gravis"};  " means "; style.SQuoteComma{"heavy"}; "but French "; textit{"grave"}; " means "; style.SQuoteEnd{"serious"};
       "Despite this semantic divergence, they are assigned to the same cognate set because they are segmentally homologous. ";
     };
@@ -322,12 +322,12 @@ class PaperDataSection: Content {
       " distinct segments distributed across ";
       data.UsedConcepts.Length;
       " concepts. ";
-      "Word forms may be represented either phonetically or phonemically; in this study, we adopt phonemic representations for two reasons"; DotSpace;
-      "First, detailed phonetic transcriptions are not consistently available, particularly for a corpus language such as Latin"; DotSpace;
-      "Second, the current implementation of the model does not accommodate within-language phonetic variation"; DotSpace;
-      "Accordingly, reliance on phonetic data would have necessitated selecting a single, potentially arbitrary, surface realization for each form"; DotSpace;
-      "All representations are strictly segmental"; DotSpace;
-      "Suprasegmental properties, including stress and syllable structure, are not encoded"; DotSpace;
+      "Word forms may be represented either phonetically or phonemically; in this study, we adopt phonemic representations for two reasons. ";
+      "First, detailed phonetic transcriptions are not consistently available, particularly for a corpus language such as Latin. ";
+      "Second, the current implementation of the model does not accommodate within-language phonetic variation. ";
+      "Accordingly, reliance on phonetic data would have necessitated selecting a single, potentially arbitrary, surface realization for each form. ";
+      "All representations are strictly segmental. ";
+      "Suprasegmental properties, including stress and syllable structure, are not encoded. ";
       "Segments are transcribed using standard Unicode IPA conventions";
       Citep{IPA1999}; DotSpace;
     };
@@ -347,8 +347,7 @@ class PaperDataSection: Content {
       TextIpa{"wa"};
       " in French and Walloon. To represent the emergence of ";
       TextIpa{"w"};
-      ", an empty segmental position is introduced before the vowel in the remaining languages";
-      DotSpace;
+      ", an empty segmental position is introduced before the vowel in the remaining languages. ";
       "As discussed in "; style.SectionReference(PaperSections.MethodsSection); ", however, these manual alignments serve only as initial configurations for the Markov chain Monte Carlo procedure. ";
       "Inference does not condition on any fixed alignment and the posterior distribution integrates over alternative homology assignments. ";
       "Accordingly, explicit gap symbols are not required elements of the input. ";
