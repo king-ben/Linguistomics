@@ -157,9 +157,8 @@ class VocalSegment: Fact {
     ShowSegment;
   };
 
-  ShowSegment(bool link=true) = Span {
+  ShowSegment(bool link=true) = LitSpan {
     PaperStyle.IPAFamily;
-    TextLiteral: true;
     if (Impossible) {
       System.Assert(false, Lang.Impossible);
       TextColor: Colors.Red;
@@ -192,10 +191,9 @@ class VocalSegment: Fact {
       SpaceBefore: 8pt;
       SpaceAfter: 8pt;
       PaperStyle.IPAFamily;
-      TextLiteral: true;
       TextHeight: size;
       SpaceAfter: size * 0.125;
-      Ipa;
+      LitSpan {Ipa};
     };
     ShowCodePoint;
     Paragraph {

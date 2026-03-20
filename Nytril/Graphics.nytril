@@ -32,9 +32,9 @@ readonly namespace PaperStyle {
   HighlightColor       = Colors.Orange;
   TextColor            = Colors.Black;
   SlideHeader          = Colors.SlateGray;
-  textit               = Span {TextLiteral: true; Italic};
-  TextIpa              = Span {TextLiteral: true; IPAFamily; Begin:"/"; End:"/"};
-  TextIpaStar          = Span {TextLiteral: true; IPAFamily; Begin:"*/"; End:"/"};
+  textit               = LitSpan {Italic};
+  TextIpa              = LitSpan {IPAFamily; Begin:"/"; End:"/"};
+  TextIpaStar          = LitSpan {IPAFamily; Begin:"*/"; End:"/"};
   HeatMap              = LinearGradient.FromColorArray([Colors.Blue, Colors.Cyan, Colors.Yellow, Colors.Pink, Colors.Red]);
 
   LanguageTable(Column[] columns) = Table(new(new(0, 2), new(2pt, 2), new(0, 2), new(2pt, 2)), PadLR(2pt), columns);

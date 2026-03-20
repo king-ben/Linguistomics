@@ -1,6 +1,6 @@
-﻿using WordGroups;
+using WordGroups;
 
-namespace Concepts;
+readonly namespace Concepts;
 
 namespace Fish {
   Confidence = 10;

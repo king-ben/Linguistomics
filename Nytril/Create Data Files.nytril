@@ -15,10 +15,6 @@ include "Nexus";
 include "Config";
 include "Data Validation";
 
-// Choose between one of these sets
-include "LanguageSet";
-//include "LanguageTest";
-
 //======================================================================
 
 readonly namespace Main.Documents {
@@ -107,4 +103,5 @@ class CreateViewClass: DocumentEntry {
 }
 
 //======================================================================
+
 

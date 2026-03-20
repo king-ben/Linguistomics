@@ -1,4 +1,20 @@
 using Format;
+
+//======================================================================
+
+readonly namespace<ReviewComment> ReviewComments {}
+
+readonly ReviewComment[] CommentList {
+   return ReviewComments.ToSortedArray(false, @ReviewComment.CompareOrder);
+}
+
+readonly namespace<Person> Reviewers {
+  R1 = new(#c2af5714-c3da-4e59-af0e-d6b1b181db8e#, "Reviewer 1", null, null);
+  R2 = new(#8afa017a-9e98-42ef-9052-006768cbb043#, "Reviewer 2", null, null);
+  R3 = new(#e72f0c0e-25f1-4751-9d75-a722c5392850#, "Reviewer 3", null, null);
+}
+
+
 readonly namespace<ReviewComment> ReviewComments;
 
 C4 = new(#d0fe979b-9bf2-43cd-af5a-e2bc05c2bfda#, Reviewers.R1, People.Buchi_Éva) {

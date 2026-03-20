@@ -1,8 +1,92 @@
+using WorldLanguages;
 
-class EuropeExperimentClass: ExperimentData {
-  Constructor(config) {
-    super.Constructor(config, "Europe 3 Trees", "Europe3");
-  }
+include "Concepts/Nouns";
+include "Concepts/Pronouns";
+include "Concepts/Verbs";
+include "Concepts/Adjectives";
+include "Concepts/Numbers";
+include "Concepts/Misc";
+
+//======================================================================
+
+readonly WorldLanguage[] LanguageSet = [
+  Latin,
+  Romanian,
+  Portuguese,
+  Spanish,
+  Catalan,
+  French,
+  Walloon,
+  Friulian,
+  Italian
+];
+
+readonly namespace TreeExamples {
+  PriorTrees = [T1, T2, T3];
+
+  CatalanClade = new Branch {
+    new Leaf(Catalan);
+    new Branch {
+      new Leaf(French);
+      new Leaf(Walloon);
+    };
+  };
+
+  SpanishClade = new Branch {
+    new Leaf(Spanish);
+    new Leaf(Portuguese);
+  };
+
+  T1 = new Branch {
+    new Leaf(Latin);
+    new Branch {
+      new Leaf(Romanian);
+      new Branch {
+        new Leaf(Italian);
+        new Branch {
+          new Leaf(Friulian);
+          new Branch {
+            SpanishClade;
+            CatalanClade;
+          };
+        }
+      }
+    }
+  };
+
+  T2 = new Branch {
+    new Leaf(Latin);
+    new Branch {
+      new Leaf(Romanian);
+      new Branch {
+        new Branch {
+          new Leaf(Italian);
+          new Leaf(Friulian);
+        };
+        new Branch {
+          SpanishClade;
+          CatalanClade;
+        };
+      };
+    };
+  };
+
+  T3 = new Branch {
+    new Leaf(Latin);
+    new Branch {
+      new Leaf(Romanian);
+      new Branch {
+        SpanishClade;
+        new Branch {
+          CatalanClade;
+          new Branch {
+            new Leaf(Italian);
+            new Leaf(Friulian);
+          };
+        };
+      };
+    };
+  };
 }
 
 //======================================================================

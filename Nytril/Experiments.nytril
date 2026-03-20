@@ -132,10 +132,10 @@ class ModelConfig {
 //======================================================================
 
 class TreeSet {
-  var Node         Tree;
+  var Node          Tree;
   var ModelConfig[] Models;
-  var              Name,
-                   RootFolder;
+  var               Name,
+                    RootFolder;
 
   Constructor(config, name, root, Node tree) {
     Name       = name;

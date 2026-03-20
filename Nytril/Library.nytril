@@ -396,9 +396,8 @@ class CognateWord: Fact {
 //    Link.Connect(Language, Cognate); This is probably not needed since words are linked to their language
   }
 
-  ShowPlain = Span {
+  ShowPlain = LitSpan {
     PaperStyle.IPAFamily;
-    TextLiteral: true;  // No spell checking
 
     Action: new Action(Actions.ToSource, Variable);
     // Strip out gaps and stress characters
@@ -563,15 +562,18 @@ class Cognate: Fact {
     return i;
   }
 
+  ConceptName = Span {
+    var n = Attribute.Name;
+    Concept.Name;
+    if (n != DefaultCognate)
+      Span {TextHeight: 60%; n};
+  };
 
   override GetLayoutNode = VBox(null, null, new Edge(0.25pt, 1, 90%) + PadLR(3)) {
     BorderRadius: 3;
     Background: #007F00#;
     TextColor: Colors.White;
-    var n = Attribute.Name;
-    Concept.Name;
-    if (n != DefaultCognate)
-      Span {TextHeight: 60%; n};
+    ConceptName;
   };
 
   override GetLayoutTip = Block {
@@ -630,10 +632,7 @@ class WordPairClass {
     TextHeight: textheight;
     Paragraph {
       ParBackground: 90%;
-      Span {
-        Word1.Cognate.Attribute.FullName[9..];
-        Action: new Action(Actions.ToSource, Word1.Cognate.Attribute);
-      }
+      Word1.Cognate.GetTitle;
     };
 
     Word1.ShowPaddedBlocks(textheight, Index);

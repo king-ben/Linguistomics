@@ -55,8 +55,8 @@ class DiagnosticGraphSection: Content {
 
   override GetBody(ContentStyle style) = Block {
     AddGraph(style, "Partitions", Data.Rule.Partitions);
-    AddGraph(style, "Segment Property", VocalSegment.Features.Diphthong);
-    AddGraph(style, "Segment", VocalSegments.au);
+    AddGraph(style, "Segment Property", VocalSegment.Features.Voiced);
+    AddGraph(style, "Segment", VocalSegments.nya);
     var l = Data.LanguageSet[0];
     AddGraph(style, l.Name, l);
   };
@@ -125,8 +125,10 @@ class DiagnosticsDocument: DocumentEntry {
       new AppendixContent("Word Lists by Language", DisplayWords.ShowWordsByLanguage(Style, Data)),
       new AppendixContent("Segment Groups", ShowSegmentTables),
       new AppendixContent(Lang.ConceptsUsed, AllWords.ShowTable(Style, Data, 10pt)),
-      new AppendixContent(Lang.Languages, Display.ShowLanguageDetails(Style)),
+//      new ChangeA3Figure
+//      new AppendixContent(Lang.Languages, Display.ShowLanguageDetails(Style)),
 //      new("Euler Feature Diagram", new EulerDiagramClass().FeatureChart(Data)),
+//      new AppendixContent(Lang.Diacritics, MatchingDiacritics.ShowTable),
     ];
 
     if (Data.RawData) {
@@ -134,7 +136,6 @@ class DiagnosticsDocument: DocumentEntry {
         new FrequencyFigure(new SegmentFrequencyChart(Data, false), "Segment Frequency"),
         new FrequencyFigure(new SegmentFrequencyChart(Data, true), "Segment Frequency by Partition"),
         new FrequencyFigure(new PartitionFrequencyChart(Data), "Partition Frequency"),
-        new AppendixContent(Lang.Diacritics, MatchingDiacritics.ShowTable),
         new CognateCoverage(Data),
         new ConceptGroupsFigure(Data)
       ];
@@ -155,21 +156,23 @@ class DiagnosticsDocument: DocumentEntry {
 
       Style.AddBody(c);
     }
+  };
+}
 
-    PageBreak;
+//======================================================================
 
-    Paragraph {
-      ParAlignment: Center;
-      "Chang A3";
+class ChangeA3Figure: Content {
+  Constructor {
+    super.Constructor("Chang A3");
+  }
+
+  override GetBody(ContentStyle style) = TreeBox(100%, null) {
+    Default: new Node(null) {
+      Curvature: 10%;
+      Bevel: 10%;
     };
-    TreeBox(100%, null) {
-      Default: new Node(null) {
-        Curvature: 10%;
-        Bevel: 10%;
-      };
-      TextHeight: 5.5pt;
-      Root: LanguageBranches.ChangA3;
-    }
+    TextHeight: 5.5pt;
+    Root: LanguageBranches.ChangA3;
   };
 }
 

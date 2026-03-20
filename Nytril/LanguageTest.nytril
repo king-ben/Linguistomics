@@ -1,4 +1,4 @@
-using WordGroups, TestLanguages;
+using TestLanguages;
 
 include "Concepts/Test";
 
@@ -9,18 +9,13 @@ readonly namespace<WorldLanguage> TestLanguages {
   LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "Language D") {LanguageParent to LanguageB};
 }
 
-readonly ExperimentData DataSet {
-  var data = new TestExperimentClass(Info);
-  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, [LanguageA, LanguageB, LanguageC, LanguageD], -1);
-  return data;
-}
+WorldLanguage[] LanguageSet = [
+  LanguageA,
+  LanguageB,
+  LanguageC,
+  LanguageD,
+];
 
-//======================================================================
-
-class TestExperimentClass: ExperimentData {
-  Constructor(config) {
-    super.Constructor(config, "Test", "Test");
-  }
 /*
   override Node NumberedTree = new NBranch(1) {
     new NLeaf(this, LanguageA, 1);
@@ -38,7 +33,6 @@ class TestExperimentClass: ExperimentData {
     DataConcept    = concepts.Woman;
   }
 */
-}
 
 //======================================================================
 

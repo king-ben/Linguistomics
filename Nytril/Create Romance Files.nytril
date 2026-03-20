@@ -1,0 +1,21 @@
+using WordGroups;
+
+include "Romance";
+include "Create Data Files";
+
+//======================================================================
+
+class EuropeExperimentClass: ExperimentData {
+  Constructor(config) {
+    super.Constructor(config, "Europe 3 Trees", "Europe3");
+  }
+}
+
+readonly ExperimentData DataSet {
+  var data = new EuropeExperimentClass(Info);
+  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet, Info.CognateMin);
+  return data;
+}
+
+//======================================================================
+

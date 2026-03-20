@@ -4,7 +4,6 @@ include "Lang";
 include "Site";
 include "Languages";
 include "Library";
-include "LanguageSet";
 include "LanguageTree";
 include "IPA";
 include "Segments";
@@ -25,25 +24,6 @@ include "Slideshow";
 include "John Slides";
 include "David's Slides";
 include "Data Validation";
-include "Review-John";
-include "Review-David";
-include "Review-Shawn";
-//======================================================================
-
-readonly namespace<Person> Reviewers {
-  R1 = new(#c2af5714-c3da-4e59-af0e-d6b1b181db8e#, "Reviewer 1", null, null);
-  R2 = new(#8afa017a-9e98-42ef-9052-006768cbb043#, "Reviewer 2", null, null);
-  R3 = new(#e72f0c0e-25f1-4751-9d75-a722c5392850#, "Reviewer 3", null, null);
-}
-
-//======================================================================
-
-readonly namespace<ReviewComment> ReviewComments {}
-
-readonly ReviewComment[] CommentList {
-   return ReviewComments.ToSortedArray(false, @ReviewComment.CompareOrder);
-}
-
 //======================================================================
 
 readonly LinguisticsPaper    MainPaper         = new;
@@ -53,8 +33,8 @@ ContentStyle                 SupplementStyle   = new PlainStyle;
 
 //==================================================
 
-readonly RealmSite           Main.Site  = new LinguistomicsSite;
-readonly                     Main.Facts = [People, References, Equations, WorldLanguages, CommentList];
+readonly RealmSite Main.Site  = new LinguistomicsSite;
+readonly           Main.Facts = [People, References, Equations, WorldLanguages];
 
 readonly namespace Main.Documents {
   HomePage            HomePage           = new;
@@ -72,6 +52,8 @@ readonly namespace Main.Documents {
 //  StyleDocument     SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplement (Review)", SupplementalPaper, ReviewStyle);
 //  TexDocument       TexPaper           = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
 }
+
+//======================================================================
 
 class BioSummary: Fact {
   field string Text;
@@ -148,7 +130,6 @@ class HomePage: SitePage {
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
       new DocTile(Main.Documents.Biography, Icons.person_search, "Acknowlegments") {Description: "Author bios and comments"},
-//      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
     ];
   }
 

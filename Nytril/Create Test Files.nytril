@@ -1,0 +1,20 @@
+using WordGroups;
+
+include "LanguageTest";
+include "Create Data Files";
+
+//======================================================================
+
+class TestExperimentClass: ExperimentData {
+  Constructor(config) {
+    super.Constructor(config, "Test", "Test");
+  }
+}
+
+readonly ExperimentData DataSet {
+  var data = new TestExperimentClass(Info);
+  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet, Info.CognateMin);
+  return data;
+}
+
+//======================================================================
