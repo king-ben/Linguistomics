@@ -1,0 +1,139 @@
+{
+  "Tree": "(Language A,(Language B,(Language C,Language D)));",
+  "NumberOfStates": 17, 
+  "McmcSettings": {
+  "Model": "gtr",
+  "OnlyCompleteWords": "No",
+  "Seed": 1283873188,
+  "CalcMarginal": "No",
+  "PrintFreq": 1000,
+  "NumCycles": 5000000,
+  "SampleFreq": 100,
+  "TreeLengthPriorVal": 0.15
+  },
+  "Taxa": ["LanguageA", "LanguageB", "LanguageC", "LanguageD"],
+  "PriorFrequencies": [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
+  "PartitionSets": [{"Name": "Short Vowel", "Set": [1, 3, 8, 12, 15]},{"Name": "Nasal Consonant", "Set": [10, 14, 16]},{"Name": "Liquid", "Set": [4, 6]},{"Name": "Fricative", "Set": [7, 9, 13]},{"Name": "Stop", "Set": [0, 2, 5, 11]}],
+  "Words": [
+  {"Name": "Fish", "Data": [
+    {"Taxon": "LanguageA", "Segments": [0, 1, 2, 3, 4]},
+    {"Taxon": "LanguageB", "Segments": [1, 2, 3, 4, -1]},
+    {"Taxon": "LanguageC", "Segments": [5, 1, 6, 3, 4]},
+    {"Taxon": "LanguageD", "Segments": [5, 1, 4, 3, 4]}
+  ]},
+  {"Name": "Water", "Data": [
+    {"Taxon": "LanguageA", "Segments": [3, 7, 8, 6, 8]},
+    {"Taxon": "LanguageB", "Segments": [3, 8, 6, 8, -1]},
+    {"Taxon": "LanguageC", "Segments": [3, 9, 8, 6, 8]},
+    {"Taxon": "LanguageD", "Segments": [3, 9, 8, 4, 8]}
+  ]},
+  {"Name": "Earth", "Data": [
+    {"Taxon": "LanguageA", "Segments": [10, 8, 0]},
+    {"Taxon": "LanguageB", "Segments": [10, 8, -1]},
+    {"Taxon": "LanguageC", "Segments": [10, 8, 5]},
+    {"Taxon": "LanguageD", "Segments": [10, 8, 5]}
+  ]},
+  {"Name": "Rain", "Data": [
+    {"Taxon": "LanguageA", "Segments": [11, 12, 11, 8, 2]},
+    {"Taxon": "LanguageB", "Segments": [13, 12, 13, 8, 0]},
+    {"Taxon": "LanguageC", "Segments": [11, 12, 11, 8, 2]},
+    {"Taxon": "LanguageD", "Segments": [11, 12, 11, 8, 2]}
+  ]},
+  {"Name": "Cloud", "Data": [
+    {"Taxon": "LanguageA", "Segments": [1, 6, 1, 0]},
+    {"Taxon": "LanguageB", "Segments": [1, 6, 1, -1]},
+    {"Taxon": "LanguageC", "Segments": [1, 6, 1, -1]},
+    {"Taxon": "LanguageD", "Segments": [1, 4, 1, -1]}
+  ]},
+  {"Name": "Wind", "Data": [
+    {"Taxon": "LanguageA", "Segments": [7, 3, 2, 1]},
+    {"Taxon": "LanguageB", "Segments": [3, 2, 1, -1]},
+    {"Taxon": "LanguageC", "Segments": [9, 3, 6, 1]},
+    {"Taxon": "LanguageD", "Segments": [9, 3, 4, 1]}
+  ]},
+  {"Name": "Man", "Data": [
+    {"Taxon": "LanguageA", "Segments": [4, 8, 14, 3]},
+    {"Taxon": "LanguageB", "Segments": [4, 8, 14, 3]},
+    {"Taxon": "LanguageC", "Segments": [4, 8, 14, 3]},
+    {"Taxon": "LanguageD", "Segments": [4, 8, 14, 3]}
+  ]},
+  {"Name": "Woman", "Data": [
+    {"Taxon": "LanguageA", "Segments": [10, 8, 6, 3, 2]},
+    {"Taxon": "LanguageB", "Segments": [10, 8, 6, 3, 0]},
+    {"Taxon": "LanguageC", "Segments": [10, 8, 6, 3, 2]},
+    {"Taxon": "LanguageD", "Segments": [10, 8, 4, 3, 2]}
+  ]},
+  {"Name": "Child", "Data": [
+    {"Taxon": "LanguageA", "Segments": [7, 15, 4, 1]},
+    {"Taxon": "LanguageB", "Segments": [15, 4, 1, -1]},
+    {"Taxon": "LanguageC", "Segments": [7, 15, 4, 1]},
+    {"Taxon": "LanguageD", "Segments": [7, 15, 4, 1]}
+  ]},
+  {"Name": "House", "Data": [
+    {"Taxon": "LanguageA", "Segments": [14, 1, 14, 8, 16]},
+    {"Taxon": "LanguageB", "Segments": [14, 1, 14, 8, 16]},
+    {"Taxon": "LanguageC", "Segments": [14, 1, 14, 8, 16]},
+    {"Taxon": "LanguageD", "Segments": [14, 1, 14, 8, 16]}
+  ]},
+  {"Name": "Forest", "Data": [
+    {"Taxon": "LanguageA", "Segments": [8, 4, 8, 7]},
+    {"Taxon": "LanguageB", "Segments": [8, 4, 8, -1]},
+    {"Taxon": "LanguageC", "Segments": [8, 4, 8, 9]},
+    {"Taxon": "LanguageD", "Segments": [8, 4, 8, 9]}
+  ]},
+  {"Name": "Walk", "Data": [
+    {"Taxon": "LanguageA", "Segments": [7, 1, 2, 1, 11]},
+    {"Taxon": "LanguageB", "Segments": [1, 2, 1, 0, -1]},
+    {"Taxon": "LanguageC", "Segments": [9, 1, 6, 1, 11]},
+    {"Taxon": "LanguageD", "Segments": [9, 1, 4, 1, 11]}
+  ]},
+  {"Name": "Speak", "Data": [
+    {"Taxon": "LanguageA", "Segments": [6, 1, 14, 1, 10]},
+    {"Taxon": "LanguageB", "Segments": [6, 1, 14, 1, 16]},
+    {"Taxon": "LanguageC", "Segments": [6, 1, 14, 1, 10]},
+    {"Taxon": "LanguageD", "Segments": [4, 1, 14, 1, 10]}
+  ]},
+  {"Name": "Sleep", "Data": [
+    {"Taxon": "LanguageA", "Segments": [0, 1, 6, 12, 14]},
+    {"Taxon": "LanguageB", "Segments": [1, 6, 12, 16, -1]},
+    {"Taxon": "LanguageC", "Segments": [5, 1, 6, 12, 14]},
+    {"Taxon": "LanguageD", "Segments": [5, 1, 4, 12, 14]}
+  ]},
+  {"Name": "Bathe", "Data": [
+    {"Taxon": "LanguageA", "Segments": [8, 2, 8, 6]},
+    {"Taxon": "LanguageB", "Segments": [8, 2, 8, 6]},
+    {"Taxon": "LanguageC", "Segments": [8, 6, 8, 6]},
+    {"Taxon": "LanguageD", "Segments": [8, 4, 8, 4]}
+  ]},
+  {"Name": "Black", "Data": [
+    {"Taxon": "LanguageA", "Segments": [0, 8, 0, 1]},
+    {"Taxon": "LanguageB", "Segments": [8, 1, -1, -1]},
+    {"Taxon": "LanguageC", "Segments": [8, 5, 1, -1]},
+    {"Taxon": "LanguageD", "Segments": [8, 5, 1, -1]}
+  ]},
+  {"Name": "White", "Data": [
+    {"Taxon": "LanguageA", "Segments": [2, 3, 0, 8, 10]},
+    {"Taxon": "LanguageB", "Segments": [2, 3, 8, 16, -1]},
+    {"Taxon": "LanguageC", "Segments": [2, 3, 8, 10, -1]},
+    {"Taxon": "LanguageD", "Segments": [2, 3, 8, 10, -1]}
+  ]},
+  {"Name": "Red", "Data": [
+    {"Taxon": "LanguageA", "Segments": [2, 15, 2, 1]},
+    {"Taxon": "LanguageB", "Segments": [2, 15, 2, 1]},
+    {"Taxon": "LanguageC", "Segments": [2, 15, 6, 1]},
+    {"Taxon": "LanguageD", "Segments": [2, 15, 4, 1]}
+  ]},
+  {"Name": "Green", "Data": [
+    {"Taxon": "LanguageA", "Segments": [4, 8, 7, 3, 0]},
+    {"Taxon": "LanguageB", "Segments": [4, 8, 3, -1, -1]},
+    {"Taxon": "LanguageC", "Segments": [4, 8, 7, 3, 5]},
+    {"Taxon": "LanguageD", "Segments": [4, 8, 7, 3, 5]}
+  ]},
+  {"Name": "Grass", "Data": [
+    {"Taxon": "LanguageA", "Segments": [7, 8, 11, 3, 0]},
+    {"Taxon": "LanguageB", "Segments": [8, 13, 3, -1, -1]},
+    {"Taxon": "LanguageC", "Segments": [9, 8, 11, 3, -1]},
+    {"Taxon": "LanguageD", "Segments": [9, 8, 11, 3, -1]}
+  ]}
+  ]
+}
