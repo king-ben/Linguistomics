@@ -47,7 +47,7 @@ PriorTree = Branch {
   }
 };
 
-LanguageClass[] LanguageList = [
+WorldLanguage[] LanguageList = [
   Latin,
   Romanian,
   Portuguese,

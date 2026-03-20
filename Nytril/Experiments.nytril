@@ -27,13 +27,13 @@ class LanguageNode: Node {
 
 class ExperimentRun {
   var ModelConfig Model;
-  var            Name,
-                 RootFolder,
-                 Config,
-                 Print,
-                 Seed,
-                 Marginal,
-                 ResultTree;
+  var             Name,
+                  RootFolder,
+                  Config,
+                  Print,
+                  Seed,
+                  Marginal,
+                  ResultTree;
 
   Constructor(config, ModelConfig model, index, print, marginal) {
     Name       = "Run" + index;
@@ -110,9 +110,9 @@ class ExperimentRun {
 //======================================================================
 
 class ModelConfig {
-  var string               Name;
-  var                      RootFolder;
-  var TreeSet              TreeSet;
+  var string          Name;
+  var                 RootFolder;
+  var TreeSet         TreeSet;
   var ExperimentRun[] Run;
 
   Constructor(config, TreeSet treeset, string name) {

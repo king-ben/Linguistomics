@@ -15,8 +15,7 @@ include "Nexus";
 include "Config";
 include "Data Validation";
 
-// Choose between one of these 3 sets
-//include "LanguagePhonetic";
+// Choose between one of these sets
 include "LanguageSet";
 //include "LanguageTest";
 
@@ -88,8 +87,8 @@ class CreateViewClass: DocumentEntry {
 
     var action = new CreateExperimentClass(Data);
     ButtonControl(null, null, new Edge(2, 10)) {
-      Background: new RadialGradient(10%, 10%, 10%, 10%, 20%, 40%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
-      BorderRadius: 4;
+      Background: new RadialGradient(10%, 10%, 10%, 10%, 30%, 70%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
+      BorderRadius: 6;
       TextHeight: 12pt;
       Bold;
       "Create experiment files";

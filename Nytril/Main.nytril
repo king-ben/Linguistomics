@@ -4,6 +4,7 @@ include "Lang";
 include "Site";
 include "Languages";
 include "Library";
+include "LanguageSet";
 include "LanguageTree";
 include "IPA";
 include "Segments";
@@ -63,7 +64,7 @@ readonly namespace Main.Documents {
   DavidSlideShow      DavidPresentation  = new;
   JohnSlideShow       JohnPresentation   = new;
   DiagnosticsDocument Diagnostic         = new(FinalStyle, MainResults.Data);
-  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new LinguisticsTitle, FinalStyle);
+  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new PaperBiography, FinalStyle);
 
 //  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
 //  StyleDocument     TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
@@ -143,10 +144,10 @@ class HomePage: SitePage {
     super.Constructor(Main.Site, #29f0a41f-f0f2-4830-bcaa-70418aa20157#, "Home", "Linguistics Research Project");
 
     Tiles = [
-      new DocTile(Main.Documents.PaperJOLE, Icons.article),
+      new DocTile(Main.Documents.PaperJOLE, Icons.article, "Paper"),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
-//      new DocTile(Main.Documents.DavidPresentation, Icons.slideshow),
+      new DocTile(Main.Documents.Biography, Icons.person_search, "Acknowlegments") {Description: "Author bios and comments"},
 //      new DocTile(Main.Documents.JohnPresentation, Icons.slideshow),
     ];
   }

@@ -1,52 +1,27 @@
-using IO, WordGroups, Languages;
+using WordGroups, TestLanguages;
 
 include "Concepts/Test";
 
-namespace Languages {
-  LanguageClass LanguageA  = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "Language A");
-  LanguageClass LanguageB  = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "Language B") {LanguageParent to LanguageA};
-  LanguageClass LanguageC  = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "Language C") {LanguageParent to LanguageB};
-  LanguageClass LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "Language D") {LanguageParent to LanguageB};
+readonly namespace<WorldLanguage> TestLanguages {
+  LanguageA  = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "Language A");
+  LanguageB  = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "Language B") {LanguageParent to LanguageA};
+  LanguageC  = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "Language C") {LanguageParent to LanguageB};
+  LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "Language D") {LanguageParent to LanguageB};
 }
 
-LanguageClass[] LanguageList = [
-  LanguageA,
-  LanguageB,
-  LanguageC,
-  LanguageD,
-];
+readonly ExperimentData DataSet {
+  var data = new TestExperimentClass(Info);
+  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, [LanguageA, LanguageB, LanguageC, LanguageD], -1);
+  return data;
+}
 
 //======================================================================
 
-GetPriorTree = Branch {
-  new Leaf(LanguageA);
-  new Branch {
-    new Leaf(LanguageB);
-    new Branch {
-      new Leaf(LanguageC);
-      new Leaf(LanguageD);
-    };
+class TestExperimentClass: ExperimentData {
+  Constructor(config) {
+    super.Constructor(config, "Test", "Test");
   }
-};
-
-//======================================================================
-
-class TestExperimentClass: DataSetClass {
-  Constructor(info) {
-    super.Constructor(info, "Test", "Test", 0);
-  }
-
-  override Node PriorTree = new Branch {
-    new Leaf(LanguageA);
-    new Branch {
-      new Leaf(LanguageB);
-      new Branch {
-        new Leaf(LanguageC);
-        new Leaf(LanguageD);
-      };
-    }
-  };
-
+/*
   override Node NumberedTree = new NBranch(1) {
     new NLeaf(this, LanguageA, 1);
     new NBranch(2) {
@@ -57,20 +32,29 @@ class TestExperimentClass: DataSetClass {
       };
     }
   };
-
   override void GetConceptExamples(concepts) {
     ExampleConcept = concepts.Woman;
     FigureConcept  = concepts.Rain;
     DataConcept    = concepts.Woman;
   }
+*/
 }
 
 //======================================================================
 
-DataSetClass DataSet {
-  var data = new TestExperimentClass(Info);
-  data.ReadRawWords(Concepts, Swadesh100 Leipzig Swadesh207, LanguageList, -1);
-  return data;
+readonly namespace TreeExamples {
+  PriorTrees = [T1];
+
+  T1 = new Branch {
+    new Leaf(LanguageA);
+    new Branch {
+      new Leaf(LanguageB);
+      new Branch {
+        new Leaf(LanguageC);
+        new Leaf(LanguageD);
+      };
+    }
+  };
 }
 
 //======================================================================

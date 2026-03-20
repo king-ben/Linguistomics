@@ -3,8 +3,9 @@ using Format;
 //======================================================================
 
 abstract class LinguisticsContent: AuthoredContent {
-  Constructor(name) {
+  Constructor(name, description) {
     super.Constructor(name);
+    Description = description;
 
     AddAuthor(People.Goldstein_David, true);
     AddAuthor(People.McCreight_Shawn);
@@ -17,9 +18,8 @@ abstract class LinguisticsContent: AuthoredContent {
 
 class LinguisticsPaper: LinguisticsContent {
   Constructor {
-    super.Constructor("Paper");
+    super.Constructor("Paper", "Linguistics research paper");
     Title                 = Info.Title;
-    Description           = "Linguistics research paper";
 //    Watermark             = "DRAFT";
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
@@ -47,11 +47,10 @@ class LinguisticsPaper: LinguisticsContent {
 
 //======================================================================
 
-class LinguisticsTitle: LinguisticsContent {
+class PaperBiography: LinguisticsContent {
   Constructor {
-    super.Constructor("Title Page");
+    super.Constructor("Biography", "Author Biographies and Acknowledgments");
     Title            = Info.Title;
-    Description      = "Linguistics research paper";
     Acknowledgements = PaperSections.Acknowledgements;
     Funding          = PaperSections.Funding;
     Comments         = CommentList;
@@ -63,10 +62,9 @@ class LinguisticsTitle: LinguisticsContent {
 
 class SupplementalContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Supplementary Material");
+    super.Constructor("Supplementary Material", "Extra derivations and charts to supplement the main paper");
 
-    Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
-    Description = "Extra derivations and charts to supplement the main paper";
+    Subtitle = Span {"For: "; ContentStyle.DQuote {Info.Title}};
 
     AddContent(PaperSections.Methods);
 //    AddContent(PaperSections.Conclusion);
@@ -116,10 +114,9 @@ class GraphSection: Content {
 
 class RelationshipContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Graphs");
+    super.Constructor("Graphs", "Graphs of linguistic connections");
 
-    Subtitle    = Span {"For: "; ContentStyle.DQuote {Info.Title}};
-    Description = "Graphs of linguistic connections";
+    Subtitle = Span {"For: "; ContentStyle.DQuote {Info.Title}};
 
     AddContent(PaperSections.Connections);
   }
