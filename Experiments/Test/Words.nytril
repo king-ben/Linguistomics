@@ -7,10 +7,10 @@ readonly namespace Info {
 readonly Segments = ["ʔ", "u", "t", "i", "l", "k", "r", "h", "a", "s", "n", "p", "o", "f", "m", "e", "ŋ"];
 
 readonly LanguageSet = [
-  Languages.Language A, 
-  Languages.Language B, 
-  Languages.Language C, 
-  Languages.Language D
+  Languages.LanguageA, 
+  Languages.LanguageB, 
+  Languages.LanguageC, 
+  Languages.LanguageD
 ];
 
 readonly PartitionInfo[] Partitions = [

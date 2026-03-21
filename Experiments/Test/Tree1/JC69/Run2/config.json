@@ -1,10 +1,10 @@
 {
-  "Tree": "(Language A,(Language B,(Language C,Language D)));",
+  "Tree": "(LanguageA,(LanguageB,(LanguageC,LanguageD)));",
   "NumberOfStates": 17, 
   "McmcSettings": {
   "Model": "jc69",
   "OnlyCompleteWords": "No",
-  "Seed": 3132684239,
+  "Seed": 365541740,
   "CalcMarginal": "No",
   "PrintFreq": 1000,
   "NumCycles": 5000000,
