@@ -12,8 +12,8 @@ readonly namespace Info {
   Runs           = 1..3;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
-  ReaderEXE      = EXEFolder Folder("TongueTwisterReader") EXERelative FileName("tonguetwisterreader.exe");
-  MCMCEXE        = EXEFolder Folder("TongueTwister") EXERelative FileName("tonguetwister.exe");
+  ReaderEXE      = EXEFolder Folder("TongueTwisterReader2") EXERelative FileName("tonguetwisterreader.exe");
+  MCMCEXE        = EXEFolder Folder("TongueTwister2") EXERelative FileName("tonguetwister.exe");
   MacFolder      = Folder("../../../../../");
 
   MacReaderEXE   = MacFolder Folder("TongueTwisterReader") FileName("ttread");

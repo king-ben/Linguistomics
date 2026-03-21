@@ -4,7 +4,7 @@
   "McmcSettings": {
   "Model": "jc69",
   "OnlyCompleteWords": "No",
-  "Seed": 1959925947,
+  "Seed": 182363448,
   "CalcMarginal": "No",
   "PrintFreq": 1000,
   "NumCycles": 5000000,

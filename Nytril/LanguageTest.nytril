@@ -3,10 +3,10 @@ using TestLanguages;
 include "Concepts/Test";
 
 readonly namespace<WorldLanguage> TestLanguages {
-  LanguageA  = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "Language A");
-  LanguageB  = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "Language B") {LanguageParent to LanguageA};
-  LanguageC  = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "Language C") {LanguageParent to LanguageB};
-  LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "Language D") {LanguageParent to LanguageB};
+  LanguageA  = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "LanguageA");
+  LanguageB  = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "LanguageB") {LanguageParent to LanguageA};
+  LanguageC  = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "LanguageC") {LanguageParent to LanguageB};
+  LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "LanguageD") {LanguageParent to LanguageB};
 }
 
 WorldLanguage[] LanguageSet = [
