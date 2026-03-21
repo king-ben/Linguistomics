@@ -1,2 +1,2 @@
-../../../../../TongueTwisterReader2/ttread -i Execute -b 15000 -o Execute/out
+../../../../../TongueTwisterReader2/ttread -b 15000 -o Execute/out --f true --d Execute
 read -rsp $'Press enter to continue...\n'

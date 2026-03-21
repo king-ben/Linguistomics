@@ -68,9 +68,11 @@ class ExperimentRun {
   RunReader(mac, root) = TextBlock {
     ArgSpan {
       ArgString(null, mac ? Info.MacReaderEXE : Info.ReaderEXE);
-      ArgString("i", root Info.ExecuteFolder);
+//      ArgString("i", root Info.ExecuteFolder);
       ArgString("b", Config.PreBurn);
       ArgString("o", root Info.OutFileName);
+      ArgString("-f", "true");
+      ArgString("-d", "Execute");
     };
     Pause(mac);
   };
