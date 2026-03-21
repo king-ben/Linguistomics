@@ -4,7 +4,7 @@
   "McmcSettings": {
   "Model": "gtr",
   "OnlyCompleteWords": "No",
-  "Seed": 2017298973,
+  "Seed": 1498819209,
   "CalcMarginal": "No",
   "PrintFreq": 1000,
   "NumCycles": 5000000,

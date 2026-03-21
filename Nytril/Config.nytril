@@ -16,8 +16,8 @@ readonly namespace Info {
   MCMCEXE        = EXEFolder Folder("TongueTwister2") EXERelative FileName("tonguetwister.exe");
   MacFolder      = Folder("../../../../../");
 
-  MacReaderEXE   = MacFolder Folder("TongueTwisterReader") FileName("ttread");
-  MacMCMCEXE     = MacFolder Folder("TongueTwister") FileName("tonguetwister");
+  MacReaderEXE   = MacFolder Folder("TongueTwisterReader2") FileName("ttread");
+  MacMCMCEXE     = MacFolder Folder("TongueTwister2") FileName("tonguetwister");
   ImageFolder    = Folders.Source Folder("Images");
   ConfigFile     = FileName("config") Extensions.JSON;
   ExperimentRoot = Folders.Repository Folder("Experiments");
