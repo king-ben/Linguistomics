@@ -71,8 +71,8 @@ class ExperimentRun {
 //      ArgString("i", root Info.ExecuteFolder);
       ArgString("b", Config.PreBurn);
       ArgString("o", root Info.OutFileName);
-      ArgString("-f", "true");
-      ArgString("-d", "Execute");
+      ArgString("f", "true");
+      ArgString("d", "Execute");
     };
     Pause(mac);
   };
