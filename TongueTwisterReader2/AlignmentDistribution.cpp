@@ -286,7 +286,7 @@ nlohmann::json AlignmentDistribution::toJson(double credibleSetSize, int maxAlig
         }
     file << "\"";
     if (!dash)
-        file << ", Primary";
+        file << ", null";
 
 
     file << ", [\n";
