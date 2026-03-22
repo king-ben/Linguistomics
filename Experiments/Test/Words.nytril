@@ -1,4 +1,4 @@
-using Format, WordGroups;
+using Format, WordGroups, WorldLanguages;
 
 readonly namespace Info {
   WordCutoff = 3;
@@ -7,10 +7,10 @@ readonly namespace Info {
 readonly Segments = ["ʔ", "u", "t", "i", "l", "k", "r", "h", "a", "s", "n", "p", "o", "f", "m", "e", "ŋ"];
 
 readonly LanguageSet = [
-  Languages.LanguageA, 
-  Languages.LanguageB, 
-  Languages.LanguageC, 
-  Languages.LanguageD
+  LanguageA,
+  LanguageB,
+  LanguageC,
+  LanguageD
 ];
 
 readonly PartitionInfo[] Partitions = [
