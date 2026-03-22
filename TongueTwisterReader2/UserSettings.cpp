@@ -72,6 +72,9 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
             arg = "";
             }
         }
+        
+    if (burnFraction < 0.0 || burnFraction > 0.95)
+        Msg::error("Burn fraction must be between 0 and 0.95");
 }
 
 void UserSettings::print(void) {
