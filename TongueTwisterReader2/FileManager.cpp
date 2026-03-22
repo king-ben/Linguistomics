@@ -2,11 +2,14 @@
 #include <filesystem>
 #include <iomanip>
 #include <iostream>
+#include <stdexcept>
 #include "FileManager.hpp"
 
 
 
 FileManager::FileManager(std::string dn) : directoryName(std::move(dn)) {
+
+    ensureDirectoryExists(directoryName);
 
     for (const auto& entry : std::filesystem::directory_iterator(directoryName))
         {
@@ -21,6 +24,24 @@ FileManager::FileManager(std::string dn) : directoryName(std::move(dn)) {
         directoryFileContents.emplace_back(filePath, fileExtension);
         }
     std::sort(directoryFileContents.begin(), directoryFileContents.end());
+}
+
+bool FileManager::directoryExists(const std::string& path) {
+
+    std::filesystem::path p(path);
+    return std::filesystem::exists(p) && std::filesystem::is_directory(p);
+}
+
+bool FileManager::ensureDirectoryExists(const std::string& path) {
+
+    if (directoryExists(path))
+        return false;
+
+    std::error_code ec;
+    if (!std::filesystem::create_directories(path, ec))
+        throw std::runtime_error("FileManager: failed to create directory \"" + path + "\": " + ec.message());
+
+    return true;
 }
 
 std::string FileManager::getDirectoryBaseName(void) const {

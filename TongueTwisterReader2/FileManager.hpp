@@ -18,6 +18,8 @@ class FileManager {
         std::vector<std::string>    filesWithExtension(const std::string& extension) const;
         size_t                      numFiles(void) const { return directoryFileContents.size(); }
         void                        print(void) const;
+        static bool                 directoryExists(const std::string& path);
+        static bool                 ensureDirectoryExists(const std::string& path);
     
     private:
         std::string                 directoryName;

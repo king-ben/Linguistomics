@@ -2,6 +2,7 @@
 #include "AlignmentDistribution.hpp"
 #include "Analysis.hpp"
 #include "Exchangeabilities.hpp"
+#include "FileManager.hpp"
 #include "IndelRates.hpp"
 #include "McmcSummary.hpp"
 #include "Msg.hpp"
@@ -265,12 +266,17 @@ void Analysis::writeNytril(std::string pathName) {
     file->close();
     delete file;
 
-    file = new std::ofstream(pathName + "/alignments_full.nytril", std::ios::out);
+    if (FileManager::ensureDirectoryExists(pathName) == true)
+        std::cout << "   Creating directory for Nytril output" << std::endl;
+
+    std::string fullNytrilFn = pathName + "/alignments_full.nytril";
+    file = new std::ofstream(fullNytrilFn, std::ios::out);
     nytrilOutput(*file, 1000); // Sanity limit
     file->close();
     delete file;
  
-    file = new std::ofstream(pathName + "/alignments.nytril", std::ios::out);
+    std::string smallNytrilFn = pathName + "/alignments.nytril";
+    file = new std::ofstream(smallNytrilFn, std::ios::out);
     nytrilOutput(*file, 20);   // Display limit for papers and presentations
     file->close();
     delete file;
