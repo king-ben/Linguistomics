@@ -1,19 +1,24 @@
 {
+  "Taxa": ["LanguageA", "LanguageB", "LanguageC", "LanguageD"],
   "Tree": "(LanguageA,(LanguageB,(LanguageC,LanguageD)));",
+  "SegmentIPA": ["ʔ", "u", "t", "i", "l", "k", "r", "h", "a", "s", "n", "p", "o", "f", "m", "e", "ŋ"],
+  "SegmentName": ["GlottalStop", "u", "t", "e", "l", "k", "r", "h", "ah", "s", "n", "p", "oh", "f", "m", "ay", "nya"],
   "NumberOfStates": 17, 
-  "McmcSettings": {
+  "PartitionSets": [{"Name": "Short Vowel", "Set": [1, 3, 8, 12, 15]},{"Name": "Nasal Consonant", "Set": [10, 14, 16]},{"Name": "Liquid", "Set": [4, 6]},{"Name": "Fricative", "Set": [7, 9, 13]},{"Name": "Stop", "Set": [0, 2, 5, 11]}],
   "Model": "gtr",
   "OnlyCompleteWords": "No",
-  "Seed": 119165466,
-  "CalcMarginal": "No",
-  "PrintFreq": 1000,
-  "NumCycles": 5000000,
-  "SampleFreq": 100,
-  "TreeLengthPriorVal": 0.15
+  "BrlenPriorVal": 50.0,
+  "McmcSettings": {
+    "CalcMarginal": "No",
+    "NumCycles": 5000000,
+    "BurnLength": 100000,
+    "FirstBurnLength": 100000,
+    "TuneLength": 0,
+    "SampleLength": 30000,
+    "PrintFreq": 1000,
+    "SampleFreq": 100
   },
-  "Taxa": ["LanguageA", "LanguageB", "LanguageC", "LanguageD"],
   "PriorFrequencies": [0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000, 0.000000],
-  "PartitionSets": [{"Name": "Short Vowel", "Set": [1, 3, 8, 12, 15]},{"Name": "Nasal Consonant", "Set": [10, 14, 16]},{"Name": "Liquid", "Set": [4, 6]},{"Name": "Fricative", "Set": [7, 9, 13]},{"Name": "Stop", "Set": [0, 2, 5, 11]}],
   "Words": [
   {"Name": "Fish", "Data": [
     {"Taxon": "LanguageA", "Segments": [0, 1, 2, 3, 4]},

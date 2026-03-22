@@ -5,19 +5,21 @@ using Format, IO;
 readonly namespace Info {
   Title          = "Phylogenetic inference from cognate word forms";
   Generations    = 5_000_000;
-  PreBurn        = 15_000;
+  PreBurn        = 0.1;
   LinkMin        = 5;
   CognateMin     = 3;
   RunIndex       = 0;
   Runs           = 1..3;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
-  ReaderEXE      = EXEFolder Folder("TongueTwisterReader2") EXERelative FileName("tonguetwisterreader.exe");
-  MCMCEXE        = EXEFolder Folder("TongueTwister2") EXERelative FileName("tonguetwister.exe");
+  TTRFolder      = Folder("TongueTwisterReader2");
+  TTFolder       = Folder("TongueTwister2");
+  ReaderEXE      = EXEFolder TTRFolder EXERelative FileName("tonguetwisterreader.exe");
+  MCMCEXE        = EXEFolder TTFolder EXERelative FileName("tonguetwister.exe");
   MacFolder      = Folder("../../../../../");
 
-  MacReaderEXE   = MacFolder Folder("TongueTwisterReader2") FileName("ttread");
-  MacMCMCEXE     = MacFolder Folder("TongueTwister2") FileName("tonguetwister");
+  MacReaderEXE   = MacFolder TTRFolder FileName("ttread");
+  MacMCMCEXE     = MacFolder TTFolder FileName("tonguetwister");
   ImageFolder    = Folders.Source Folder("Images");
   ConfigFile     = FileName("config") Extensions.JSON;
   ExperimentRoot = Folders.Repository Folder("Experiments");
@@ -119,6 +121,15 @@ class ConfigFileClass {
       Comma;
   };
 
+  DoubleVar(string name, double d, digits=1) = Span {
+    Variable(name);
+    Span {
+      TextDigits: digits;
+      d;
+    };
+    Comma;
+  };
+
   StringVar(string name, text, comma=true) = AddVar(name, ShowString(text), comma);
 
   BoolVar(name, value, comma=true) = StringVar(name, value ? "Yes" : "No", comma);
@@ -127,35 +138,68 @@ class ConfigFileClass {
     TextFace: Mono;
     TextHeight: 9pt;
 
-    Span {
-      Variable("Tree");
-      Quote;
-      Nexus.Newick(Prior);
-      ";"; Quote; ",";
-    };
-
     TextBlock {
+      ArraySpan("Taxa") {
+        Separator: CommaSpace;
+        ShowString(each (each Data.Taxa).ShortName);
+      };
+
+      Span {
+        Variable("Tree");
+        Quote;
+        Nexus.Newick(Prior);
+        ";"; Quote; ",";
+      };
+
+      ArraySpan("SegmentIPA") {
+        Separator: CommaSpace;
+        foreach (var u in Data.UniqueSegments)
+          ShowString(u.Ipa);
+      };
+
+      ArraySpan("SegmentName") {
+        Separator: CommaSpace;
+        foreach (var u in Data.UniqueSegments)
+          ShowString(u.Segment.GetVariableName);
+      };
+
       Span {Variable("NumberOfStates"); Data.UniqueSegments.Length; CommaSpace};
 
+      ArraySpan("PartitionSets") {
+        Separator: Comma;
+        foreach (var partition in Data.Rule.Partitions) {
+          Span {
+            "{";
+            Variable("Name");
+            ShowString(partition.Name);
+            CommaSpace;
+            Variable("Set");
+            "[";
+            Span {
+              Separator: CommaSpace;
+              (each partition.Segments).Index;
+            };
+            "]}";
+          }
+        }
+      };
+
+      StringVar("Model", string.ToLower(Run.Model.Name));
+      BoolVar("OnlyCompleteWords", false);
+      DoubleVar("BrlenPriorVal", 50.0, 1);
+
       Span {Variable("McmcSettings"); "{"};
-        StringVar("Model", string.ToLower(Run.Model.Name));
-        BoolVar("OnlyCompleteWords", false);
-        AddVar("Seed", Run.Seed);
-        BoolVar("CalcMarginal", Run.Marginal);
-        AddVar("PrintFreq", Run.Print);
-        if (Run.Marginal) {
-          AddVar("FirstBurnLength", 1_000_000);
-          AddVar("PreburnLength", Run.Config.PreBurn);
-          AddVar("TuneLength", 0);
-          AddVar("BurnLength", 10_000);
-          AddVar("SampleLength", 25_000);
-          AddVar("SampleFreq", 50);
-        }
-        else {
+        TextBlock {
+          IndentSpace: 2;
+          BoolVar("CalcMarginal", Run.Marginal);
           AddVar("NumCycles", Run.Config.Generations);
-          AddVar("SampleFreq", 100);
-        }
-        AddVar("TreeLengthPriorVal", 0.15, false);
+          AddVar("BurnLength", 100_000);
+          AddVar("FirstBurnLength", 100_000);
+          AddVar("TuneLength", 0);
+          AddVar("SampleLength", 30_000);
+          AddVar("PrintFreq", 1000);
+          AddVar("SampleFreq", 100, false);
+        };
       "},";
     };
 
@@ -178,34 +222,10 @@ class ConfigFileClass {
     StoneSampleFreq    -- Stone sample frequency
 */
 
-    ArraySpan("Taxa") {
-      Separator: CommaSpace;
-      ShowString(each (each Data.Taxa).ShortName);
-    };
-
     ArraySpan("PriorFrequencies") {
       TextDigits: 6;
       Separator: CommaSpace;
       (each Data.UniqueSegments).UsedFrequency;
-    };
-
-    ArraySpan("PartitionSets") {
-      Separator: Comma;
-      foreach (var partition in Data.Rule.Partitions) {
-        Span {
-          "{";
-          Variable("Name");
-          ShowString(partition.Name);
-          CommaSpace;
-          Variable("Set");
-          "[";
-          Span {
-            Separator: CommaSpace;
-            (each partition.Segments).Index;
-          };
-          "]}";
-        }
-      }
     };
 
     Span {

@@ -30,18 +30,14 @@ class ExperimentRun {
   var             Name,
                   RootFolder,
                   Config,
-                  Print,
-                  Seed,
                   Marginal,
                   ResultTree;
 
-  Constructor(config, ModelConfig model, index, print, marginal) {
+  Constructor(config, ModelConfig model, index, marginal) {
     Name       = "Run" + index;
     Model      = model;
-    Print      = print;
     Marginal   = marginal;
     RootFolder = model.RootFolder Folder(Name);
-    Seed       = Math.Random(0..0xFFFFFFFF);
     Config     = config ?? ReadScript(Info.ExperimentRoot RootFolder Info.ParametersFile).Root;
   }
 
@@ -74,7 +70,7 @@ class ExperimentRun {
       ArgString("f", "true");
       ArgString("d", "Execute");
     };
-    Pause(mac);
+//    Pause(mac);
   };
 
   RunAll(mac, root) = TextBlock {
@@ -121,7 +117,7 @@ class ModelConfig {
     Name       = name;
     TreeSet    = treeset;
     RootFolder = treeset.RootFolder Folder(name);
-    Run        = new ExperimentRun(config, this, each Info.Runs, 1000, false);
+    Run        = new ExperimentRun(config, this, each Info.Runs, false);
   }
 
   void InitFolders(ExperimentData data) {
