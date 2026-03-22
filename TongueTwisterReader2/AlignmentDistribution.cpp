@@ -273,14 +273,23 @@ nlohmann::json AlignmentDistribution::toJson(double credibleSetSize, int maxAlig
     sort(v.begin(), v.end(), cmp);
 
     file << "new(\"";
+    bool dash = false;
     for (auto& c : name)
         {
-        if (c == '-')
+        if (c == '-') 
+            {
             file << "\", \"";
+            dash = true;
+            }
         else
             file << c;
         }
-    file << "\", [\n";
+    file << "\"";
+    if (!dash)
+        file << ", Primary";
+
+
+    file << ", [\n";
 
     auto j = nlohmann::json::object();
     j["cognate"] = name;
