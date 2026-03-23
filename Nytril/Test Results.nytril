@@ -1,0 +1,82 @@
+using Format;
+
+include "Lang";
+include "Languages";
+include "Library";
+include "LanguageTree";
+include "IPA";
+include "Segments";
+include "Rules";
+include "Citations";
+include "Experiments";
+include "Nexus";
+include "Config";
+include "Graphics";
+include "Tables";
+include "Results";
+include "LanguageTest";
+include "Data Validation";
+
+//==================================================
+
+readonly Main.Facts = [WorldLanguages];
+
+SimpleStyle = new PlainStyle;
+
+readonly namespace Main.Documents {
+  DiagnosticsDocument Diagnostic  = new(#9dbe9033-0a22-446c-ba54-0f3e07c7c133#, SimpleStyle, MainResults.Data);
+  TestResultsDocument TestResults = new;
+}
+
+//======================================================================
+
+readonly ExperimentResults MainResults      = new;
+readonly AlignmentChart    AlignmentResults = new(MainResults.Data, MainResults.MainRun);
+
+
+class ExperimentResults {
+  var ExperimentData   Data;
+  var RunResultsThread NaturalClass,
+                       MainRun;
+
+  Constructor {
+    Data         = new(null, "Test", "Test");
+    NaturalClass = new(Data, Data.TreeSets[0].Models[0].Run[0]);
+    MainRun      = NaturalClass;
+    Parallel.ParallelEach([NaturalClass], 100%);
+  }
+}
+
+//======================================================================
+
+class TestResultsDocument: DocumentEntry {
+  Constructor {
+    super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
+  }
+
+  override GetDocument = Document(0.5") {
+    "Consensus";
+    PaperStyle.ShowTree(SimpleStyle, MainResults.MainRun.Run.ResultTree, 100%, null);
+    PageBreak;
+
+    AlignmentResults.ShowAll;
+  };
+}
+
+//===============================================================
+
+class PlainStyle: ContentStyle {
+  Constructor {
+    super.Constructor(ReferenceStyles.IEEE, null, 0.75", SectionNumbers);
+    TexPackages.AddEach(["fontspec"]);
+    TexFont   = "Libertinus Serif";
+    SansSerif = TextFamily: TextFamilies.LibertinusSans;
+  }
+
+  override SetTextStyle = {
+    TextHeight: 12pt;
+    TextFamily: TextFamilies.LibertinusSerif;
+  };
+}
+
+//======================================================================

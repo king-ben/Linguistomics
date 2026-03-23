@@ -70,8 +70,8 @@ class DiagnosticsDocument: DocumentEntry {
   var SegmentDisplay Display;
   var SearchWordInfo Search;
 
-  Constructor(ContentStyle style, ExperimentData data) {
-    super.Constructor(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, "Diagnostics");
+  Constructor(in Guid id, ContentStyle style, ExperimentData data) {
+    super.Constructor(id, "Diagnostics");
     Description = "Summary of the data used in the experiment with diagnostic views";
     Data        = data;
     Display     = new(data);
@@ -357,8 +357,6 @@ class WordDocument: DocumentEntry {
 
       foreach (var l in Data.LanguageSet) {
         Span {
-          PaperStyle.Variable("Languages");
-          Dot;
           PaperStyle.Variable(l.Name);
           if (each1 < Data.LanguageSet.Length)
             CommaSpace;
@@ -415,7 +413,7 @@ class WordDocument: DocumentEntry {
     TextBlock {
       Span {
         PaperStyle.Keyword("using ");
-        "Format, WordGroups;";
+        "Format, WordGroups, WorldLanguages;";
       };
       Empty;
       ShowVariables;

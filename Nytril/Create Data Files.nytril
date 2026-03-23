@@ -18,7 +18,7 @@ include "Data Validation";
 //======================================================================
 
 readonly namespace Main.Documents {
-  DiagnosticsDocument   Diagnostic    = new(new IEEEStyle, DataSet);
+  DiagnosticsDocument   Diagnostic    = new(#ec5be2b8-4121-4993-a09f-57c162a353ef#, new IEEEStyle, DataSet);
   ConfigurationDocument Configuration = new(DataSet, DataSet.TreeSets[0]);
   WordDocument          Words         = new(DataSet, DataSet.Rule.Partitions);
   CreateViewClass       CreateFiles   = new(DataSet);

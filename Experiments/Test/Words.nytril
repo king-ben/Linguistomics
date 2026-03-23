@@ -7,9 +7,9 @@ readonly namespace Info {
 readonly Segments = ["ʔ", "u", "t", "i", "l", "k", "r", "h", "a", "s", "n", "p", "o", "f", "m", "e", "ŋ"];
 
 readonly LanguageSet = [
-  LanguageA,
-  LanguageB,
-  LanguageC,
+  LanguageA, 
+  LanguageB, 
+  LanguageC, 
   LanguageD
 ];
 

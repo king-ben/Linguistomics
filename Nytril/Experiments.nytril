@@ -1,21 +1,24 @@
-using Format, IO;
+  using Format, IO;
 
 //======================================================================
 
 class LanguageNode: Node {
-  var Probability;
+  var Probability,
+      prob,
+      CI;
 
   Constructor {
     super.Constructor;
   }
 
   override void ResolveData {
-    if (Probability is valid and HasChildren) {
+    var p = Probability ?? prob;
+    if (p is valid and HasChildren) {
       Label = Span {
         TextColor: Colors.LightGray;
         TextHeight: 8pt;
         TextDigits: 0;
-        Probability * 100.0;
+        p * 100.0;
       };
     }
     else if (Name is valid)
@@ -69,6 +72,7 @@ class ExperimentRun {
       ArgString("o", root Info.OutFileName);
       ArgString("f", "true");
       ArgString("d", "Execute");
+      ArgString("n", "Execute");
     };
 //    Pause(mac);
   };

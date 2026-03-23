@@ -2346,35 +2346,6 @@ class FundingSection: Content {
 
 //======================================================================
 
-readonly BiographySection PaperSections.Biography = new;
-
-class BiographySection: Content {
-  Constructor {
-    super.Constructor("Biography");
-  }
-
-  override GetBody(ContentStyle style) = Block {
-    style.Par {
-      "Brief biographies of the authors. ";
-    };
-
-    style.NumberedList {
-      foreach (var b in BioSummaries) {
-        Paragraph {
-          Span {
-            Bold;
-            style.ShowPerson(b.Author);
-          };
-          ColonSpace;
-          b.Text;
-        };
-      }
-    }
-  };
-}
-
-//======================================================================
-
 readonly ContributionsSection PaperSections.Contributions = new;
 
 class ContributionsSection: Content {

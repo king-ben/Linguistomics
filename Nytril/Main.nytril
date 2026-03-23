@@ -26,6 +26,31 @@ include "David's Slides";
 include "Data Validation";
 //======================================================================
 
+readonly ExperimentResults MainResults = new;
+
+class ExperimentResults {
+  const double CutoffProbability = 0.95;
+  const        CutoffPercent     = (CutoffProbability * 100.0) %;
+
+  var ExperimentData   Data;
+  var RunResultsThread Poisson,
+                       NaturalClass,
+                       MainRun;
+
+  Constructor {
+    Data = new(null, "Europe3", "Europe3");
+
+    var set = Data.TreeSets[0];
+
+    Poisson      = new(Data, set.Models[1].Run[1]); // For some reason, this run succeeded but not Run[0]
+    NaturalClass = new(Data, set.Models[0].Run[0]);
+    MainRun      = NaturalClass;
+    Parallel.ParallelEach([Poisson, NaturalClass], 100%);
+  }
+}
+
+//======================================================================
+
 readonly LinguisticsPaper    MainPaper         = new;
 readonly SupplementalContent SupplementalPaper = new;
 ContentStyle                 FinalStyle        = new JOLEStyle(None);
@@ -43,7 +68,7 @@ readonly namespace Main.Documents {
   StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, SupplementStyle);
   DavidSlideShow      DavidPresentation  = new;
   JohnSlideShow       JohnPresentation   = new;
-  DiagnosticsDocument Diagnostic         = new(FinalStyle, MainResults.Data);
+  DiagnosticsDocument Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
   StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new PaperBiography, FinalStyle);
 
 //  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};

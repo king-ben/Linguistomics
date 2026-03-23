@@ -29,7 +29,7 @@ class AlignIndexClass {
   Constructor(concept, cognate, AlignData[] alignments, total) {
     TotalCount  = total;
     ConceptName = concept;
-    CognateName = cognate;
+    CognateName = cognate ?? DefaultCognate;
     Alignments  = alignments;
   }
 
@@ -54,7 +54,6 @@ class AlignIndexClass {
 
 RateDescriptor(text) = Span {
   text;
-//  Tex.Minus; "Log" sub 10; "("; text; ")";
 };
 
 //======================================================================
