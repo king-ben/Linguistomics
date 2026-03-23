@@ -12,7 +12,7 @@ WorldLanguage[] LanguageSet = [
 //======================================================================
 
 readonly namespace TreeExamples {
-  PriorTrees = [T1, T2, T3];
+  PriorTrees = [T1];
 
   T1 = new Branch {
     new Leaf(LanguageA);
@@ -20,28 +20,6 @@ readonly namespace TreeExamples {
       new Leaf(LanguageB);
       new Branch {
         new Leaf(LanguageC);
-        new Leaf(LanguageD);
-      };
-    }
-  };
-
-  T2 = new Branch {
-    new Leaf(LanguageB);
-    new Branch {
-      new Leaf(LanguageA);
-      new Branch {
-        new Leaf(LanguageC);
-        new Leaf(LanguageD);
-      };
-    }
-  };
-
-  T3 = new Branch {
-    new Leaf(LanguageA);
-    new Branch {
-      new Leaf(LanguageC);
-      new Branch {
-        new Leaf(LanguageB);
         new Leaf(LanguageD);
       };
     }
