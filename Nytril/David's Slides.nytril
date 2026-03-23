@@ -695,10 +695,6 @@ namespace DavidSlides.Results {
 
   Slide.AlignmentExamples.Figure = Figures.AlignmentExamples;
 
-//  Slide.TransitionMatrixBall.Figure = Figures.ExchangeabilityChart;
-
-//  Slide.FractionGapsChart.Figure = Figures.FractionGapsChart;
-
 //  Slide.TransitionMatrix.Figure = Figures.ExchangeabilityTable;
 
 //  Slide.PartitionStabilityChart.Figure = Figures.PartitionVolatilityChart;

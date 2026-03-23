@@ -661,7 +661,8 @@ class ExperimentData {
   var Attribute               ExampleConcept,
                               FigureConcept,
                               DataConcept;
-  var                         WordCutoff,
+  var                         RunNumbers,
+                              WordCutoff,
                               RootFolder,
                               Name,
                               MaxLanguageName,
@@ -670,9 +671,10 @@ class ExperimentData {
                               WordFile;
   var bool                    RawData;
 
-  Constructor(config, name, rootfolder) {
+  Constructor(config, name, rootfolder, runnumbers) {
     Name            = name;
     RootFolder      = Folder(rootfolder);
+    RunNumbers      = runnumbers;
     WordFile        = RootFolder Info.WordFileName;
     WordCount       = 0;
     SegmentCount    = 0;
@@ -686,7 +688,7 @@ class ExperimentData {
       ReadExperiment;
   }
 
-  TreeSet AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root);
+  TreeSet AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root, RunNumbers);
 
   void ReadRawWords(Attribute concepts, includewords, WorldLanguage[] languageset, cutoff=-1) {
     RawData = true;
@@ -1030,7 +1032,7 @@ abstract class CountBase {
     var grid   = 0.125pt;
     var gcolor = 65%;
     var border = 0.5pt;
-    var mx     = Math.Min(extentsize.Width, extentsize.Height) - border*2;
+    var mx     = Math.Min(extentsize.Width, Math.Max(extentsize.Height, 6")) - border*2;
     var size   = new Size(mx, mx);
     var length = LegendSegments.Length;
     var d      = size / (length+1);

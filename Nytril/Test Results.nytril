@@ -16,6 +16,9 @@ include "Tables";
 include "Results";
 include "LanguageTest";
 include "Data Validation";
+include "Visuals";
+include "References";
+include "Formulas";
 
 //==================================================
 
@@ -25,41 +28,87 @@ SimpleStyle = new PlainStyle;
 
 readonly namespace Main.Documents {
   DiagnosticsDocument Diagnostic  = new(#9dbe9033-0a22-446c-ba54-0f3e07c7c133#, SimpleStyle, MainResults.Data);
-  TestResultsDocument TestResults = new;
+  TestResultsDocument TestResults = new(MainResults);
 }
 
 //======================================================================
 
-readonly ExperimentResults MainResults      = new;
-readonly AlignmentChart    AlignmentResults = new(MainResults.Data, MainResults.MainRun);
-
+readonly ExperimentResults MainResults = new;
 
 class ExperimentResults {
   var ExperimentData   Data;
   var RunResultsThread NaturalClass,
                        MainRun;
+  var AlignmentChart   Alignment;
 
   Constructor {
-    Data         = new(null, "Test", "Test");
+    Data         = new(null, "Test", "Test", 1..1);
     NaturalClass = new(Data, Data.TreeSets[0].Models[0].Run[0]);
     MainRun      = NaturalClass;
     Parallel.ParallelEach([NaturalClass], 100%);
+
+    Alignment = new(Data, MainRun);
   }
 }
 
 //======================================================================
 
 class TestResultsDocument: DocumentEntry {
-  Constructor {
+  var ContentStyle      Style;
+  var ExperimentRun     Run;
+  var ExperimentResults Results;
+  var Content[]         PaperContent;
+
+  Constructor(ExperimentResults results) {
     super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
+    Style   = SimpleStyle;
+    Results = results;
+    Run     = results.MainRun.Run;
+
+    PaperContent = [
+      Figures.SegmentOccuranceRates,
+      Figures.SegmentOccuranceGrouped,
+      Figures.PartitionFrequencies,
+      Figures.QRatesMatrix,
+      Figures.QRatesDiagonal,
+      Figures.GappinessChart,
+      Figures.QRatesConsonantConsonant,
+      Figures.AllSegmentFrequencies,
+      Figures.SpecificRates,
+      Figures.QRatesOneWay,
+      Figures.QRatesTop,
+
+// Need stats
+//      Figures.EquilibriumCharts,
+//      Figures.RateChart,
+
+//      Figures.AverageAll,
+//      Figures.AverageSorted,
+//      Figures.RateDirection,
+//      Figures.ExchangeabilityTable,
+//      Figures.FractionGapsChart,
+//      Figures.UniqueSegments,
+//      Figures.PartitionVolatilityChart,
+//      Figures.TransitionRates,
+    ];
   }
 
-  override GetDocument = Document(0.5") {
-    "Consensus";
-    PaperStyle.ShowTree(SimpleStyle, MainResults.MainRun.Run.ResultTree, 100%, null);
-    PageBreak;
+  Header = Style.HeadingPar(0);
 
-    AlignmentResults.ShowAll;
+  override GetDocument = Document(0.5") {
+    Header {"Consensus"};
+    PaperStyle.ShowTree(SimpleStyle, Run.ResultTree, 100%, null);
+
+    foreach (var c in PaperContent) {
+      PageBreak;
+      Header {c.Title};
+      c.GetCaption(Style);
+      c.GetBody(Style);
+    }
+
+    PageBreak;
+    Header {"Alignments"};
+    MainResults.Alignment.ShowAll;
   };
 }
 

@@ -117,23 +117,24 @@ class ExperimentalRunsFigure: Content {
 
 //======================================================================
 
-readonly AlignmentChart AlignmentResults = new(MainResults.Data, MainResults.MainRun);
-
 readonly AlignmentsFigure Figures.Alignments = new;
 
 class AlignmentsFigure: Content {
+  const double CutoffProbability = 0.95;
+  const        CutoffPercent     = (CutoffProbability * 100.0) %;
+
   Constructor {
     super.Constructor("Alignment categories");
   }
 
   override GetCaption(ContentStyle style) = Span {
    "All cognate categories showing the number of alignments to reach the ";
-   ExperimentResults.CutoffPercent;
+   CutoffPercent;
    " credible interval. ";
   };
 
   override GetBody(ContentStyle style) = Block {
-    AlignmentResults.ShowChart(style, new(ExtentWidth, ExtentHeight - 1"));
+    MainResults.Alignment.ShowChart(style, new(ExtentWidth, ExtentHeight - 1"));
   };
 }
 
@@ -147,11 +148,11 @@ class AllAlignmentsFigure: Content {
   }
 
   override GetCaption(ContentStyle style) = Span {
-    ExperimentResults.CutoffPercent;
+    AlignmentsFigure.CutoffPercent;
     " credible set of alignments for each category. ";
   };
 
-  override GetBody(ContentStyle style) = AlignmentResults.ShowAll;
+  override GetBody(ContentStyle style) = MainResults.Alignment.ShowAll;
 }
 
 //======================================================================
@@ -166,7 +167,7 @@ class AlignmentExamplesFigure: Content {
 
   override GetCaption(ContentStyle style) = "Credible sets for cognate alignments";
 
-  override GetBody(ContentStyle style) = AlignmentResults.ShowSet(Examples, true);
+  override GetBody(ContentStyle style) = MainResults.Alignment.ShowSet(Examples, true);
 }
 
 readonly AlignmentExamplesFigure Figures.AlignmentExamples = new(
@@ -189,7 +190,7 @@ class SingleAlignmentFigure: AlignmentExamplesFigure {
     "The alignments are ordered from the highest posterior probability (top-left alignment) to the lowest posterior probability (bottom-right alignment) in row order. ";
   };
 
-  override GetBody(ContentStyle style) = AlignmentResults.ShowSet(Examples, false);
+  override GetBody(ContentStyle style) = MainResults.Alignment.ShowSet(Examples, false);
 }
 
 //======================================================================
@@ -233,17 +234,18 @@ class ModelComparer {
 //======================================================================
 
 class AlignmentCompareFigure: Content {
-  const string Concept  = "Sky";
-
   var ModelComparer   Poisson,
                       NaturalClass;
   var ModelComparer[] Models;
   var CognateId       Example;
   var int             MaxCount;
+  var                 Concept;
 
-  Constructor(maxcount, row) {
+
+  Constructor(maxcount, row, concept) {
     super.Constructor("Alignment comparison");
     MaxCount     = maxcount;
+    Concept      = concept;
     Example      = new(Concept, null, MaxCount, row);
     Poisson      = new(MainResults.Poisson, PoissonModel, Example, MaxCount);
     NaturalClass = new(MainResults.NaturalClass, NaturalClassModel, Example, MaxCount);
@@ -283,544 +285,6 @@ class AlignmentCompareFigure: Content {
       chart.ShowSet([Example], false);
     }
   };
-}
-
-readonly AlignmentCompareFigure Figures.AlignmentExample2 = new(8, 4);
-
-//======================================================================
-
-readonly ExchangeabilityTable Figures.ExchangeabilityTable = new;
-
-class ExchangeabilityTable: Content {
-  Constructor {
-    super.Constructor(Lang.Exchangeability);
-  }
-
-  override GetBody(ContentStyle style) = Block {
-    var th = ExtentWidth * 0.015;
-    style.SansSerif;
-    TextHeight: th;
-
-    var results    = MainResults;
-    var stats      = results.MainRun.TransitionStats;
-    var count      = stats.Length;
-    var partitions = results.Data.Rule.Partitions;
-    var dy         = 2pt;
-    var left       = 1";
-    var w          = (ExtentWidth - 1") / count;
-
-    Table(PadR(4pt), null, [left] + [w] * count) {
-      HAlign: Center;
-      TextDigits: 3;
-
-      Row {
-        Empty;
-
-        foreach (var p in partitions) {
-          Frame(w) {
-            ParAlignment: Center;
-            TextHeight: th*0.8;
-            TextColor: p.BackColor;
-            p.Name.Split(Space);
-          };
-        }
-      };
-
-      for (int i = 0; i < count; ++i) {
-        Row {
-          VAlign: Center;
-          Frame(w) {
-            ParAlignment: Right;
-            var p = partitions[i];
-            TextColor: p.BackColor;
-            p;
-          };
-
-          for (int j = 0; j < count; ++j) {
-            var c = stats[i, j];
-            if (c is valid)
-              c.ShowBox {Margin: PadT(dy)};
-            else
-              "-";
-          }
-        };
-      }
-    };
-  };
-}
-
-//======================================================================
-
-readonly NaturalClassRateChart Figures.RateChart = new;
-
-class NaturalClassRateChart: Content {
-  Constructor {
-    super.Constructor(NaturalClassName + " Rates");
-  }
-
-  private ShowRight(number) = HBox {
-    Space*2;
-    TextHeight: 80%;
-    TextColor: Colors.Gray;
-    number;
-  };
-
-  override GetCaption(ContentStyle style) = Span {
-    "The average rates of change between and within the ten groups of the "; NaturalModelName; DotSpace;
-    "Circle area is proportional to the rate of change between groups ("; qij; "). ";
-    "Shaded area represents the 95% credible interval. ";
-  };
-
-  override GetBody(ContentStyle style) = Block {
-    style.SansSerif;
-    TextHeight: ExtentWidth * 0.015;
-
-    var partitions = MainResults.Data.Rule.Partitions;
-    var stats      = MainResults.MainRun.NCQRates;
-    var bx         = 20pt;
-    var tx         = 60pt + bx;
-    var size       = Math.Min(ExtentWidth, ExtentHeight);
-    var dy         = size / (partitions.Length + 1);
-    var d          = Math.Min(dy, (size  - tx) / partitions.Length);
-
-    var max = 0.0;
-    foreach (var pi in partitions) {
-      foreach (var pj in partitions) {
-        var c = stats[pi.Index, pj.Index];
-        if (c is valid and c.Upper > max)
-          max = c.Upper;
-      }
-    }
-
-    HBox {
-     TextHeight: 10pt;
-      VBox {
-        HAlign: Right;
-        VAlignment: VAligns.Bottom;
-
-        foreach (var p in partitions) {
-          HBox(null, d, PadR(2)) {
-            VAlign: Center;
-            TextColor: p.BackColor;
-            p;
-          }
-        }
-      };
-
-      VBox {
-        HAlign: Left;
-        Canvas {
-          HAlignment: HAligns.Right;
-          VAlign: Bottom;
-          foreach (var p in partitions) {
-            HBox(null, d, PadR(0)) {
-              X: d * (each0 + 0.3);
-              TextColor: p.BackColor;
-              Transform: Transform.Rotate(-90 degrees);
-              TransformFit: true;
-              p;
-            };
-          }
-        };
-
-        VBox {
-          var factor = 1.0 / max;
-
-          foreach (var pi in partitions) {
-            HBox {
-              foreach (var pj in partitions) {
-                var c = stats[pi.Index, pj.Index];
-                Canvas(d, d) {
-                  if (c is valid) {
-
-                    Tip: c;
-                    var center = new Point(d * 0.5);
-                    var x      = d  * Math.Sqrt(c.Upper * factor);
-                    Shape(90%) {
-                      EllipsePath(new(new(center.X - x*0.5 , center.Y - x*0.5), x));
-                      x = d * Math.Sqrt(c.Lower * factor);
-                      EllipsePath(new(new(center.X - x*0.5 , center.Y - x*0.5), x));
-                    };
-
-                    Shape(null, 1) {
-                      x = d * Math.Sqrt(c.Mean * factor);
-                      EllipsePath(new(new(center.X - x*0.5 , center.Y - x*0.5), x));
-                    };
-                  }
-                };
-              }
-            };
-          }
-        }
-      };
-    };
-  };
-}
-
-//======================================================================
-
-readonly EquilibriumFrequencyChart Figures.EquilibriumCharts = new;
-
-class EquilibriumFrequencyChart: Content {
-  Constructor {
-    super.Constructor("Equilibrium frequency chart");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "The equilibrium frequencies "; EquilibriumDistribution; " of each natural class";
-  };
-
-  override GetBody(ContentStyle style) = Chart(100%, 2.75") {
-    ChartType: ChartTypes.Bar;
-    style.SansSerif;
-    TextHeight: 11pt;
-
-    ValueLabel: Span {
-      TextHeight: 20pt;
-      EquilibriumDistribution;
-    };
-
-    var partitions = MainResults.Data.Rule.Partitions.Reverse;
-    var stats      = MainResults.MainRun.NCQFreqs;
-
-    XAxis: ChartAxis(null, null, PadR(8)) {
-      foreach (var p in partitions) {
-        Span {
-          Tip: p;
-          TextColor: p.BackColor;
-          p.Name;
-        }
-      }
-    };
-
-    ChartSeries {
-      foreach (var p in partitions) {
-        var c = stats[p.Index];
-        new DataPoint(each0, c.Mean) {
-          ErrorLo: c.Mean - c.Lower;
-          ErrorHi: c.Upper - c.Mean;
-          Reference: c;
-          Fill: p.BackColor;
-        }
-      }
-    };
-  };
-}
-
-//======================================================================
-
-readonly GapFrequencyChart Figures.GappinessChart = new;
-
-class GapFrequencyChart: Content {
-  Constructor {
-    super.Constructor("Gap frequency comparison chart");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "Distribution of alignment gaps across word positions for the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study. ";
-    "The top panel shows the proportion of alignments with a given number of gaps at the word-initial segment, the middle panel at word-internal segments, and the bottom panel at the word-final segment. ";
-    "Since nine languages are analyzed, at most eight gaps can occur at a given position: a deletion event affecting all nine languages would not appear in the alignment and is explicitly conditioned on in the likelihood calculation"; Citep{Lunter2003}; DotSpace;
-    "Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. ";
-    "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions, (";
-
-    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; MainResults.MainRun.TestStatistic}}; CommaSpace;
-    EqSpan {DegreesFreedom; Tex.Equals; 16}; CommaSpace;
-    EqSpan {PValue; Tex.lt; 0.001};
-     "), which confirms a statistically significant positional asymmetry. ";
-  };
-
-  override GetBody(ContentStyle style) = HBox {
-    style.SansSerif;
-    VAlign: Center;
-    PaperStyle.ValueLabel {
-      TextHeight: 12pt;
-      "Proportion of Alignments"
-    };
-    var gaps        = MainResults.MainRun.GapSpectrum;
-    var chartheight = (ExtentHeight - 40pt) / gaps.Length;
-    VBox {
-      HAlign: Center;
-      foreach (var gap in gaps) {
-        Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.2")) {
-          ChartType: ChartTypes.Column;
-
-          ValueLabel: PaperStyle.ValueLabel {
-            TextHeight: 8pt;
-            ["Word-initial seg.", "Word-internal seg(s)", "Word-final seg."][each0]
-          };
-
-          ValueAxis: ChartAxis {
-            TextHeight: 7pt;
-            Start: 0;
-            Stop: 1.0;
-          };
-
-          XAxis: ChartAxis {
-            each (0..<gap.Length step 1) as string;
-          };
-
-          ChartSeries {
-            var factor = 1.0 / Math.Sum(gap);
-            foreach (var value in gap)
-              new DataPoint(each0, value * factor);
-          };
-        }
-      }
-      Span {
-        TextHeight: 12pt;
-        "Number of Gaps"
-      };
-    };
-  };
-}
-
-//======================================================================
-
-const int TopCount = 15;
-
-//======================================================================
-
-readonly QRatesMatrixFigure Figures.QRatesMatrix = new;
-
-class QRatesMatrixFigure: Content {
-  Constructor {
-    super.Constructor("Rate Matrix " RateMatrix);
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
-}
-
-//======================================================================
-
-readonly QRatesDiagonalFigure Figures.QRatesDiagonal = new;
-
-class QRatesDiagonalFigure: Content {
-  Constructor {
-    super.Constructor("Rate of segmental change");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "The rate of change when in a particular segmental state (or "; -qii; ")"
-  };
-
-  override GetBody(ContentStyle style) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
-}
-
-//======================================================================
-
-readonly TreeContent Figures.PriorTree = new("Tree topology", TreeExamples.PriorTrees.FirstElement);
-
-//======================================================================
-
-readonly LanguageDistributionFigure  Figures.LanguageDistribution = new;
-
-class LanguageDistributionFigure: Content {
-  Constructor {
-    super.Constructor("Geographic distribution of languages");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "Approximate geographic distribution of the Romance languages in the study group.";
-  };
-
-  override GetBody(ContentStyle style) = Paragraph {
-    ParAlignment: Center;
-    HBox {
-      VAlign: Center;
-      style.SansSerif;
-      Separation: 10pt;
-      FitBox(IO.Read(res "Images/areas.png"), 80%, null, 0.5pt) {
-        BorderRadius: 1pt;
-      };
-      VBox {
-        Separation: 2.8pt;
-        foreach (var l in MainResults.Data.LanguageSet) {
-          if (l != WorldLanguages.Latin) {
-            HBox {
-              Separation: 3pt;
-              Canvas(8pt, 8pt, 0.5pt) {
-                BorderRadius: 2pt;
-                Background: l.MapColor;
-              };
-              l;
-            };
-          }
-        }
-      };
-    };
-  };
-}
-
-//======================================================================
-
-readonly AverageAllFigure Figures.AverageAll = new;
-
-class AverageAllFigure: Content {
-  Constructor {
-    super.Constructor("All Rates");
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowAllRates;
-}
-
-//======================================================================
-
-readonly AverageSortedFigure Figures.AverageSorted = new;
-
-class AverageSortedFigure: Content {
-  Constructor {
-    super.Constructor("Rate vs. Direction");
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowRateDirected;
-}
-
-//======================================================================
-
-readonly RateDirectionFigure Figures.RateDirection = new;
-
-class RateDirectionFigure: Content {
-  Constructor {
-    super.Constructor("Directionality");
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowDirection;
-}
-
-//======================================================================
-
-readonly SpecificRatesFigure Figures.SpecificRates = new;
-
-class SpecificRatesFigure: Content {
-  Constructor {
-    super.Constructor("Specific Rates");
-  }
-
-  static bool Predicate(SegmentRate a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
-}
-
-TransitionTitle(type) = "The top {0} {1} transitions"(TopCount, type);
-
-//======================================================================
-
-readonly QRatesTopFigure Figures.QRatesTop = new;
-
-class QRatesTopFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("segmental"));
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Extrema(TopCount, true);
-}
-
-//======================================================================
-
-readonly QRatesCCFigure Figures.QRatesConsonantConsonant = new;
-
-class QRatesCCFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"));
-  }
-
-  static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
-                                       a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(TopCount, @Predicate);
-}
-
-//======================================================================
-
-readonly QRatesOneWayFigure Figures.QRatesOneWay = new;
-
-class QRatesOneWayFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("highly directed"));
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowChartPairs(TopCount, MainResults.MainRun.QRates.SortByDirection);
-}
-
-//======================================================================
-
-readonly AllFrequenciesFigure Figures.AllSegmentFrequencies = new;
-
-class AllFrequenciesFigure: Content {
-  var SegmentDisplay Display;
-
-  Constructor {
-    super.Constructor("Segment occurrance rates for all languages");
-    Display = new SegmentDisplay(MainResults.Data);
-  }
-
-  override GetCaption(ContentStyle style) = "The frequency of occurrance of each segment for all languages";
-
-  override GetBody(ContentStyle style) = Block {
-    Display.FrequencyChart(style, new(ExtentWidth, Math.Min(ExtentHeight, 5")));
-  };
-}
-
-//======================================================================
-
-readonly ConsensusTree Figures.ConsensusTree = new;
-
-class ConsensusTree: Content {
-  Constructor {
-    super.Constructor(Lang.ConsensusTree);
-  }
-
-  override GetBody(ContentStyle style) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
-}
-
-//======================================================================
-
-SegmentOccuranceCaption(ExperimentData data) = Span {
-  var l0 = data.Taxa[0].Language;
-
-  "Comparison of segmental occurrence rates across languages. ";
-  "Segments are ordered according to their frequency in "; l0; DotSpace;
-  "For each language, bar heights are normalized to the most frequent segment in that language. ";
-  "Languages are arranged by increasing Euclidean distance from "; l0; " (indicated by the red line). ";
-};
-
-readonly SegmentOccuranceFigure Figures.SegmentOccuranceRates = new(MainResults.Data);
-
-class SegmentOccuranceFigure: ExperimentContent {
-  Constructor(ExperimentData data) {
-    super.Constructor(data, "Segment Occurrence Rates");
-    Data = data;
-  }
-
-  override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
-
-  override GetBody(ContentStyle style) = new SegmentFrequencyChart(Data, false).ShowChart(style);
-}
-
-//======================================================================
-
-readonly SegmentGroupedFigure Figures.SegmentOccuranceGrouped = new(MainResults.Data);
-
-class SegmentGroupedFigure: ExperimentContent {
-  Constructor(ExperimentData data) {
-    super.Constructor(data, "Segment Occurance Rates (by partition)");
-  }
-
-  override GetBody(ContentStyle style) = new SegmentFrequencyChart(Data, true).ShowChart(style);
-}
-
-//======================================================================
-
-readonly PartitionFrequenciesFigure Figures.PartitionFrequencies = new(MainResults.Data);
-
-class PartitionFrequenciesFigure: ExperimentContent {
-  Constructor(ExperimentData data) {
-    super.Constructor(data, "Partition Occurance Rates");
-  }
-
-  override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
-
-  override GetBody(ContentStyle style) = new PartitionFrequencyChart(Data).ShowChart(style);
 }
 
 //======================================================================
@@ -1152,61 +616,6 @@ class AlignmentFigure: Content {
 
 //======================================================================
 
-namespace StateSection {
-  MatrixRow(states, state) = {
-    foreach (var s in states) {
-      Cell {
-        sym.q sub (state s);
-      }
-    }
-  };
-
-  StateRow(states, state) = Row {
-    Cell(PadR(3pt)) {
-      HAlign: Right;
-      Span {
-        each0 == states.Length div 2 ? "From   " : Empty;
-        state;
-      }
-    };
-    MatrixRow(states, state);
-  };
-
-  GetStates(count) = 'A'..('A' + (count - 1)) step 1;
-
-  StateTable(count) = Table(new Thickness(1pt, 1pt, 3pt, null), null, [new(56pt, BorderR(PaperStyle.TableEdgeSize)), 32pt]) {
-    ParAlignment: Center;
-    VAlign: Center;
-    HAlign: Center;
-
-    var states = GetStates(count);
-    Row {
-      Empty;
-      Cell(null, states.Length) {
-        Lang.To;
-      };
-    };
-    Row(BorderB(PaperStyle.TableEdgeSize)) {
-      Empty;
-      states;
-    };
-    StateRow(states, each states);
-  };
-
-  StateMatrix(count) = MatrixBox(PadB(3)) {
-    var states = GetStates(count);
-
-    Bracket: Brackets.FlatRound;
-    foreach (var state in states) {
-      Row {
-        MatrixRow(states, state);
-      }
-    }
-  };
-}
-
-//======================================================================
-
 readonly ResultsSection PaperSections.Results = new;
 
 class ResultsSection: Content {
@@ -1258,7 +667,7 @@ class PhylogenyResultsSection: Content {
       EqSpan{DeletionRate; Tex.Equals; run.DeletionRate};
       " ("; run.DeletionRateLow; CommaSpace; run.DeletionRateHigh; "), respectively. ";
       "(Each credible interval contains the true parameter value with probability ";
-      ExperimentResults.CutoffProbability;
+      AlignmentsFigure.CutoffProbability;
       ".) ";
       "In approximate terms, this implies one insertion or deletion event for every two substitution events. ";
       "Like substitution events, insertion and deletion events contribute phylogenetic signal. ";
@@ -1575,7 +984,9 @@ class WordTransformationSection: Content {
 
 //======================================================================
 
-readonly WordSegmentRelSection PaperSections.WordSegmentRelationships = new;
+readonly WordSegmentRelSection  PaperSections.WordSegmentRelationships = new;
+readonly AlignmentCompareFigure Figures.AlignmentExample2 = new(8, 4, "Sky");
+
 
 class WordSegmentRelSection: Content {
   Constructor {
@@ -1592,7 +1003,7 @@ class WordSegmentRelSection: Content {
       "In our framework, segmental homology across languages is treated as a latent random variable. ";
       "Posterior uncertainty over alignments is summarized by constructing a credible set for each cognate word form. ";
       "Alignments are ordered by posterior probability and the smallest set whose cumulative posterior mass reaches ";
-      ExperimentResults.CutoffProbability;
+      AlignmentsFigure.CutoffProbability;
       " is retained. ";
       style.FigureReference(align1);
       " illustrates this procedure for the concept ";
@@ -1622,7 +1033,7 @@ class WordSegmentRelSection: Content {
       var align2 = Figures.AlignmentExample2;
 
       "The posterior distribution over alignments is sensitive to the substitution model. ";
-      style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(ExperimentResults.CutoffPercent);
+      style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(AlignmentsFigure.CutoffPercent);
       style.SQuote {
         TextCase: TextCases.AllLower;
         align2.Concept
@@ -2743,8 +2154,6 @@ class PhylogenyDataSection: Content {
 readonly PhylogenyModelSection PaperSections.PhylogenyModel = new;
 
 class PhylogenyModelSection: Content {
-  const StateCount = 5;
-
   Constructor {
     super.Constructor("Segmental evolution model");
   }
@@ -2755,14 +2164,14 @@ class PhylogenyModelSection: Content {
       "Substitution events are described by a continuous-time Markov process whose state space consists of the phonemic segments in the inventory. ";
       "Central to this process is a rate matrix specifying the instantaneous rate of change between all ordered pairs of states. ";
       "For illustration, consider a simplified model with ";
-      Enumerators.Cardinal(StateCount);
+      Enumerators.Cardinal(StateSection.StateCount);
       " segments as states. ";
       "The instantaneous transition rates can be represented in tabular form as follows:";
     };
 
     style.CenterFigure {
       Frame {
-        StateSection.StateTable(StateCount);
+        StateSection.StateTable(StateSection.StateCount);
       };
     };
 

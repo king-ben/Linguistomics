@@ -8,8 +8,6 @@ readonly namespace Info {
   PreBurn        = 0.1;
   LinkMin        = 5;
   CognateMin     = 3;
-  RunIndex       = 0;
-  Runs           = 1..1;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
   TTRFolder      = Folder("TongueTwisterReader2");

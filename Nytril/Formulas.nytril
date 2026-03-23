@@ -226,6 +226,63 @@ readonly namespace<EquationSymbol> EquationSymbols {
 
 //======================================================================
 
+namespace StateSection {
+  const StateCount = 5;
+
+  MatrixRow(states, state) = {
+    foreach (var s in states) {
+      Cell {
+        sym.q sub (state s);
+      }
+    }
+  };
+
+  StateRow(states, state) = Row {
+    Cell(PadR(3pt)) {
+      HAlign: Right;
+      Span {
+        each0 == states.Length div 2 ? "From   " : Empty;
+        state;
+      }
+    };
+    MatrixRow(states, state);
+  };
+
+  GetStates(count) = 'A'..('A' + (count - 1)) step 1;
+
+  StateTable(count) = Table(new Thickness(1pt, 1pt, 3pt, null), null, [new(56pt, BorderR(PaperStyle.TableEdgeSize)), 32pt]) {
+    ParAlignment: Center;
+    VAlign: Center;
+    HAlign: Center;
+
+    var states = GetStates(count);
+    Row {
+      Empty;
+      Cell(null, states.Length) {
+        Lang.To;
+      };
+    };
+    Row(BorderB(PaperStyle.TableEdgeSize)) {
+      Empty;
+      states;
+    };
+    StateRow(states, each states);
+  };
+
+  StateMatrix(count) = MatrixBox(PadB(3)) {
+    var states = GetStates(count);
+
+    Bracket: Brackets.FlatRound;
+    foreach (var state in states) {
+      Row {
+        MatrixRow(states, state);
+      }
+    }
+  };
+}
+
+//======================================================================
+
 readonly namespace<Equation> Equations {
   LikelihoodComplexity = new(#0eef75c7-cb5a-4fd9-9c47-26a32dbfe7bc#, "Complexity of likelihood calculation") {
     Formula: EqSpan {
@@ -600,7 +657,7 @@ readonly namespace<Equation> Equations {
       Equals;
       "{"; qij; "}";
       Equals;
-      StateSection.StateMatrix(PaperSections.PhylogenyModel.StateCount);
+      StateSection.StateMatrix(StateSection.StateCount);
       Space;
       RateMatrixScale;
     };
