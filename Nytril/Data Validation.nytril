@@ -110,9 +110,6 @@ class DiagnosticsDocument: DocumentEntry {
   };
 
   override GetDocument = Document(new(0.5", 0.75", 0.5", 0.5")) {
-//    if (not System.IsPublishing)
-//      ShowQuery;
-
     TextHeight: 9pt;
 
     Content[] content = [
@@ -133,6 +130,8 @@ class DiagnosticsDocument: DocumentEntry {
 
     if (Data.RawData) {
       content += [
+   //     new AllFrequenciesFigure(Data),
+
         new FrequencyFigure(new SegmentFrequencyChart(Data, false), "Segment Frequency"),
         new FrequencyFigure(new SegmentFrequencyChart(Data, true), "Segment Frequency by Partition"),
         new FrequencyFigure(new PartitionFrequencyChart(Data), "Partition Frequency"),

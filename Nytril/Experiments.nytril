@@ -65,6 +65,10 @@ class ExperimentRun {
   };
 
   RunReader(mac, root) = TextBlock {
+    "rm Execute/consensus.tre";
+    "rm Execute/alignments.nytril";
+    "rm Execute/alignments_full.nytril";
+
     ArgSpan {
       ArgString(null, mac ? Info.MacReaderEXE : Info.ReaderEXE);
 //      ArgString("i", root Info.ExecuteFolder);
@@ -78,6 +82,16 @@ class ExperimentRun {
   };
 
   RunAll(mac, root) = TextBlock {
+    "cd ../../../../../TongueTwister2";
+    "make";
+    "cd ../TongueTwisterReader2";
+    "make";
+    Span {"cd "; Folder("../Experiments") RootFolder};
+    "rm Execute/out.config";
+    "rm Execute/*.json";
+    "rm Execute/out.tre";
+    "rm Execute/out.tsv";
+
     ArgSpan {
       ArgString(null, mac ? Info.MacMCMCEXE : Info.MCMCEXE);
       ArgString("d", Info.ConfigFile);
@@ -102,7 +116,7 @@ class ExperimentRun {
 
     CreateFolder(path);
     CreateFolder(path Info.ExecuteFolder);
-    WriteRuns(path, false, path, "WinRunReader.bat", "WinRunAll.bat");
+//    WriteRuns(path, false, path, "WinRunReader.bat", "WinRunAll.bat");
     WriteRuns(path, true, Empty, "MacRunReader.sh", "MacRunAll.sh");
 
     Write(new ConfigFileClass(data, this, tree).Show, path Info.ConfigFile);

@@ -10,7 +10,7 @@
   "BrlenPriorVal": 50.0,
   "McmcSettings": {
     "CalcMarginal": "No",
-    "NumCycles": 5000000,
+    "NumCycles": 1000000,
     "BurnLength": 100000,
     "FirstBurnLength": 100000,
     "TuneLength": 0,

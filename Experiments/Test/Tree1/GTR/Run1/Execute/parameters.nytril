@@ -1,2 +1,2 @@
-Generations = 5000000;
+Generations = 1000000;
 PreBurn     = 0.1;

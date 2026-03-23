@@ -158,7 +158,7 @@ class ExchangeabilityTable: Content {
       var dy         = 2pt;
       var left       = 1";
       var w          = (ExtentWidth - 1") / count;
-      
+
       Table(PadR(4pt), null, [left] + [w] * count) {
         HAlign: Center;
         TextDigits: 3;
@@ -460,25 +460,6 @@ class QRatesOneWayFigure: Content {
 
 //======================================================================
 
-readonly AllFrequenciesFigure Figures.AllSegmentFrequencies = new;
-
-class AllFrequenciesFigure: Content {
-  var SegmentDisplay Display;
-
-  Constructor {
-    super.Constructor("Segment occurrance rates for all languages");
-    Display = new SegmentDisplay(MainResults.Data);
-  }
-
-  override GetCaption(ContentStyle style) = "The frequency of occurrance of each segment for all languages";
-
-  override GetBody(ContentStyle style) = Block {
-    Display.FrequencyChart(style, new(ExtentWidth, Math.Min(ExtentHeight, 5")));
-  };
-}
-
-//======================================================================
-
 readonly ConsensusTree Figures.ConsensusTree = new;
 
 class ConsensusTree: Content {
@@ -537,6 +518,23 @@ class PartitionFrequenciesFigure: ExperimentContent {
   override GetCaption(ContentStyle style) = SegmentOccuranceCaption(Data);
 
   override GetBody(ContentStyle style) = new PartitionFrequencyChart(Data).ShowChart(style);
+}
+
+//======================================================================
+
+readonly ExperimentalRunsFigure Figures.TransitionRates = new;
+
+class ExperimentalRunsFigure: Content {
+  Constructor {
+    super.Constructor("Transition Rates between Partitions");
+  }
+
+  override GetCaption(ContentStyle style) = Span {
+    "The area of the circles is proportional to the estimated equilibrium frequencies. ";
+    "The width of the lines is proportional to the estimated rates. ";
+  };
+
+  override GetBody(ContentStyle style) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
 }
 
 //======================================================================

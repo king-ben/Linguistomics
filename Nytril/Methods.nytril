@@ -100,23 +100,6 @@ class ModelTreesFigure: Content {
 
 //======================================================================
 
-readonly ExperimentalRunsFigure Figures.TransitionRates = new;
-
-class ExperimentalRunsFigure: Content {
-  Constructor {
-    super.Constructor("Transition Rates between Partitions");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "The area of the circles is proportional to the estimated equilibrium frequencies. ";
-    "The width of the lines is proportional to the estimated rates. ";
-  };
-
-  override GetBody(ContentStyle style) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
-}
-
-//======================================================================
-
 readonly AlignmentsFigure Figures.Alignments = new;
 
 class AlignmentsFigure: Content {

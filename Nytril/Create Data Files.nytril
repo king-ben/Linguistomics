@@ -28,27 +28,33 @@ readonly namespace Main.Documents {
 
 class CreateExperimentClass: Action {
   var ExperimentData Data;
+  var                Root;
+  var bool           Exists;
 
   Constructor(ExperimentData data) {
     super.Constructor(Actions.Execute, null);
-    Data = data;
+    Data   = data;
+    Root   = Info.ExperimentRoot data.RootFolder;
+    Exists = FolderExists(Root);
   }
 
   override string ConfirmExecuteMessage {
-    return "Overwrite configuration files for experiment \"{0}\"?"(DataSet.Name);
+    var verb = Exists ? "Overwrite" : "Create";
+    return "{0} configuration files for experiment \"{1}\"?"(verb, DataSet.Name);
   }
 
   override EventResponse Execute {
     var data = DataSet;
-    var root = Info.ExperimentRoot data.RootFolder;
 
-    if (not FolderExists(root))
-      CreateFolder(root);
+    if (not Exists)
+      CreateFolder(Root);
     foreach (var set in data.TreeSets)
       set.InitFolders(data);
 
-    if (Write(new WordDocument(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.WordFile))
-      return EventResponses.MessageTip("Files Written");
+    if (Write(new WordDocument(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.WordFile)) {
+      OpenExplorer(Root);
+      return null;
+    }
     return EventResponses.MessageTip("Error creating files");
   }
 }
@@ -99,6 +105,23 @@ class CreateViewClass: DocumentEntry {
     };
     Tab;
     value;
+  };
+}
+
+//======================================================================
+
+class AllFrequenciesFigure: Content {
+  var SegmentDisplay Display;
+
+  Constructor(ExperimentData data) {
+    super.Constructor("Segment occurrance rates for all languages");
+    Display = new SegmentDisplay(data);
+  }
+
+  override GetCaption(ContentStyle style) = "The frequency of occurrance of each segment for all languages";
+
+  override GetBody(ContentStyle style) = Block {
+    Display.FrequencyChart(style, new(ExtentWidth, Math.Min(ExtentHeight, 5")));
   };
 }
 

@@ -27,7 +27,6 @@ readonly Main.Facts = [WorldLanguages];
 SimpleStyle = new PlainStyle;
 
 readonly namespace Main.Documents {
-  DiagnosticsDocument Diagnostic  = new(#9dbe9033-0a22-446c-ba54-0f3e07c7c133#, SimpleStyle, MainResults.Data);
   TestResultsDocument TestResults = new(MainResults);
 }
 
@@ -66,14 +65,10 @@ class TestResultsDocument: DocumentEntry {
     Run     = results.MainRun.Run;
 
     PaperContent = [
-      Figures.SegmentOccuranceRates,
-      Figures.SegmentOccuranceGrouped,
-      Figures.PartitionFrequencies,
       Figures.QRatesMatrix,
       Figures.QRatesDiagonal,
       Figures.GappinessChart,
       Figures.QRatesConsonantConsonant,
-      Figures.AllSegmentFrequencies,
       Figures.SpecificRates,
       Figures.QRatesOneWay,
       Figures.QRatesTop,

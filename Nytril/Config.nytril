@@ -4,7 +4,7 @@ using Format, IO;
 
 readonly namespace Info {
   Title          = "Phylogenetic inference from cognate word forms";
-  Generations    = 5_000_000;
+  Generations    = 1_000_000;
   PreBurn        = 0.1;
   LinkMin        = 5;
   CognateMin     = 3;
