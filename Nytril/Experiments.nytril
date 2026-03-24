@@ -1,21 +1,24 @@
-using Format, IO;
+  using Format, IO;
 
 //======================================================================
 
 class LanguageNode: Node {
-  var Probability;
+  var Probability,
+      prob,
+      CI;
 
   Constructor {
     super.Constructor;
   }
 
   override void ResolveData {
-    if (Probability is valid and HasChildren) {
+    var p = Probability ?? prob;
+    if (p is valid and HasChildren) {
       Label = Span {
         TextColor: Colors.LightGray;
         TextHeight: 8pt;
         TextDigits: 0;
-        Probability * 100.0;
+        p * 100.0;
       };
     }
     else if (Name is valid)
@@ -62,6 +65,10 @@ class ExperimentRun {
   };
 
   RunReader(mac, root) = TextBlock {
+    "rm Execute/consensus.tre";
+    "rm Execute/alignments.nytril";
+    "rm Execute/alignments_full.nytril";
+
     ArgSpan {
       ArgString(null, mac ? Info.MacReaderEXE : Info.ReaderEXE);
 //      ArgString("i", root Info.ExecuteFolder);
@@ -69,11 +76,22 @@ class ExperimentRun {
       ArgString("o", root Info.OutFileName);
       ArgString("f", "true");
       ArgString("d", "Execute");
+      ArgString("n", "Execute");
     };
 //    Pause(mac);
   };
 
   RunAll(mac, root) = TextBlock {
+    "cd ../../../../../TongueTwister2";
+    "make";
+    "cd ../TongueTwisterReader2";
+    "make";
+    Span {"cd "; Folder("../Experiments") RootFolder};
+    "rm Execute/out.config";
+    "rm Execute/*.json";
+    "rm Execute/out.tre";
+    "rm Execute/out.tsv";
+
     ArgSpan {
       ArgString(null, mac ? Info.MacMCMCEXE : Info.MCMCEXE);
       ArgString("d", Info.ConfigFile);
@@ -98,7 +116,7 @@ class ExperimentRun {
 
     CreateFolder(path);
     CreateFolder(path Info.ExecuteFolder);
-    WriteRuns(path, false, path, "WinRunReader.bat", "WinRunAll.bat");
+//    WriteRuns(path, false, path, "WinRunReader.bat", "WinRunAll.bat");
     WriteRuns(path, true, Empty, "MacRunReader.sh", "MacRunAll.sh");
 
     Write(new ConfigFileClass(data, this, tree).Show, path Info.ConfigFile);
@@ -113,11 +131,11 @@ class ModelConfig {
   var TreeSet         TreeSet;
   var ExperimentRun[] Run;
 
-  Constructor(config, TreeSet treeset, string name) {
+  Constructor(config, TreeSet treeset, string name, runs) {
     Name       = name;
     TreeSet    = treeset;
     RootFolder = treeset.RootFolder Folder(name);
-    Run        = new ExperimentRun(config, this, each Info.Runs, false);
+    Run        = new ExperimentRun(config, this, each runs, false);
   }
 
   void InitFolders(ExperimentData data) {
@@ -135,15 +153,15 @@ class TreeSet {
   var               Name,
                     RootFolder;
 
-  Constructor(config, name, root, Node tree) {
+  Constructor(config, name, root, Node tree, runs) {
     Name       = name;
     Tree       = tree;
     RootFolder = Folder(root) Folder(name);
 
     Models = [
-      new(config, this, "Custom"),
-      new(config, this, "JC69"),
-      new(config, this, "GTR")
+      new(config, this, "Custom", runs),
+      new(config, this, "JC69", runs),
+      new(config, this, "GTR", runs)
    ];
   }
 

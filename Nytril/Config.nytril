@@ -4,12 +4,10 @@ using Format, IO;
 
 readonly namespace Info {
   Title          = "Phylogenetic inference from cognate word forms";
-  Generations    = 5_000_000;
+  Generations    = 1_000_000;
   PreBurn        = 0.1;
   LinkMin        = 5;
   CognateMin     = 3;
-  RunIndex       = 0;
-  Runs           = 1..3;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
   TTRFolder      = Folder("TongueTwisterReader2");

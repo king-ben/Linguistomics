@@ -1,34 +1,7 @@
 using Format;
 
-readonly ExperimentResults MainResults = new;
-
-//======================================================================
-
 typedef StatArray StatClass[];
 typedef StatMat   StatClass[][];
-
-//======================================================================
-
-class ExperimentResults {
-  const double CutoffProbability = 0.95;
-  const        CutoffPercent     = (CutoffProbability * 100.0) %;
-
-  var ExperimentData   Data;
-  var RunResultsThread Poisson,
-                       NaturalClass,
-                       MainRun;
-
-  Constructor {
-    Data = new(null, "Europe3", "Europe3");
-
-    var set = Data.TreeSets[0];
-
-    Poisson      = new(Data, set.Models[1].Run[1]); // For some reason, this run succeeded but not Run[0]
-    NaturalClass = new(Data, set.Models[0].Run[0]);
-    MainRun      = NaturalClass;
-    Parallel.ParallelEach([Poisson, NaturalClass], 100%);
-  }
-}
 
 //======================================================================
 
@@ -557,13 +530,18 @@ class AlignedCountClass: CountBase {
       }
     }
 
-    DiagFactor      = 1.0 / Math.Abs(Math.Max(dmin, dmax));
+    if (dmax > 0)
+      DiagFactor = 1.0 / Math.Abs(Math.Max(dmin, dmax));
+    else
+      DiagFactor = 1.0;
     RateFactor      = 1.0 / Math.Abs(Math.Max(min, max));
     DirFactor       = max == min ? 1.0 : 1.0 / Math.Abs(max - min);
     var rl = RateList.ToArray;
     SortedRates     = rl.ToSortedArray(SegmentRate.SortDescending, @SegmentRate.CompareRate);
     SortByDirection = rl.ToSortedArray(SegmentRate.SortDescending, @SegmentRate.CompareDirection);
   }
+
+  ChartHeight = Math.Min(6", ExtentHeight - 48pt);
 
   override AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size) {
     if (si.Index == sj.Index)
@@ -581,7 +559,7 @@ class AlignedCountClass: CountBase {
         var c = rate.RateColor;
         Span {
           TextDigits: 0;
-          TextHeight: 4pt;
+          TextHeight: size.Height * 0.7;
           TextColor: c.TextCompliment;
           rate.Rate;
         };
@@ -634,7 +612,7 @@ class AlignedCountClass: CountBase {
   };
 
   ShowAllRates = VBox {
-    Chart(100%, ExtentHeight - 48pt) {
+    Chart(100%, ChartHeight) {
       ChartType: ChartTypes.Scatter;
       TextHeight: 12pt;
       TipNoPublish: true;
@@ -685,7 +663,7 @@ class AlignedCountClass: CountBase {
   };
 
   ShowRateDirected = VBox {
-    Chart(100%, ExtentHeight - 48pt) {
+    Chart(100%, ChartHeight) {
       TipNoPublish: true;
       ChartType: ChartTypes.Scatter;
       TextHeight: 12pt;
@@ -727,7 +705,7 @@ class AlignedCountClass: CountBase {
   };
 
   ShowDirection = VBox {
-    Chart(100%, ExtentHeight - 48pt) {
+    Chart(100%, ChartHeight) {
       TipNoPublish: true;
       ChartType: ChartTypes.Scatter;
       TextHeight: 12pt;

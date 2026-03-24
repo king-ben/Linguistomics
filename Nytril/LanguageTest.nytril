@@ -1,13 +1,6 @@
-using TestLanguages;
+using WorldLanguages;
 
 include "Concepts/Test";
-
-readonly namespace<WorldLanguage> TestLanguages {
-  LanguageA  = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "LanguageA");
-  LanguageB  = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "LanguageB") {LanguageParent to LanguageA};
-  LanguageC  = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "LanguageC") {LanguageParent to LanguageB};
-  LanguageD  = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "LanguageD") {LanguageParent to LanguageB};
-}
 
 WorldLanguage[] LanguageSet = [
   LanguageA,
@@ -16,28 +9,10 @@ WorldLanguage[] LanguageSet = [
   LanguageD,
 ];
 
-/*
-  override Node NumberedTree = new NBranch(1) {
-    new NLeaf(this, LanguageA, 1);
-    new NBranch(2) {
-      new NLeaf(this, LanguageB, 3);
-      new NBranch(4) {
-        new NLeaf(this, LanguageC, 5);
-        new NLeaf(this, LanguageD, 6);
-      };
-    }
-  };
-  override void GetConceptExamples(concepts) {
-    ExampleConcept = concepts.Woman;
-    FigureConcept  = concepts.Rain;
-    DataConcept    = concepts.Woman;
-  }
-*/
-
 //======================================================================
 
 readonly namespace TreeExamples {
-  PriorTrees = [T1, T2, T3];
+  PriorTrees = [T1];
 
   T1 = new Branch {
     new Leaf(LanguageA);
@@ -45,28 +20,6 @@ readonly namespace TreeExamples {
       new Leaf(LanguageB);
       new Branch {
         new Leaf(LanguageC);
-        new Leaf(LanguageD);
-      };
-    }
-  };
-
-  T2 = new Branch {
-    new Leaf(LanguageB);
-    new Branch {
-      new Leaf(LanguageA);
-      new Branch {
-        new Leaf(LanguageC);
-        new Leaf(LanguageD);
-      };
-    }
-  };
-
-  T3 = new Branch {
-    new Leaf(LanguageA);
-    new Branch {
-      new Leaf(LanguageC);
-      new Branch {
-        new Leaf(LanguageB);
         new Leaf(LanguageD);
       };
     }

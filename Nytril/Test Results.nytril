@@ -1,0 +1,126 @@
+using Format;
+
+include "Lang";
+include "Languages";
+include "Library";
+include "LanguageTree";
+include "IPA";
+include "Segments";
+include "Rules";
+include "Citations";
+include "Experiments";
+include "Nexus";
+include "Config";
+include "Graphics";
+include "Tables";
+include "Results";
+include "LanguageTest";
+include "Data Validation";
+include "Visuals";
+include "References";
+include "Formulas";
+
+//==================================================
+
+readonly Main.Facts = [WorldLanguages];
+
+SimpleStyle = new PlainStyle;
+
+readonly namespace Main.Documents {
+  TestResultsDocument TestResults = new(MainResults);
+}
+
+//======================================================================
+
+readonly ExperimentResults MainResults = new;
+
+class ExperimentResults {
+  var ExperimentData   Data;
+  var RunResultsThread NaturalClass,
+                       MainRun;
+  var AlignmentChart   Alignment;
+
+  Constructor {
+    Data         = new(null, "Test", "Test", 1..1);
+    NaturalClass = new(Data, Data.TreeSets[0].Models[0].Run[0]);
+    MainRun      = NaturalClass;
+    Parallel.ParallelEach([NaturalClass], 100%);
+
+    Alignment = new(Data, MainRun);
+  }
+}
+
+//======================================================================
+
+class TestResultsDocument: DocumentEntry {
+  var ContentStyle      Style;
+  var ExperimentRun     Run;
+  var ExperimentResults Results;
+  var Content[]         PaperContent;
+
+  Constructor(ExperimentResults results) {
+    super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
+    Style   = SimpleStyle;
+    Results = results;
+    Run     = results.MainRun.Run;
+
+    PaperContent = [
+      Figures.QRatesMatrix,
+      Figures.QRatesDiagonal,
+      Figures.GappinessChart,
+      Figures.QRatesConsonantConsonant,
+      Figures.SpecificRates,
+      Figures.QRatesOneWay,
+      Figures.QRatesTop,
+
+// Need stats
+//      Figures.EquilibriumCharts,
+//      Figures.RateChart,
+
+//      Figures.AverageAll,
+//      Figures.AverageSorted,
+//      Figures.RateDirection,
+//      Figures.ExchangeabilityTable,
+//      Figures.FractionGapsChart,
+//      Figures.UniqueSegments,
+//      Figures.PartitionVolatilityChart,
+//      Figures.TransitionRates,
+    ];
+  }
+
+  Header = Style.HeadingPar(0);
+
+  override GetDocument = Document(0.5") {
+    Header {"Consensus"};
+    PaperStyle.ShowTree(SimpleStyle, Run.ResultTree, 100%, null);
+
+    foreach (var c in PaperContent) {
+      PageBreak;
+      Header {c.Title};
+      c.GetCaption(Style);
+      c.GetBody(Style);
+    }
+
+    PageBreak;
+    Header {"Alignments"};
+    MainResults.Alignment.ShowAll;
+  };
+}
+
+//===============================================================
+
+class PlainStyle: ContentStyle {
+  Constructor {
+    super.Constructor(ReferenceStyles.IEEE, null, 0.75", SectionNumbers);
+    TexPackages.AddEach(["fontspec"]);
+    TexFont   = "Libertinus Serif";
+    SansSerif = TextFamily: TextFamilies.LibertinusSans;
+  }
+
+  override SetTextStyle = {
+    TextHeight: 12pt;
+    TextFamily: TextFamilies.LibertinusSerif;
+  };
+}
+
+//======================================================================

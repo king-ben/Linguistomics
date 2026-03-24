@@ -1,11 +1,16 @@
-using Format, IO, Units, Languages, LinkTypes;
+using Format;
 //======================================================================
 
 DefaultCognate = "Primary";
 
-LanguageParent = new LinkType(WorldLanguage, WorldLanguage, "Parent", true);
-
 readonly namespace<WorldLanguage> WorldLanguages {
+  // These are for use in test runs
+  LanguageA          = new TestLanguageClass(#fcb91dfe-cfde-470d-962e-2cf2dc248e79#, "LanguageA");
+  LanguageB          = new TestLanguageClass(#1d71a11c-41c3-46f0-94f3-2a7b96b0d2f1#, "LanguageB");
+  LanguageC          = new TestLanguageClass(#3b6800d8-fa4d-418f-a9f1-3cad83ac3860#, "LanguageC");
+  LanguageD          = new TestLanguageClass(#b648d3a2-7c51-4df6-9a4a-047a0ae2285e#, "LanguageD");
+  //===============================
+
   Old_Irish          = new(#78e0808d-fef7-4220-ab40-31a2fb4caa6d#, "Old Irish", 5);
   Irish              = new(#ecab3be4-8d79-496b-a8ef-8d160d687ad9#, "Irish", 4);
   Scots_Gaelic       = new(#eed7fad0-d873-4869-a8fa-1b15a2b162bd#, "Scots Gaelic", 4);
@@ -113,7 +118,7 @@ class TestLanguageClass: WorldLanguage {
   }
 
   override Description = Paragraph {
-    "A test language.";
+    "A test language for use in diagnostic runs and tests.";
   };
 }
 

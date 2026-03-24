@@ -35,7 +35,6 @@ class JohnSlideShow: SlideShow {
     AddFigureSlide(Figures.RateChart);
     AddFigureSlide(Figures.TransitionRates);
     AddFigureSlide(Figures.AlignmentFlower);
-    AddFigureSlide(new AlignmentCompareFigure(12, 6));
     AddFigureSlide(Figures.GappinessChart);
     AddFigureSlide(Figures.ConsensusTree);
     AddFigureSlide(Figures.Alignments);

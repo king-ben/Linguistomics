@@ -1,1 +1,0 @@
-C:/Users/shawn/Documents/Code/Linguistomics/TongueTwisterReader2/x64/release/tonguetwisterreader.exe -b 0.1 -o C:/Users/shawn/Documents/Code/Linguistomics/Experiments/Test/Tree2/GTR/Run1/Execute/out -f true -d Execute

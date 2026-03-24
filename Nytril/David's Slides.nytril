@@ -681,7 +681,7 @@ namespace DavidSlides.Results {
   Slide.SpecificRates.Figure = Figures.SpecificRates;
   //=======
 
-  Slide.PriorFrequency.Figure = Figures.AllSegmentFrequencies;
+//  Slide.PriorFrequency.Figure = Figures.AllSegmentFrequencies;
 
   Slide.PartitionRules.Figure = Figures.PartitionAssignments;
 
@@ -694,10 +694,6 @@ namespace DavidSlides.Results {
   Slide.Alignments.Figure = Figures.Alignments;
 
   Slide.AlignmentExamples.Figure = Figures.AlignmentExamples;
-
-//  Slide.TransitionMatrixBall.Figure = Figures.ExchangeabilityChart;
-
-//  Slide.FractionGapsChart.Figure = Figures.FractionGapsChart;
 
 //  Slide.TransitionMatrix.Figure = Figures.ExchangeabilityTable;
 
