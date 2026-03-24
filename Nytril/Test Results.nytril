@@ -72,10 +72,8 @@ class TestResultsDocument: DocumentEntry {
       Figures.SpecificRates,
       Figures.QRatesOneWay,
       Figures.QRatesTop,
-
-// Need stats
-//      Figures.EquilibriumCharts,
-//      Figures.RateChart,
+      Figures.EquilibriumCharts,
+      Figures.RateChart,
 
 //      Figures.AverageAll,
 //      Figures.AverageSorted,
