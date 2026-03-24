@@ -1,4 +1,4 @@
-using Format, Math, Units, LinkTypes;
+using Format, Math;
 
 //======================================================================
 
@@ -76,7 +76,7 @@ readonly namespace PaperStyle {
 
   BranchMarker = HBox {
     Margin: PadR(2pt);
-    Shape(Colors.Black, new Stroke(1 pt, Colors.Gray)) {
+    Shape(Colors.Black, new Stroke(1pt, Colors.Gray)) {
       EllipsePath(new(0, 1pt))
     };
   };
