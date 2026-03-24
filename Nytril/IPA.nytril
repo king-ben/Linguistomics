@@ -304,7 +304,7 @@ class SegmentPunctuation: VocalSegment {
 //======================================================================
 
 class SegmentImpossible: VocalSegment {
-  Constructor(features, place) {
+  Constructor(SegmentFeatures features, Places place) {
     super.Constructor(Empty, null);
     Features   = features;
     Place      = place;
@@ -325,7 +325,7 @@ class Diacritic: VocalSegment {
 //======================================================================
 
 class SegmentConsonant: VocalSegment {
-  Constructor(ipa, features, place, sampa=null) {
+  Constructor(ipa, SegmentFeatures features, Places place, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features;
     Place    = place;
@@ -335,7 +335,7 @@ class SegmentConsonant: VocalSegment {
 //======================================================================
 
 class SegmentVowel: VocalSegment {
-  Constructor(ipa, features, open, backness, sampa=null) {
+  Constructor(ipa, SegmentFeatures features, Opens open, Backnesses backness, sampa=null) {
     super.Constructor(ipa, sampa);
     Features = features | Vowel;
     Open     = open;
