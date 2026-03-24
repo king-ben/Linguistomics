@@ -8,7 +8,7 @@ class StateFrequencies;
 
 
 
-class RateMatrixNaturalClass : public RateMatrix{
+class RateMatrixNaturalClass : public RateMatrix {
 
     public:
                         RateMatrixNaturalClass(void) = delete;

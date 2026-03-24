@@ -356,7 +356,7 @@ void Analysis::nytrilOutput(std::ofstream& file, int maxAlignment) {
     file << "Deletion" << "RateLow = " << indelRates->getLowerCI().second << ";\n";
     file << "Deletion" << "RateHigh = " << indelRates->getUpperCI().second << ";\n\n";
 
-    if (dynamic_cast<RateMatrixNaturalClass*>(rates))
+    if (auto* nc = dynamic_cast<RateMatrixNaturalClass*>(rates))
         {
         // have the custom/natural class model
         int numSubsets = part->numSubsets();
