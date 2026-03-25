@@ -69,15 +69,12 @@ class CreateViewClass: DocumentEntry {
     Data = data;
   }
 
-  IntEdit(name, ref prop) = HBox {
-    TextHeight: 14pt;
-    IntControl(new(ref prop), 80pt, null, new Edge(1, 3, Colors.Gray), 100_000, 100_000_000, 1_000_000) {
-      name;
-      TextGroup: true;
-      TextDigits: 0;
-      BorderRadius: 5;
-      Action: Actions.Refresh;
-    };
+  IntEdit(name, ref prop) = IntControl(new(ref prop), 80pt, null, new Edge(1, 3, Colors.Gray), 100_000, 100_000_000, 1_000_000) {
+    name;
+    TextGroup: true;
+    TextDigits: 0;
+    BorderRadius: 5;
+    Action: Actions.Refresh;
   };
 
   override GetDocument = Document {
@@ -103,10 +100,8 @@ class CreateViewClass: DocumentEntry {
     HBox(100%) {
       Justify:SpaceBetween;
       VAlign: Top;
-      VBox {
-        IntEdit("Cycles", ref UserSettings.NumCycles);
-      };
 
+      IntEdit("Cycles", ref UserSettings.NumCycles);
       ButtonControl(null, null, new Edge(2, 10, Colors.Gray)) {
         Background: new RadialGradient(10%, 10%, 10%, 10%, 30%, 70%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
         BorderRadius: 6;
