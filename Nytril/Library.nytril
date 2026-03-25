@@ -830,10 +830,9 @@ class ExperimentData {
   }
 
   void CompletedRead {
-    var factor = 1.0 / SegmentCount;
     foreach (var segment in UniqueSegments) {
       segment.Index         = each0;
-      segment.UsedFrequency = factor * segment.UsedCount;
+      segment.UsedFrequency = segment.UsedCount / SegmentCount;
     }
 
     Rule.Init(UniqueSegments);
@@ -873,9 +872,12 @@ class ExperimentData {
 
         int count = 0;
         foreach (var s in word.Segments) {
-          if (s.Index >= 0)
+          if (s.Index >= 0) {
             ++count;
+            ++s.UsedCount;
+          }
         }
+       
 
         SegmentCount         += count;
         taxon.SegmentCount   += count;

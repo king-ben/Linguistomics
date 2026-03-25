@@ -69,18 +69,18 @@ class TestResultsDocument: DocumentEntry {
     Run          = results.MainRun.Run;
     PaperContent = new(16);
 
-    AddContent(Figures.QRatesMatrix);
+    if (Results.MainRun.NCQFreqs is valid) {
+      AddContent(Figures.EquilibriumCharts);
+      AddContent(Figures.RateChart);
+      AddContent(Figures.TransitionRates);
+    }
+
     AddContent(Figures.QRatesDiagonal);
     AddContent(Figures.GappinessChart);
     AddContent(Figures.QRatesConsonantConsonant);
     AddContent(Figures.SpecificRates);
     AddContent(Figures.QRatesOneWay);
     AddContent(Figures.QRatesTop);
-
-    if (Results.MainRun.NCQFreqs is valid) {
-      AddContent(Figures.EquilibriumCharts);
-      AddContent(Figures.RateChart);
-    }
   }
 
   void AddContent(Content c) {
