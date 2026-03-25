@@ -101,7 +101,7 @@ class ExperimentRun {
   };
 
   GetParameters = TextBlock {
-    "Generations = {0};"(Config.Generations);
+    "Generations = {0};"(UserSettings.NumCycles);
     "PreBurn     = {0};"(Config.PreBurn);
   };
 
