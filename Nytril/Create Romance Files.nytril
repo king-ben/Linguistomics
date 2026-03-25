@@ -13,7 +13,7 @@ class EuropeExperimentClass: ExperimentData {
 
 readonly ExperimentData DataSet {
   var data = new EuropeExperimentClass(Info);
-  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet, Info.CognateMin);
+  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet, 3);
   return data;
 }
 

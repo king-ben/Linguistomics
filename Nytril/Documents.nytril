@@ -7,6 +7,8 @@ abstract class LinguisticsContent: AuthoredContent {
     super.Constructor(name);
     Description = description;
 
+    Title = "Phylogenetic inference from cognate word forms";
+
     AddAuthor(People.Goldstein_David, true);
     AddAuthor(People.McCreight_Shawn);
     AddAuthor(People.Buchi_Éva);
@@ -19,7 +21,6 @@ abstract class LinguisticsContent: AuthoredContent {
 class LinguisticsPaper: LinguisticsContent {
   Constructor {
     super.Constructor("Paper", "Linguistics research paper");
-    Title                 = Info.Title;
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
     Acknowledgements      = PaperSections.Acknowledgements;
@@ -77,7 +78,6 @@ class BiographySection: Content {
 class PaperBiography: LinguisticsContent {
   Constructor {
     super.Constructor("Biography", "Author Biographies and Acknowledgments");
-    Title            = Info.Title;
     Acknowledgements = PaperSections.Acknowledgements;
     Funding          = PaperSections.Funding;
     ExtraSections    = [Acknowledgements, Funding, PaperSections.Biography];
@@ -88,9 +88,9 @@ class PaperBiography: LinguisticsContent {
 
 class SupplementalContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Supplementary Material", "Extra derivations and charts to supplement the main paper");
-
-    Subtitle = Span {"For: "; ContentStyle.DQuote {Info.Title}};
+    super.Constructor("Supplement", "Extra derivations and charts to supplement the main paper");
+    Title    = "Supplementary Material";
+    Subtitle = Span {"For: "; ContentStyle.DQuote {MainPaper.Title}};
 
     AddContent(PaperSections.Methods);
     Appendix.AddContent(Figures.Alignments);
@@ -140,7 +140,7 @@ class RelationshipContent: LinguisticsContent {
   Constructor {
     super.Constructor("Graphs", "Graphs of linguistic connections");
 
-    Subtitle = Span {"For: "; ContentStyle.DQuote {Info.Title}};
+    Subtitle = Span {"For: "; ContentStyle.DQuote {Title}};
 
     AddContent(PaperSections.Connections);
   }

@@ -24,7 +24,7 @@ readonly namespace Main.Documents {
   CreateViewClass       CreateFiles   = new(DataSet);
 }
 
-//======================================================================
+//=======================================================
 
 class CreateExperimentClass: Action {
   var ExperimentData Data;
@@ -69,11 +69,23 @@ class CreateViewClass: DocumentEntry {
     Data = data;
   }
 
+  IntEdit(name, ref prop) = HBox {
+    TextHeight: 14pt;
+    IntControl(new(ref prop), 80pt, null, new Edge(1, 3, Colors.Gray), 100_000, 100_000_000, 1_000_000) {
+      name;
+      TextGroup: true;
+      TextDigits: 0;
+      BorderRadius: 5;
+      Action: Actions.Refresh;
+    };
+  };
+
   override GetDocument = Document {
+    TextHeight: 14pt;
+
     Paragraph {
-      TextHeight: 120%;
       Underline;
-      "Experimental parameters";
+      "Parameters";
     };
 
     int words = 0;
@@ -84,17 +96,25 @@ class CreateViewClass: DocumentEntry {
     ShowField("Unique Segments", Data.UniqueSegments.Length);
     ShowField("Languages", Data.TaxonSet.Length);
     ShowField("Words", words);
-    ShowField("Output Path", Info.ExperimentRoot Data.RootFolder);
+    ShowField("Root Path", Info.ExperimentRoot);
+    ShowField("Output Path", Data.RootFolder);
     Paragraph;
 
-    var action = new CreateExperimentClass(Data);
-    ButtonControl(null, null, new Edge(2, 10)) {
-      Background: new RadialGradient(10%, 10%, 10%, 10%, 30%, 70%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
-      BorderRadius: 6;
-      TextHeight: 12pt;
-      Bold;
-      "Create experiment files";
-      Action: action;
+    HBox(100%) {
+      Justify:SpaceBetween;
+      VAlign: Top;
+      VBox {
+        IntEdit("Cycles", ref UserSettings.NumCycles);
+      };
+
+      ButtonControl(null, null, new Edge(2, 10, Colors.Gray)) {
+        Background: new RadialGradient(10%, 10%, 10%, 10%, 30%, 70%, [new(0, Colors.White), new(100%, Colors.LightGreen)]);
+        BorderRadius: 6;
+        TextHeight: 12pt;
+        Bold;
+        "Create Folders";
+        Action: new CreateExperimentClass(Data);
+      };
     };
   };
 

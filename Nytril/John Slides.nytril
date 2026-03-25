@@ -11,7 +11,7 @@ class JohnDesign: FancyDesign {
 class JohnSlideShow: SlideShow {
   Constructor {
     super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesign, new OtherStyle, [People.Huelsenbeck_John]);
-    Title       = Info.Title;
+    Title       = "Phylogenetic inference from cognate word forms";
     Description = "Presentation for Biologists";
   }
 

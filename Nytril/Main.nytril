@@ -163,7 +163,7 @@ class HomePage: SitePage {
     Paragraph {
       TextHeight: 20pt;
       SpaceAfter: 20pt;
-      Info.Title;
+      MainPaper.Title;
     };
 
     FinalStyle.ShowAuthorList(MainPaper, true);

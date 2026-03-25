@@ -1,13 +1,24 @@
 using Format, IO;
 
+//=======================================================
+
+class UserOptions: Fact {
+  field int NumCycles;
+
+  Constructor {
+    super.Constructor(#de1000d0-725d-48ab-95a4-309a72c6f1fe#);
+    NumCycles = 1_000_000;
+    ReadFromStorage;
+  }
+}
+
+readonly UserOptions UserSettings = new;
+
 //======================================================================
 
 readonly namespace Info {
-  Title          = "Phylogenetic inference from cognate word forms";
-  Generations    = 1_000_000;
   PreBurn        = 0.1;
   LinkMin        = 5;
-  CognateMin     = 3;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
   TTRFolder      = Folder("TongueTwisterReader2");
@@ -190,7 +201,7 @@ class ConfigFileClass {
         TextBlock {
           IndentSpace: 2;
           BoolVar("CalcMarginal", Run.Marginal);
-          AddVar("NumCycles", Run.Config.Generations);
+          AddVar("NumCycles", UserSettings.NumCycles);
           AddVar("BurnLength", 100_000);
           AddVar("FirstBurnLength", 100_000);
           AddVar("TuneLength", 0);
