@@ -114,7 +114,7 @@ class TestResultsDocument: DocumentEntry {
       IntControl(new(ref ViewOptions.Model), 24pt, null, new Edge(1, 3, Colors.Gray), 0, 2, 1) {
         "Model";
         BorderRadius: 5;
-        Action: Actions.Refresh;
+        Action: Actions.Rebuild;
       };
       Space;
       MainResults.Model.Name;
