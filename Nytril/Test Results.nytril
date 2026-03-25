@@ -60,7 +60,7 @@ class ExperimentResults {
   var AlignmentChart   Alignment;
 
   Constructor {
-    Data    = new(null, "Test", "Test", 1..3);
+    Data    = new(null, "Test", "Test", 1..1);
     Model   = Data.TreeSets[0].Models[ViewOptions.Model];
     MainRun = new(Data, Model.Run[0]);
     Parallel.ParallelEach([MainRun], 100%);
