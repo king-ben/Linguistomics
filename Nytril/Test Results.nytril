@@ -20,6 +20,17 @@ include "Visuals";
 include "References";
 include "Formulas";
 
+//======================================================================
+
+const ModelCustom = 0;
+const ModelJC69   = 1;
+const ModelGTR    = 2;
+
+// Enable ONE of these at a time then click "Refresh"
+const ViewModel   = ModelCustom;
+//const ViewModel   = ModelJC69;
+//const ViewModel   = ModelGTR;
+
 //==================================================
 
 readonly Main.Facts = [WorldLanguages];
@@ -30,13 +41,9 @@ readonly namespace Main.Documents {
   TestResultsDocument TestResults = new(MainResults);
 }
 
-//======================================================================
-
 readonly ExperimentResults MainResults = new;
 
-const ModelCustom = 0;
-const ModelJC69   = 1;
-const ModelGTR    = 2;
+//======================================================================
 
 class ExperimentResults {
   var ExperimentData   Data;
@@ -45,8 +52,8 @@ class ExperimentResults {
   var AlignmentChart   Alignment;
 
   Constructor {
-    Data    = new(null, "Test", "Test", 1..1);
-    Model   = Data.TreeSets[0].Models[ModelCustom];
+    Data    = new(null, "Test", "Test", 1..3);
+    Model   = Data.TreeSets[0].Models[ViewModel];
     MainRun = new(Data, Model.Run[0]);
     Parallel.ParallelEach([MainRun], 100%);
 

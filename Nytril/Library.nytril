@@ -688,7 +688,7 @@ class ExperimentData {
       ReadExperiment;
   }
 
-  TreeSet AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root, RunNumbers);
+  TreeSet AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root, 1..1);
 
   void ReadRawWords(Attribute concepts, includewords, WorldLanguage[] languageset, cutoff=-1) {
     RawData = true;
@@ -877,7 +877,7 @@ class ExperimentData {
             ++s.UsedCount;
           }
         }
-       
+
 
         SegmentCount         += count;
         taxon.SegmentCount   += count;
