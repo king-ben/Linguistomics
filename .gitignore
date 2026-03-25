@@ -46,3 +46,13 @@ Experiments/Test/Tree1/Custom/Run1/config.json
 Experiments/Test/Tree1/GTR/Run1/config.json
 Experiments/Test/Tree1/JC69/Run1/config.json
 Experiments/Test/Words.nytril
+.DS_Store
+Experiments/Test/Tree1/Custom/Run1/config.json
+Experiments/Test/Tree1/Custom/Run1/Execute/consensus.tre
+Experiments/Test/Tree1/GTR/Run1/config.json
+Experiments/Test/Tree1/GTR/Run1/WinRunAll.bat
+Experiments/Test/Tree1/GTR/Run1/WinRunReader.bat
+Experiments/Test/Tree1/JC69/Run1/config.json
+Experiments/Test/Tree1/JC69/Run1/WinRunAll.bat
+Experiments/Test/Tree1/JC69/Run1/WinRunReader.bat
+Experiments/Test/Words.nytril
