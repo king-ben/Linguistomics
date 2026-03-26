@@ -55,6 +55,8 @@ class ExperimentResults {
   Constructor {
     Data    = new(null, "Test", "Test", 1..1);
     Models  = Data.TreeSets[0].Models;
+
+    ViewOptions.Model = Math.Min(ViewOptions.Model, Models.Length-1);
     Model   = Models[ViewOptions.Model];
     MainRun = new(Data, Model.Run[0]);
     Parallel.ParallelEach([MainRun], 100%);
@@ -107,11 +109,13 @@ class TestResultsDocument: DocumentEntry {
         BorderRadius: 3;
 
         foreach (var model in MainResults.Models) {
-          RadioControl(new(ref ViewOptions.Model), each0) {
-            Placement: Placements.Right;
-            Action: Actions.Rebuild;
-            model.Name;
-          };
+          if (model.IsLoaded()) {
+            RadioControl(new(ref ViewOptions.Model), each0) {
+              Placement: Placements.Right;
+              Action: Actions.Rebuild;
+              model.Name;
+            };
+          }
         }
       };
     };

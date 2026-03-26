@@ -41,8 +41,13 @@ class ExperimentRun {
     Model      = model;
     Marginal   = marginal;
     RootFolder = model.RootFolder Folder(Name);
-    Config     = config ?? ReadScript(Info.ExperimentRoot RootFolder Info.ParametersFile).Root;
+
+    var path = Info.ExperimentRoot RootFolder Info.ParametersFile;
+    if (FileExists(path))
+      Config = config ?? ReadScript(path).Root;
   }
+
+  public bool IsLoaded = Config is valid;
 
   ArgString(arg, string path) = Span {
     if (arg is valid) {
@@ -126,22 +131,31 @@ class ExperimentRun {
 //======================================================================
 
 class ModelConfig {
-  var string          Name;
-  var                 RootFolder;
-  var TreeSet         TreeSet;
-  var ExperimentRun[] Run;
+  var string              Name;
+  var                     RootFolder;
+  var TreeSet             TreeSet;
+  var List<ExperimentRun> Run;
 
   Constructor(config, TreeSet treeset, string name, runs) {
     Name       = name;
     TreeSet    = treeset;
     RootFolder = treeset.RootFolder Folder(name);
-    Run        = new ExperimentRun(config, this, each runs, false);
+    Run        = new(8);
+    foreach (var r in runs) {
+      var xr = new ExperimentRun(config, this, r, false);
+      if (xr.IsLoaded)
+        Run.Add(xr);
+    }
   }
 
   void InitFolders(ExperimentData data) {
     CreateFolder(Info.ExperimentRoot RootFolder);
     foreach (var r in Run)
       r.InitFolders(data, TreeSet.Tree);
+  }
+
+  bool IsLoaded {
+    return Run.Length > 0 and Run[0].Config is valid;
   }
 }
 
