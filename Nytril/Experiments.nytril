@@ -32,22 +32,17 @@ class ExperimentRun {
   var ModelConfig Model;
   var             Name,
                   RootFolder,
-                  Config,
                   Marginal,
                   ResultTree;
 
-  Constructor(config, ModelConfig model, index, marginal) {
+  Constructor(ModelConfig model, index, marginal) {
     Name       = "Run" + index;
     Model      = model;
     Marginal   = marginal;
     RootFolder = model.RootFolder Folder(Name);
-
-    var path = Info.ExperimentRoot RootFolder Info.ParametersFile;
-    if (FileExists(path))
-      Config = config ?? ReadScript(path).Root;
   }
 
-  public bool IsLoaded = Config is valid;
+  public bool IsLoaded = FileExists(Info.ExperimentRoot RootFolder Info.TreeFile);
 
   ArgString(arg, string path) = Span {
     if (arg is valid) {
@@ -77,7 +72,7 @@ class ExperimentRun {
     ArgSpan {
       ArgString(null, mac ? Info.MacReaderEXE : Info.ReaderEXE);
 //      ArgString("i", root Info.ExecuteFolder);
-      ArgString("b", Config.PreBurn);
+      ArgString("b", UserSettings.PreBurn);
       ArgString("o", root Info.OutFileName);
       ArgString("f", "true");
       ArgString("d", "Execute");
@@ -105,15 +100,9 @@ class ExperimentRun {
     RunReader(mac, root);
   };
 
-  GetParameters = TextBlock {
-    "Generations = {0};"(UserSettings.NumCycles);
-    "PreBurn     = {0};"(Config.PreBurn);
-  };
-
   void WriteRuns(path, mac, root, reader, all) {
     Write(RunReader(mac, root), path FileName(reader), FileFormats.UTF8);
     Write(RunAll(mac, root), path FileName(all), FileFormats.UTF8);
-    Write(GetParameters, path Info.ParametersFile);
   }
 
   void InitFolders(ExperimentData data, Node tree) {
@@ -136,13 +125,13 @@ class ModelConfig {
   var TreeSet             TreeSet;
   var List<ExperimentRun> Run;
 
-  Constructor(config, TreeSet treeset, string name, runs) {
+  Constructor(TreeSet treeset, string name, runs) {
     Name       = name;
     TreeSet    = treeset;
     RootFolder = treeset.RootFolder Folder(name);
     Run        = new(8);
     foreach (var r in runs) {
-      var xr = new ExperimentRun(config, this, r, false);
+      var xr = new ExperimentRun(this, r, false);
       if (xr.IsLoaded)
         Run.Add(xr);
     }
@@ -155,7 +144,7 @@ class ModelConfig {
   }
 
   bool IsLoaded {
-    return Run.Length > 0 and Run[0].Config is valid;
+    return Run.Length > 0 and Run[0].IsLoaded;
   }
 }
 
@@ -167,15 +156,15 @@ class TreeSet {
   var               Name,
                     RootFolder;
 
-  Constructor(config, name, root, Node tree, runs) {
+  Constructor(name, root, Node tree, runs) {
     Name       = name;
     Tree       = tree;
     RootFolder = Folder(root) Folder(name);
 
     Models = [
-      new(config, this, "Custom", runs),
-      new(config, this, "JC69", runs),
-      new(config, this, "GTR", runs)
+      new(this, "Custom", runs),
+      new(this, "JC69", runs),
+      new(this, "GTR", runs)
    ];
   }
 

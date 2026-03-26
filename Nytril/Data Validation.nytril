@@ -397,25 +397,22 @@ class WordDocument: DocumentEntry {
     PaperStyle.Variable(name); " = "; value; ";";
   };
 
-  ShowVariables = TextBlock {
-    PaperStyle.NameSpace("Info");
-    TextBlock {
-      IndentSpace: 2;
-      ShowVar("WordCutoff", Data.WordCutoff);
-    };
-    "}";
-  };
 
   override GetDocument = Document {
     TextHeight: 9pt;
 
     TextBlock {
+      Span {TextColor: Colors.Green; "// This file is a record of the experiment settings and data. Do not edit."};
+      Empty;
+
       Span {
         PaperStyle.Keyword("using ");
         "Format, WordGroups, WorldLanguages;";
       };
       Empty;
-      ShowVariables;
+      TextBlock {
+        "readonly RunOptions RunSettings = new({0}, {1}, {2});"(UserSettings.NumCycles, UserSettings.PreBurn, UserSettings.WordCutoff);
+      };
       Empty;
 
       ShowUniqueSegments;

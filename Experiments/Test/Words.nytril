@@ -1,15 +1,13 @@
 using Format, WordGroups, WorldLanguages;
 
-readonly namespace Info {
-  WordCutoff = 3;
-}
+readonly RunOptions RunSettings = new(1000000, 0.1, 3);
 
 readonly Segments = ["ʔ", "u", "t", "i", "l", "k", "r", "h", "a", "s", "n", "p", "o", "f", "m", "e", "ŋ"];
 
 readonly LanguageSet = [
-  LanguageA, 
-  LanguageB, 
-  LanguageC, 
+  LanguageA,
+  LanguageB,
+  LanguageC,
   LanguageD
 ];
 

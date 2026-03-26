@@ -128,8 +128,9 @@ class RunResultsThread: Parallel.Thread {
     if (IO.FileExists(treefile)) {
       Run.ResultTree = IO.ReadTree(treefile, attribute LanguageNode);
 
-      if (Run.ResultTree is valid) {
-        QRates                 = new(Data, align.QRates, false);
+      var qrates = align.?QRates;
+      if (Run.ResultTree is valid and qrates is valid) {
+        QRates                 = new(Data, qrates, false);
         AverageRates           = new(Data, align.AverageRates, true);
         NCQFreqs               = align.?NCQFreqs as StatArray;
         TransitionStats        = align.?TransitionStats as StatMat;

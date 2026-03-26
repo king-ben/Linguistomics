@@ -1,8 +1,6 @@
 using Format, WordGroups;
 
-readonly namespace Info {
-  WordCutoff = 9;
-}
+readonly RunOptions RunSettings = new(5000000, 0.003, 3);
 
 readonly Segments = ["d", "o", "m", "i", "n", "a", "o̯a", "ə", "ɐ", "ɲ", "ɔ", "e", "k", "ɨj", "ɐ̃w", "ʃ", "j", "ɛ̃", "ʧ", "c", "p", "eː", "u", "l", "ʎ", "x", "oː", "r", "b", "ɾ", "v", "ɨ", "ʁ", "f", "uː", "t", "ɥ", "y", "s", "ʦ", "ẽ", "ɑ̃", "ɛ", "ɡ", "aː", "ɨw", "œ", "ɔj", "w", "h", "ʝ", "ɑ", "ɡʷ", "ʤ", "ɐ̃", "ɔ̃", "au̯", "ø", "iː", "ej", "ʀ", "ɛj", "kʲ", "z", "ʒ", "θ", "e̯a", "kʷ", "aj", "õ", "oj", "ĩ", "ɐj", "øː", "ɣ", "ũ", "œ̃", "ŋ", "ɐ̃j"];
 

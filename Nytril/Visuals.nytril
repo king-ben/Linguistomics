@@ -249,7 +249,7 @@ class NaturalClassRateChart: Content {
      TextHeight: 10pt;
       VBox {
         HAlign: Right;
-        VAlignment: VAligns.Bottom;
+        VAlignment: Bottom;
 
         foreach (var p in partitions) {
           HBox(null, d, PadR(2)) {
@@ -263,10 +263,10 @@ class NaturalClassRateChart: Content {
       VBox {
         HAlign: Left;
         Canvas {
-          HAlignment: HAligns.Right;
+          HAlignment: Left;
           VAlign: Bottom;
           foreach (var p in partitions) {
-            HBox(null, d, PadR(0)) {
+            HBox(null, null) {
               X: d * (each0 + 0.3);
               TextColor: p.BackColor;
               Transform: Transform.Rotate(-90 degrees);

@@ -6,13 +6,13 @@ include "Create Data Files";
 //======================================================================
 
 class TestExperimentClass: ExperimentData {
-  Constructor(config) {
-    super.Constructor(config, "Test", "Test", 1..1);
+  Constructor {
+    super.Constructor("Test", "Test", 1..1);
   }
 }
 
 readonly ExperimentData DataSet {
-  var data = new TestExperimentClass(Info);
+  var data = new TestExperimentClass;
   data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet);
   return data;
 }

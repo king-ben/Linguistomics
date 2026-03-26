@@ -2,12 +2,24 @@ using Format, IO;
 
 //=======================================================
 
-class UserOptions: Fact {
-  field int NumCycles;
+class RunOptions: Fact {
+  field int    NumCycles,
+               WordCutoff;
+  field double PreBurn;
 
-  Constructor {
+  Constructor(int cycles, double preburn, int cutoff) {
     super.Constructor(#de1000d0-725d-48ab-95a4-309a72c6f1fe#);
-    NumCycles = 1_000_000;
+    NumCycles  = cycles;
+    PreBurn    = preburn;
+    WordCutoff = cutoff;
+  }
+}
+
+//=======================================================
+
+class UserOptions: RunOptions {
+  Constructor {
+    super.Constructor(1_000_000, 0.1, 3);
     ReadFromStorage;
   }
 }
@@ -17,7 +29,6 @@ readonly UserOptions UserSettings = new;
 //======================================================================
 
 readonly namespace Info {
-  PreBurn        = 0.1;
   EXEFolder      = Folders.Repository;
   EXERelative    = Folder("x64") Folder("release");
   TTRFolder      = Folder("TongueTwisterReader2");
@@ -34,7 +45,6 @@ readonly namespace Info {
   WordFileName   = FileName("Words") Extensions.Nytril;
   ExecuteFolder  = Folder("Execute");
   AlignmentFile  = ExecuteFolder FileName("alignments") Extensions.Nytril;
-  ParametersFile = ExecuteFolder FileName("parameters") Extensions.Nytril;
   TreeFile       = ExecuteFolder FileName("consensus.tre");
   OutFileName    = ExecuteFolder Folder("out");
 }
@@ -219,13 +229,11 @@ class ConfigFileClass {
                        -- Number of gamma indel categories (=1 is no indel rate variation)
     CalcMarginal       -- Calculate marginal likelihood (no/yes)
     Seed               -- Seed for pseudo random number generator
-    NumCycles          -- Number of MCMC cycles
     PrintFreq          -- Print-to-screen frequency
     SampleFreq         -- Chain sample frequency
     CheckPtFreq        -- Check point file frequency
     NumTunings         -- Number of tunings
     TuneLength         -- Tune length
-    PreburnLength      -- Preburnin length
     StoneSampleLength  -- Sample length
     StoneSampleFreq    -- Stone sample frequency
 */

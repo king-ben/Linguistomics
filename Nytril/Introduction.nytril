@@ -427,10 +427,10 @@ class PaperDataCuration: Content {
     };
 
     style.Par {
-      var config = MainResults.MainRun.Run.Config;
+      var s = data.RunSettings;
       "Following parsing, the control program aggregates and partitions the data and generates the input required for Bayesian inference under the TKF91 model. ";
-      "The MCMC analysis runs for "; Span {config.Generations; TextGroup: true}; " cycles, with independent runs performed to assess convergence. ";
-      "Samples taken during the first "; Span {config.PreBurn; TextGroup: true}; " cycles of the chain are discarded as burn-in. ";
+      "The MCMC analysis runs for "; Span {s.NumCycles; TextGroup: true}; " cycles, with independent runs performed to assess convergence. ";
+      "Samples taken during the first "; Span {s.NumCycles * s.PreBurn; TextGroup: true}; " cycles of the chain are discarded as burn-in. ";
       "Upon completion, posterior samples are imported back into the control program for post-processing. ";
       "All tables, trees, and graphical outputs are generated automatically from the MCMC results and integrated with author-supplied narrative to produce the final manuscript and supplementary materials. ";
     };

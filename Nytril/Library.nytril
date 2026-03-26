@@ -26,7 +26,7 @@ class AlignIndexClass {
   var AlignData[] Alignments;
   var int         TotalCount;
 
-  Constructor(concept, cognate, AlignData[] alignments, total) {
+  Constructor(concept, cognate, AlignData[] alignments, total=1) {
     TotalCount  = total;
     ConceptName = concept;
     CognateName = cognate ?? DefaultCognate;
@@ -656,13 +656,13 @@ class ExperimentData {
   var PartitionRule           Rule;
   var CognateWord             DefWord;
   var TreeSet[]               TreeSets;
+  var RunOptions              RunSettings;
   var List<char>              PlainBuffer,
                               TextBuffer;
   var Attribute               ExampleConcept,
                               FigureConcept,
                               DataConcept;
   var                         RunNumbers,
-                              WordCutoff,
                               RootFolder,
                               Name,
                               MaxLanguageName,
@@ -671,7 +671,7 @@ class ExperimentData {
                               WordFile;
   var bool                    RawData;
 
-  Constructor(config, name, rootfolder, runnumbers) {
+  Constructor(name, rootfolder, runnumbers) {
     Name            = name;
     RootFolder      = Folder(rootfolder);
     RunNumbers      = runnumbers;
@@ -683,19 +683,16 @@ class ExperimentData {
     PlainBuffer     = new(64);
     SegmentBuffer   = new(64);
     Rule            = new NaturalPartition;
-    TreeSets        = AddTree(config, each TreeExamples.PriorTrees);
-    if (config is null)
-      ReadExperiment;
+    TreeSets        = AddTree(each TreeExamples.PriorTrees);
   }
 
-  TreeSet AddTree(config, Node root) = new(config, "Tree"+each1, RootFolder, root, RunNumbers);
+  TreeSet AddTree(Node root) = new("Tree"+each1, RootFolder, root, RunNumbers);
 
-  void ReadRawWords(Attribute concepts, includewords, WorldLanguage[] languageset, cutoff=-1) {
+  void ReadRawWords(Attribute concepts, includewords, WorldLanguage[] languageset) {
     RawData = true;
 
-    if (cutoff < 0)
-      cutoff = languageset.Length;
-    WordCutoff = cutoff;
+    var cutoff = Math.Min(UserSettings.WordCutoff, languageset.Length);
+    UserSettings.WordCutoff = cutoff;
 
     AddLanguageSet(languageset);
     UsedCognates = new(1024);
@@ -762,7 +759,7 @@ class ExperimentData {
   void ReadExperiment {
     var run = ReadScript(Info.ExperimentRoot WordFile).Root;
 
-    WordCutoff  = run.Info.WordCutoff;
+    RunSettings = run.RunSettings;
     AddLanguageSet(run.LanguageSet);
 
     var slist  = new List<SegmentPart>(run.Segments.Length);

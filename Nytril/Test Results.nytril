@@ -23,10 +23,12 @@ include "Formulas";
 //======================================================================
 
 class DataViewOptions: Fact {
-  field int Model;
+  field int    Model;
+  field string Name;
 
   Constructor {
     super.Constructor(#f522fb93-5db9-43fe-b84f-c0fe664f9e1c#);
+    Name = "Test";
     ReadFromStorage;
   }
 }
@@ -34,8 +36,6 @@ class DataViewOptions: Fact {
 //======================================================================
 
 readonly DataViewOptions ViewOptions = new;
-
-readonly Main.Facts = [WorldLanguages];
 
 readonly namespace Main.Documents {
   TestResultsDocument TestResults = new(MainResults);
@@ -53,7 +53,9 @@ class ExperimentResults {
   var AlignmentChart   Alignment;
 
   Constructor {
-    Data    = new(null, "Test", "Test", 1..1);
+    var name = ViewOptions.Name;
+    Data = new(name, name, 1..1);
+    Data.ReadExperiment;
     Models  = Data.TreeSets[0].Models;
 
     ViewOptions.Model = Math.Min(ViewOptions.Model, Models.Length-1);
@@ -101,12 +103,19 @@ class TestResultsDocument: DocumentEntry {
   Header = Style.HeadingPar(0);
 
   override GetDocument = Document(0.5") {
+    var edge = new Edge(0.5, 6);
     Paragraph {
-      "Model ";
+      TextControl(new(ref ViewOptions.Name), 2", null, edge) {
+        Placement: Placements.Left;
+        Action: Actions.Rebuild;
+        Bold; "Folder";
+      };
+      Space * 4;
 
-      HBox(null, null, new Edge(0.5, 6)) {
+      HBox(null, null, edge) {
         Separation: 20pt;
-        BorderRadius: 3;
+        BorderRadius: 7;
+        Bold "Model ";
 
         foreach (var model in MainResults.Models) {
           if (model.IsLoaded()) {
@@ -128,20 +137,26 @@ class TestResultsDocument: DocumentEntry {
       MainResults.Model.Name;
       " model";
     };
-    Header {"Consensus"};
 
-    PaperStyle.ShowTree(Style, Run.ResultTree, 100%, null);
-
-    foreach (var c in PaperContent) {
-//      PageBreak;
-      Header {c.Title};
-//      c.GetCaption(Style);
-      c.GetBody(Style);
+    if (Run.ResultTree is valid) {
+      Header {"Consensus"};
+      PaperStyle.ShowTree(Style, Run.ResultTree, 100%, null);
     }
 
-    PageBreak;
-    Header {"Alignments"};
-    MainResults.Alignment.ShowAll;
+    var alignment = MainResults.Alignment;
+    if (alignment is valid and MainResults.MainRun.QRates is valid) {
+
+      foreach (var c in PaperContent) {
+  //      PageBreak;
+        Header {c.Title};
+  //      c.GetCaption(Style);
+        c.GetBody(Style);
+      }
+
+      PageBreak;
+      Header {"Alignments"};
+      alignment.ShowAll;
+    }
   };
 }
 
