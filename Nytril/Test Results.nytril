@@ -22,17 +22,11 @@ include "Formulas";
 
 //======================================================================
 
-enum ViewModels {
-  Custom,
-  JC69,
-  GTR,
-}
-
 class DataViewOptions: Fact {
   field int Model;
 
   Constructor {
-    super.Constructor(#6fa7029e-1371-4068-916f-b04a7b06a182#);
+    super.Constructor(#f522fb93-5db9-43fe-b84f-c0fe664f9e1c#);
     ReadFromStorage;
   }
 }
@@ -42,8 +36,6 @@ class DataViewOptions: Fact {
 readonly DataViewOptions ViewOptions = new;
 
 readonly Main.Facts = [WorldLanguages];
-
-SimpleStyle = new PlainStyle;
 
 readonly namespace Main.Documents {
   TestResultsDocument TestResults = new(MainResults);
@@ -56,12 +48,14 @@ readonly ExperimentResults MainResults = new;
 class ExperimentResults {
   var ExperimentData   Data;
   var ModelConfig      Model;
+  var ModelConfig[]    Models;
   var RunResultsThread MainRun;
   var AlignmentChart   Alignment;
 
   Constructor {
     Data    = new(null, "Test", "Test", 1..1);
-    Model   = Data.TreeSets[0].Models[ViewOptions.Model];
+    Models  = Data.TreeSets[0].Models;
+    Model   = Models[ViewOptions.Model];
     MainRun = new(Data, Model.Run[0]);
     Parallel.ParallelEach([MainRun], 100%);
 
@@ -79,7 +73,7 @@ class TestResultsDocument: DocumentEntry {
 
   Constructor(ExperimentResults results) {
     super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
-    Style        = SimpleStyle;
+    Style        = new PlainStyle;
     Results      = results;
     Run          = results.MainRun.Run;
     PaperContent = new(16);
@@ -105,23 +99,34 @@ class TestResultsDocument: DocumentEntry {
   Header = Style.HeadingPar(0);
 
   override GetDocument = Document(0.5") {
+    Paragraph {
+      "Model ";
+
+      HBox(null, null, new Edge(0.5, 6)) {
+        Separation: 20pt;
+        BorderRadius: 3;
+
+        foreach (var model in MainResults.Models) {
+          RadioControl(new(ref ViewOptions.Model), each0) {
+            Placement: Placements.Right;
+            Action: Actions.Rebuild;
+            model.Name;
+          };
+        }
+      };
+    };
+
     Style.TitlePar {
       TextHeight: 14pt;
 
       Results.Data.Name;
       " - ";
-
-      IntControl(new(ref ViewOptions.Model), 24pt, null, new Edge(1, 3, Colors.Gray), 0, 2, 1) {
-        "Model";
-        BorderRadius: 5;
-        Action: Actions.Rebuild;
-      };
-      Space;
       MainResults.Model.Name;
+      " model";
     };
-
     Header {"Consensus"};
-    PaperStyle.ShowTree(SimpleStyle, Run.ResultTree, 100%, null);
+
+    PaperStyle.ShowTree(Style, Run.ResultTree, 100%, null);
 
     foreach (var c in PaperContent) {
 //      PageBreak;
