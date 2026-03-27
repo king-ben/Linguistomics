@@ -6,14 +6,14 @@ include "Create Data Files";
 //======================================================================
 
 class EuropeExperimentClass: ExperimentData {
-  Constructor(config) {
-    super.Constructor(config, "Europe 3 Trees", "Europe3", 1..3);
+  Constructor {
+    super.Constructor("Europe 3 Trees", "Europe3", 1..3);
   }
 }
 
 readonly ExperimentData DataSet {
-  var data = new EuropeExperimentClass(Info);
-  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet, 3);
+  var data = new EuropeExperimentClass;
+  data.ReadRawWords(attribute Concepts, Swadesh100 Leipzig Swadesh207, LanguageSet);
   return data;
 }
 
