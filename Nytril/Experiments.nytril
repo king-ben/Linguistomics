@@ -3,9 +3,10 @@
 //======================================================================
 
 class LanguageNode: Node {
-  var Probability,
-      prob,
-      CI;
+  var               Probability,
+                    prob,
+                    CI;
+  var WorldLanguage Language;
 
   Constructor {
     super.Constructor;
@@ -21,8 +22,19 @@ class LanguageNode: Node {
         p * 100.0;
       };
     }
-    else if (Name is valid)
-      Label = WorldLanguages.FindChildValue(Name);
+    else if (Label is valid) {
+      Language = WorldLanguages.FindChildValue(Label);
+      Label = Span {
+        Language ?? Label;
+        if (CI is valid) Span {
+          TextColor: Colors.DarkGray;
+          TextHeight: 8pt;
+          " (CI = ";
+          CI;
+          ")";
+        };
+      };
+    }
   }
 }
 
