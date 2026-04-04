@@ -51,7 +51,7 @@ class CreateExperimentClass: Action {
     foreach (var set in data.TreeSets)
       set.InitFolders(data);
 
-    if (Write(new WordDocument(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.WordFile)) {
+    if (Write(new WordDocument(data, data.Rule.Partitions).GetDocument, Info.ExperimentRoot data.RootFolder Info.WordFileName)) {
       OpenExplorer(Root);
       return null;
     }

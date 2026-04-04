@@ -7,7 +7,7 @@ include "Create Data Files";
 
 class EuropeExperimentClass: ExperimentData {
   Constructor {
-    super.Constructor("Europe 3 Trees", "Europe3", 1..3);
+    super.Constructor("Europe3", 1..3);
   }
 }
 

@@ -37,7 +37,7 @@ class ExperimentResults {
   var AlignmentChart   Alignment;
 
   Constructor {
-    Data = new("Europe3", "Europe3", 1..3);
+    Data = new("Europe3", 1..3);
     Data.ReadExperiment;
 
     var set = Data.TreeSets[0];

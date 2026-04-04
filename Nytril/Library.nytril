@@ -662,29 +662,24 @@ class ExperimentData {
   var Attribute               ExampleConcept,
                               FigureConcept,
                               DataConcept;
-  var                         RunNumbers,
-                              RootFolder,
-                              Name,
+  var int                     WordCount,
                               MaxLanguageName,
-                              WordCount,
-                              SegmentCount,
-                              WordFile;
+                              SegmentCount;
+  var                         RunNumbers,
+                              Name;
   var bool                    RawData;
 
-  Constructor(name, rootfolder, runnumbers) {
-    Name            = name;
-    RootFolder      = Folder(rootfolder);
-    RunNumbers      = runnumbers;
-    WordFile        = RootFolder Info.WordFileName;
-    WordCount       = 0;
-    SegmentCount    = 0;
-    MaxLanguageName = 0;
-    TextBuffer      = new(64);
-    PlainBuffer     = new(64);
-    SegmentBuffer   = new(64);
-    Rule            = new NaturalPartition;
-    TreeSets        = AddTree(each TreeExamples.PriorTrees);
+  Constructor(name, runnumbers) {
+    Name          = name;
+    RunNumbers    = runnumbers;
+    TextBuffer    = new(64);
+    PlainBuffer   = new(64);
+    SegmentBuffer = new(64);
+    Rule          = new NaturalPartition;
+    TreeSets      = AddTree(each TreeExamples.PriorTrees);
   }
+
+  RootFolder = Folder(Name);
 
   TreeSet AddTree(Node root) = new("Tree"+each1, RootFolder, root, RunNumbers);
 
@@ -757,7 +752,7 @@ class ExperimentData {
   }
 
   void ReadExperiment {
-    var run = ReadScript(Info.ExperimentRoot WordFile).Root;
+    var run = ReadScript(Info.ExperimentRoot RootFolder Info.WordFileName).Root;
 
     RunSettings = run.RunSettings;
     AddLanguageSet(run.LanguageSet);

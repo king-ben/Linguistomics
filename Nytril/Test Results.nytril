@@ -53,8 +53,7 @@ class ExperimentResults {
   var AlignmentChart   Alignment;
 
   Constructor {
-    var name = ViewOptions.Name;
-    Data = new(name, name, 1..1);
+    Data = new(ViewOptions.Name, 1..1);
     Data.ReadExperiment;
     Models  = Data.TreeSets[0].Models;
 
