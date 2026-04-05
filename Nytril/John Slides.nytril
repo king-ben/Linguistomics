@@ -36,10 +36,10 @@ class JohnSlideShow: SlideShow {
     AddFigureSlide(Figures.ExampleConcepts);
     AddFigureSlide(new SegmentAssignmentsFigure(data));
     AddFigureSlide(Figures.PartitionAssignments);
-    AddFigureSlide(Figures.ExchangeabilityTable);
+    AddFigureSlide(new ExchangeabilityTable(Results.MainRun));
     AddFigureSlide(Figures.RateChart);
-    AddFigureSlide(Figures.TransitionRates);
-    AddFigureSlide(Figures.AlignmentFlower);
+    AddFigureSlide(new SegmentalChangeFigure(Results.MainRun));
+    AddFigureSlide(new SingleAlignmentFigure(34, 6, "Flower"));
     AddFigureSlide(Figures.GappinessChart);
     AddFigureSlide(Figures.ConsensusTree);
     AddFigureSlide(Figures.Alignments);

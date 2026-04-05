@@ -674,8 +674,8 @@ namespace DavidSlides.Results {
   readonly Slide.SpecificRates.Figure             = new QRatesCCFigure(MainQRates);
   readonly Slide.PartitionRules.Figure            = Figures.PartitionAssignments;
   readonly Slide.SegmentOccurance.Figure          = Figures.SegmentOccuranceRates;
-  readonly Slide.SegmentFrequenciesGrouped.Figure = Figures.SegmentOccuranceGrouped;
-  readonly Slide.PartitionFrequencies.Figure      = Figures.PartitionFrequencies;
+  readonly Slide.SegmentFrequenciesGrouped.Figure = new SegmentGroupedFigure(MainResults.Data);
+  readonly Slide.PartitionFrequencies.Figure      = new PartitionFrequenciesFigure(MainResults.Data);
   readonly Slide.Alignments.Figure                = Figures.Alignments;
   readonly Slide.AlignmentExamples.Figure         = Figures.AlignmentExamples;
 

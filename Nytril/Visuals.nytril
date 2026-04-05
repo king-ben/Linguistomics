@@ -2,18 +2,22 @@ using Format, EquationSymbols, References;
 
 //======================================================================
 
-abstract class QRatesFigure: Content {
+abstract class QRatesBase: Content {
+  const int TopCount = 15;
+
   var AlignedCountClass QRates;
 
   Constructor(name, AlignedCountClass qrates) {
     super.Constructor(name);
     QRates = qrates;
   }
+
+  static TransitionTitle(type) = "The top {0} {1} transitions"(TopCount, type);
 }
 
 //======================================================================
 
-class AverageAllFigure: QRatesFigure {
+class AverageAllFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("All Rates", qrates);
   }
@@ -23,7 +27,7 @@ class AverageAllFigure: QRatesFigure {
 
 //======================================================================
 
-class AverageSortedFigure: QRatesFigure {
+class AverageSortedFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("Rate vs. Direction", qrates);
   }
@@ -74,7 +78,7 @@ class AverageSortedFigure: QRatesFigure {
 
 //======================================================================
 
-class RateDirectionFigure: QRatesFigure {
+class RateDirectionFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("Directionality", qrates);
   }
@@ -84,7 +88,7 @@ class RateDirectionFigure: QRatesFigure {
 
 //======================================================================
 
-class QRatesMatrixFigure: QRatesFigure {
+class QRatesMatrixFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("Rate Matrix " RateMatrix, qrates);
   }
@@ -94,7 +98,7 @@ class QRatesMatrixFigure: QRatesFigure {
 
 //======================================================================
 
-class QRatesDiagonalFigure: QRatesFigure {
+class QRatesDiagonalFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("Rate of segmental change", qrates);
   }
@@ -108,9 +112,7 @@ class QRatesDiagonalFigure: QRatesFigure {
 
 //======================================================================
 
-class SpecificRatesFigure: QRatesFigure {
-  const int TopCount = 15;
-
+class SpecificRatesFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor("Specific Rates", qrates);
   }
@@ -120,21 +122,19 @@ class SpecificRatesFigure: QRatesFigure {
   override GetBody(ContentStyle style) = QRates.Pairs(-1, @Predicate);
 }
 
-TransitionTitle(type) = "The top {0} {1} transitions"(SpecificRatesFigure.TopCount, type);
-
 //======================================================================
 
-class QRatesTopFigure: QRatesFigure {
+class QRatesTopFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor(TransitionTitle("segmental"), qrates);
   }
 
-  override GetBody(ContentStyle style) = QRates.Extrema(SpecificRatesFigure.TopCount, true);
+  override GetBody(ContentStyle style) = QRates.Extrema(TopCount, true);
 }
 
 //======================================================================
 
-class QRatesCCFigure: QRatesFigure {
+class QRatesCCFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"), qrates);
   }
@@ -142,17 +142,17 @@ class QRatesCCFigure: QRatesFigure {
   static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
                                        a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
 
-  override GetBody(ContentStyle style) = QRates.Pairs(SpecificRatesFigure.TopCount, @Predicate);
+  override GetBody(ContentStyle style) = QRates.Pairs(TopCount, @Predicate);
 }
 
 //======================================================================
 
-class QRatesOneWayFigure: QRatesFigure {
+class QRatesOneWayFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
     super.Constructor(TransitionTitle("highly directed"), qrates);
   }
 
-  override GetBody(ContentStyle style) = QRates.ShowChartPairs(SpecificRatesFigure.TopCount, QRates.SortByDirection);
+  override GetBody(ContentStyle style) = QRates.ShowChartPairs(TopCount, QRates.SortByDirection);
 }
 
 //======================================================================
@@ -161,12 +161,21 @@ readonly TreeContent Figures.PriorTree = new("Tree topology", TreeExamples.Prior
 
 //======================================================================
 
-class GapFrequencyChart: Content {
+class ResultsFigureBase: Content {
   var RunResultsThread Results;
 
-  Constructor(RunResultsThread results) {
-    super.Constructor("Gap frequency comparison chart");
+  Constructor(name, RunResultsThread results) {
+    super.Constructor(name);
     Results = results;
+  }
+}
+
+//======================================================================
+
+class GapFrequencyChart: ResultsFigureBase {
+
+  Constructor(RunResultsThread results) {
+    super.Constructor("Gap frequency comparison chart", results);
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -189,51 +198,51 @@ class GapFrequencyChart: Content {
       TextHeight: 12pt;
       "Proportion of Alignments"
     };
-    var gaps        = Results.GapSpectrum;
-    var chartheight = (ExtentHeight - 40pt) / gaps.Length;
-    VBox {
-      HAlign: Center;
-      foreach (var gap in gaps) {
-        Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.2")) {
-          ChartType: ChartTypes.Column;
+    var gaps = Results.GapSpectrum;
+    if (gaps is valid) {
+      var chartheight = (ExtentHeight - 40pt) / gaps.Length;
+      VBox {
+        HAlign: Center;
+        foreach (var gap in gaps) {
+          Chart(ExtentWidth - 20pt, Math.Min(chartheight, 1.2")) {
+            ChartType: ChartTypes.Column;
 
-          ValueLabel: PaperStyle.ValueLabel {
-            TextHeight: 8pt;
-            ["Word-initial seg.", "Word-internal seg(s)", "Word-final seg."][each0]
-          };
+            ValueLabel: PaperStyle.ValueLabel {
+              TextHeight: 8pt;
+              ["Word-initial seg.", "Word-internal seg(s)", "Word-final seg."][each0]
+            };
 
-          ValueAxis: ChartAxis {
-            TextHeight: 7pt;
-            Start: 0;
-            Stop: 1.0;
-          };
+            ValueAxis: ChartAxis {
+              TextHeight: 7pt;
+              Start: 0;
+              Stop: 1.0;
+            };
 
-          XAxis: ChartAxis {
-            each (0..<gap.Length step 1) as string;
-          };
+            XAxis: ChartAxis {
+              each (0..<gap.Length step 1) as string;
+            };
 
-          ChartSeries {
-            var factor = 1.0 / Math.Sum(gap);
-            foreach (var value in gap)
-              new DataPoint(each0, value * factor);
-          };
+            ChartSeries {
+              var factor = 1.0 / Math.Sum(gap);
+              foreach (var value in gap)
+                new DataPoint(each0, value * factor);
+            };
+          }
         }
-      }
-      Span {
-        TextHeight: 12pt;
-        "Number of Gaps"
+        Span {
+          TextHeight: 12pt;
+          "Number of Gaps"
+        };
       };
-    };
+    }
   };
 }
 
 //======================================================================
 
-readonly ExchangeabilityTable Figures.ExchangeabilityTable = new;
-
-class ExchangeabilityTable: Content {
-  Constructor {
-    super.Constructor(Lang.Exchangeability);
+class ExchangeabilityTable: ResultsFigureBase {
+  Constructor(RunResultsThread results) {
+    super.Constructor(Lang.Exchangeability, results);
   }
 
   override GetBody(ContentStyle style) = Block {
@@ -241,12 +250,11 @@ class ExchangeabilityTable: Content {
     style.SansSerif;
     TextHeight: th;
 
-    var results    = MainResults;
-    var stats      = results.MainRun.TransitionStats;
+    var stats = Results.TransitionStats;
 
     if (stats is valid) {
       var count      = stats.Length;
-      var partitions = results.Data.Rule.Partitions;
+      var partitions = Results.Data.Rule.Partitions;
       var dy         = 2pt;
       var left       = 1";
       var w          = (ExtentWidth - 1") / count;
@@ -296,11 +304,9 @@ class ExchangeabilityTable: Content {
 
 //======================================================================
 
-readonly NaturalClassRateChart Figures.RateChart = new;
-
-class NaturalClassRateChart: Content {
-  Constructor {
-    super.Constructor(NaturalClassName + " Rates");
+class NaturalClassRateChart: ResultsFigureBase {
+  Constructor(RunResultsThread results) {
+    super.Constructor(NaturalClassName + " Rates", results);
   }
 
   private ShowRight(number) = HBox {
@@ -320,8 +326,8 @@ class NaturalClassRateChart: Content {
     style.SansSerif;
     TextHeight: ExtentWidth * 0.015;
 
-    var partitions = MainResults.Data.Rule.Partitions;
-    var stats      = MainResults.MainRun.NCQRates;
+    var partitions = Results.Data.Rule.Partitions;
+    var stats      = Results.NCQRates;
     var bx         = 20pt;
     var tx         = 60pt + bx;
     var size       = Math.Min(ExtentWidth, ExtentHeight);
@@ -404,11 +410,9 @@ class NaturalClassRateChart: Content {
 
 //======================================================================
 
-readonly EquilibriumFrequencyChart Figures.EquilibriumCharts = new;
-
-class EquilibriumFrequencyChart: Content {
-  Constructor {
-    super.Constructor("Equilibrium frequency chart");
+class EquilibriumFrequencyChart: ResultsFigureBase {
+  Constructor(RunResultsThread results)  {
+    super.Constructor("Equilibrium frequency chart", results);
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -425,8 +429,8 @@ class EquilibriumFrequencyChart: Content {
       EquilibriumDistribution;
     };
 
-    var partitions = MainResults.Data.Rule.Partitions.Reverse;
-    var stats      = MainResults.MainRun.NCQFreqs;
+    var partitions = Results.Data.Rule.Partitions.Reverse;
+    var stats      = Results.NCQFreqs;
 
     XAxis: ChartAxis(null, null, PadR(8)) {
       foreach (var p in partitions) {
@@ -454,11 +458,11 @@ class EquilibriumFrequencyChart: Content {
 
 //======================================================================
 
-readonly LanguageDistributionFigure  Figures.LanguageDistribution = new;
-
 class LanguageDistributionFigure: Content {
-  Constructor {
+  var ExperimentData Data;
+  Constructor(ExperimentData data) {
     super.Constructor("Geographic distribution of languages");
+    Data = data;
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -476,7 +480,7 @@ class LanguageDistributionFigure: Content {
       };
       VBox {
         Separation: 2.8pt;
-        foreach (var l in MainResults.Data.LanguageSet) {
+        foreach (var l in Data.LanguageSet) {
           if (l != WorldLanguages.Latin) {
             HBox {
               Separation: 3pt;
@@ -495,14 +499,12 @@ class LanguageDistributionFigure: Content {
 
 //======================================================================
 
-readonly ConsensusTree Figures.ConsensusTree = new;
-
-class ConsensusTree: Content {
-  Constructor {
-    super.Constructor(Lang.ConsensusTree);
+class ConsensusTree: ResultsFigureBase {
+  Constructor(RunResultsThread results) {
+    super.Constructor(Lang.ConsensusTree, results);
   }
 
-  override GetBody(ContentStyle style) = PaperStyle.ShowTree(style, MainResults.MainRun.Run.ResultTree, ExtentWidth);
+  override GetBody(ContentStyle style) = PaperStyle.ShowTree(style, Results.Run.ResultTree, ExtentWidth);
 }
 
 //======================================================================
@@ -515,8 +517,6 @@ SegmentOccuranceCaption(ExperimentData data) = Span {
   "For each language, bar heights are normalized to the most frequent segment in that language. ";
   "Languages are arranged by increasing Euclidean distance from "; l0; " (indicated by the red line). ";
 };
-
-readonly SegmentOccuranceFigure Figures.SegmentOccuranceRates = new(MainResults.Data);
 
 class SegmentOccuranceFigure: ExperimentContent {
   Constructor(ExperimentData data) {
@@ -531,8 +531,6 @@ class SegmentOccuranceFigure: ExperimentContent {
 
 //======================================================================
 
-readonly SegmentGroupedFigure Figures.SegmentOccuranceGrouped = new(MainResults.Data);
-
 class SegmentGroupedFigure: ExperimentContent {
   Constructor(ExperimentData data) {
     super.Constructor(data, "Segment Occurance Rates (by partition)");
@@ -542,8 +540,6 @@ class SegmentGroupedFigure: ExperimentContent {
 }
 
 //======================================================================
-
-readonly PartitionFrequenciesFigure Figures.PartitionFrequencies = new(MainResults.Data);
 
 class PartitionFrequenciesFigure: ExperimentContent {
   Constructor(ExperimentData data) {
@@ -557,11 +553,9 @@ class PartitionFrequenciesFigure: ExperimentContent {
 
 //======================================================================
 
-readonly ExperimentalRunsFigure Figures.TransitionRates = new;
-
-class ExperimentalRunsFigure: Content {
-  Constructor {
-    super.Constructor("Transition Rates between Partitions");
+class SegmentalChangeFigure: ResultsFigureBase {
+  Constructor(RunResultsThread results) {
+    super.Constructor("Transition Rates between Partitions", results);
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -569,7 +563,7 @@ class ExperimentalRunsFigure: Content {
     "The width of the lines is proportional to the estimated rates. ";
   };
 
-  override GetBody(ContentStyle style) = new CalcRatesClass(MainResults.Data, MainResults.MainRun).PartitionDiagram(style);
+  override GetBody(ContentStyle style) = new CalcRatesClass(Results.Data, Results).PartitionDiagram(style);
 }
 
 //======================================================================

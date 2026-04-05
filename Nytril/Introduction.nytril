@@ -132,7 +132,9 @@ class RootMeaningTraitsSection: Content {
 
 //======================================================================
 
-readonly TKF91ApproachSection PaperSections.TKF91Approach = new;
+readonly TKF91ApproachSection        PaperSections.TKF91Approach  = new;
+readonly ConsensusTree               Figures.ConsensusTree        = new(MainResults.MainRun);
+readonly LanguageDistributionFigure  Figures.LanguageDistribution = new(MainResults.Data);
 
 class TKF91ApproachSection: Content {
   Constructor {

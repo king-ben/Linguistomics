@@ -130,8 +130,8 @@ class RunResultsThread: Parallel.Thread {
 
       var qrates = align.?QRates;
       if (Run.ResultTree is valid and qrates is valid) {
-        QRates                 = new(Data, qrates, false);
-        AverageRates           = new(Data, align.AverageRates, true);
+        QRates                 = new(this, qrates, false);
+        AverageRates           = new(this, align.AverageRates, true);
         NCQFreqs               = align.?NCQFreqs as StatArray;
         TransitionStats        = align.?TransitionStats as StatMat;
         NCQRates               = align.?NCQRates as StatMat;
@@ -270,6 +270,7 @@ class RateTransition {
 
 class SegmentRate: Action {
   var AlignedCountClass Count;
+  var RunResultsThread  Results;
   var ExperimentData    Data;
   var SegmentPart       S0,
                         S1;
@@ -282,10 +283,11 @@ class SegmentRate: Action {
   var bool              Diagonal,
                         Symmetric;
 
-  Constructor(ExperimentData data, AlignedCountClass count, SegmentPart s0, SegmentPart s1, rate, reverse, bool symmetric, bool diagonal) {
+  Constructor(RunResultsThread results, AlignedCountClass count, SegmentPart s0, SegmentPart s1, rate, reverse, bool symmetric, bool diagonal) {
     super.Constructor(Actions.ToDocument, null, Guid.FromHash("Rate"+s0.Ipa + s1.Ipa));
 
-    Data      = data;
+    Results   = results;
+    Data      = results.Data;
     Count     = count;
     S0        = s0;
     S1        = s1;
@@ -379,7 +381,7 @@ class SegmentRate: Action {
       }
     }
 
-    var sorted = GetList(MainResults.MainRun);
+    var sorted = GetList;
     max = Math.Min(sorted.Length, max);
     if (sorted is valid) {
       Paragraph {
@@ -403,14 +405,14 @@ class SegmentRate: Action {
 
   static int CompareProb(AlignSort s1, AlignSort s2) = s1.Data.Prob.Compare(s2.Data.Prob);
 
-  List<AlignSort> GetList(RunResultsThread run) {
+  List<AlignSort> GetList {
     // Find cognate sets that have the first segment in one language and the second in another language
 
     var i0   = S0.Index;
     var i1   = S1.Index;
     var list = new List<AlignSort>(1024);
 
-    foreach (var cognate in run.Alignments) {
+    foreach (var cognate in Results.Alignments) {
       AlignData found = null;
 
       foreach (var alignment in cognate.Alignments) {
@@ -482,6 +484,7 @@ class SegDataClass {
 class AlignedCountClass: CountBase {
   delegate bool FindRateDelegate(SegmentRate r);
 
+  var RunResultsThread    Results;
   var List<SegmentRate>   RateList;
   var Matrix<SegmentRate> RateMatrix;
   var PartitionRule       Rule;
@@ -493,9 +496,12 @@ class AlignedCountClass: CountBase {
                           DirFactor;
   var bool                Symmetric;
 
-  Constructor(ExperimentData data, rates, bool symmetric) {
-    super.Constructor(data);
+  Constructor(RunResultsThread results, rates, bool symmetric) {
+    super.Constructor(results.Data);
+    Results    = results;
     Symmetric  = symmetric;
+
+    var data = results.Data;
     Rule       = data.Rule;
     Partitions = Rule.Partitions;
 
@@ -517,7 +523,7 @@ class AlignedCountClass: CountBase {
 
     for (var i = 0; i < length; ++i) {
       for (var j = 0; j < length; ++j) {
-        var r = new SegmentRate(data, this, ordered[i], ordered[j], matrix[i, j], matrix[j, i], symmetric, i == j);
+        var r = new SegmentRate(Results, this, ordered[i], ordered[j], matrix[i, j], matrix[j, i], symmetric, i == j);
         RateMatrix[i, j] = r;
         if (i == j) {
           dmax = Math.Max(dmax, r.Rate);

@@ -38,10 +38,8 @@ class DataViewOptions: Fact {
 readonly DataViewOptions ViewOptions = new;
 
 readonly namespace Main.Documents {
-  TestResultsDocument TestResults = new(MainResults);
+  TestResultsDocument TestResults = new;
 }
-
-readonly ExperimentResults MainResults = new;
 
 //======================================================================
 
@@ -74,17 +72,17 @@ class TestResultsDocument: DocumentEntry {
   var RunResultsThread  MainRun;
   var List<Content>     PaperContent;
 
-  Constructor(ExperimentResults results) {
+  Constructor {
     super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
     Style        = new PlainStyle;
-    Results      = results;
-    MainRun      = results.MainRun;
+    Results      = new ExperimentResults;
+    MainRun      = Results.MainRun;
     PaperContent = new(16);
 
     if (MainRun.NCQFreqs is valid) {
-      AddContent(Figures.EquilibriumCharts);
-      AddContent(Figures.RateChart);
-      AddContent(Figures.TransitionRates);
+      AddContent(new EquilibriumFrequencyChart(MainRun));
+      AddContent(new NaturalClassRateChart(MainRun));
+      AddContent(new SegmentalChangeFigure(MainRun));
     }
 
     var q = MainRun.QRates;

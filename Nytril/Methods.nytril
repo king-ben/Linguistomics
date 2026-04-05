@@ -161,7 +161,6 @@ readonly AlignmentExamplesFigure Figures.AlignmentExamples = new(
 //======================================================================
 
 readonly SingleAlignmentFigure Figures.AlignmentExample1 = new(16, 4, "Flower");
-readonly SingleAlignmentFigure Figures.AlignmentFlower   = new(34, 6, "Flower");
 
 class SingleAlignmentFigure: AlignmentExamplesFigure {
   Constructor(count, row, name) {
@@ -809,6 +808,10 @@ class ModelComparisonSection: Content {
 //======================================================================
 
 readonly WordTransformationSection PaperSections.WordTransformation = new;
+readonly NaturalClassRateChart     Figures.RateChart                = new(MainResults.MainRun);
+readonly EquilibriumFrequencyChart Figures.EquilibriumCharts        = new(MainResults.MainRun);
+
+
 
 class WordTransformationSection: Content {
   Constructor {
@@ -968,8 +971,6 @@ class WordTransformationSection: Content {
 readonly WordSegmentRelSection  PaperSections.WordSegmentRelationships = new;
 readonly AlignmentCompareFigure Figures.AlignmentExample2              = new(8, 4, "Sky");
 readonly GapFrequencyChart      Figures.GappinessChart                 = new(MainResults.MainRun);
-
-
 
 class WordSegmentRelSection: Content {
   Constructor {
@@ -1242,7 +1243,8 @@ class SoundChangeSection: Content {
 
 //======================================================================
 
-readonly SegmentalSamplingSection PaperSections.SegmentalSampling = new;
+readonly SegmentalSamplingSection   PaperSections.SegmentalSampling = new;
+readonly SegmentOccuranceFigure     Figures.SegmentOccuranceRates   = new(MainResults.Data);
 
 class SegmentalSamplingSection: Content {
   Constructor {
