@@ -12,6 +12,29 @@ class LanguageNode: Node {
     super.Constructor;
   }
 
+  ShowCI = Canvas(60, 14, 0.25) {
+    Margin: new Thickness(5, 0, 0, 0);
+    Baseline: 75%;
+    TextHeight: 8pt;
+    var x1 = CI.GetRangeLo;
+    var x2 = CI.GetRangeHi;
+    Canvas(((x2 - x1)*100)%, 100%) {
+      Background: 85%;
+      X: (x1*100)%;
+    };
+    Span {
+      x1 * 100;
+      if (x2 > x1) {
+        Tex.EmDash;
+        x2 * 100;
+      }
+      "%";
+      TextDigits: 0;
+      HAlignment: Center;
+      VAlignment: Center;
+    };
+  };
+
   override void ResolveData {
     var p = Probability ?? prob;
     if (p is valid and HasChildren) {
@@ -26,13 +49,8 @@ class LanguageNode: Node {
       Language = WorldLanguages.FindChildValue(Label);
       Label = Span {
         Language ?? Label;
-        if (CI is valid) Span {
-          TextColor: Colors.DarkGray;
-          TextHeight: 8pt;
-          " (CI = ";
-          CI;
-          ")";
-        };
+        if (CI is valid)
+          ShowCI;
       };
     }
   }
