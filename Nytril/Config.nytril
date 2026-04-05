@@ -42,7 +42,6 @@ readonly namespace Info {
   ImageFolder    = Folders.Source Folder("Images");
   ConfigFile     = FileName("config") Extensions.JSON;
   ExperimentRoot = Folders.Repository Folder("Experiments");
-  WordFileName   = FileName("Words") Extensions.Nytril;
   ExecuteFolder  = Folder("Execute");
   AlignmentFile  = ExecuteFolder FileName("alignments") Extensions.Nytril;
   TreeFile       = ExecuteFolder FileName("consensus.tre");

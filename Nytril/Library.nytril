@@ -681,6 +681,9 @@ class ExperimentData {
 
   RootFolder = Folder(Name);
 
+  WordFilePath = Info.ExperimentRoot RootFolder FileName("Words") Extensions.Nytril;
+
+
   TreeSet AddTree(Node root) = new("Tree"+each1, RootFolder, root, RunNumbers);
 
   void ReadRawWords(Attribute concepts, includewords, WorldLanguage[] languageset) {
@@ -752,7 +755,7 @@ class ExperimentData {
   }
 
   void ReadExperiment {
-    var run = ReadScript(Info.ExperimentRoot RootFolder Info.WordFileName).Root;
+    var run = ReadScript(WordFilePath).Root;
 
     RunSettings = run.RunSettings;
     AddLanguageSet(run.LanguageSet);
