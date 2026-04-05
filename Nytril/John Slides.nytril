@@ -9,10 +9,13 @@ class JohnDesign: FancyDesign {
 }
 
 class JohnSlideShow: SlideShow {
-  Constructor {
+  var ExperimentResults Results;
+
+  Constructor(ExperimentResults results) {
     super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "John's Presentation", new JohnDesign, new OtherStyle, [People.Huelsenbeck_John]);
     Title       = "Phylogenetic inference from cognate word forms";
     Description = "Presentation for Biologists";
+    Results     = results;
   }
 
   override InitDocument = {
@@ -22,6 +25,8 @@ class JohnSlideShow: SlideShow {
   };
 
   override void CreateSlides {
+    var data = Results.Data;
+
     AddFigureSlide(PaperSections.Abstract);
     AddFigureSlide(Figures.LanguagesUsed);
     AddFigureSlide(TableFigures.CognateCoding);
@@ -29,7 +34,7 @@ class JohnSlideShow: SlideShow {
     AddFigureSlide(Figures.ExampleTree);
     AddFigureSlide(Figures.Alignment);
     AddFigureSlide(Figures.ExampleConcepts);
-    AddFigureSlide(Figures.UniqueSegments);
+    AddFigureSlide(new SegmentAssignmentsFigure(data));
     AddFigureSlide(Figures.PartitionAssignments);
     AddFigureSlide(Figures.ExchangeabilityTable);
     AddFigureSlide(Figures.RateChart);

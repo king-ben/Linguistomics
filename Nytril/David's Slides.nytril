@@ -2,6 +2,8 @@ using Format, EquationSymbols, PaperStyle;
 
 //======================================================================
 
+readonly MainQRates = MainResults.MainRun.QRates;
+
 class DavidDesignClass: TexDesign {
   Constructor {
     super.Constructor;
@@ -18,8 +20,11 @@ class DavidDesignClass: TexDesign {
 //======================================================================
 
 class DavidSlideShow: SlideShow {
-  Constructor {
+  var ExperimentResults Results;
+
+  Constructor(ExperimentResults results) {
     super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, new OtherStyle, Authors);
+    Results      = results;
     Title       = "From phonology to phylogeny\nA new framework for phylogenetic inference";
     Description = "Presentation for Linguists";
   }
@@ -658,48 +663,21 @@ namespace DavidSlides.Results {
     };
   }
 
-  Slide.UniqueCharacters.Figure = Figures.UniqueSegments;
-
-  Slide.QRatesMatrix.Figure = Figures.QRatesMatrix;
-
-  Slide.QRatesDiagonal.Figure = Figures.QRatesDiagonal;
-
-  Slide.QRatesdTop.Figure = Figures.QRatesTop;
-
-  Slide.QRatesdConsonantConsonant.Figure = Figures.QRatesConsonantConsonant;
-
-  Slide.QRatesdVoicing.Figure = Figures.QRatesOneWay;
-
-  //==============
-
-  Slide.AverageAll.Figure = Figures.AverageAll;
-
-  Slide.AverageSorted.Figure = Figures.AverageSorted;
-
-  Slide.RateDirection.Figure = Figures.RateDirection;
-
-  Slide.SpecificRates.Figure = Figures.SpecificRates;
-  //=======
-
-//  Slide.PriorFrequency.Figure = Figures.AllSegmentFrequencies;
-
-  Slide.PartitionRules.Figure = Figures.PartitionAssignments;
-
-  Slide.SegmentOccurance.Figure = Figures.SegmentOccuranceRates;
-
-  Slide.SegmentFrequenciesGrouped.Figure = Figures.SegmentOccuranceGrouped;
-
-  Slide.PartitionFrequencies.Figure = Figures.PartitionFrequencies;
-
-  Slide.Alignments.Figure = Figures.Alignments;
-
-  Slide.AlignmentExamples.Figure = Figures.AlignmentExamples;
-
-//  Slide.TransitionMatrix.Figure = Figures.ExchangeabilityTable;
-
-//  Slide.PartitionStabilityChart.Figure = Figures.PartitionVolatilityChart;
-
-//  Slide.PartitionExperiment.Figure = Figures.TransitionRates;
+  readonly Slide.QRatesMatrix.Figure              = new QRatesMatrixFigure(MainQRates);
+  readonly Slide.QRatesDiagonal.Figure            = Figures.QRatesDiagonal;
+  readonly Slide.QRatesdTop.Figure                = new QRatesTopFigure(MainQRates);
+  readonly Slide.QRatesdConsonantConsonant.Figure = new SpecificRatesFigure(MainQRates);
+  readonly Slide.QRatesdVoicing.Figure            = new QRatesOneWayFigure(MainQRates);
+  readonly Slide.AverageAll.Figure                = new AverageAllFigure(MainQRates);
+  readonly Slide.AverageSorted.Figure             = new AverageSortedFigure(MainQRates);
+  readonly Slide.RateDirection.Figure             = new RateDirectionFigure(MainQRates);
+  readonly Slide.SpecificRates.Figure             = new QRatesCCFigure(MainQRates);
+  readonly Slide.PartitionRules.Figure            = Figures.PartitionAssignments;
+  readonly Slide.SegmentOccurance.Figure          = Figures.SegmentOccuranceRates;
+  readonly Slide.SegmentFrequenciesGrouped.Figure = Figures.SegmentOccuranceGrouped;
+  readonly Slide.PartitionFrequencies.Figure      = Figures.PartitionFrequencies;
+  readonly Slide.Alignments.Figure                = Figures.Alignments;
+  readonly Slide.AlignmentExamples.Figure         = Figures.AlignmentExamples;
 
   namespace Slide.Slide5 {
     Title = "Segmental stability";

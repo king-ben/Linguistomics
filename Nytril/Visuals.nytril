@@ -2,66 +2,157 @@ using Format, EquationSymbols, References;
 
 //======================================================================
 
-readonly AverageAllFigure Figures.AverageAll = new;
+abstract class QRatesFigure: Content {
+  var AlignedCountClass QRates;
 
-class AverageAllFigure: Content {
-  Constructor {
-    super.Constructor("All Rates");
+  Constructor(name, AlignedCountClass qrates) {
+    super.Constructor(name);
+    QRates = qrates;
   }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowAllRates;
 }
 
 //======================================================================
 
-readonly AverageSortedFigure Figures.AverageSorted = new;
-
-class AverageSortedFigure: Content {
-  Constructor {
-    super.Constructor("Rate vs. Direction");
+class AverageAllFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("All Rates", qrates);
   }
 
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowRateDirected;
+  override GetBody(ContentStyle style) = QRates.ShowAllRates;
 }
 
 //======================================================================
 
-readonly RateDirectionFigure Figures.RateDirection = new;
-
-class RateDirectionFigure: Content {
-  Constructor {
-    super.Constructor("Directionality");
+class AverageSortedFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("Rate vs. Direction", qrates);
   }
 
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowDirection;
+  override GetBody(ContentStyle style) = VBox {
+    Chart(100%, Math.Min(6", ExtentHeight - 48pt)) {
+      TipNoPublish: true;
+      ChartType: ChartTypes.Scatter;
+      TextHeight: 12pt;
+
+      XLabel: RateDescriptor(Lang.RateFactor);
+
+      ValueLabel: PaperStyle.ValueLabel {
+        RateDescriptor("Direction");
+      };
+
+      ChartSeries {
+        TextHeight: 6pt;
+        Marker: Markers.Dot;
+        foreach (var si in QRates.LegendSegments) {
+          foreach (var sj in QRates.LegendSegments) {
+            if (si.Index < sj.Index) {
+              var a = QRates.RateMatrix[si.Index, sj.Index];
+              new DataPoint(a.Rate, a.Direction) {
+                Reference: a;
+                Marker: Canvas(4pt, 4pt) {
+                  HAlign: Center;
+                  VAlign: Center;
+                  Background: a.S0.Partition.BackColor;
+                  BorderRadius: 2pt;
+                  a.S1.Partition.Marker;
+                };
+              };
+            }
+          }
+        }
+      };
+    };
+
+    Separation: 20pt;
+    Canvas(ExtentWidth) {
+      HAlign: Center;
+      QRates.Rule.ShowBlockLegend(QRates.Partitions, 10pt);
+    }
+  };
+
 }
 
 //======================================================================
 
-readonly QRatesMatrixFigure Figures.QRatesMatrix = new;
-
-class QRatesMatrixFigure: Content {
-  Constructor {
-    super.Constructor("Rate Matrix " RateMatrix);
+class RateDirectionFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("Directionality", qrates);
   }
 
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.PartitionBox(style, ExtentSize);
+  override GetBody(ContentStyle style) = QRates.ShowDirection;
 }
 
 //======================================================================
 
-readonly QRatesDiagonalFigure Figures.QRatesDiagonal = new;
+class QRatesMatrixFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("Rate Matrix " RateMatrix, qrates);
+  }
 
-class QRatesDiagonalFigure: Content {
-  Constructor {
-    super.Constructor("Rate of segmental change");
+  override GetBody(ContentStyle style) = QRates.PartitionBox(style, ExtentSize);
+}
+
+//======================================================================
+
+class QRatesDiagonalFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("Rate of segmental change", qrates);
   }
 
   override GetCaption(ContentStyle style) = Span {
     "The rate of change when in a particular segmental state (or "; -qii; ")";
   };
 
-  override GetBody(ContentStyle style) = new DiagonalClass(MainResults.Data.Rule, MainResults.MainRun.QRates).Display(style);
+  override GetBody(ContentStyle style) = new DiagonalClass(QRates.Rule, QRates).Display(style);
+}
+
+//======================================================================
+
+class SpecificRatesFigure: QRatesFigure {
+  const int TopCount = 15;
+
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor("Specific Rates", qrates);
+  }
+
+  static bool Predicate(SegmentRate a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
+
+  override GetBody(ContentStyle style) = QRates.Pairs(-1, @Predicate);
+}
+
+TransitionTitle(type) = "The top {0} {1} transitions"(SpecificRatesFigure.TopCount, type);
+
+//======================================================================
+
+class QRatesTopFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor(TransitionTitle("segmental"), qrates);
+  }
+
+  override GetBody(ContentStyle style) = QRates.Extrema(SpecificRatesFigure.TopCount, true);
+}
+
+//======================================================================
+
+class QRatesCCFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"), qrates);
+  }
+
+  static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
+                                       a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
+
+  override GetBody(ContentStyle style) = QRates.Pairs(SpecificRatesFigure.TopCount, @Predicate);
+}
+
+//======================================================================
+
+class QRatesOneWayFigure: QRatesFigure {
+  Constructor(AlignedCountClass qrates) {
+    super.Constructor(TransitionTitle("highly directed"), qrates);
+  }
+
+  override GetBody(ContentStyle style) = QRates.ShowChartPairs(SpecificRatesFigure.TopCount, QRates.SortByDirection);
 }
 
 //======================================================================
@@ -70,21 +161,22 @@ readonly TreeContent Figures.PriorTree = new("Tree topology", TreeExamples.Prior
 
 //======================================================================
 
-readonly GapFrequencyChart Figures.GappinessChart = new;
-
 class GapFrequencyChart: Content {
-  Constructor {
+  var RunResultsThread Results;
+
+  Constructor(RunResultsThread results) {
     super.Constructor("Gap frequency comparison chart");
+    Results = results;
   }
 
   override GetCaption(ContentStyle style) = Span {
-    "Distribution of alignment gaps across word positions for the "; MainResults.Data.UsedCognates.Length; " cognate sets analyzed in this study. ";
+    "Distribution of alignment gaps across word positions for the "; Results.Data.UsedCognates.Length; " cognate sets analyzed in this study. ";
     "The top panel shows the proportion of alignments with a given number of gaps at the word-initial segment, the middle panel at word-internal segments, and the bottom panel at the word-final segment. ";
     "Since nine languages are analyzed, at most eight gaps can occur at a given position: a deletion event affecting all nine languages would not appear in the alignment and is explicitly conditioned on in the likelihood calculation"; Citep{Lunter2003}; DotSpace;
     "Gaps increase systematically from initial to final position, with word-final segments exhibiting substantially higher deletion rates. ";
     "A likelihood-ratio test rejects the null hypothesis that the gap distributions are identical across positions, (";
 
-    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; MainResults.MainRun.TestStatistic}}; CommaSpace;
+    EqSpan {ChiSquareTest; Tex.Equals; Span {TextDigits: 2; Results.TestStatistic}}; CommaSpace;
     EqSpan {DegreesFreedom; Tex.Equals; 16}; CommaSpace;
     EqSpan {PValue; Tex.lt; 0.001};
      "), which confirms a statistically significant positional asymmetry. ";
@@ -97,7 +189,7 @@ class GapFrequencyChart: Content {
       TextHeight: 12pt;
       "Proportion of Alignments"
     };
-    var gaps        = MainResults.MainRun.GapSpectrum;
+    var gaps        = Results.GapSpectrum;
     var chartheight = (ExtentHeight - 40pt) / gaps.Length;
     VBox {
       HAlign: Center;
@@ -399,63 +491,6 @@ class LanguageDistributionFigure: Content {
       };
     };
   };
-}
-
-//======================================================================
-
-readonly SpecificRatesFigure Figures.SpecificRates = new;
-
-class SpecificRatesFigure: Content {
-  const int TopCount = 15;
-
-  Constructor {
-    super.Constructor("Specific Rates");
-  }
-
-  static bool Predicate(SegmentRate a) = a.IsPair("p", "f") or a.IsPair("s", "h") or a.IsPair("k", "ʧ");
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(-1, @Predicate);
-}
-
-TransitionTitle(type) = "The top {0} {1} transitions"(SpecificRatesFigure.TopCount, type);
-
-//======================================================================
-
-readonly QRatesTopFigure Figures.QRatesTop = new;
-
-class QRatesTopFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("segmental"));
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Extrema(SpecificRatesFigure.TopCount, true);
-}
-
-//======================================================================
-
-readonly QRatesCCFigure Figures.QRatesConsonantConsonant = new;
-
-class QRatesCCFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"));
-  }
-
-  static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
-                                       a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.Pairs(SpecificRatesFigure.TopCount, @Predicate);
-}
-
-//======================================================================
-
-readonly QRatesOneWayFigure Figures.QRatesOneWay = new;
-
-class QRatesOneWayFigure: Content {
-  Constructor {
-    super.Constructor(TransitionTitle("highly directed"));
-  }
-
-  override GetBody(ContentStyle style) = MainResults.MainRun.QRates.ShowChartPairs(SpecificRatesFigure.TopCount, MainResults.MainRun.QRates.SortByDirection);
 }
 
 //======================================================================

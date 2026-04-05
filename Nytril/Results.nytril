@@ -542,8 +542,6 @@ class AlignedCountClass: CountBase {
     SortByDirection = rl.ToSortedArray(SegmentRate.SortDescending, @SegmentRate.CompareDirection);
   }
 
-  ChartHeight = Math.Min(6", ExtentHeight - 48pt);
-
   override AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size) {
     if (si.Index == sj.Index)
       return null;
@@ -613,7 +611,7 @@ class AlignedCountClass: CountBase {
   };
 
   ShowAllRates = VBox {
-    Chart(100%, ChartHeight) {
+    Chart(100%, Math.Min(6", ExtentHeight - 48pt)) {
       ChartType: ChartTypes.Scatter;
       TextHeight: 12pt;
       TipNoPublish: true;
@@ -663,50 +661,8 @@ class AlignedCountClass: CountBase {
     }
   };
 
-  ShowRateDirected = VBox {
-    Chart(100%, ChartHeight) {
-      TipNoPublish: true;
-      ChartType: ChartTypes.Scatter;
-      TextHeight: 12pt;
-
-      XLabel: RateDescriptor(Lang.RateFactor);
-
-      ValueLabel: PaperStyle.ValueLabel {
-        RateDescriptor("Direction");
-      };
-
-      ChartSeries {
-        TextHeight: 6pt;
-        Marker: Markers.Dot;
-        foreach (var si in LegendSegments) {
-          foreach (var sj in LegendSegments) {
-            if (si.Index < sj.Index) {
-              var a = RateMatrix[si.Index, sj.Index];
-              new DataPoint(a.Rate, a.Direction) {
-                Reference: a;
-                Marker: Canvas(4pt, 4pt) {
-                  HAlign: Center;
-                  VAlign: Center;
-                  Background: a.S0.Partition.BackColor;
-                  BorderRadius: 2pt;
-                  a.S1.Partition.Marker;
-                };
-              };
-            }
-          }
-        }
-      };
-    };
-
-    Separation: 20pt;
-    Canvas(ExtentWidth) {
-      HAlign: Center;
-      Rule.ShowBlockLegend(Partitions, 10pt);
-    }
-  };
-
   ShowDirection = VBox {
-    Chart(100%, ChartHeight) {
+    Chart(100%, Math.Min(6", ExtentHeight - 48pt)) {
       TipNoPublish: true;
       ChartType: ChartTypes.Scatter;
       TextHeight: 12pt;

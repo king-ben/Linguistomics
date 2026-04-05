@@ -401,10 +401,6 @@ class LanguagesUsedFigure: Content {
 
 //======================================================================
 
-readonly SegmentAssignmentsFigure Figures.UniqueSegments = new(MainResults.Data);
-
-//======================================================================
-
 readonly AlignmentFigure Figures.Alignment = new;
 
 class AlignmentFigure: Content {
@@ -614,6 +610,8 @@ class ResultsSection: Content {
 //======================================================================
 
 readonly PhylogenyResultsSection PaperSections.PhylogenyResults = new;
+readonly QRatesDiagonalFigure Figures.QRatesDiagonal            = new(MainQRates);
+
 
 class PhylogenyResultsSection: Content {
   Constructor {
@@ -968,7 +966,9 @@ class WordTransformationSection: Content {
 //======================================================================
 
 readonly WordSegmentRelSection  PaperSections.WordSegmentRelationships = new;
-readonly AlignmentCompareFigure Figures.AlignmentExample2 = new(8, 4, "Sky");
+readonly AlignmentCompareFigure Figures.AlignmentExample2              = new(8, 4, "Sky");
+readonly GapFrequencyChart      Figures.GappinessChart                 = new(MainResults.MainRun);
+
 
 
 class WordSegmentRelSection: Content {
@@ -2676,6 +2676,9 @@ SegmentTable(ContentStyle style, ExampleConcept example, ExperimentData data, al
 //======================================================================
 
 readonly RateMatrixSection PaperSections.RateMatrixDiscussion = new;
+
+readonly QRatesMatrixFigure Figures.QRatesMatrix = new(MainQRates);
+
 
 class RateMatrixSection: Content {
   Constructor {

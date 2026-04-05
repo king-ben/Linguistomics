@@ -70,29 +70,30 @@ class ExperimentResults {
 
 class TestResultsDocument: DocumentEntry {
   var ContentStyle      Style;
-  var ExperimentRun     Run;
   var ExperimentResults Results;
+  var RunResultsThread  MainRun;
   var List<Content>     PaperContent;
 
   Constructor(ExperimentResults results) {
     super.Constructor(#c763a1b9-9722-44c0-8729-ce88984273ae#, "Test Results");
     Style        = new PlainStyle;
     Results      = results;
-    Run          = results.MainRun.Run;
+    MainRun      = results.MainRun;
     PaperContent = new(16);
 
-    if (Results.MainRun.NCQFreqs is valid) {
+    if (MainRun.NCQFreqs is valid) {
       AddContent(Figures.EquilibriumCharts);
       AddContent(Figures.RateChart);
       AddContent(Figures.TransitionRates);
     }
 
-    AddContent(Figures.QRatesDiagonal);
-    AddContent(Figures.GappinessChart);
-    AddContent(Figures.QRatesConsonantConsonant);
-    AddContent(Figures.SpecificRates);
-    AddContent(Figures.QRatesOneWay);
-    AddContent(Figures.QRatesTop);
+    var q = MainRun.QRates;
+    AddContent(new QRatesDiagonalFigure(q));
+    AddContent(new GapFrequencyChart(MainRun));
+    AddContent(new QRatesCCFigure(q));
+    AddContent(new SpecificRatesFigure(q));
+    AddContent(new QRatesOneWayFigure(q));
+    AddContent(new QRatesTopFigure(q));
   }
 
   void AddContent(Content c) {
@@ -116,7 +117,7 @@ class TestResultsDocument: DocumentEntry {
         BorderRadius: 7;
         Bold "Model ";
 
-        foreach (var model in MainResults.Models) {
+        foreach (var model in Results.Models) {
           if (model.IsLoaded()) {
             RadioControl(new(ref ViewOptions.Model), each0) {
               Placement: Placements.Right;
@@ -133,17 +134,18 @@ class TestResultsDocument: DocumentEntry {
 
       Results.Data.Name;
       " - ";
-      MainResults.Model.Name;
+      Results.Model.Name;
       " model";
     };
 
-    if (Run.ResultTree is valid) {
+    var run = MainRun.Run;
+    if (run.ResultTree is valid) {
       Header {"Consensus"};
-      PaperStyle.ShowTree(Style, Run.ResultTree, 100%, null);
+      PaperStyle.ShowTree(Style, run.ResultTree, 100%, null);
     }
 
-    var alignment = MainResults.Alignment;
-    if (alignment is valid and MainResults.MainRun.QRates is valid) {
+    var alignment = Results.Alignment;
+    if (alignment is valid and Results.MainRun.QRates is valid) {
 
       foreach (var c in PaperContent) {
   //      PageBreak;
