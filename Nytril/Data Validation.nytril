@@ -113,7 +113,7 @@ class DiagnosticsDocument: DocumentEntry {
     TextHeight: 9pt;
 
     Content[] content = [
-      new PriorTreeFigure(Data),
+      new ModelTreesFigure(TreeExamples.PriorTrees),
       new DiagnosticGraphSection(Data),
       new AppendixContent(Lang.UniqueSegments, Display.VocalSegmentTable),
       new SegmentAssignmentsFigure(Data),
@@ -215,21 +215,6 @@ class ConceptGroupsFigure: ExperimentContent {
         }
       }
     }
-  };
-}
-
-//======================================================================
-
-class PriorTreeFigure: ExperimentContent {
-  Constructor(ExperimentData data) {
-    super.Constructor(data, "Prior Trees");
-  }
-
-  override GetBody(ContentStyle style) = Block {
-    Paragraph {
-      foreach (var tree in TreeExamples.PriorTrees)
-        PaperStyle.ShowTree(style, tree, 30%, Lang.Tree+each1);
-    };
   };
 }
 

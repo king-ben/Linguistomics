@@ -2,124 +2,7 @@ using Format, EquationSymbols, Equations, WorldLanguages, References, PaperStyle
 
 //======================================================================
 
-readonly PartitionAssignmentsFigure Figures.PartitionAssignments = new(MainResults.Data.Rule);
-
-class PartitionAssignmentsFigure: Content {
-  var PartitionRule Rule;
-
-  Constructor(PartitionRule rule) {
-    super.Constructor(Lang.PartitionRules);
-    Rule = rule;
-  }
-
-  override GetCaption(ContentStyle style) = Rule.GetCaption(style);
-
-  override GetBody(ContentStyle style) = Rule.ShowPartitions;
-}
-
-//======================================================================
-
-readonly ExperimentalRunFigure Figures.ExperimentalRuns = new;
-
-class ExperimentalRunFigure: Content {
-  Constructor {
-    super.Constructor("Experimental Runs");
-  }
-
-  ShowTrees(ContentStyle style, ModelConfig model) = Block {
-    var anytree = false;
-    foreach (var r in model.Run) {
-      if (r.ResultTree is not null) {
-        anytree = true;
-        break;
-      }
-    }
-
-    if (anytree) {
-      style.Par {
-        Lang.Model;
-        ColonSpace;
-        model.Name;
-      };
-
-      foreach (var r in model.Run) {
-        if (r.ResultTree is not null)
-          ShowTree(style, r.ResultTree, 100%, "Run {0}"(each1));
-      }
-    }
-  };
-
-  override GetCaption(ContentStyle style) = Span {
-    Lang.Experiment;
-    Space;
-    each1;
-    Space;
-    style.DQuote {MainResults.Data.Name};
-  };
-
-  override GetBody(ContentStyle style) = Block {
-    var data = MainResults.Data;
-
-    Span {
-      foreach (var tree in TreeExamples.PriorTrees)
-        ShowTree(style, tree, 30%, Lang.Tree+each1);
-    };
-
-    foreach (var treeset in data.TreeSets) {
-      style.HeadingPar(1) {
-        Lang.Tree;
-        each1;
-      };
-      ShowTrees(style, each treeset.Models);
-    }
-  };
-}
-
-//======================================================================
-
-readonly ModelTreesFigure Figures.ModelTreesUsed = new;
-
-class ModelTreesFigure: Content {
-  Constructor {
-    super.Constructor("Model trees");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-    "Model trees used in all analyses";
-  };
-
-  override GetBody(ContentStyle style) = HBox {
-    var sep   = 20pt;
-    var trees = TreeExamples.PriorTrees.Length;
-    var w     = (ExtentWidth - sep * (trees-1)) / trees;
-    Separation: sep-1;
-    foreach (var tree in TreeExamples.PriorTrees)
-      ShowTree(style, tree, w, "{0} {1}"(Lang.Tree, each1));
-  };
-}
-
-//======================================================================
-
-readonly AlignmentsFigure Figures.Alignments = new;
-
-class AlignmentsFigure: Content {
-  const double CutoffProbability = 0.95;
-  const        CutoffPercent     = (CutoffProbability * 100.0) %;
-
-  Constructor {
-    super.Constructor("Alignment categories");
-  }
-
-  override GetCaption(ContentStyle style) = Span {
-   "All cognate categories showing the number of alignments to reach the ";
-   CutoffPercent;
-   " credible interval. ";
-  };
-
-  override GetBody(ContentStyle style) = Block {
-    MainResults.Alignment.ShowChart(style, new(ExtentWidth, ExtentHeight - 1"));
-  };
-}
+readonly AlignmentsFigure Figures.Alignments = new(MainResults);
 
 //======================================================================
 
@@ -610,7 +493,7 @@ class ResultsSection: Content {
 
 readonly PhylogenyResultsSection PaperSections.PhylogenyResults = new;
 readonly QRatesDiagonalFigure Figures.QRatesDiagonal            = new(MainQRates);
-
+readonly ModelTreesFigure Figures.ModelTreesUsed                = new(TreeExamples.PriorTrees);
 
 class PhylogenyResultsSection: Content {
   Constructor {
@@ -1442,7 +1325,9 @@ class WordCountTable: Content {
 
 //======================================================================
 
-readonly ModelInferenceSection PaperSections.ModelInference = new;
+readonly ModelInferenceSection      PaperSections.ModelInference = new;
+readonly PartitionAssignmentsFigure Figures.PartitionAssignments = new(MainResults.Data.Rule);
+
 
 class ModelInferenceSection: Content {
   Constructor {

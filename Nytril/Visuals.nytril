@@ -460,6 +460,7 @@ class EquilibriumFrequencyChart: ResultsFigureBase {
 
 class LanguageDistributionFigure: Content {
   var ExperimentData Data;
+
   Constructor(ExperimentData data) {
     super.Constructor("Geographic distribution of languages");
     Data = data;
@@ -564,6 +565,121 @@ class SegmentalChangeFigure: ResultsFigureBase {
   };
 
   override GetBody(ContentStyle style) = new CalcRatesClass(Results.Data, Results).PartitionDiagram(style);
+}
+
+//======================================================================
+
+class ExperimentalRunFigure: Content {
+  var ExperimentData Data;
+  var Node[]         Trees;
+
+  Constructor(ExperimentData data, Node[] trees) {
+    super.Constructor("Experimental Runs", data);
+    Data  = data;
+    Trees = trees;
+  }
+
+  ShowTrees(ContentStyle style, ModelConfig model) = Block {
+    var anytree = false;
+    foreach (var r in model.Run) {
+      if (r.ResultTree is not null) {
+        anytree = true;
+        break;
+      }
+    }
+
+    if (anytree) {
+      style.Par {
+        Lang.Model;
+        ColonSpace;
+        model.Name;
+      };
+
+      foreach (var r in model.Run) {
+        if (r.ResultTree is not null)
+          PaperStyle.ShowTree(style, r.ResultTree, 100%, "Run {0}"(each1));
+      }
+    }
+  };
+
+  override GetCaption(ContentStyle style) = Span {
+    Lang.Experiment;
+    Space;
+    each1;
+    Space;
+    style.DQuote {Data.Name};
+  };
+
+  override GetBody(ContentStyle style) = Block {
+    Span {
+      foreach (var tree in Trees)
+        PaperStyle.ShowTree(style, tree, 30%, Lang.Tree+each1);
+    };
+
+    foreach (var treeset in Data.TreeSets) {
+      style.HeadingPar(1) {
+        Lang.Tree;
+        each1;
+      };
+      ShowTrees(style, each treeset.Models);
+    }
+  };
+}
+
+//======================================================================
+
+class PartitionAssignmentsFigure: Content {
+  var PartitionRule Rule;
+
+  Constructor(PartitionRule rule) {
+    super.Constructor(Lang.PartitionRules);
+    Rule = rule;
+  }
+
+  override GetCaption(ContentStyle style) = Rule.GetCaption(style);
+
+  override GetBody(ContentStyle style) {
+    var textheight = Math.Min(ExtentWidth * 0.04, 10pt);
+    return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3")]) {
+      ParAlignment: Center;
+      TextHeight: textheight;
+
+      foreach (var partition in Rule.Partitions) {
+        Row(each0 == 0 ? BorderT(1) : null) {
+          VAlign: Top;
+          partition.Name;
+          Span {
+            Separator: Space;
+            (each partition.Segments).ShowSegment;
+          }
+        };
+      }
+    };
+  }
+}
+
+//======================================================================
+
+class AlignmentsFigure: Content {
+  const double CutoffProbability = 0.95;
+  const        CutoffPercent     = (CutoffProbability * 100.0) %;
+
+  var ExperimentResults Results;
+
+  Constructor(ExperimentResults results) {
+    super.Constructor("Alignment categories", results);
+    Results = results;
+  }
+
+  override GetCaption(ContentStyle style) = Span {
+   "All cognate categories showing the number of alignments to reach the ";
+   CutoffPercent;
+   " credible interval. ";
+  };
+
+  override GetBody(ContentStyle style) = Block {
+    Results.Alignment.ShowChart(style, new(ExtentWidth, ExtentHeight - 1"));
+  };
 }
 
 //======================================================================

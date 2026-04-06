@@ -233,25 +233,6 @@ abstract class PartitionRule {
     style.DQuote {Name};
   };
 
-  ShowPartitions {
-    var textheight = Math.Min(ExtentWidth * 0.04, 10pt);
-    return Table(BorderB(1), PadR(5), [Column.Fit(textheight * 9), Column.Fit(3")]) {
-      ParAlignment: Center;
-      TextHeight: textheight;
-
-      foreach (var partition in Partitions) {
-        Row(each0 == 0 ? BorderT(1) : null) {
-          VAlign: Top;
-          partition.Name;
-          Span {
-            Separator: Space;
-            (each partition.Segments).ShowSegment;
-          }
-        };
-      }
-    };
-  }
-
   ShowDescription(SegmentPart[] segments) = Block {
     Paragraph {
       TextHeight: 14pt;

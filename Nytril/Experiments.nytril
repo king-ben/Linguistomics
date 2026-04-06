@@ -231,4 +231,28 @@ class NBranch: IndexNode {
 
 //======================================================================
 
+class ModelTreesFigure: Content {
+  var Node[] Trees;
+
+  Constructor(Node[] trees) {
+    super.Constructor("Model trees");
+    Trees = trees;
+  }
+
+  override GetCaption(ContentStyle style) = Span {
+    "Model trees used in all analyses";
+  };
+
+  override GetBody(ContentStyle style) = HBox {
+    var sep   = 20pt;
+    var trees = Trees.Length;
+    var w     = (ExtentWidth - sep * (trees-1)) / trees;
+    Separation: sep-1;
+    foreach (var tree in Trees)
+      PaperStyle.ShowTree(style, tree, w, "{0} {1}"(Lang.Tree, each1));
+  };
+}
+
+//======================================================================
+
 

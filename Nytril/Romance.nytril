@@ -22,7 +22,7 @@ readonly WorldLanguage[] LanguageSet = [
 ];
 
 readonly namespace TreeExamples {
-  PriorTrees = [T1, T2, T3];
+  Node[] PriorTrees = [T1, T2, T3];
 
   CatalanClade = new Branch {
     new Leaf(Catalan);
