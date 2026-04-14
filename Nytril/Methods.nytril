@@ -655,12 +655,12 @@ class ModelComparisonSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.AlignEquation(Equations.BayesFactorEq);
-
     style.Par {
       "We assessed the relative fit of the three segmental-change models introduced in "; style.SectionReference(PaperSections.MethodsSection); " using Bayes factors. ";
       "The Bayes factor is the ratio of the marginal likelihoods of the models: ";
     };
+
+    style.AlignEquation(Equations.BayesFactorEq);
 
     style.Par {
       "Ratios greater than one indicate evidence in favor of model "; ModelI; DotSpace;

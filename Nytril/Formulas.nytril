@@ -93,7 +93,7 @@ readonly namespace sym {
   theta = Span {TextFamily: TextFamilies.LibertinusSerif; Italic; "θ"};
 }
 
-Ith = Span {sym.i; "th"};
+readonly Ith = Span {sym.i; "th"};
 
 readonly Summation = Nary {
   Operator: sum;
@@ -109,6 +109,12 @@ readonly CommaList = Span {
 
 readonly Arguments = SpanParens {
   Separator: CommaSpace;
+};
+
+readonly FSub = Arguments {
+  TextEquation: true;
+  Begin: Span {FunctionF; thinspace; "("};
+  End:")";
 };
 
 readonly EllipsisList = CommaList {
@@ -192,7 +198,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
   WordLengthi             = new(#e52b4cb8-63cb-4305-8d3f-7abca7f90d4b#, WordLength sub sym.i, "Word Length(i)", ("i" sup "th") " word length");
   RateParameter           = new(#909d6802-f159-4c23-9467-fd848d6e3e3c#, Symbol("r"), "Rate parameter");
   RateMatrixParams        = new(#d5d8bf9d-088e-420c-8c2f-56fd1fb73071#, sym.theta, "Rate parameters", "Parameters associated with the rate matrix");
-  NewValueProposal        = new(#ba307fd0-0546-459c-9f34-7e624f72015c#, sym.theta + prime, "Proposal", "New value proposal");
+  NewValueProposal        = new(#ba307fd0-0546-459c-9f34-7e624f72015c#, Span {sym.theta; hairspace; prime}, "Proposal", "New value proposal");
   ProbProposal            = new(#cdd0c1f4-55fe-4c2d-9852-9a1d8387e821#, sym.q, "Proposal probability", "Probability of new proposal");
   RandomNumber            = new(#daf62f51-5846-41dd-b56a-768d4c7d0bd5#, Symbol("u"), "Random number");
   ProbOfAccepting         = new(#031c7f83-937c-4208-88d2-a843019be1c5#, Symbol("R"), "Acceptance probability", "Probability of accepting a proposed value");
@@ -208,9 +214,9 @@ readonly namespace<EquationSymbol> EquationSymbols {
   Unknown                 = new(#b201f529-2e31-4ccd-927c-3bcd5dbef524#, BoldSymbol "X", "Unknown");
   PossibleRootedTrees     = new(#7a776122-8f31-49ff-94e0-e8124fa9b5b5#, BoldSymbol "B", "Possible rooted trees");
   BN                      = new(#c7fecde1-fcb0-4b68-9bc2-69622b63a7f6#, EqSpan {PossibleRootedTrees; "("; NumLanguages; ")"}, "Possible rooted trees as a function of the number of languages", "");
-  FunctionF               = new(#431c5ec9-7a2b-433d-8bff-b4d9bfa37704#, Symbol("f"), "Function");
   FunctionO               = new(#6d67b3c2-9d49-4c12-9683-9d6234c635b5#, Symbol("O"), "Order");
   EulerNumber             = new(#7029b313-5c55-492c-906e-ded051bb9d7c#, Symbol("e"), "Root of the natural log or Euler number");
+  FunctionF               = new(#431c5ec9-7a2b-433d-8bff-b4d9bfa37704#, Symbol("f"), "Function");
   DirichletRate           = new(#aba00649-6075-4f81-860d-8d92dede6ca8#, "r", "Dirichlet Rate");
   mij                     = new(#c8dbe5ac-e663-4e68-b6b4-e518fe1735e7#, sym.m sub sym.ij, ("i,j" sup "th") " element of the average rate matrix " AverageMatrix, Empty);
   qij                     = new(#2679fc01-b547-4c0e-b497-ade507e3c701#, sym.q sub sym.ij, ("i,j" sup "th") " element of the rate matrix " RateMatrix, Empty);
@@ -323,8 +329,7 @@ readonly namespace<Equation> Equations {
 
   LiklihoodFunction = new(#4a58876a-8295-4ea2-830a-bc1f39cd1634#, "Liklihood Function") {
     Formula: EqSpan {
-      FunctionF;
-      Arguments {
+      FSub {
         Condition(SegmentalInfo, Phylogeny);
         InsertionRate;
         DeletionRate;
@@ -336,18 +341,14 @@ readonly namespace<Equation> Equations {
 
   MarginalLiklihood = new(#311eaf7f-7d9e-4569-868f-eda0cc0ac959#, "Marginal Liklihood") {
     Formula: EqSpan {
-      FunctionF;
-      Arguments {
-        SegmentalInfo;
-      };
+      FSub {SegmentalInfo};
     };
     EquationLink to [SegmentalInfo];
   };
 
   MarginalLiklihoodI = new(#56fc4857-f5a4-46cc-b06d-201d94366163#, "Marginal Liklihood for model i") {
     Formula: EqSpan {
-      FunctionF;
-      Arguments {
+      FSub {
         Condition(SegmentalInfo, ModelI);
       };
     };
@@ -356,8 +357,7 @@ readonly namespace<Equation> Equations {
 
   MarginalLiklihoodJ = new(#8dd2838c-3cfa-4c04-8c74-d91f8407f0b4#, "Marginal Liklihood for model j") {
     Formula: EqSpan {
-      FunctionF;
-      Arguments {
+      FSub {
         Condition(SegmentalInfo, ModelJ);
       };
     };
@@ -369,7 +369,7 @@ readonly namespace<Equation> Equations {
       BayesFactor;
       Equals;
       Fraction {
-        MarginalLiklihoodI;
+        MarginalLiklihoodI * MarginalLiklihoodJ;
         MarginalLiklihoodJ;
       };
     };
@@ -379,8 +379,7 @@ readonly namespace<Equation> Equations {
 
   BayesianEstimation = new(#a6660b63-6222-4967-93f4-589f47b986ce#, "Bayesian Estimation") {
     Formula: EqSpan {
-      FunctionF;
-      Arguments {
+      FSub {
         Phylogeny;
         InsertionRate;
         DeletionRate;
@@ -391,8 +390,7 @@ readonly namespace<Equation> Equations {
         Span {
           LiklihoodFunction;
           Space;
-          FunctionF;
-          Arguments {
+          FSub {
             Phylogeny;
             InsertionRate;
             DeletionRate;
@@ -498,20 +496,13 @@ readonly namespace<Equation> Equations {
         Bracket: Brackets.Round;
         "1, ";
         Fraction {
-          Span {
-            FunctionF;
-            Arguments {Condition(NewValueProposal, Unknown)};
-          };
-
-          Span {
-            FunctionF;
-            Arguments {Condition(RateMatrixParams, Unknown)};
-          };
+          FSub {Condition(NewValueProposal, Unknown)};
+          FSub {Condition(RateMatrixParams, Unknown)};
         };
         times;
         Fraction {
-          Span {FunctionF; Arguments {NewValueProposal}};
-          Span {FunctionF; Arguments {RateMatrixParams}};
+          FSub {NewValueProposal};
+          FSub {RateMatrixParams};
         };
         times;
         Fraction {
@@ -529,7 +520,7 @@ readonly namespace<Equation> Equations {
       BayesFactor sub 12;
       Equals;
       Fraction {
-        PSM(1);
+        Span {PSM(1); PSM(2)};
         PSM(2);
       }
     };
