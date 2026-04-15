@@ -113,7 +113,7 @@ readonly Arguments = SpanParens {
 
 readonly FSub = Arguments {
   TextEquation: true;
-  Begin: Span {FunctionF; thinspace; "("};
+  Begin: Span {FunctionF; "("};
   End:")";
 };
 
@@ -198,7 +198,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
   WordLengthi             = new(#e52b4cb8-63cb-4305-8d3f-7abca7f90d4b#, WordLength sub sym.i, "Word Length(i)", ("i" sup "th") " word length");
   RateParameter           = new(#909d6802-f159-4c23-9467-fd848d6e3e3c#, Symbol("r"), "Rate parameter");
   RateMatrixParams        = new(#d5d8bf9d-088e-420c-8c2f-56fd1fb73071#, sym.theta, "Rate parameters", "Parameters associated with the rate matrix");
-  NewValueProposal        = new(#ba307fd0-0546-459c-9f34-7e624f72015c#, Span {sym.theta; hairspace; prime}, "Proposal", "New value proposal");
+  NewValueProposal        = new(#ba307fd0-0546-459c-9f34-7e624f72015c#, sym.theta prime, "Proposal", "New value proposal");
   ProbProposal            = new(#cdd0c1f4-55fe-4c2d-9852-9a1d8387e821#, sym.q, "Proposal probability", "Probability of new proposal");
   RandomNumber            = new(#daf62f51-5846-41dd-b56a-768d4c7d0bd5#, Symbol("u"), "Random number");
   ProbOfAccepting         = new(#031c7f83-937c-4208-88d2-a843019be1c5#, Symbol("R"), "Acceptance probability", "Probability of accepting a proposed value");
