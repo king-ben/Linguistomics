@@ -89,8 +89,8 @@ class RateDirectionFigure: QRatesBase {
 //======================================================================
 
 class QRatesMatrixFigure: QRatesBase {
-  Constructor(AlignedCountClass qrates) {
-    super.Constructor("Rate Matrix " RateMatrix, qrates);
+  Constructor(AlignedCountClass qrates, name = null) {
+    super.Constructor(name ?? Span {"Rate Matrix "; RateMatrix}, qrates);
   }
 
   override GetBody(ContentStyle style) = QRates.PartitionBox(style, ExtentSize);
@@ -136,11 +136,11 @@ class QRatesTopFigure: QRatesBase {
 
 class QRatesCCFigure: QRatesBase {
   Constructor(AlignedCountClass qrates) {
-    super.Constructor(TransitionTitle("SegmentConsonant-SegmentConsonant"), qrates);
+    super.Constructor(TransitionTitle("Consonant-Consonant"), qrates);
   }
 
   static bool Predicate(SegmentRate a) = a.F0.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature) and
-                                       a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
+                                         a.F1.HasFlagMask(SegmentFeatures.Vowel, SegmentFeatures.NoFeature);
 
   override GetBody(ContentStyle style) = QRates.Pairs(TopCount, @Predicate);
 }

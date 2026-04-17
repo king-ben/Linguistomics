@@ -588,6 +588,11 @@ readonly namespace<Equation> Equations {
       RateMatrix;
       Equals;
 
+      var subscript = Span {
+        TextAlignment: Subscript;
+        TextHeight: 70%; 
+      };
+
       var states = ["A", "C", "G", "T"];
       MatrixBox {
         ColumnGap: 16pt;
@@ -598,10 +603,12 @@ readonly namespace<Equation> Equations {
           Row {
             foreach (var s2 in states) {
               if (s1 == s2)
-                '–';
+                EmDash;
               else Span {
-                RateParameter sub (s1.Compare(s2) < 0 ? Span {s1; s2} : Span{s2; s1});
-                EquilibriumDistribution sub s2;
+                RateParameter;
+                s1.Compare(s2) < 0 ? subscript {s1; s2} : subscript{s2; s1};
+                EquilibriumDistribution;
+                subscript {s2};
               };
             }
           }

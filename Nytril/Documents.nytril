@@ -7,7 +7,10 @@ abstract class LinguisticsContent: AuthoredContent {
     super.Constructor(name);
     Description = description;
 
-    Title = "Phylogenetic inference from cognate word forms";
+    Title       = "Phylogenetic inference from cognate word forms";
+    ContentType = "Research article";
+    Published   = #2026-4-8#;
+    DOI         = "https://doi.org/10.1093/jole/lzag001";
 
     AddAuthor(People.Goldstein_David, true);
     AddAuthor(People.McCreight_Shawn);

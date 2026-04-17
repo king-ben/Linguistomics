@@ -50,6 +50,7 @@ readonly namespace<Person> People {
     WorkEmailLink to new Email("eva.buchi@cnrs.fr");
     DepartmentLink to Organizations.CNRS;
     DepartmentLink to Organizations.UniversityOfLorraine;
+    OrcidLink to new UIN("0000-0002-5795-8602");
   };
   Bybee_Joan             = new(#4d03e1d3-f150-48dc-90d2-7fbf94e0446d#, "Joan", "L.", "Bybee");
 
@@ -103,6 +104,7 @@ readonly namespace<Person> People {
     DepartmentLink to Organizations.UCLALinguistics;
     WebsiteLink to new URL("linguistics.ucla.edu/person/david-goldstein");
     WorkEmailLink to new Email("dgoldstein@humnet.ucla.edu");
+    OrcidLink to new UIN("0000-0003-1276-7623");
   };
   Granville_Daniel       = new(#a240471e-c236-4290-b008-f79eb169f67f#, "Daniel", null, "Granville");
   Gray_Russell           = new(#d85e29f9-d606-47cc-ad09-4769a12ff1ab#, "Russell", "D.", "Gray");
@@ -138,9 +140,10 @@ readonly namespace<Person> People {
     DepartmentLink to Organizations.UCBIntegrativeBiology;
     WebsiteLink to new URL("vcresearch.berkeley.edu/faculty/john-huelsenbeck");
     WorkEmailLink to new Email("johnh@berkeley.edu");
+    OrcidLink to new UIN("0000-0002-3050-9997");
   };
-  Hunter_Allice          = new(#d63e7e3a-f5d9-4eb4-b1f7-6af045d99c34#, "Allice", null, "Hunter");
 
+  Hunter_Allice          = new(#d63e7e3a-f5d9-4eb4-b1f7-6af045d99c34#, "Allice", null, "Hunter");
   IPA                    = new(#0358bb4d-1477-4062-9479-9e903e6292c0#, null, null, "International Phonetic Association");
   Irslinger_Britta       = new(#1c6682ca-7dc8-4370-9069-70b87106d222#, "Britta", null, "Irslinger");
 
@@ -203,6 +206,7 @@ readonly namespace<Person> People {
     DepartmentLink to Organizations.NytrilLLC;
     WebsiteLink to new URL("www.nytril.com");
     WorkEmailLink to new Email("shawn.mccreight@gmail.com");
+    OrcidLink to new UIN("0009-0009-0876-7584");
   };
   Meade_Andrew           = new(#5f74f65c-12fa-4a8a-b9ed-888ecd3714d6#, "Andrew", null, "Meade");
   Mertens_Bianca         = new(#9210c389-b7c6-473e-a8e3-fbba1ccd8fbb#, "Bianca", null, "Mertens");

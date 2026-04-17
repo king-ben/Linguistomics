@@ -55,7 +55,7 @@ class ExperimentResults {
 
 readonly LinguisticsPaper    MainPaper         = new;
 readonly SupplementalContent SupplementalPaper = new;
-ContentStyle                 FinalStyle        = new JOLEStyle(None);
+ContentStyle                 FinalStyle        = new JOLEStyle(TwoColumn);
 ContentStyle                 SupplementStyle   = new PlainStyle;
 
 //==================================================
@@ -71,6 +71,7 @@ readonly namespace Main.Documents {
   DavidSlideShow      DavidPresentation  = new(MainResults);
   JohnSlideShow       JohnPresentation   = new(MainResults);
   DiagnosticsDocument Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
+  PublishedDoc        Published          = new(#0b9a02da-1c60-4050-9e65-76233e9e7d48#);
   StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new PaperBiography, FinalStyle);
 
 //  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
@@ -78,6 +79,32 @@ readonly namespace Main.Documents {
 //  StyleDocument     PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
 //  StyleDocument     SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplement (Review)", SupplementalPaper, ReviewStyle);
 //  TexDocument       TexPaper           = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
+}
+
+
+//==================================================
+
+class PublishedDoc: DocumentEntry {
+  Constructor(in Guid id) {
+    super.Constructor(id, "Publication");
+  }
+
+  override GetDocument = Document(0.75") {
+    Paragraph {
+      TextHeight: 20pt;
+      SpaceAfter: 20pt;
+      FinalStyle.ShowPublishDate(MainPaper);
+    };
+
+    Paragraph {
+      FitBox(new Image(res "Images/JOLE11Cover.jpg", "Journal of Language Evolution, Cover"), 2.5") {
+        TipAction: new URL("https://academic.oup.com/jole/article/doi/10.1093/jole/lzag001/8644220");
+      };
+      SpaceAfter: 20pt;
+    };
+
+    FinalStyle.OpenAccessLicense;
+  };
 }
 
 //======================================================================
@@ -109,11 +136,6 @@ class JOLEStyle: OUPStyle {
     TexFont   = "Libertinus Serif";
     SansSerif = TextFamily: TextFamilies.LibertinusSans;
   }
-
-  override SetTextStyle = {
-    TextHeight: 12pt;
-    TextFamily: TextFamilies.LibertinusSerif;
-  };
 }
 
 //===============================================================
@@ -156,6 +178,7 @@ class HomePage: SitePage {
       new DocTile(Main.Documents.PaperJOLE, Icons.article, "Paper"),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
+      new DocTile(Main.Documents.Published, Icons.podcasts),
       new DocTile(Main.Documents.Biography, Icons.person_search, "Acknowlegments") {Description: "Author bios and comments"},
     ];
   }
@@ -168,6 +191,7 @@ class HomePage: SitePage {
     };
 
     FinalStyle.ShowAuthorList(MainPaper, true);
+
     Paragraph {
       SpaceAfter: 20pt;
     };

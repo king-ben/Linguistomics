@@ -81,6 +81,7 @@ class TestResultsDocument: DocumentEntry {
 
     if (MainRun.NCQFreqs is valid) {
       AddContent(new EquilibriumFrequencyChart(MainRun));
+      AddContent(new QRatesMatrixFigure(MainRun.AveRates, "Average Rates"));
       AddContent(new NaturalClassRateChart(MainRun));
       AddContent(new SegmentalChangeFigure(MainRun));
     }
@@ -93,6 +94,7 @@ class TestResultsDocument: DocumentEntry {
     AddContent(new QRatesOneWayFigure(q));
     AddContent(new QRatesTopFigure(q));
   }
+
 
   void AddContent(Content c) {
     PaperContent.Add(c);
