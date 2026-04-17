@@ -23,7 +23,7 @@ abstract class LinguisticsContent: AuthoredContent {
 
 class LinguisticsPaper: LinguisticsContent {
   Constructor {
-    super.Constructor("Paper", "Linguistics research paper");
+    super.Constructor("White Paper", "New techniques in linguistic phylogeny inference");
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
     Acknowledgements      = PaperSections.Acknowledgements;
@@ -78,9 +78,10 @@ class BiographySection: Content {
 
 //======================================================================
 
-class PaperBiography: LinguisticsContent {
+class BiographyContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Biography", "Author Biographies and Acknowledgments");
+    super.Constructor("Acknowledgments", "Author Biographies and Acknowledgments");
+    Title            = "Acknowledgments";
     Acknowledgements = PaperSections.Acknowledgements;
     Funding          = PaperSections.Funding;
     ExtraSections    = [Acknowledgements, Funding, PaperSections.Biography];

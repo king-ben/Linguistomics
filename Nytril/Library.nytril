@@ -1012,15 +1012,39 @@ class ExperimentData {
 
 //======================================================================
 
+class CountBox {
+  static CountBox Null = new(null, 0, null) {Enabled: false};
+
+  var        Text,
+             Action;
+  var double Heat;
+  var Color  BackColor;
+  var bool   Enabled;
+
+  Constructor(text, double heat, action) {
+    Text    = text;
+    Heat    = heat;
+    Action  = action;
+    Enabled = true;
+  }
+}
+
+//======================================================================
+
 abstract class CountBase {
-  var               VFlags,
-                    MaxDigits;
-  var SegmentPart[] LegendSegments;
+  var                  VFlags,
+                       MaxDigits;
+  var SegmentPart[]    LegendSegments;
+  var Matrix<CountBox> Box;
 
   Constructor(ExperimentData data) {
     VFlags         = SegmentFeatures.Vowel | SegmentFeatures.Semivowel;
     LegendSegments = data.Rule.Segments;
     MaxDigits      = 3;
+  }
+
+  Color GetMapColor(int _, int _1, CountBox b) {
+    return b.BackColor;
   }
 
   PartitionBox(ContentStyle style, Size extentsize) = Paragraph {
@@ -1033,15 +1057,63 @@ abstract class CountBase {
     var size   = new Size(mx, mx);
     var length = LegendSegments.Length;
     var d      = size / (length+1);
+    var vlo  = double.MaxValue;
+    var vhi  = double.MinValue;
+
+    Box = new(length, length, null);
+    for (var i = 0; i < length; ++i) {
+      for (var j = 0; j < length; ++j) {
+        var b = AddEntry(LegendSegments[i], LegendSegments[j]);
+        Box[i, j] = b;
+        if (b.Enabled) {
+          vlo = Math.Min(vlo, b.Heat);
+          vhi = Math.Max(vhi, b.Heat);
+        }
+      }
+    }
+
+    if (vlo < vhi) {
+      var factor = 1.0 / (vhi - vlo);
+      for (var i = 0; i < length; ++i) {
+        for (var j = 0; j < length; ++j) {
+          var b = Box[i, j];
+          if (b.Enabled)
+            b.BackColor = PaperStyle.HeatMap.InterpolateColor((b.Heat - vlo) * factor);
+          else
+            b.BackColor = Colors.White;
+        }
+      }
+    }
 
     Canvas(null, null, border) {
-      TextHeight: Math.Min(d.Height * 0.7, d.Width * 1.7 / MaxDigits);
+      var th = Math.Min(d.Height * 0.7, d.Width * 1.7 / MaxDigits);
+      TextHeight: th;
 
-      var y = d.Height;
+      FitBox(Box.GetImage(@GetMapColor), size.Width - d.Width, size.Height - d.Height) {
+        ScalingMode: Pixelated;
+        X : d.Width;
+        Y : d.Height;
+      };
+
+      var y  = d.Height;
       for (var i = 0; i < length; ++i) {
         var x = d.Width;
         for (var j = 0; j < length; ++j) {
-          AddEntry(LegendSegments[i], LegendSegments[j], x, y, d);
+          var b = Box[i, j];
+          if (b.Enabled) {
+            Canvas(d.Width, d.Height) {
+              X: x;
+              Y: y;
+              HAlign: Center;
+              VAlign: Center;
+              TipNoPublish: true;
+              TipAction: b.Action;
+
+              b.Text {
+                TextColor: b.BackColor.TextCompliment;
+              };
+            };
+          }
           x += d.Width;
         }
         y += d.Height;
@@ -1093,16 +1165,16 @@ abstract class CountBase {
     };
   };
 
-  abstract AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size);
+  abstract CountBox AddEntry(SegmentPart si, SegmentPart sj);
 }
 
 //======================================================================
 
 class TransitionAction: DocumentEntry {
-  var WordPairClass[] List;
-  var                 Percent;
+  var List<WordPairClass> List;
+  var                     Percent;
 
-  Constructor(SegmentPart s1, SegmentPart s2, WordPairClass[] list, percent) {
+  Constructor(SegmentPart s1, SegmentPart s2, List<WordPairClass> list, percent) {
     super.Constructor(Guid.FromHash(s1.Ipa + s2.Ipa), Actions.ToDocument);
     List    = list;
     Percent = percent;
@@ -1193,35 +1265,13 @@ class PriorCount: CountBase {
     Factor = 1.0 / tmax;
   }
 
-  override AddEntry(SegmentPart si, SegmentPart sj, x, y, Size size) {
-    var value = TMatrix[si.Index, sj.Index];
-    if (value is null)
-      return null;
-
-    return Canvas(size.Width, size.Height) {
-      X: x;
-      Y: y;
-      HAlign: Center;
-      VAlign: Center;
-      TipNoPublish: true;
-      TipAction: new TransitionAction(si, sj, value.ToArray, value.Length*Factor);
-
-      var count = 0;
-      foreach (var e in value) {
-        var c0 = e.Word1.Padded[e.Index];
-        var c1 = e.Word2.Padded[e.Index];
-        if (c0.Features.HasFlag(VFlags) != c1.Features.HasFlag(VFlags))
-          ++count;
-      }
-
-      var bf = count > 0 ? 0.5 * count / value.Length : 0.5 + 0.5 * value.Length * Factor;
-      var bc = PaperStyle.HeatMap.InterpolateColor(bf);
-
-      Background: bc;
-      TextColor: bc.TextCompliment;
-      if (value.Length > 0)
-        value.Length;
-    };
+  override CountBox AddEntry(SegmentPart si, SegmentPart sj) {
+    var list = TMatrix[si.Index, sj.Index];
+    if (list is valid) {
+      var l = list.Length;
+      return new(l, l, new TransitionAction(si, sj, list, l*Factor));
+    }
+    return CountBox.Null;
   }
 }
 

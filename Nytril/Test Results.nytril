@@ -81,12 +81,12 @@ class TestResultsDocument: DocumentEntry {
 
     if (MainRun.NCQFreqs is valid) {
       AddContent(new EquilibriumFrequencyChart(MainRun));
-      AddContent(new QRatesMatrixFigure(MainRun.AveRates, "Average Rates"));
       AddContent(new NaturalClassRateChart(MainRun));
       AddContent(new SegmentalChangeFigure(MainRun));
     }
 
     var q = MainRun.QRates;
+    AddContent(new QRatesMatrixFigure(q));
     AddContent(new QRatesDiagonalFigure(q));
     AddContent(new GapFrequencyChart(MainRun));
     AddContent(new QRatesCCFigure(q));

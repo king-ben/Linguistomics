@@ -72,7 +72,7 @@ readonly namespace Main.Documents {
   JohnSlideShow       JohnPresentation   = new(MainResults);
   DiagnosticsDocument Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
   PublishedDoc        Published          = new(#0b9a02da-1c60-4050-9e65-76233e9e7d48#);
-  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new PaperBiography, FinalStyle);
+  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new BiographyContent, SupplementStyle);
 
 //  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
 //  StyleDocument     TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
@@ -87,6 +87,7 @@ readonly namespace Main.Documents {
 class PublishedDoc: DocumentEntry {
   Constructor(in Guid id) {
     super.Constructor(id, "Publication");
+    Description = "Link to publication sit";
   }
 
   override GetDocument = Document(0.75") {
@@ -175,11 +176,11 @@ class HomePage: SitePage {
     super.Constructor(Main.Site, #29f0a41f-f0f2-4830-bcaa-70418aa20157#, "Home", "Linguistics Research Project");
 
     Tiles = [
-      new DocTile(Main.Documents.PaperJOLE, Icons.article, "Paper"),
+      new DocTile(Main.Documents.PaperJOLE, Icons.article, "White Paper"),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
       new DocTile(Main.Documents.Published, Icons.podcasts),
-      new DocTile(Main.Documents.Biography, Icons.person_search, "Acknowlegments") {Description: "Author bios and comments"},
+      new DocTile(Main.Documents.Biography, Icons.person_search),
     ];
   }
 
@@ -191,6 +192,20 @@ class HomePage: SitePage {
     };
 
     FinalStyle.ShowAuthorList(MainPaper, true);
+
+    Paragraph {
+      SpaceBefore: 10pt;
+      TextHeight: 14pt;
+      Bold;
+      Lang.Abstract;
+    };
+
+    Block {
+      TextHeight: 12pt;
+      LeftIndent: 10pt;
+      RightIndent: 10pt;
+      FinalStyle.AddBody(PaperSections.Abstract);
+    };
 
     Paragraph {
       SpaceAfter: 20pt;
