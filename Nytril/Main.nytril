@@ -22,7 +22,8 @@ include "Visuals";
 include "Methods";
 include "Introduction";
 include "Slideshow";
-include "John Slides";
+include "Readme";
+include "Overview";
 include "David's Slides";
 include "Data Validation";
 //======================================================================
@@ -64,21 +65,21 @@ readonly RealmSite Main.Site  = new LinguistomicsSite;
 readonly           Main.Facts = [People, References, Equations, WorldLanguages];
 
 readonly namespace Main.Documents {
-  HomePage            HomePage           = new;
-  StyleDocument       PaperJOLE          = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, FinalStyle);
-  StyleDocument       Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplement", SupplementalPaper, SupplementStyle);
-  StyleDocument       Analysis           = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new RelationshipContent, SupplementStyle);
-  DavidSlideShow      DavidPresentation  = new(MainResults);
-  JohnSlideShow       JohnPresentation   = new(MainResults);
-  DiagnosticsDocument Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
-  PublishedDoc        Published          = new(#0b9a02da-1c60-4050-9e65-76233e9e7d48#);
-  StyleDocument       Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new BiographyContent, SupplementStyle);
+  HomePage             HomePage           = new;
+  StyleDocument        PaperJOLE          = new(#d8c22a4e-4dde-44a7-b762-9a15a2de11fb#, "Paper JOLE", MainPaper, FinalStyle);
+  StyleDocument        Supplemental       = new(#9082a441-cf06-4a95-b484-2cb5f5484c59#, "Supplement", SupplementalPaper, SupplementStyle);
+  StyleDocument        Graphs             = new(#7b30102b-51a7-4fc6-b28e-e97cc851afcd#, "Graphs", new GraphContent, SupplementStyle);
+  DavidSlideShow       DavidPresentation  = new(MainResults);
+  OverviewPresentation Overview           = new(MainResults, MainPaper.Published);
+  DiagnosticsDocument  Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
+  PublishedDoc         Published          = new(#0b9a02da-1c60-4050-9e65-76233e9e7d48#);
+  StyleDocument        Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new BiographyContent, SupplementStyle);
 
-//  ContentStyle      ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
-//  StyleDocument     TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
-//  StyleDocument     PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
-//  StyleDocument     SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplement (Review)", SupplementalPaper, ReviewStyle);
-//  TexDocument       TexPaper           = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
+//  ContentStyle       ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
+//  StyleDocument      TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
+//  StyleDocument      PaperJOLEReview    = new(#9cf9afd6-9897-47be-8f4c-6e820b08779b#, "Paper JOLE (Review)", MainPaper, ReviewStyle);
+//  StyleDocument      SupplementalReview = new(#874a4d17-46bb-45b5-838d-19d6296287ea#, "Supplement (Review)", SupplementalPaper, ReviewStyle);
+//  TexDocument        TexPaper           = new(#687fb991-b2b4-4552-811f-b088a78ebc56#, PaperJOLE);
 }
 
 
@@ -179,7 +180,10 @@ class HomePage: SitePage {
       new DocTile(Main.Documents.PaperJOLE, Icons.article, "White Paper"),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
+      new DocTile(Main.Documents.Graphs, Icons.analytics),
       new DocTile(Main.Documents.Published, Icons.podcasts),
+      new DocTile(Main.Documents.Overview, Icons.slideshow, "Overview"),
+      new DocTile(Main.Documents.ReadMe, Icons.read_more),
       new DocTile(Main.Documents.Biography, Icons.person_search),
     ];
   }

@@ -23,7 +23,7 @@ abstract class LinguisticsContent: AuthoredContent {
 
 class LinguisticsPaper: LinguisticsContent {
   Constructor {
-    super.Constructor("White Paper", "New techniques in linguistic phylogeny inference");
+    super.Constructor("White Paper", "Published version of the paper");
     SignificanceStatement = PaperSections.Significance;
     Abstract              = PaperSections.Abstract;
     Acknowledgements      = PaperSections.Acknowledgements;
@@ -140,11 +140,11 @@ class GraphSection: Content {
 
 //======================================================================
 
-class RelationshipContent: LinguisticsContent {
+class GraphContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Graphs", "Graphs of linguistic connections");
+    super.Constructor("Graphs", "Graphs of links between facts");
 
-    Subtitle = Span {"For: "; ContentStyle.DQuote {Title}};
+    Title = "Graphs";
 
     AddContent(PaperSections.Connections);
   }

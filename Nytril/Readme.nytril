@@ -3,7 +3,7 @@ using Format;
 include "Lang";
 include "NytrilStyle";
 
-readonly Main.Documents.InstallGit = new InstallGitDocument;
+readonly Main.Documents.ReadMe = new InstallGitDocument;
 
 //======================================================================
 
@@ -259,8 +259,8 @@ class NytrilDesktop: DialogView {
 
 class InstallGitDocument: DocumentEntry {
   Constructor {
-    super.Constructor(#db4da74f-86ef-491a-ab78-efd10a7414e0#, "Repo Installation");
-    Description = Name;
+    super.Constructor(#db4da74f-86ef-491a-ab78-efd10a7414e0#, "Read Me");
+    Description = "Guide to replicating the experiment";
   }
 
   Hyperlink(text, url) = Span {
