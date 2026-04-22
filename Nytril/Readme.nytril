@@ -3,8 +3,6 @@ using Format;
 include "Lang";
 include "NytrilStyle";
 
-readonly Main.Documents.ReadMe = new InstallGitDocument;
-
 //======================================================================
 
 abstract class DialogView {
@@ -257,9 +255,9 @@ class NytrilDesktop: DialogView {
 
 //======================================================================
 
-class InstallGitDocument: DocumentEntry {
+class ReplicationDocument: DocumentEntry {
   Constructor {
-    super.Constructor(#db4da74f-86ef-491a-ab78-efd10a7414e0#, "Read Me");
+    super.Constructor(#db4da74f-86ef-491a-ab78-efd10a7414e0#, "Replication");
     Description = "Guide to replicating the experiment";
   }
 

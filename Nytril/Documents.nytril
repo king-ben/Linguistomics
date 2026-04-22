@@ -49,16 +49,16 @@ class LinguisticsPaper: LinguisticsContent {
 
 //======================================================================
 
-readonly BiographySection PaperSections.Biography = new;
+readonly AcknowledgmentsSection PaperSections.Acknowledgments = new;
 
-class BiographySection: Content {
+class AcknowledgmentsSection: Content {
   Constructor {
-    super.Constructor("Biography");
+    super.Constructor("Acknowledgments");
   }
 
   override GetBody(ContentStyle style) = Block {
     style.Par {
-      "Brief biographies of the authors. ";
+      "Acknowledgments and brief biographies of the authors. ";
     };
 
     style.NumberedList {
@@ -78,13 +78,13 @@ class BiographySection: Content {
 
 //======================================================================
 
-class BiographyContent: LinguisticsContent {
+class AcknowledgmentContent: LinguisticsContent {
   Constructor {
-    super.Constructor("Acknowledgments", "Author Biographies and Acknowledgments");
+    super.Constructor("Acknowledgments", "Acknowledgments and Author Biographies");
     Title            = "Acknowledgments";
     Acknowledgements = PaperSections.Acknowledgements;
     Funding          = PaperSections.Funding;
-    ExtraSections    = [Acknowledgements, Funding, PaperSections.Biography];
+    ExtraSections    = [Acknowledgements, Funding, PaperSections.Acknowledgments];
   }
 }
 

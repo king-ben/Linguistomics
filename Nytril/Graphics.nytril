@@ -174,60 +174,6 @@ readonly namespace PaperStyle {
     FirstIndent: -16pt;
   };
 
-  SourcePar(ExperimentData data, Concept concept) = Block {
-    ParAlignment: Left;
-    SpaceBefore: 6pt;
-    LeftIndent: 0.25";
-    TextHeight: 8pt;
-
-    TextBlock {
-      SpaceAfter: 10pt;
-      Span {
-        Nexus.Keyword("namespace ");
-        concept.Name;
-        " {";
-      };
-      TextBlock {
-        IndentSpace: 2;
-        foreach (var cvar in concept.Attribute.Children) {
-          Span {
-            Nexus.Keyword("namespace ");
-            cvar.Name;
-            " {";
-          };
-          TextBlock {
-            IndentSpace: 2;
-            foreach (var word in cvar.Value) {
-              var taxon = data.Taxa[each0];
-              Span {
-                taxon.Language;
-                Span {
-                  Space * (data.MaxLanguageName - taxon.Language.Name.Length);
-                  " = ";
-                  Span {
-                    TextColor: PaperStyle.StringColor;
-                    Quote;
-                    foreach (var i in word) {
-                      if (i < 0)
-                        "-";
-                      else
-                        data.UniqueSegments[i].Ipa;
-                    }
-                    Quote;
-                  }
-                  ";";
-                };
-              };
-            }
-          };
-          "}";
-        }
-      };
-      "}";
-    }
-//    SourceSelection(concept, SourceSelectOptions.Line SourceSelectOptions.Children);
-  };
-
   BodyTitle = Span {
     Bold;
   };
@@ -309,7 +255,7 @@ readonly namespace Graphics {
     return Atan2(p2.Y - p1.Y, p2.X - p1.X);
   }
 
-  Line(LineStyleClass line, Point p1, Point p2) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
+  Line(LineStyleClass line, Point p1, Point p2) = Shape(null, new(line.LineSize, line.LineColor, Solid, Round)) {
     OpenPath(p1) {
       LineTo(p2);
     };
@@ -338,7 +284,7 @@ readonly namespace Graphics {
     }
   };
 
-  CircleLine(LineStyleClass line, Point center, radius, angle, anglegap) = Shape(null, new(line.LineSize, line.LineColor, LineStyles.Solid, LineCaps.Round)) {
+  CircleLine(LineStyleClass line, Point center, radius, angle, anglegap) = Shape(null, new(line.LineSize, line.LineColor, Solid, Round)) {
     var angle1 = angle + anglegap;
     var angle2 = angle - anglegap;
     var p1     = ExtendPoint(center, radius, angle1);

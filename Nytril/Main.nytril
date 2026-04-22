@@ -73,7 +73,8 @@ readonly namespace Main.Documents {
   OverviewPresentation Overview           = new(MainResults, MainPaper.Published);
   DiagnosticsDocument  Diagnostic         = new(#ded5b32d-f925-4ca0-b6b6-cfec8100fd42#, FinalStyle, MainResults.Data);
   PublishedDoc         Published          = new(#0b9a02da-1c60-4050-9e65-76233e9e7d48#);
-  StyleDocument        Biography          = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Biography", new BiographyContent, SupplementStyle);
+  StyleDocument        Acknowledgements   = new(#295e8621-eab4-44c0-b037-732af0b8e776#, "Acknowledgments", new AcknowledgmentContent, SupplementStyle);
+  ReplicationDocument  Replication        = new;
 
 //  ContentStyle       ReviewStyle        = new JOLEStyle(LineNumbers Anonymous) {ReviewMode: ContentStyle.ReviewModes.MarkupAll};
 //  StyleDocument      TitlePaper         = new(#84acc9fb-0e65-4940-a8e0-cb356167f4cb#, "Title Page", new LinguisticsTitle, FinalStyle);
@@ -88,7 +89,7 @@ readonly namespace Main.Documents {
 class PublishedDoc: DocumentEntry {
   Constructor(in Guid id) {
     super.Constructor(id, "Publication");
-    Description = "Link to publication sit";
+    Description = "Link to publication site";
   }
 
   override GetDocument = Document(0.75") {
@@ -125,7 +126,7 @@ class BioSummary: Fact {
 readonly namespace<BioSummary> BioSummaries {
   David = new(People.Goldstein_David, "A. Richard Diebold Jr. Professor of Indo-European Studies, Professor of Linguistics, Professor of Classics, University of California, Los Angeles");
   Shawn = new(People.McCreight_Shawn, "Founded Guidance Software, Inc. in 1997 and served as Chairman and CTO until 2016. Founded Nytril LLC in 2017 and currently serves as CEO and software architect. He is currently developing the Nytril platform to enable the creation of computable documentation.");
-  Eva   = new(People.Buchi_Éva, "Senior researcher at CNRS (ATILF, Nancy) and a lecturer at Université de Lorraine. Her research focuses on historical Romance linguistics, particularly etymology. She published in 1996 a monograph on the \"Französisches Etymologisches Wörterbuch\" (FEW) and in 2010 a dictionary of Romance loanwords from Russian. Together with Wolfgang Schweickard (Saarland University), she heads the \"Dictionnaire Étymologique Roman\" (DÉRom, 2008). Currently she is working on a handbook of Romance lexical etymology she has been commissioned to edit for De Gruyter’s Manuals of Romance Linguistics (MRL) series.");
+  Eva   = new(People.Buchi_Éva, "Senior researcher at CNRS (ATILF, Nancy) and a lecturer at Université de Lorraine. Her research focuses on historical Romance linguistics, particularly etymology. She published in 1996 a monograph on the \"Französisches Etymologisches Wörterbuch\" (FEW) and in 2010 a dictionary of Romance loanwords from Russian. Together with Wolfgang Schweickard (Saarland University), she heads the \"Dictionnaire Étymologique Roman\" (DÉRom, 2008—). Currently she is working on a handbook of Romance lexical etymology she has been commissioned to edit for De Gruyter’s Manuals of Romance Linguistics (MRL) series.");
   John  = new(People.Huelsenbeck_John, "McCreight Chancellor's Chair in Computational Biology, Professor of Integrative Biology, University of California, Berkeley");
 }
 
@@ -175,16 +176,17 @@ class OtherStyle: PNASStyle {
 class HomePage: SitePage {
   Constructor {
     super.Constructor(Main.Site, #29f0a41f-f0f2-4830-bcaa-70418aa20157#, "Home", "Linguistics Research Project");
+    Description = MainPaper.Title;
 
     Tiles = [
       new DocTile(Main.Documents.PaperJOLE, Icons.article, "White Paper"),
       new DocTile(Main.Documents.Supplemental, Icons.add_circle),
       new DocTile(Main.Documents.Diagnostic, Icons.settings),
-      new DocTile(Main.Documents.Graphs, Icons.analytics),
+      new DocTile(Main.Documents.Graphs, Icons.insights),
       new DocTile(Main.Documents.Published, Icons.podcasts),
       new DocTile(Main.Documents.Overview, Icons.slideshow, "Overview"),
-      new DocTile(Main.Documents.ReadMe, Icons.read_more),
-      new DocTile(Main.Documents.Biography, Icons.person_search),
+      new DocTile(Main.Documents.Replication, Icons.read_more),
+      new DocTile(Main.Documents.Acknowledgements, Icons.person_search),
     ];
   }
 

@@ -899,7 +899,7 @@ class PartitionAction: Action {
                        P2;
 
   Constructor(PartitionRule rule, StatClass rate, SegmentPartition p1, SegmentPartition p2) {
-    super.Constructor(Actions.ToSource, rule);
+    super.Constructor(Actions.ToSource, rule, Guid.FromHash("partitionrate{0}{1}"(p1.FactId, p2.FactId)));
     Rate = rate;
     P1   = p1;
     P2   = p2;

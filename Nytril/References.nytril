@@ -340,12 +340,12 @@ readonly namespace<Organization> Organizations {
     StreetAddress("21, rue de l'école de médecine", Cities.Paris, "75006");
   };
 
-  CNRS = new(#25dd2aeb-f627-48e0-9c7d-10c3e8decea1#, "Centre national de la recherche scientifique") {
-    new City(#05b9afc0-cb17-4027-8ec9-5885e9a7f888#, "Nancy") {Link to Countries.France};
+  CNRS = new(#25dd2aeb-f627-48e0-9c7d-10c3e8decea1#, "Centre national de la recherche scientifique", "CNRS") {
+    Link to Cities.Nancy;
   };
 
   UniversityOfLorraine = new(#704910ed-65ef-4453-bad3-72e00f7bfa1f#, "Université de Lorraine") {
-    Link to Cities.Paris;
+    Link to Cities.Nancy;
   };
 
   UCLALinguistics = new(#baea0c18-4bc2-4220-9a72-e9ee64846cc9#, "Department of Linguistics") {

@@ -2401,29 +2401,29 @@ namespace Mountain {
   WordGroup  = Swadesh207;
 
   namespace Primary {
-    Latin       = "montem";              // mons
-    French      = "mɔ̃----";              // mons mõtaɲ montagne
-    Spanish     = "monte-";              // monte monˈtaɲa montaña
-    Italian     = "monte-";              // monˈtaɲɲa montagna  montagna monˈtaɲɲa, 'monte
-    PortugueseB = "mõ-ti-";              // monte; mõˈtɐɲɐ montanha
-    Portuguese  = "mõ-tɨ-";              // monte; mõˈtɐɲɐ montanha
-    Catalan     = "mun---";              // munt; mun̪taɲə muntanya
-    Walloon     = "mɔ̃----";              // mont
-    Friulian    = "mɔnt--";              // mònt
-    Romanian    = "munte-";              // munte
+    Latin       = "montem";     // mons
+    French      = "mɔ̃----";     // mons mõtaɲ montagne
+    Spanish     = "monte-";     // monte monˈtaɲa montaña
+    Italian     = "monte-";     // monˈtaɲɲa montagna monˈtaɲɲa
+    PortugueseB = "mõ-ti-";     // monte; mõˈtɐɲɐ montanha
+    Portuguese  = "mõ-tɨ-";     // monte; mõˈtɐɲɐ montanha
+    Catalan     = "mun---";     // munt; mun̪taɲə muntanya
+    Walloon     = "mɔ̃----";     // mont
+    Friulian    = "mɔnt--";     // mònt
+    Romanian    = "munte-";     // munte
   }
 
   namespace Montanea {
-    Latin       = "montaː-nea";          // montanea
-    French      = "mɔ̃-ta-ɲ--";           // mons  montagne
-    Spanish     = "monta-ɲ-a";           // montaña
-    Italian     = "montaɲɲ-a";           // monˈtaɲɲa montagna  montagna monˈtaɲɲa
-    PortugueseB = "mõ-tɐ̃-ɲ-a";           // mõˈtɐɲɐ  montanha
-    Portuguese  = "mõ-tɐ-ɲ-ɐ";           // montanha
-    Catalan     = "munta-ɲ-ə";           // muntanya
-    Walloon     = "mɔ̃-ta-ɲ--";           // montagne
-    Friulian    = "monta-ɲe-";           // montagne
-    Romanian    = Empty;                 //
+    Latin       = "montaː-nea"; // montanea
+    French      = "mɔ̃-ta-ɲ--";  // mons  montagne
+    Spanish     = "monta-ɲ-a";  // montaña
+    Italian     = "montaɲɲ-a";  // monˈtaɲɲa montagna montagna monˈtaɲɲa
+    PortugueseB = "mõ-tɐ̃-ɲ-a";  // mõˈtɐɲɐ  montanha
+    Portuguese  = "mõ-tɐ-ɲ-ɐ";  // montanha
+    Catalan     = "munta-ɲ-ə";  // muntanya
+    Walloon     = "mɔ̃-ta-ɲ--";  // montagne
+    Friulian    = "monta-ɲe-";  // montagne
+    Romanian    = Empty;        //
   }
 }
 

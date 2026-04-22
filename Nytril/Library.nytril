@@ -660,8 +660,7 @@ class ExperimentData {
   var List<char>              PlainBuffer,
                               TextBuffer;
   var Attribute               ExampleConcept,
-                              FigureConcept,
-                              DataConcept;
+                              FigureConcept;
   var int                     WordCount,
                               MaxLanguageName,
                               SegmentCount;
@@ -821,7 +820,6 @@ class ExperimentData {
   virtual void GetConceptExamples(Attribute concepts) {
     ExampleConcept = concepts.FindChild("Stone");
     FigureConcept  = concepts.FindChild("What");
-    DataConcept    = concepts.FindChild("Mountain");
   }
 
   void CompletedRead {

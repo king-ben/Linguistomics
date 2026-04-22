@@ -1432,16 +1432,14 @@ class ModelInferenceSection: Content {
 
 //======================================================================
 
-readonly ConceptEncodingFigure Figures.ConceptEncoding = new(MainResults.Data, MainResults.Data.DataConcept);
+readonly ConceptEncodingFigure Figures.ConceptEncoding = new;
 
 class ConceptEncodingFigure: Content {
-  var ExperimentData      Data;
-  var ExampleConcept Concept;
+  var Attribute Concept;
 
-  Constructor(ExperimentData data, Attribute concept) {
+  Constructor {
     super.Constructor("Concept Encoding");
-    Data    = data;
-    Concept = new(data, concept);
+    Concept = attribute Concepts.Mountain;
   }
 
   override GetCaption(ContentStyle style) = Span {
@@ -1449,10 +1447,8 @@ class ConceptEncodingFigure: Content {
   };
 
   override GetBody(ContentStyle style) = Paragraph {
-    ParAlignment: Center;
-    Frame(2.5") {
-      SourcePar(Data, Concept.Concept)
-    };
+    TextHeight: 6pt;
+    SourceSelection(Concept, SourceSelectOptions.Line SourceSelectOptions.Children);
   };
 }
 
@@ -1598,7 +1594,7 @@ class AcknowledgementsSection: Content {
         "We thank "; style.ShowPerson(People.Lunter_Gerton); " for guidance on the implementation of the TKF91 model. ";
         "Earlier versions of this work were presented at the Computational Phylogenetics and Language (Pre)history Workshop in Rethymno, EvoLang 2024, and the UCLA Phonology Seminar. ";
         "We are grateful to the audiences at these three venues for their valuable feedback, and especially to Chundra Cathcart, Frederik Hartmann, Simon Greenhill, and Gerhard Jäger for their thoughtful comments. ";
-        "We also thank the three anonymous reviewers for insightful crticism, which substantially improved the paper.";
+        "We also thank the three anonymous reviewers for insightful criticism, which substantially improved the paper.";
       }
     }
   };
