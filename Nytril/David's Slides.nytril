@@ -23,7 +23,7 @@ class DavidSlideShow: SlideShow {
   var ExperimentResults Results;
 
   Constructor(ExperimentResults results) {
-    super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, new OtherStyle, Authors);
+    super.Constructor(#75503dbc-fd54-4c55-b2e4-ebafb3b39d7d#, "David's Presentation", new DavidDesignClass, new OtherStyle, AuthorList);
     Results      = results;
     Title       = "From phonology to phylogeny\nA new framework for phylogenetic inference";
     Description = "Presentation for Linguists";
@@ -38,7 +38,7 @@ class DavidSlideShow: SlideShow {
   override InitDocument = {
     TextFamily: TextFamilies.LibertinusSerif;
     TextHeight: 9pt;
-    LinkTypes.AuthorLink to Authors;
+    LinkTypes.AuthorLink to AuthorList;
   };
 }
 
@@ -120,7 +120,7 @@ namespace DavidSlides.Introduction {
     Text = Block {
       TextHeight: 18pt;
       Separator: Paragraph;
-      ContentStyle.GetFullName(each Authors.FindSlice(p => p != People.Goldstein_David));
+      ContentStyle.GetFullName(each MainPaper.Authors.FindSlice(p => p != People.Goldstein_David));
     };
   }
 

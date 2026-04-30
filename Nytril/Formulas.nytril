@@ -189,7 +189,7 @@ readonly namespace<EquationSymbol> EquationSymbols {
   RateMatrixScale         = new(#c19ebb53-371c-460e-adf0-86e960231174#, Italic beta, "Rate matrix scaling factor", "Scales the rate matrix such that the average rate of segmental substitution is one");
   StateProbability        = new(#4d420b31-d22f-4915-8ae8-15f2f4bbb87d#, BoldSymbol "P", "Probability", "The probability the process ends in certain state");
   MarginalLikelihood      = new(#c2f230d4-4050-4ee3-98b6-ec1c52405ce5#, Italic "P", "Marginal Likelihood", "The average probability of the observations");
-  EquilibriumDistribution = new(#37149ed6-e98a-431c-b40d-7069c0a8c7ca#, pi, "Equilibrium distribution");
+  EquilibriumDistribution = new(#37149ed6-e98a-431c-b40d-7069c0a8c7ca#, pi, "Equilibrium frequency distribution");
   Probability             = new(#6083d6c3-2d27-4780-96bc-2de6c966774f#, pi, "Probability");
   InsertionRate           = new(#1a94ba3d-d7da-4634-bbf6-88b03d84cffc#, lambda, "Segment insertion rate", "Rate of segment insertion");
   DeletionRate            = new(#0c0d91ab-e586-451e-8519-74bead5be54d#, Italic mu, "Rate of segment deletion");
@@ -590,7 +590,7 @@ readonly namespace<Equation> Equations {
 
       var subscript = Span {
         TextAlignment: Subscript;
-        TextHeight: 70%; 
+        TextHeight: 70%;
       };
 
       var states = ["A", "C", "G", "T"];

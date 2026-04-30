@@ -501,7 +501,7 @@ class PhylogenyResultsSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.AddFigure(Figures.ModelTreesUsed, Top | Bottom| Full, 70%);
+    style.AddFigure(Figures.ModelTreesUsed, Top | Bottom| Full, 60%);
 
     style.Par {
       "All model parameters are treated as random variables endowed with prior distributions. ";
@@ -760,8 +760,6 @@ class WordTransformationSection: Content {
       " thus reflects both the structural constraints of the model and regularities present in the empirical data. ";
     };
 
-    style.AddFigure(Figures.RateChart, Top | Bottom | Full, 60%);
-
     style.Par {
       style.FigureReference(Figures.EquilibriumCharts);
       " displays the estimated equilibrium frequencies under the ";
@@ -784,8 +782,6 @@ class WordTransformationSection: Content {
       " exhibit the highest estimated rates, which reflects their comparatively large equilibrium weights. ";
       "More broadly, the inferred equilibrium distribution closely mirrors the empirical segment frequencies observed in the dataset. ";
     };
-
-    style.AddFigure(Figures.AlignmentExample1, Top | Bottom | Full);
 
     style.Par {
       style.FigureReference(Figures.RateChart);
@@ -846,6 +842,8 @@ class WordTransformationSection: Content {
       //"it infers transitions from nasal consonants to nasal vowels (and vice versa) as opposed to oral vowels.";
     };
 
+    style.AddFigure(Figures.RateChart, Top | Bottom | Full, 60%);
+
   };
 }
 
@@ -861,10 +859,9 @@ class WordSegmentRelSection: Content {
   }
 
   override GetBody(ContentStyle style) = Block {
-    style.AddFigure(Figures.GappinessChart, Top | Bottom, 70%);
+    var align1 = Figures.AlignmentExample1;
 
     style.Par {
-      var align1 = Figures.AlignmentExample1;
       var index1 = align1.Examples[0].FindAlignment(MainResults.MainRun);
 
       "In our framework, segmental homology across languages is treated as a latent random variable. ";
@@ -893,12 +890,13 @@ class WordSegmentRelSection: Content {
       DotSpace;
       "Third, segments from the same natural class tend to be assigned to the same column in the alignment. ";
     };
+    style.AddFigure(align1, Top | Full);
 
-    style.AddFigure(Figures.AlignmentExample2, Bottom | Full);
+    style.AddFigure(Figures.GappinessChart, Top | Bottom, 70%);
 
+
+    var align2 = Figures.AlignmentExample2;
     style.Par {
-      var align2 = Figures.AlignmentExample2;
-
       "The posterior distribution over alignments is sensitive to the substitution model. ";
       style.FigureReference(align2); " presents the {0} credible set of alignments for the concept "(AlignmentsFigure.CutoffPercent);
       style.SQuote {
@@ -941,6 +939,7 @@ class WordSegmentRelSection: Content {
       align2.NaturalClass;
       " model. ";
     };
+    style.AddFigure(align2, Bottom | Full);
   };
 }
 
@@ -1439,7 +1438,7 @@ class ConceptEncodingFigure: Content {
 
   Constructor {
     super.Constructor("Concept Encoding");
-    Concept = attribute Concepts.Mountain;
+    Concept = attribute Concepts.Night;
   }
 
   override GetCaption(ContentStyle style) = Span {

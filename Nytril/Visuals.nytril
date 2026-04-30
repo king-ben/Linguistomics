@@ -436,7 +436,6 @@ class EquilibriumFrequencyChart: ResultsFigureBase {
       foreach (var p in partitions) {
         Span {
           Tip: p;
-          TextColor: p.BackColor;
           p.Name;
         }
       }

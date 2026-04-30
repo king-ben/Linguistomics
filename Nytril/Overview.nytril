@@ -15,22 +15,18 @@ class SlideShowDesign: FancyDesign {
 class OverviewPresentation: SlideShow {
   var ExperimentResults Results;
 
-  Constructor(ExperimentResults results, DateTime created) {
-    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "Overview", new SlideShowDesign, new OtherStyle,
-    [People.Goldstein_David,
-    People.McCreight_Shawn,
-    People.Buchi_Éva,
-    People.Huelsenbeck_John]);
+  Constructor(ExperimentResults results, DocReference reference) {
+    super.Constructor(#aaa17f12-4f92-4c7e-a941-017d2015e129#, "Overview", new SlideShowDesign, new OtherStyle, AuthorList);
     Title       = "Phylogenetic inference from cognate word forms";
     Description = "Overview of results";
     Results     = results;
-    Created     = created;
+    Created     = reference.Date;
   }
 
   override InitDocument = {
     Style.SansSerif;
     TextHeight: 16pt;
-    LinkTypes.AuthorLink to Authors;
+    LinkTypes.AuthorLink to AuthorList;
   };
 
   override void CreateSlides {

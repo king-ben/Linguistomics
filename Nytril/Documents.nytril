@@ -1,21 +1,33 @@
-using Format;
+using Format, LinkTypes;
+
+//======================================================================
+
+readonly DocReference GMBH26 = new(#560f96ac-83e2-4450-ac5e-e965a9213f0e#, Article) {
+  Title   : "Phylogenetic inference from cognate word forms";
+  Date    : #2026-4-8#;
+  Volume  : 11;
+  Pages   : "lzag001";
+  Abstract: AbstractBody as string;
+  ISSN    : "2058-458X";
+  DOI     : "10.1093/jole/lzag001";
+
+  Link to new URL("doi.org/10.1093/jole/lzag001");
+
+//    .new URL("https://academic.oup.com/jole/article/doi/10.1093/jole/lzag001/8644220")
+
+
+  EPrintLink to new URL("academic.oup.com/jole/article-pdf/doi/10.1093/jole/lzag001/67992300/lzag001.pdf");
+  AuthorLink to [People.Goldstein_David, People.McCreight_Shawn, People.Buchi_Éva, People.Huelsenbeck_John];
+  JournalLink to Organizations.JournalLanguageEvolution;
+};
 
 //======================================================================
 
 abstract class LinguisticsContent: AuthoredContent {
   Constructor(name, description) {
-    super.Constructor(name);
+    super.Constructor(name, GMBH26);
     Description = description;
-
-    Title       = "Phylogenetic inference from cognate word forms";
-    ContentType = "Research article";
-    Published   = #2026-4-8#;
-    DOI         = "https://doi.org/10.1093/jole/lzag001";
-
-    AddAuthor(People.Goldstein_David, true);
-    AddAuthor(People.McCreight_Shawn);
-    AddAuthor(People.Buchi_Éva);
-    AddAuthor(People.Huelsenbeck_John);
+    SetCorrespondant(People.Goldstein_David);
   }
 }
 
@@ -94,7 +106,7 @@ class SupplementalContent: LinguisticsContent {
   Constructor {
     super.Constructor("Supplement", "Extra derivations and charts to supplement the main paper");
     Title    = "Supplementary Material";
-    Subtitle = Span {"For: "; ContentStyle.DQuote {MainPaper.Title}};
+//    Subtitle = Span {"For: "; ContentStyle.DQuote {MainPaper.Title}};
 
     AddContent(PaperSections.Methods);
     Appendix.AddContent(Figures.Alignments);

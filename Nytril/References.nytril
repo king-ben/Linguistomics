@@ -2,15 +2,6 @@ using LinkTypes, CitationLib;
 
 include "Basic Facts";
 
-//======================================================================
-
-readonly Person[] Authors = [
-  People.Goldstein_David,
-  People.McCreight_Shawn,
-  People.Buchi_Éva,
-  People.Huelsenbeck_John,
-];
-
 //=========================================================================
 
 // People referred to in the project are instantiated here, in alphabetical order
@@ -202,7 +193,7 @@ readonly namespace<Person> People {
   Malkiel_Yakov          = new Person(#0d760837-62fc-4aa7-ba0b-988faf0fffb7#, "Yakov", null, "Malkiel");
   Marsico_Egidio         = new(#18903af5-0e16-40d7-8127-90f03971d7d2#, "Egidio", null, "Marsico");
   McCloy_Daniel          = new(#89bd017c-0507-8b46-92f4-d2459bc3c228#, "Daniel", null, "McCloy");
-  McCreight_Shawn        = new(#1c36c96b-43e5-426f-8c67-e9e05edf6326#, "Shawn", "H.", "McCreight") {
+  McCreight_Shawn        = new(#1c36c96b-43e5-426f-8c67-e9e05edf6326#, "Shawn", "Hamill", "McCreight") {
     DepartmentLink to Organizations.NytrilLLC;
     WebsiteLink to new URL("www.nytril.com");
     WorkEmailLink to new Email("shawn.mccreight@gmail.com");
@@ -312,16 +303,7 @@ readonly namespace<Person> People {
 
 //======================================================================
 
-readonly namespace<City> Cities {
-  Passau          = new(#8cf68d2d-ba6d-4310-a9b6-de70fbe889d2#, "Passau") {Link to Countries.Germany};
-  Charlottesville = new(#a7ef7900-4886-4c56-ab23-b1b0ccb13f84#, "Charlottesville") {Link to USStates.Virginia};
-}
-
 readonly namespace<Organization> Organizations {
-  AperioPress = new(#8884b5f7-eb60-41ee-9f45-f087ca45ca24#, "Aperio Press") {
-    Link to Cities.Charlottesville;
-  };
-
   InternationalPhoneticAlphabet = new(#b825acb6-e103-49b7-96b8-d7183d0223ff#, "InternationalPhoneticAlphabet.org");
 
   ASJP = new(#b1147318-10aa-4a99-a3b0-1d4ebb69df1d#, "ASJP");
@@ -364,43 +346,10 @@ readonly namespace<Organization> Organizations {
 
   PlanckInstitute = new(#61c1f544-7067-42d5-aeb4-d6c3474c6bd3#, "Max Planck Institute for the Science of Human History");
 
-  OxfordPress = new(#5377016e-03b6-4528-96f4-f0275a634c6e#, "Oxford University Press") {
-    Link to Cities.Oxford;
-  };
-
-  CambridgePress = new(#57248374-0738-4f95-b432-b9e24de0843c#, "Cambridge University Press") {
-    Link to Cities.Cambridge;
-  };
-
-  JohnBenjamins = new(#da401b81-8a02-4683-b560-c95554ed878e#, "John Benjamins") {
-    Link to Cities.Amsterdam;
-  };
-
-  WileyBlackwell = new(#561e710a-466d-45ee-a57f-4d0a94eaa70f#, "Wiley-Blackwell") {
-    Link to Cities.Malden;
-  };
-
-  AlmqvistWiksell = new(#d0eabc50-971c-427d-94de-db800043633e#, "Almqvist & Wiksell") {
-    Link to Cities.Stockholm;
-  };
-
-  Wiley = new(#0046ff7e-a236-4a37-95cd-bd54b653829f#, "Wiley");
-
-  Holt = new(#d0f83f37-415b-4e69-912c-d8c97ff69163#, "H. Holt and Company") {
-    Link to Cities.NewYork;
-  };
-
   PennState = new(#cdce8591-0f96-443b-a3be-6959e0b811d0#, "The Pennsylvania State University Press") {
-        Link to new City(#362c8524-bcca-4088-ac63-fbfc3befb796#, "University Park");
+    Link to Cities.UniversityPark;
   };
 
-  PrenticeHall = new(#e8e6822e-63d8-4f70-9172-ac0866627ad7#, "Prentice-Hall") {
-        Link to new City(#b62a56e8-315c-4f11-9945-f8d07035992c#, "Englewood Cliffs");
-  };
-
-  Routledge = new(#3dd59ea1-c539-4c4b-b4ae-6b914cdab837#, "Routledge") {
-    Link to Cities.London;
-  };
 
   // journals are here, in alphabetical order
   AnnualReviewOfAnthropology = new(#86eded6b-4ee8-4c42-b1fb-c8c1385acaff#, "Annual Review of Anthropology");
@@ -415,7 +364,7 @@ readonly namespace<Organization> Organizations {
   EnglishLanguageAndLinguistics = new(#80ae739a-9ce7-450a-950f-bb45160c945b#, "English Language and Linguistics");
   JournalChemicalPhysics = new(#277261bc-736e-4c2b-af2b-fe8a000d31ba#, "Journal of Chemical Physics");
   JournalComputationalBiology = new(#f013f5df-707d-44e1-8f9a-6a0134fe157a#, "Journal of Computational Biology");
-  JournalLanguageEvolution = new(#7dd38301-c3a7-4227-8a3a-ab0fdeae2413#, "Journal of Language Evolution");
+  JournalLanguageEvolution = new(#7dd38301-c3a7-4227-8a3a-ab0fdeae2413#, "Journal of Language Evolution", "JOLE");
   JournalMolecularEvolution = new(#c2c147f4-cd0b-4d4b-a611-5253d8131c4e#, "Journal of Molecular Evolution");
   Language = new(#3b4963f6-8bee-400a-a12b-9e0e14655cfd#, "Language");
   LanguageVariationAndChange = new(#fe0c3ddf-700b-47d0-a0f0-8822eebb69c9#, "Language Variation and Change");
@@ -442,7 +391,6 @@ readonly namespace<Organization> Organizations {
 
   ATILF = new(#c6017554-8396-4d26-9208-05c1f7acceb1#, "Analyse et Traitement Informatique de la Langue Française", "ATILF");
 
-
   // publishers
   LINCOM = new(#cdbac7cc-d315-4dc4-80c5-a62a33581d1c#, "LINCOM") {
     Link to Cities.Munich;
@@ -456,16 +404,16 @@ readonly namespace<Organization> Organizations {
   };
 
   ACL = new(#96c184a3-9799-452d-9d15-e9d2855de310#, "Association for Computational Linguistics") {
-    Link to new City(#a4335259-e592-4f3c-96ba-5571d05a3646#, "Stroudsburg") {Link to USStates.Pennsylvania};
+    Link to Cities.Stroudsburg
   };
 
   WydawnictwoNaukoweUniwersytetuMikołajaKopernika = new(#5d090f6c-4d38-4098-961b-f149bcd47f33#, "Wydawnictwo Naukowe Uniwersytetu Mikołaja Kopernika") {
-     Link to new City(#bfc512da-660a-48fd-9a55-0bcb07c4b1ce#, "Toruń")
+    Link to new City(#bfc512da-660a-48fd-9a55-0bcb07c4b1ce#, "Toruń")
   };
 
 
-  Udlr = new(#038f2ab8-df07-44ba-b4ce-6f01e27c7f7d#, "Universidad de la República");
-  Rothe          = new(#9057e148-cef3-48c8-8626-ed0c3d1f4e8e#, "Rothe") {Link to Cities.Passau};
+  Udlr = new(#038f2ab8-df07-44ba-b4ce-6f01e27c7f7d#, "Universidad de la República") {Link to Countries.Uruguay};
+  Rothe = new(#9057e148-cef3-48c8-8626-ed0c3d1f4e8e#, "Rothe") {Link to Cities.Passau};
 }
 
 //======================================================================
@@ -731,7 +679,7 @@ readonly namespace<DocReference> References {
     Date : #1954#;
     AuthorLink to People.Coseriu_Eugenio;
     PublisherLink to Organizations.Udlr;
-    Link to new City(#0a88e55e-624f-421a-a7d6-c381bce836e3#, "Montevideo") {Link to Countries.Uruguay};
+    Link to Cities.Montevideo;
   };
 
   Croft2008 = new(#935c60d2-d680-42db-9df5-e383b6cf3bf4#, Article) {
@@ -1221,7 +1169,7 @@ readonly namespace<DocReference> References {
     BookTitle  : "Proceedings of the XIVth International Congress of Phonetic Sciences";
     Date       : #1999#;
     Pages      : 353..356;
-    Link to new City(#f33d2b62-5d01-4779-b193-aa051b833881#, "Berkeley");
+    Link to Cities.Berkeley;
     PublisherLink to Organizations.UCBLinguistics;
     AuthorLink to People.Marsico_Egidio;
     EditorLink to [People.Ohala_John,People.Hasegawa_Yoko, People.Ohala_Manjari, People.Granville_Daniel, People.Bailey_Ashlee];
@@ -1316,7 +1264,7 @@ readonly namespace<DocReference> References {
     Volume : 24;
     Pages  : 151..157;
     Number : 1;
-    DOI    : "Darwinian perspectives on the evolution of human languages";
+    DOI    : "10.3758/s13423-016-1072-z";
     JournalLink to Organizations.PsychonomicBulletinAndReview;
     AuthorLink to People.Pagel_Mark;
   };
@@ -1339,7 +1287,7 @@ readonly namespace<DocReference> References {
     PublisherLink to Organizations.PlanckInstitute;
     Link to new URL("www.phoible.org");
     Accessed: #2021-8-19#;
-    Link to new City(#648fecca-7089-4ebb-8f6c-2c4b2ccb79ee#, "Jena");
+    Link to Cities.Jena;
   };
 
   PortugueseMap = new DocReference(#09f9af61-47d7-40cc-81fc-f15c9a649e62#, Art) {
