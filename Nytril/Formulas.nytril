@@ -24,7 +24,7 @@ IntegrateOver(v) = Integral {
 
 ParamList(v) = EqSpan {EllipsisList {v sub 1; v sub BN}};
 
-FD(x) = Span {Space; Italic "d"; x};
+FD(x) = Span {Space; derivative; x};
 
 Prob(x) = EqSpan {
   MarginalLikelihood;
