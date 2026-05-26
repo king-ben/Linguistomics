@@ -18,6 +18,8 @@
 #include "RateMatrix.hpp"
 #include "RateMatrixHelper.hpp"
 #include "Tree.hpp"
+#include "UserSettings.hpp"
+
 
 
 
@@ -31,7 +33,11 @@ McmcOutput::McmcOutput(Model* m, const char* base) : model(m) {
     treeFile = nullptr;
     alignmentFiles = nullptr;
     alignmentFirstSample = nullptr;
-    alignmentCacheCapacity = 64; // conservative default; stays well under typical ulimit -n
+    alignmentCacheCapacity = 64;
+    
+    // read alignment sampling setting
+    UserSettings& settings = UserSettings::userSettings();
+    sampleAlignments = settings.getSampleAlignments();
     
     // write the configuration file
     writeConfigurationFile();
@@ -50,26 +56,33 @@ McmcOutput::McmcOutput(Model* m, const char* base) : model(m) {
             numAlignments++;
         }
     
-    alignmentParms = new ParameterAlignment*[numAlignments];
-    int idx = 0;
-    for (size_t i=0; i<parms.size(); i++)
+    // only set up alignment output infrastructure if alignment sampling is on
+    if (sampleAlignments)
         {
-        ParameterAlignment* pa = dynamic_cast<ParameterAlignment*>(parms[i]);
-        if (pa != nullptr)
-            alignmentParms[idx++] = pa;
+        alignmentParms = new ParameterAlignment*[numAlignments];
+        int idx = 0;
+        for (size_t i=0; i<parms.size(); i++)
+            {
+            ParameterAlignment* pa = dynamic_cast<ParameterAlignment*>(parms[i]);
+            if (pa != nullptr)
+                alignmentParms[idx++] = pa;
+            }
+        
+        alignmentFiles = new FILE*[numAlignments];
+        alignmentFirstSample = new bool[numAlignments];
+        for (int i=0; i<numAlignments; i++)
+            {
+            alignmentFiles[i] = nullptr;
+            alignmentFirstSample[i] = true;
+            }
+        alignmentLRUIter.resize(numAlignments, alignmentLRU.end());
+        }
+    else
+        {
+        alignmentParms = nullptr;
+        numAlignments = 0;  // prevents any loop from iterating
         }
     
-    // allocate file pointer arrays and first-sample trackers
-    alignmentFiles = new FILE*[numAlignments];
-    alignmentFirstSample = new bool[numAlignments];
-    for (int i=0; i<numAlignments; i++)
-        {
-        alignmentFiles[i] = nullptr;
-        alignmentFirstSample[i] = true;
-        }
-
-    alignmentLRUIter.resize(numAlignments, alignmentLRU.end());
-        
     // get a pointer to the rate matrix
     rateMatrix = model->getRateMatrix();
 }
@@ -78,9 +91,12 @@ McmcOutput::~McmcOutput(void) {
 
     if (filesOpen)
         close();
-    delete [] alignmentParms;
-    delete [] alignmentFiles;
-    delete [] alignmentFirstSample;
+    if (sampleAlignments)
+        {
+        delete [] alignmentParms;
+        delete [] alignmentFiles;
+        delete [] alignmentFirstSample;
+        }
 }
 
 void McmcOutput::close(void) {
@@ -219,18 +235,20 @@ void McmcOutput::openStandardFiles(void) {
         fprintf(treeFile, "      %2zu %s", i+1, taxonNames[i].c_str());
         if (i == taxonNames.size() - 1)
             fprintf(treeFile, ";\n");
-        else 
+        else
             fprintf(treeFile, ",\n");
         }
     
-    // Alignment files: do NOT open hundreds of files up front.
-    // We lazily open them on demand using an LRU cache.
-    alignmentLRU.clear();
-    std::fill(alignmentLRUIter.begin(), alignmentLRUIter.end(), alignmentLRU.end());
-    for (int i=0; i<numAlignments; i++)
+    // only initialise alignment file tracking if alignment sampling is on
+    if (sampleAlignments)
         {
-        alignmentFiles[i] = nullptr;
-        alignmentFirstSample[i] = true;
+        alignmentLRU.clear();
+        std::fill(alignmentLRUIter.begin(), alignmentLRUIter.end(), alignmentLRU.end());
+        for (int i=0; i<numAlignments; i++)
+            {
+            alignmentFiles[i] = nullptr;
+            alignmentFirstSample[i] = true;
+            }
         }
 }
 
@@ -292,8 +310,11 @@ void McmcOutput::sample(int generation, double lnL, double lnP) {
     writeTreeSample(generation);
     fflush(treeFile);
 
-    for (int i=0; i<numAlignments; i++)
-        writeAlignmentSample(i);
+    if (sampleAlignments)
+        {
+        for (int i=0; i<numAlignments; i++)
+            writeAlignmentSample(i);
+        }
 }
 
 void McmcOutput::touchAlignmentFileLRU(int alnIdx) {

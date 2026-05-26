@@ -280,28 +280,41 @@ void UpdateManager::reject(Update* u) {
 
 void UpdateManager::setProposalProbabilities(void) {
 
-    // initialize probability vector (all managed here, not in Update objects)
     proposalProbabilities.resize(updates.size(), 0.0);
-    
-    // alignments get probability 1.0 each (will be normalized)
-    for (Update* u : alignmentUpdates)
-        proposalProbabilities[updateIndex[u]] = 1.0;
-    
-    // calculate sum of alignment probabilities
+
+    // check user setting - same pattern as Model::initializeAlignments()
+    UserSettings& settings = UserSettings::userSettings();
+    bool sampleAlignments = settings.getSampleAlignments();
+
+    if (sampleAlignments)
+        {
+        for (Update* u : alignmentUpdates)
+            proposalProbabilities[updateIndex[u]] = 1.0;
+        }
+    // else: alignment probabilities remain 0.0
+
+    // sum of alignment weights (zero if sampling is off)
     double alignmentSum = 0.0;
     for (Update* u : alignmentUpdates)
         alignmentSum += proposalProbabilities[updateIndex[u]];
-    
-    // other updates share the alignment sum equally
-    double otherProb = (otherUpdates.size() > 0) ? alignmentSum / static_cast<double>(otherUpdates.size()) : 0.0;
+
+    // other updates share equal weight relative to alignments
+    // if alignments are off, give other updates equal weight using their count
+    double referenceSum = (sampleAlignments && alignmentSum > 0.0)
+                          ? alignmentSum
+                          : static_cast<double>(otherUpdates.size());
+
+    double otherProb = (otherUpdates.size() > 0)
+                       ? referenceSum / static_cast<double>(otherUpdates.size())
+                       : 0.0;
     for (Update* u : otherUpdates)
         proposalProbabilities[updateIndex[u]] = otherProb;
-    
+
     // normalize to sum to 1.0
     double sum = 0.0;
     for (double p : proposalProbabilities)
         sum += p;
-    
+
     if (sum > 0.0)
         {
         double invSum = 1.0 / sum;

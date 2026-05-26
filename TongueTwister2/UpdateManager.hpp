@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <vector>
 #include "UpdateStatistics.hpp"
+#include "UserSettings.hpp"
 class Model;
 class Parameter;
 class RateMatrix;

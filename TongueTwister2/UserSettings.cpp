@@ -34,6 +34,7 @@ UserSettings::UserSettings(void) {
     burnLength                  = 0;
     sampleLength                = 20000;
     sampleFrequency             = 100;
+    sampleAlignments            = true;
 }
 
 std::string UserSettings::getVariable(nlohmann::json &settings, const char* name) {
@@ -180,6 +181,12 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
         .default_value(20000)
         .scan<'i', int>()
         .help("Number of MCMC cycles during which log likelihoods are sampled");
+
+    // sample alignments
+    program.add_argument("-sa", "--sample-alignments")
+        .default_value(std::string("true"))
+        .choices("true", "false")
+        .help("Sample alignments during MCMC (true/false)");
     
     // parse arguments
     try
@@ -241,6 +248,9 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
     
     std::string marginalStr = program.get<std::string>("-z");
     calculateMarginalLikelihood = (marginalStr == "yes");
+
+    std::string sampleAlignmentsStr = program.get<std::string>("-sa");
+    sampleAlignments = (sampleAlignmentsStr == "yes");
     
     // read settings from JSON file (these override command-line arguments)
     readJsonSettings();
@@ -390,6 +400,17 @@ void UserSettings::readJsonSettings(void) {
             temperature = jsonSettings["Temperature"];
             Msg::error("Metropolis coupled MCMC not yet supported");
             }
+        it2 = jsonSettings.find("sampleAlignments");
+        if (it2 != jsonSettings.end())
+            {
+            std::string res = getVariable(jsonSettings, "sampleAlignments");
+            if (res == "no")
+                sampleAlignments = false;
+            else if (res == "yes")
+                sampleAlignments = true;
+            else
+                Msg::error("Unknown option for sampleAlignments: " + res);
+            }
         }
 }
 
@@ -446,5 +467,9 @@ void UserSettings::print(void) {
         std::cout << "   * Pre-burnin length                       = " << preburninLength << std::endl;
         std::cout << "   * Tuning length                           = " << tuneLength << std::endl;
         }
+    if (sampleAlignments == true)
+        std::cout << "   * Sample alignments                       = yes" << std::endl;
+    else
+        std::cout << "   * Sample alignments                       = no" << std::endl;
     std::cout << std::endl;
 }

@@ -66,6 +66,8 @@ class McmcOutput {
         ParameterTree*          treeParm;
         ParameterAlignment**    alignmentParms;
         RateMatrix*             rateMatrix;
+
+        bool                    sampleAlignments;
 };
 
 #endif

@@ -39,6 +39,7 @@ class UserSettings {
         void                    readCommandLineArguments(int argc, char* argv[]);
         bool                    getUseOnlyCompleteWords(void) { return useOnlyCompleteWords; }
         bool                    getUseClockConstraint(void) { return useClockConstraint; }
+        bool                    getSampleAlignments(void) { return sampleAlignments; }
     
     private:
                                 UserSettings(void);
@@ -68,6 +69,7 @@ class UserSettings {
         int                     burnLength;
         int                     sampleLength;
         int                     sampleFrequency;
+        bool                    sampleAlignments;
 };
 
 #endif
