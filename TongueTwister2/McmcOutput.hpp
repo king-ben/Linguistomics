@@ -38,6 +38,9 @@ class McmcOutput {
                                 // tree
         void                    writeNewick(FILE* f, Tree* t);
         void                    writeNewickNode(FILE* f, Node* p, Node* root);
+        void                    writeNewickWithNames(FILE* f, Tree* t);
+        void                    writeNewickNodeWithNames(FILE* f, Node* p, Node* root);
+
         void                    writeTreeSample(int gen);
 
                                 // alignments
@@ -55,6 +58,7 @@ class McmcOutput {
         
         FILE*                   scalarFile;
         FILE*                   treeFile;
+        std::vector<FILE*>      familyTreeFiles;
 
         FILE**                  alignmentFiles;
         std::list<int>          alignmentLRU;      // most-recently-used at front

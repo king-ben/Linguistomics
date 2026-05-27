@@ -38,6 +38,10 @@ class ParameterTree : public Parameter {
         Tree*                                       getTree(const unsigned& mask);
         void                                        getTrees(std::vector<Tree*>& allTrees);
         void                                        initialize(const std::set<unsigned>& uniqueTaxonCombinations);
+        void                                        initialize(const std::set<unsigned>& uniqueTaxonCombinations,
+                                                        const std::vector<std::string>& taxa,
+                                                        const std::string& newickString,
+                                                        double branchLengthLambda);
         void                                        initializeBranchMappings(void);
         void                                        keep(void);
         double                                      lnPriorProbability(void);

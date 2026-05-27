@@ -7,6 +7,8 @@
 
 enum SubstitutionModel { jc69, f81, gtr, custom };
 enum MatrixExpBackend { autoBackend, cpuThreaded, cpuBatched, gpuBatched };
+enum MultiTreeModel { singleFamily, linkedFamilies, unlinkedFamilies };
+
 
 class UserSettings {
 
@@ -40,6 +42,8 @@ class UserSettings {
         bool                    getUseOnlyCompleteWords(void) { return useOnlyCompleteWords; }
         bool                    getUseClockConstraint(void) { return useClockConstraint; }
         bool                    getSampleAlignments(void) { return sampleAlignments; }
+        MultiTreeModel          getMultiTreeModel(void)  const { return multiTreeModel; }
+        bool                    getIsMultiFamily(void)   const { return isMultiFamily; }
     
     private:
                                 UserSettings(void);
@@ -70,6 +74,10 @@ class UserSettings {
         int                     sampleLength;
         int                     sampleFrequency;
         bool                    sampleAlignments;
+        bool                    isMultiFamily;
+        MultiTreeModel          multiTreeModel;
+        std::string     dataFile2;
+
 };
 
 #endif

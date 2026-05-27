@@ -1,6 +1,8 @@
 #include <algorithm>
+#include <fstream>
 #include <iomanip>
 #include <map>
+#include <string>
 #include "Ctmc.hpp"
 #include "CtmcAccelerated.hpp"
 #include "JsonData.hpp"
@@ -19,61 +21,264 @@
 #include "Threads.hpp"
 #include "TransitionProbabilitiesCpu.hpp"
 #include "TransitionProbabilitiesGpu.hpp"
+#include "UserSettings.hpp"
 
+void Model::registerParameter(Parameter* p) {
+    parameters.push_back(p);
+}
 
+void Model::registerCalculator(LikelihoodCalculator* c) {
+    calculators.push_back(c);
+    // extend caching vectors to match
+    cachedLnL.push_back(0.0);
+    dirtyFlags.push_back(true);
+    proposedLnL.push_back(0.0);
+}
 
-Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p) : 
-    rng(r), modelType(mt), pool(p),
-    states(nullptr), rateMatrix(nullptr), tiProbs(nullptr), numStates(0),
-    cachedTotalLnL(0.0), cacheInitialized(false) {
+Model::Model(RandomVariable* r, SubstitutionModel mt, ThreadPool* p)
+    : rng(r), modelType(mt), pool(p),
+      states(nullptr), rateMatrix(nullptr), tiProbs(nullptr), numStates(0),
+      cachedTotalLnL(0.0), cacheInitialized(false) {
+
+    UserSettings& settings = UserSettings::userSettings();
     
-    // initialize the model states
-    if (initializeStates() == false)
-        Msg::error("Problem initializing the model states");
-        
-    // initialize the insertion/deletion rates
-    if (initializeIndelRates() == false)
-        Msg::error("Problem initializing the indel rates");
-        
-    // initialize the alignment parameters (indel rates must be instantiated first)
-    if (initializeAlignments() == false)
-        Msg::error("Problem initializing the alignments");
-        
-    // initialize the tree parameter
-    if (initializeTree() == false)
-        Msg::error("Problem initalizing the tree");
-        
-    // initialize the substitution parameters and machinery for calculating transition probabilities
-    if (initializeSubstitutionModel() == false)
-        Msg::error("Problem initializing transition probabilities");
-        
-    // initialize the likelihood calculators
-    if (initializeCalculators() == false)
-        Msg::error("Problem initalizing the likelihood calculators");
-        
-    /* Initialize likelihood caching infrastructure
-       Note: actual cache values are set after first lnLikelihood() call */
+    if (settings.getIsMultiFamily())
+        {
+        // initializeStates is called inside initializeMultiFamily
+        // after family data is loaded
+        initializeMultiFamily();
+        }
+    else
+        {
+        // single family: JsonData singleton has the right content
+        if (initializeStates() == false)
+            Msg::error("Problem initializing the model states");
+        if (initializeSingleFamily() == false)
+            Msg::error("Problem initializing single family model");
+        }
+
+    // initialize likelihood caching
     size_t numCognates = calculators.size();
     cachedLnL.resize(numCognates, 0.0);
-    dirtyFlags.resize(numCognates, true);  // all dirty initially
+    dirtyFlags.resize(numCognates, true);
     proposedLnL.resize(numCognates, 0.0);
     proposedTotalLnL = 0.0;
-    
-    // reserve space for temporary storage
     dirtyIndices.reserve(numCognates);
     dirtyCalcs.reserve(numCognates);
 }
 
 Model::~Model(void) {
 
-    delete states;
-    for (size_t i=0; i<parameters.size(); i++)
-        delete parameters[i];
+    // calculators may depend on parameters/trees/tiProbs, so delete them first
     for (size_t i=0; i<calculators.size(); i++)
         delete calculators[i];
-    delete tiProbs;
-    if (rateMatrix != nullptr)
-        delete rateMatrix;
+
+    // delete SubModels after calculators.
+    // SubModels delete their own tiProbs objects.
+    for (size_t i=0; i<subModels.size(); i++)
+        delete subModels[i];
+
+    for (size_t i=0; i<familyData.size(); i++)
+        delete familyData[i];
+
+    // delete parameters after calculators and SubModels
+    for (size_t i=0; i<parameters.size(); i++)
+        delete parameters[i];
+
+    delete states;
+
+    if (subModels.empty())
+        {
+        // single-family case
+        delete tiProbs;
+
+        if (rateMatrix != nullptr)
+            delete rateMatrix;
+        }
+    else
+        {
+        // multi-family case:
+        // tiProbs are deleted by SubModel destructors.
+        // For linked GTR/custom, the shared rateMatrix is owned by Model.
+        UserSettings& settings = UserSettings::userSettings();
+
+        if (settings.getMultiTreeModel() == linkedFamilies && rateMatrix != nullptr)
+            delete rateMatrix;
+        }
+}
+
+void Model::initializeMultiFamily(void) {
+
+    UserSettings& settings = UserSettings::userSettings();
+    bool linked = (settings.getMultiTreeModel() == linkedFamilies);
+    
+    // load the wrapper JSON
+    std::string wrapperFile = settings.getDataFile();
+    std::ifstream ifs(wrapperFile);
+    if (!ifs.is_open())
+        Msg::error("Could not open wrapper JSON file: " + wrapperFile);
+    
+    nlohmann::json wrapper;
+    try
+        {
+        wrapper = nlohmann::json::parse(ifs);
+        }
+    catch (nlohmann::json::parse_error& ex)
+        {
+        Msg::error("Error parsing wrapper JSON file at byte "
+                   + std::to_string(ex.byte));
+        }
+    
+    // check the wrapper has required keys
+    if (wrapper.find("Families") == wrapper.end())
+        Msg::error("Could not find \"Families\" array in wrapper JSON file");
+    if (wrapper.find("NumberOfStates") == wrapper.end())
+        Msg::error("Wrapper JSON must contain \"NumberOfStates\" for multi-family analysis");
+    if (wrapper.find("PartitionSets") == wrapper.end())
+        Msg::error("Wrapper JSON must contain \"PartitionSets\" for multi-family analysis");
+    
+    // resolve directory of the wrapper file for relative paths
+    std::string dir = "";
+    size_t lastSlash = wrapperFile.find_last_of("/\\");
+    if (lastSlash != std::string::npos)
+        dir = wrapperFile.substr(0, lastSlash + 1);
+    
+    // load each family data file
+    auto& families = wrapper["Families"];
+    if (families.size() < 2)
+        Msg::error("Multi-family analysis requires at least 2 families");
+    
+    for (auto& entry : families)
+        {
+        if (entry.find("File") == entry.end())
+            Msg::error("Family entry in wrapper JSON is missing \"File\" field");
+        std::string path = entry["File"].get<std::string>();
+        FamilyData* fd = new FamilyData();
+        fd->loadFromFile(dir + path);
+        familyData.push_back(fd);
+        }
+    
+    int numFamilies = (int)familyData.size();
+    
+    // validate NumberOfStates matches across all family files
+    numStates = wrapper["NumberOfStates"].get<size_t>();
+    for (int i=0; i<numFamilies; i++)
+        {
+        if (familyData[i]->hasKey("NumberOfStates") == false)
+            Msg::error("Could not find \"NumberOfStates\" in family "
+                       + std::to_string(i+1) + " file");
+        size_t ns = familyData[i]->getValue<size_t>("NumberOfStates");
+        if (ns != numStates)
+            Msg::error("NumberOfStates mismatch: wrapper has "
+                       + std::to_string(numStates) + " but family "
+                       + std::to_string(i+1) + " has "
+                       + std::to_string(ns));
+        }
+    
+    // JsonData singleton is already loaded from the wrapper file by UserSettings
+    // so States can read NumberOfStates and PartitionSets from it directly
+    if (initializeStates() == false)
+        Msg::error("Problem initializing the model states");
+    
+    std::cout << "   Multi-family analysis: " << numFamilies << " families ("
+              << (linked ? "linked" : "unlinked") << " substitution parameters)"
+              << std::endl << std::endl;
+    
+    // for the linked model, create shared substitution parameters once
+    ParameterFrequencies*       sharedFreqs  = nullptr;
+    ParameterExchangeabilities* sharedExch   = nullptr;
+    RateMatrix*                 sharedMatrix = nullptr;
+    ParameterIndelRates*        sharedIndel  = nullptr;
+    
+    if (linked)
+        {
+        sharedIndel = new ParameterIndelRates(this, rng,
+            "Insertion/Deletion rates", 2.0, 2.0);
+        parameters.push_back(sharedIndel);
+        
+        if (modelType == f81 || modelType == gtr || modelType == custom)
+            {
+            sharedFreqs = new ParameterFrequencies(this, rng,
+                "Segment frequencies", numStates);
+            parameters.push_back(sharedFreqs);
+            }
+        
+        if (modelType == gtr)
+            {
+            sharedExch = new ParameterExchangeabilities(this, rng,
+                "Exchangeability rates", numStates);
+            parameters.push_back(sharedExch);
+            sharedMatrix = new RateMatrixGTR(numStates, sharedExch, sharedFreqs);
+            sharedMatrix->updateRateMatrix();
+            rateMatrix = sharedMatrix;
+            }
+        else if (modelType == custom)
+            {
+            Partition* part = states->getPartition();
+            sharedExch = new ParameterExchangeabilities(this, rng,
+                "Exchangeability rates", numStates, part->numSubsets());
+            parameters.push_back(sharedExch);
+            sharedMatrix = new RateMatrixCustom(numStates, sharedExch,
+                                                sharedFreqs, part);
+            sharedMatrix->updateRateMatrix();
+            rateMatrix = sharedMatrix;
+            }
+        else if (modelType == jc69)
+            {
+            // jc69 has no frequencies or exchangeabilities to share
+            }
+        }
+    
+    // create one SubModel per family
+    for (int i=0; i<numFamilies; i++)
+        {
+        SubModel* sm = new SubModel(this, rng, familyData[i], i, pool);
+        subModels.push_back(sm);
+        
+        sm->initializeAlignments(linked ? sharedIndel : nullptr);
+        sm->initializeTree();
+        
+        sm->initializeSubstitutionModel(
+            linked ? sharedFreqs  : nullptr,
+            linked ? sharedExch   : nullptr,
+            linked ? sharedMatrix : nullptr,
+            modelType);
+        
+        ParameterIndelRates* indelForCalc = linked
+            ? sharedIndel
+            : sm->getIndelRates();
+        
+        ParameterFrequencies* freqsForCalc = linked
+            ? sharedFreqs
+            : sm->getFrequencies();
+        
+        sm->initializeCalculators(indelForCalc, freqsForCalc);
+        }
+    
+    // set Model-level tiProbs pointer to family 0's tiProbs
+    tiProbs = subModels[0]->getTiProbs();
+    
+    // set Model-level rateMatrix pointer for unlinked case
+    if (rateMatrix == nullptr && subModels[0]->getRateMatrix() != nullptr)
+        rateMatrix = subModels[0]->getRateMatrix();
+    
+    std::cout << std::endl;
+}
+
+bool Model::initializeSingleFamily(void) {
+
+    if (initializeIndelRates() == false)
+        Msg::error("Problem initializing the indel rates");
+    if (initializeAlignments() == false)
+        Msg::error("Problem initializing the alignments");
+    if (initializeTree() == false)
+        Msg::error("Problem initializing the tree");
+    if (initializeSubstitutionModel() == false)
+        Msg::error("Problem initializing transition probabilities");
+    if (initializeCalculators() == false)
+        Msg::error("Problem initializing the likelihood calculators");
+
+    return true;
 }
 
 bool Model::alignmentsAreConsistent(std::vector<ParameterAlignment*>& alignments) {

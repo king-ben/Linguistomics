@@ -35,6 +35,8 @@ UserSettings::UserSettings(void) {
     sampleLength                = 20000;
     sampleFrequency             = 100;
     sampleAlignments            = true;
+    multiTreeModel              = singleFamily;
+    isMultiFamily               = false;
 }
 
 std::string UserSettings::getVariable(nlohmann::json &settings, const char* name) {
@@ -187,6 +189,12 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
         .default_value(std::string("true"))
         .choices("true", "false")
         .help("Sample alignments during MCMC (true/false)");
+
+    // using multiple trees?
+    program.add_argument("-mt", "--multi-tree")
+        .default_value(std::string("single"))
+        .choices("single", "linked", "unlinked")
+        .help("Multi-family tree model (single/linked/unlinked)");
     
     // parse arguments
     try
@@ -252,6 +260,14 @@ void UserSettings::readCommandLineArguments(int argc, char* argv[]) {
     std::string sampleAlignmentsStr = program.get<std::string>("-sa");
     sampleAlignments = (sampleAlignmentsStr == "yes");
     
+    std::string mtStr = program.get<std::string>("-mt");
+    if (mtStr == "single")
+        multiTreeModel = singleFamily;
+    else if (mtStr == "linked")
+        multiTreeModel = linkedFamilies;
+    else if (mtStr == "unlinked")
+        multiTreeModel = unlinkedFamilies;
+
     // read settings from JSON file (these override command-line arguments)
     readJsonSettings();
 }
@@ -271,146 +287,132 @@ void UserSettings::readJsonSettings(void) {
         }
     
     // read the model settings
-    auto it = j.find("OnlyCompleteWords");
-    if (it != j.end())
+    auto itMF = j.find("MultiFamily");
+    if (itMF != j.end() && itMF->get<bool>() == true)
         {
-        std::string res = getVariable(j, "OnlyCompleteWords");
-        if (res == "no")
-            useOnlyCompleteWords = false;
-        else if (res == "yes")
-            useOnlyCompleteWords = true;
-        else
-            Msg::error("Unknown option" + res);
-        }
+        isMultiFamily = true;
 
-    it = j.find("Model");
-    if (it != j.end())
-        {
-        std::string res = getVariable(j, "Model");
-        if (res == "jc69")
-            substitutionModel = jc69;
-        else if (res == "f81")
-            substitutionModel = f81;
-        else if (res == "gtr")
-            substitutionModel = gtr;
-        else if (res == "custom")
-            substitutionModel = custom;
-        else
-            Msg::error("Unknown substitution model " + res);
-        }
-
-    it = j.find("Clock");
-    if (it != j.end())
-        {
-        std::string res = getVariable(j, "Clock");
-        if (res == "no")
-            useClockConstraint = false;
-        else if (res == "yes")
-            useClockConstraint = true;
-        else
-            Msg::error("Unknown option" + res);
-        if (useClockConstraint == true)
-            Msg::error("Molecular clock not yet supported");
-        }
-
-    it = j.find("BrlenPriorVal");
-    if (it != j.end())
-        branchLengthLambda = j["BrlenPriorVal"];
-   
-    // read the MCMC settings
-    it = j.find("McmcSettings");
-    if (it != j.end())
-        {
-        nlohmann::json jsonSettings = j["McmcSettings"];
-
-        auto it2 = jsonSettings.find("FileOutput");
-        if (it2 != jsonSettings.end())
+        auto itMT = j.find("MultiTreeModel");
+        if (itMT != j.end())
             {
-            Msg::warning("Setting output file path via the configuration file is no longer supported");
-            }
+            std::string res = itMT->get<std::string>();
+            std::transform(res.begin(), res.end(), res.begin(),
+                           [](unsigned char c){ return std::tolower(c); });
 
-        it2 = jsonSettings.find("CalcMarginal");
-        if (it2 != jsonSettings.end())
-            {
-            std::string res = getVariable(jsonSettings, "CalcMarginal");
-            if (res == "no")
-                calculateMarginalLikelihood = false;
-            else if (res == "yes")
-                calculateMarginalLikelihood = true;
+            if (res == "linked")
+                multiTreeModel = linkedFamilies;
+            else if (res == "unlinked")
+                multiTreeModel = unlinkedFamilies;
             else
-                Msg::error("Unknown option" + res);
-            }
-            
-        it2 = jsonSettings.find("Seed");
-        if (it2 != jsonSettings.end())
-            seed = jsonSettings["Seed"];
-
-        it2 = jsonSettings.find("NumCycles");
-        if (it2 != jsonSettings.end())
-            numMcmcCycles = jsonSettings["NumCycles"];
-
-        it2 = jsonSettings.find("PrintFreq");
-        if (it2 != jsonSettings.end())
-            printFrequency = jsonSettings["PrintFreq"];
-
-        it2 = jsonSettings.find("SampleFreq");
-        if (it2 != jsonSettings.end())
-            sampleFrequency = jsonSettings["SampleFreq"];
-
-        it2 = jsonSettings.find("CheckPtFreq");
-        if (it2 != jsonSettings.end())
-            {
-            checkPointFrequency = jsonSettings["CheckPtFreq"];
-            Msg::error("Check pointing not yet supported");
+                Msg::error("Unknown MultiTreeModel: " + res);
             }
 
-        it2 = jsonSettings.find("BrlenPriorVal");
-        if (it2 != jsonSettings.end())
-            branchLengthLambda = jsonSettings["BrlenPriorVal"];
-            
-        it2 = jsonSettings.find("FirstBurnLength");
-        if (it2 != jsonSettings.end())
-            firstBurnLength = jsonSettings["FirstBurnLength"];
+        // read substitution model from wrapper
+        auto itModel = j.find("Model");
+        if (itModel != j.end())
+            {
+            std::string res = getVariable(j, "Model");
 
-        it2 = jsonSettings.find("TuneLength");
-        if (it2 != jsonSettings.end())
-            tuneLength = jsonSettings["TuneLength"];
-
-        it2 = jsonSettings.find("PreburnLength");
-        if (it2 != jsonSettings.end())
-            preburninLength = jsonSettings["PreburnLength"];
-            
-        it2 = jsonSettings.find("BurnLength");
-        if (it2 != jsonSettings.end())
-            burnLength = jsonSettings["BurnLength"];
-            
-        it2 = jsonSettings.find("SampleLength");
-        if (it2 != jsonSettings.end())
-            sampleLength = jsonSettings["SampleLength"];
-            
-        it2 = jsonSettings.find("NumChains");
-        if (it2 != jsonSettings.end())
-            {
-            numChains = jsonSettings["NumChains"];
-            Msg::error("Metropolis coupled MCMC not yet supported");
-            }
-        it2 = jsonSettings.find("Temperature");
-        if (it2 != jsonSettings.end())
-            {
-            temperature = jsonSettings["Temperature"];
-            Msg::error("Metropolis coupled MCMC not yet supported");
-            }
-        it2 = jsonSettings.find("sampleAlignments");
-        if (it2 != jsonSettings.end())
-            {
-            std::string res = getVariable(jsonSettings, "sampleAlignments");
-            if (res == "no")
-                sampleAlignments = false;
-            else if (res == "yes")
-                sampleAlignments = true;
+            if (res == "jc69")
+                substitutionModel = jc69;
+            else if (res == "f81")
+                substitutionModel = f81;
+            else if (res == "gtr")
+                substitutionModel = gtr;
+            else if (res == "custom")
+                substitutionModel = custom;
             else
-                Msg::error("Unknown option for sampleAlignments: " + res);
+                Msg::error("Unknown substitution model " + res);
             }
+
+        // complete words option from wrapper
+        auto itComplete = j.find("OnlyCompleteWords");
+        if (itComplete != j.end())
+            {
+            std::string res = getVariable(j, "OnlyCompleteWords");
+
+            if (res == "no")
+                useOnlyCompleteWords = false;
+            else if (res == "yes")
+                useOnlyCompleteWords = true;
+            else
+                Msg::error("Unknown option " + res);
+            }
+
+        // branch length prior from wrapper
+        auto itBrlen = j.find("BrlenPriorVal");
+        if (itBrlen != j.end())
+            branchLengthLambda = j["BrlenPriorVal"];
+
+        // read MCMC settings from wrapper
+        auto itMcmc = j.find("McmcSettings");
+        if (itMcmc != j.end())
+            {
+            nlohmann::json jsonSettings = j["McmcSettings"];
+
+            auto it2 = jsonSettings.find("CalcMarginal");
+            if (it2 != jsonSettings.end())
+                {
+                std::string res = getVariable(jsonSettings, "CalcMarginal");
+                if (res == "no")
+                    calculateMarginalLikelihood = false;
+                else if (res == "yes")
+                    calculateMarginalLikelihood = true;
+                else
+                    Msg::error("Unknown option " + res);
+                }
+
+            it2 = jsonSettings.find("Seed");
+            if (it2 != jsonSettings.end())
+                seed = jsonSettings["Seed"];
+
+            it2 = jsonSettings.find("NumCycles");
+            if (it2 != jsonSettings.end())
+                numMcmcCycles = jsonSettings["NumCycles"];
+
+            it2 = jsonSettings.find("PrintFreq");
+            if (it2 != jsonSettings.end())
+                printFrequency = jsonSettings["PrintFreq"];
+
+            it2 = jsonSettings.find("SampleFreq");
+            if (it2 != jsonSettings.end())
+                sampleFrequency = jsonSettings["SampleFreq"];
+
+            it2 = jsonSettings.find("FirstBurnLength");
+            if (it2 != jsonSettings.end())
+                firstBurnLength = jsonSettings["FirstBurnLength"];
+
+            it2 = jsonSettings.find("TuneLength");
+            if (it2 != jsonSettings.end())
+                tuneLength = jsonSettings["TuneLength"];
+
+            it2 = jsonSettings.find("PreburnLength");
+            if (it2 != jsonSettings.end())
+                preburninLength = jsonSettings["PreburnLength"];
+
+            it2 = jsonSettings.find("BurnLength");
+            if (it2 != jsonSettings.end())
+                burnLength = jsonSettings["BurnLength"];
+
+            it2 = jsonSettings.find("SampleLength");
+            if (it2 != jsonSettings.end())
+                sampleLength = jsonSettings["SampleLength"];
+
+            it2 = jsonSettings.find("sampleAlignments");
+            if (it2 != jsonSettings.end())
+                {
+                std::string res = getVariable(jsonSettings, "sampleAlignments");
+
+                if (res == "false" || res == "no")
+                    sampleAlignments = false;
+                else if (res == "true" || res == "yes")
+                    sampleAlignments = true;
+                else
+                    Msg::error("Unknown option for sampleAlignments: " + res);
+                }
+            }
+
+        return;
         }
 }
 
@@ -471,5 +473,11 @@ void UserSettings::print(void) {
         std::cout << "   * Sample alignments                       = yes" << std::endl;
     else
         std::cout << "   * Sample alignments                       = no" << std::endl;
+    if (multiTreeModel == singleFamily)
+        std::cout << "   * Multi-family model                      = no" << std::endl;
+    else if (multiTreeModel == linkedFamilies)
+        std::cout << "   * Multi-family model                      = linked (shared substitution parameters)" << std::endl;
+    else if (multiTreeModel == unlinkedFamilies)
+        std::cout << "   * Multi-family model                      = unlinked (separate substitution parameters)" << std::endl;
     std::cout << std::endl;
 }

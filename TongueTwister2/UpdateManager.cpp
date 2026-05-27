@@ -17,62 +17,117 @@
 #include "UpdateIndelRates.hpp"
 #include "UpdateManager.hpp"
 #include "UpdateTopology.hpp"
+#include "UserSettings.hpp"
+#include "SubModel.hpp"
 
 
 
 UpdateManager::UpdateManager(Model* m, RandomVariable* r) : model(m), rng(r) {
+
+    UserSettings& settings = UserSettings::userSettings();
+    bool isMultiFamily = settings.getIsMultiFamily();
+    bool linked = (settings.getMultiTreeModel() == linkedFamilies);
     
-    tiProbs = model->getTiProbs();
-    rateMatrix = model->getRateMatrix();
-    const std::vector<Parameter*> parameters = model->getParameters();
+    if (isMultiFamily)
+        {
+        // collect alignment updates from all families
+        const std::vector<Parameter*>& parameters = model->getParameters();
+        for (Parameter* parm : parameters)
+            {
+            if (ParameterAlignment* p = dynamic_cast<ParameterAlignment*>(parm))
+                {
+                UpdateAlignment* updater = new UpdateAlignment(model, rng, p);
+                updates.push_back(updater);
+                alignmentUpdates.push_back(updater);
+                }
+            }
         
-    // first, collect all of the alignment updates
-    for (Parameter* parm : parameters)
-        {
-        if (ParameterAlignment* p = dynamic_cast<ParameterAlignment*>(parm))
+        // one set of tree updates per family
+        int numFamilies = model->getNumFamilies();
+        for (int i=0; i<numFamilies; i++)
             {
-            UpdateAlignment* updater = new UpdateAlignment(model, rng, p);
-            updates.push_back(updater);
-            alignmentUpdates.push_back(updater);
-            }
-        }
- 
-    // then, collect the updates for all of the other parameters
-     for (Parameter* parm : parameters)
-        {
-        if (ParameterExchangeabilities* p = dynamic_cast<ParameterExchangeabilities*>(parm))
-            {
-            UpdateExchangeabilities* updater = new UpdateExchangeabilities(model, rng, p);
-            updates.push_back(updater);
-            otherUpdates.push_back(updater);
-            }
-        else if (ParameterFrequencies* p = dynamic_cast<ParameterFrequencies*>(parm))
-            {
-            UpdateFrequencies* updater = new UpdateFrequencies(model, rng, p);
-            updates.push_back(updater);
-            otherUpdates.push_back(updater);
-            }
-        else if (ParameterIndelRates* p = dynamic_cast<ParameterIndelRates*>(parm))
-            {
-            UpdateIndelRates* updater = new UpdateIndelRates(model, rng, p);
-            updates.push_back(updater);
-            otherUpdates.push_back(updater);
-            }
-        else if (ParameterTree* p = dynamic_cast<ParameterTree*>(parm))
-            {
-            // branch length updater
-            UpdateBranchLength* updater1 = new UpdateBranchLength(model, rng, p);
-            updates.push_back(updater1);
-            otherUpdates.push_back(updater1);
+            SubModel* sm = model->getSubModel(i);
+            ParameterTree* tree = sm->getTree();
             
-            // tree topology updater
-//            UpdateTopology* updater2 = new UpdateTopology(model, rng, p, alignmentUpdates);
-//            updates.push_back(updater2);
-//            otherUpdates.push_back(updater2);
+            UpdateBranchLength* upd = new UpdateBranchLength(model, rng, tree);
+            updates.push_back(upd);
+            otherUpdates.push_back(upd);
+            }
+        
+        // substitution parameter updates: one set (linked) or one per family (unlinked)
+        int numParamSets = linked ? 1 : model->getNumFamilies();
+        for (Parameter* parm : model->getParameters())
+            {
+            if (ParameterExchangeabilities* p =
+                    dynamic_cast<ParameterExchangeabilities*>(parm))
+                {
+                UpdateExchangeabilities* upd =
+                    new UpdateExchangeabilities(model, rng, p);
+                updates.push_back(upd);
+                otherUpdates.push_back(upd);
+                }
+            else if (ParameterFrequencies* p =
+                    dynamic_cast<ParameterFrequencies*>(parm))
+                {
+                UpdateFrequencies* upd = new UpdateFrequencies(model, rng, p);
+                updates.push_back(upd);
+                otherUpdates.push_back(upd);
+                }
+            else if (ParameterIndelRates* p =
+                    dynamic_cast<ParameterIndelRates*>(parm))
+                {
+                UpdateIndelRates* upd = new UpdateIndelRates(model, rng, p);
+                updates.push_back(upd);
+                otherUpdates.push_back(upd);
+                }
             }
         }
-    
-    // build index map for quick lookup from Update* to index
+    else
+        {
+        // existing single-family logic unchanged
+        const std::vector<Parameter*> parameters = model->getParameters();
+        for (Parameter* parm : parameters)
+            {
+            if (ParameterAlignment* p = dynamic_cast<ParameterAlignment*>(parm))
+                {
+                UpdateAlignment* updater = new UpdateAlignment(model, rng, p);
+                updates.push_back(updater);
+                alignmentUpdates.push_back(updater);
+                }
+            }
+        for (Parameter* parm : parameters)
+            {
+            if (ParameterExchangeabilities* p =
+                    dynamic_cast<ParameterExchangeabilities*>(parm))
+                {
+                UpdateExchangeabilities* updater =
+                    new UpdateExchangeabilities(model, rng, p);
+                updates.push_back(updater);
+                otherUpdates.push_back(updater);
+                }
+            else if (ParameterFrequencies* p =
+                    dynamic_cast<ParameterFrequencies*>(parm))
+                {
+                UpdateFrequencies* updater = new UpdateFrequencies(model, rng, p);
+                updates.push_back(updater);
+                otherUpdates.push_back(updater);
+                }
+            else if (ParameterIndelRates* p =
+                    dynamic_cast<ParameterIndelRates*>(parm))
+                {
+                UpdateIndelRates* updater = new UpdateIndelRates(model, rng, p);
+                updates.push_back(updater);
+                otherUpdates.push_back(updater);
+                }
+            else if (ParameterTree* p = dynamic_cast<ParameterTree*>(parm))
+                {
+                UpdateBranchLength* updater1 = new UpdateBranchLength(model, rng, p);
+                updates.push_back(updater1);
+                otherUpdates.push_back(updater1);
+                }
+            }
+        }
+
     for (size_t i=0; i<updates.size(); i++)
         updateIndex[updates[i]] = i;
     
@@ -99,12 +154,45 @@ void UpdateManager::accept(Update* u) {
     for (Parameter* p : u->getAdditionalModifiedParameters())
         p->keep();
     
-    if (u->getRateMatrixNeedsUpdate() == true && rateMatrix != nullptr)
-        rateMatrix->keep();
+    if (u->getRateMatrixNeedsUpdate() == true)
+        {
+        RateMatrix* rm = rateMatrixForUpdate(u);
+        if (rm != nullptr)
+            rm->keep();
+        }
     
     // transition probabilities: just clear dirty flags
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
-        tiProbs->keep();
+        {
+        if (model->getNumFamilies() > 0)
+            {
+            if (u->getAllTiprobsNeedUpdate() == true)
+                {
+                for (int i=0; i<model->getNumFamilies(); i++)
+                    model->getSubModel(i)->getTiProbs()->keep();
+                }
+            else if (u->getSingleBranchChanged() == true)
+                {
+                Parameter* parm = u->getUpdatedParameter();
+
+                if (ParameterTree* treeParm = dynamic_cast<ParameterTree*>(parm))
+                    {
+                    for (int i=0; i<model->getNumFamilies(); i++)
+                        {
+                        if (model->getSubModel(i)->getTree() == treeParm)
+                            {
+                            model->getSubModel(i)->getTiProbs()->keep();
+                            break;
+                            }
+                        }
+                    }
+                }
+            }
+        else
+            {
+            tiProbs->keep();
+            }
+        }
         
     // keep the likelihood cache
     model->keepLikelihoodCache();
@@ -267,12 +355,45 @@ void UpdateManager::reject(Update* u) {
     for (Parameter* p : u->getAdditionalModifiedParameters())
         p->restore();
     
-    if (u->getRateMatrixNeedsUpdate() == true && rateMatrix != nullptr)
-        rateMatrix->restore();
+    if (u->getRateMatrixNeedsUpdate() == true)
+        {
+        RateMatrix* rm = rateMatrixForUpdate(u);
+        if (rm != nullptr)
+            rm->restore();
+        }
     
     // transition probabilities: restore from backup
     if (u->getAllTiprobsNeedUpdate() == true || u->getSingleBranchChanged() == true)
-        tiProbs->restore();
+        {
+        if (model->getNumFamilies() > 0)
+            {
+            if (u->getAllTiprobsNeedUpdate() == true)
+                {
+                for (int i=0; i<model->getNumFamilies(); i++)
+                    model->getSubModel(i)->getTiProbs()->restore();
+                }
+            else if (u->getSingleBranchChanged() == true)
+                {
+                Parameter* parm = u->getUpdatedParameter();
+
+                if (ParameterTree* treeParm = dynamic_cast<ParameterTree*>(parm))
+                    {
+                    for (int i=0; i<model->getNumFamilies(); i++)
+                        {
+                        if (model->getSubModel(i)->getTree() == treeParm)
+                            {
+                            model->getSubModel(i)->getTiProbs()->restore();
+                            break;
+                            }
+                        }
+                    }
+                }
+            }
+        else
+            {
+            tiProbs->restore();
+            }
+        }
         
     // restore the likelihood cache
     model->restoreLikelihoodCache();
@@ -335,25 +456,122 @@ void UpdateManager::tune(void) {
 
 void UpdateManager::updateDependants(Update* u) {
 
-    // update rate matrix if needed (must happen before transition probabilities)
-    if (u->getRateMatrixNeedsUpdate() == true && rateMatrix != nullptr)
-        rateMatrix->updateRateMatrix();
-    
-    // update transition probabilities based on what changed
+    UserSettings& settings = UserSettings::userSettings();
+    bool multiFamily = (model->getNumFamilies() > 0);
+    bool linked = (settings.getMultiTreeModel() == linkedFamilies);
+
+    Parameter* parm = u->getUpdatedParameter();
+
+    // Update rate matrix if needed
+    if (u->getRateMatrixNeedsUpdate() == true)
+        {
+        RateMatrix* rm = rateMatrixForUpdate(u);
+        if (rm != nullptr)
+            rm->updateRateMatrix();
+        }
+
+    // Update transition probabilities
     if (u->getAllTiprobsNeedUpdate() == true)
         {
-        // model parameters changed -> recompute ALL matrices
-        tiProbs->updateAllBranches();
+        if (multiFamily == false)
+            {
+            tiProbs->updateAllBranches();
+            }
+        else if (linked)
+            {
+            // Shared substitution parameters affect all families
+            for (int i=0; i<model->getNumFamilies(); i++)
+                model->getSubModel(i)->getTiProbs()->updateAllBranches();
+            }
+        else
+            {
+            // Unlinked model: update only the family whose substitution
+            // parameter changed
+            bool found = false;
+
+            for (int i=0; i<model->getNumFamilies(); i++)
+                {
+                SubModel* sm = model->getSubModel(i);
+
+                if (sm->getFrequencies() == parm ||
+                    sm->getExchangeabilities() == parm)
+                    {
+                    sm->getTiProbs()->updateAllBranches();
+                    found = true;
+                    break;
+                    }
+                }
+
+            if (found == false)
+                {
+                // Fallback: if we cannot determine ownership, be safe
+                // and update all families.
+                for (int i=0; i<model->getNumFamilies(); i++)
+                    model->getSubModel(i)->getTiProbs()->updateAllBranches();
+                }
+            }
         }
     else if (u->getSingleBranchChanged() == true)
         {
-        // single branch length changed -> scan subtrees for new branch lengths
-        tiProbs->updateBranch();
+        if (multiFamily == false)
+            {
+            tiProbs->updateBranch();
+            }
+        else
+            {
+            if (ParameterTree* treeParm = dynamic_cast<ParameterTree*>(parm))
+                {
+                bool found = false;
+
+                for (int i=0; i<model->getNumFamilies(); i++)
+                    {
+                    if (model->getSubModel(i)->getTree() == treeParm)
+                        {
+                        model->getSubModel(i)->getTiProbs()->updateBranch();
+                        found = true;
+                        break;
+                        }
+                    }
+
+                if (found == false)
+                    Msg::error("Could not find family for updated tree parameter");
+                }
+            else
+                {
+                Msg::error("Single branch changed but updated parameter is not a ParameterTree");
+                }
+            }
         }
-    // else: no transition probability update needed (e.g., alignment or indel rates)
-    
-    // mark cognates dirty based on what the update changed
+
     markCognatesDirty(u);
+}
+
+RateMatrix* UpdateManager::rateMatrixForUpdate(Update* u) {
+
+    Parameter* parm = u->getUpdatedParameter();
+
+    if (model->getNumFamilies() == 0)
+        return rateMatrix;
+
+    UserSettings& settings = UserSettings::userSettings();
+
+    // Linked model: one shared rate matrix
+    if (settings.getMultiTreeModel() == linkedFamilies)
+        return model->getRateMatrix();
+
+    // Unlinked model: find which family owns the updated parameter
+    for (int i=0; i<model->getNumFamilies(); i++)
+        {
+        SubModel* sm = model->getSubModel(i);
+
+        if (sm->getFrequencies() == parm ||
+            sm->getExchangeabilities() == parm)
+            {
+            return sm->getRateMatrix();
+            }
+        }
+
+    return nullptr;
 }
 
 void UpdateManager::zeroOut(void) {

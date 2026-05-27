@@ -46,6 +46,7 @@ class UpdateManager {
         std::vector<UpdateAlignment*>       alignmentUpdates;
         std::vector<Update*>                otherUpdates;
         std::unordered_map<Update*, size_t> updateIndex;
+        RateMatrix* rateMatrixForUpdate(Update* u);
 };
 
 #endif

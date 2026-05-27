@@ -31,6 +31,7 @@ McmcOutput::McmcOutput(Model* m, const char* base) : model(m) {
     
     scalarFile = nullptr;
     treeFile = nullptr;
+    familyTreeFiles.clear();
     alignmentFiles = nullptr;
     alignmentFirstSample = nullptr;
     alignmentCacheCapacity = 64;
@@ -42,10 +43,18 @@ McmcOutput::McmcOutput(Model* m, const char* base) : model(m) {
     // write the configuration file
     writeConfigurationFile();
     
-    // find the tree parameter
-    treeParm = model->findParameter<ParameterTree>();
-    if (treeParm == nullptr)
-        Msg::error("Could not find tree parameter for McmcOutput");
+    // find the tree parameter for single-family analyses.
+    // In multi-family mode, each SubModel has its own tree.
+    if (model->getNumFamilies() == 0)
+        {
+        treeParm = model->findParameter<ParameterTree>();
+        if (treeParm == nullptr)
+            Msg::error("Could not find tree parameter for McmcOutput");
+        }
+    else
+        {
+        treeParm = nullptr;
+        }
     
     // count alignment parameters and store pointers
     const std::vector<Parameter*>& parms = model->getParameters();
@@ -143,6 +152,18 @@ void McmcOutput::closeStandardFiles(void) {
         fclose(treeFile);
         treeFile = nullptr;
         }
+
+    for (FILE*& f : familyTreeFiles)
+        {
+        if (f != nullptr)
+            {
+            fprintf(f, "end;\n");
+            fclose(f);
+            f = nullptr;
+            }
+        }
+
+    familyTreeFiles.clear();
     
     // Close any alignment files currently in the LRU cache.
     // (We finalize each JSON array with a closing bracket.)
@@ -222,21 +243,67 @@ void McmcOutput::openStandardFiles(void) {
         Msg::error("Could not open scalar output file");
     writeScalarHeader();
     
-    // open tree file
-    snprintf(fileName, 512, "%s.tre", baseName);
-    treeFile = fopen(fileName, "w");
-    if (treeFile == nullptr)
-        Msg::error("Could not open tree output file");
-    fprintf(treeFile, "begin trees;\n");
-    fprintf(treeFile, "   translate\n");
-    const std::vector<std::string>& taxonNames = treeParm->getCanonicalTaxonList();
-    for (size_t i=0; i<taxonNames.size(); i++)
+
+    // open tree file(s)
+    if (model->getNumFamilies() == 0)
         {
-        fprintf(treeFile, "      %2zu %s", i+1, taxonNames[i].c_str());
-        if (i == taxonNames.size() - 1)
-            fprintf(treeFile, ";\n");
-        else
-            fprintf(treeFile, ",\n");
+        // single-family case: original behaviour
+        snprintf(fileName, 512, "%s.tre", baseName);
+        treeFile = fopen(fileName, "w");
+        if (treeFile == nullptr)
+            Msg::error("Could not open tree output file");
+
+        fprintf(treeFile, "begin trees;\n");
+        fprintf(treeFile, "   translate\n");
+
+        const std::vector<std::string>& taxonNames =
+            treeParm->getCanonicalTaxonList();
+
+        for (size_t i=0; i<taxonNames.size(); i++)
+            {
+            fprintf(treeFile, "      %2zu %s", i+1, taxonNames[i].c_str());
+
+            if (i == taxonNames.size() - 1)
+                fprintf(treeFile, ";\n");
+            else
+                fprintf(treeFile, ",\n");
+            }
+        }
+    else
+        {
+        // multi-family case: one .tre file per family
+        int numFamilies = model->getNumFamilies();
+        familyTreeFiles.resize(numFamilies, nullptr);
+
+        for (int f=0; f<numFamilies; f++)
+            {
+            snprintf(fileName, 512, "%s.family%d.tre", baseName, f+1);
+
+            familyTreeFiles[f] = fopen(fileName, "w");
+            if (familyTreeFiles[f] == nullptr)
+                Msg::error("Could not open family tree output file");
+
+            fprintf(familyTreeFiles[f], "begin trees;\n");
+            fprintf(familyTreeFiles[f], "   translate\n");
+
+            ParameterTree* familyTree =
+                model->getSubModel(f)->getTree();
+
+            const std::vector<std::string>& taxonNames =
+                familyTree->getCanonicalTaxonList();
+
+            for (size_t i=0; i<taxonNames.size(); i++)
+                {
+                fprintf(familyTreeFiles[f], "      %2zu %s",
+                        i+1,
+                        taxonNames[i].c_str());
+
+                if (i == taxonNames.size() - 1)
+                    fprintf(familyTreeFiles[f], ";\n");
+                else
+                    fprintf(familyTreeFiles[f], ",\n");
+                }
+            }
         }
     
     // only initialise alignment file tracking if alignment sampling is on
@@ -308,7 +375,19 @@ void McmcOutput::sample(int generation, double lnL, double lnP) {
     fflush(scalarFile);
 
     writeTreeSample(generation);
-    fflush(treeFile);
+
+    if (model->getNumFamilies() == 0)
+        {
+        fflush(treeFile);
+        }
+    else
+        {
+        for (FILE* f : familyTreeFiles)
+            {
+            if (f != nullptr)
+                fflush(f);
+            }
+        }
 
     if (sampleAlignments)
         {
@@ -421,53 +500,176 @@ void McmcOutput::writeNewickNode(FILE* f, Node* p, Node* root) {
         }
 }
 
+void McmcOutput::writeNewickWithNames(FILE* f, Tree* t) {
+
+    Node* root = t->getRoot();
+    writeNewickNodeWithNames(f, root, root);
+    fprintf(f, ";");
+}
+
+void McmcOutput::writeNewickNodeWithNames(FILE* f, Node* p, Node* root) {
+
+    if (p->getIsLeaf())
+        {
+        fprintf(f, "%s:%.6f", p->getName(), p->getBranchLength());
+        }
+    else
+        {
+        fprintf(f, "(");
+
+        bool first = true;
+        for (size_t i=0; i<p->numDescendants(); i++)
+            {
+            Node* d = p->getDescendant(i);
+
+            if (first == false)
+                fprintf(f, ",");
+
+            writeNewickNodeWithNames(f, d, root);
+            first = false;
+            }
+
+        fprintf(f, ")");
+
+        if (p != root)
+            fprintf(f, ":%.6f", p->getBranchLength());
+        }
+}
+
 void McmcOutput::writeScalarHeader(void) {
 
     fprintf(scalarFile, "Gen\t");
     fprintf(scalarFile, "lnL\t");
-    fprintf(scalarFile, "lnP\t");
-    
-    // print the insertion/deletion rates header
-    ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();
-    if (indelRatesParm != nullptr)
+    fprintf(scalarFile, "lnP");
+
+    const std::vector<Parameter*>& parms = model->getParameters();
+
+    // Count how many of each parameter type we have
+    int numIndel = 0;
+    int numFreqs = 0;
+    int numExch  = 0;
+
+    for (Parameter* p : parms)
         {
-        fprintf(scalarFile, "\tLambda");
-        fprintf(scalarFile, "\tMu");
-        }
-        
-    // print the stationary frequencies header
-    ParameterFrequencies* freqsParm = model->findParameter<ParameterFrequencies>();
-    if (freqsParm != nullptr)
-        {
-        const std::vector<double>& freqs = freqsParm->getFrequencies();
-        for (size_t i=0; i<freqs.size(); i++)
-            fprintf(scalarFile, "\tF[%zu]", i);
+        if (dynamic_cast<ParameterIndelRates*>(p) != nullptr)
+            numIndel++;
+        else if (dynamic_cast<ParameterFrequencies*>(p) != nullptr)
+            numFreqs++;
+        else if (dynamic_cast<ParameterExchangeabilities*>(p) != nullptr)
+            numExch++;
         }
 
-    // print the exchangeability rates header
-    ParameterExchangeabilities* exchParm = model->findParameter<ParameterExchangeabilities>();
-    if (exchParm != nullptr)
+    // Indel-rate headers
+    int indelIdx = 0;
+    for (Parameter* p : parms)
         {
-        RateMatrixHelper* helper = rateMatrix->getHelper();
-        if (helper == nullptr)
+        ParameterIndelRates* indelRatesParm =
+            dynamic_cast<ParameterIndelRates*>(p);
+
+        if (indelRatesParm != nullptr)
             {
-            // format for GTR model (numStates * (numStates-1) / 2 = numRates columns)
-            size_t numStates = exchParm->getNumStates();
-            for (size_t i=0; i<numStates; i++)
+            indelIdx++;
+
+            if (numIndel == 1)
                 {
-                for (size_t j=i+1; j<numStates; j++)
-                    fprintf(scalarFile, "\tR[%zu-%zu]", i, j);
+                fprintf(scalarFile, "\tLambda");
+                fprintf(scalarFile, "\tMu");
+                }
+            else
+                {
+                fprintf(scalarFile, "\tLambda[%d]", indelIdx);
+                fprintf(scalarFile, "\tMu[%d]", indelIdx);
                 }
             }
-        else
+        }
+
+    // Frequency headers
+    int freqIdx = 0;
+    for (Parameter* p : parms)
+        {
+        ParameterFrequencies* freqsParm =
+            dynamic_cast<ParameterFrequencies*>(p);
+
+        if (freqsParm != nullptr)
             {
-            // format for custom model (numClasses * (numClasses-1) / 2 = numRates columns)
-            std::vector<std::string> columnHeader = helper->getLabels();
+            freqIdx++;
+
+            const std::vector<double>& freqs = freqsParm->getFrequencies();
+
+            for (size_t i=0; i<freqs.size(); i++)
+                {
+                if (numFreqs == 1)
+                    fprintf(scalarFile, "\tF[%zu]", i);
+                else
+                    fprintf(scalarFile, "\tF%d[%zu]", freqIdx, i);
+                }
+            }
+        }
+
+    // Exchangeability-rate headers
+    int exchIdx = 0;
+    for (Parameter* p : parms)
+        {
+        ParameterExchangeabilities* exchParm =
+            dynamic_cast<ParameterExchangeabilities*>(p);
+
+        if (exchParm != nullptr)
+            {
+            exchIdx++;
+
             size_t numRates = exchParm->getNumRates();
-            if (numRates != columnHeader.size())
-                Msg::error("Problem printing column header for the Natural Class model");
-            for (size_t i=0; i<columnHeader.size(); i++)
-                fprintf(scalarFile, "\tNCR[%s]", columnHeader[i].c_str());
+
+            RateMatrixHelper* helper = nullptr;
+            if (rateMatrix != nullptr)
+                helper = rateMatrix->getHelper();
+
+            if (helper != nullptr)
+                {
+                // custom/natural class model
+                std::vector<std::string> columnHeader = helper->getLabels();
+
+                if (numRates != columnHeader.size())
+                    Msg::error("Problem printing column header for the Natural Class model");
+
+                for (size_t i=0; i<columnHeader.size(); i++)
+                    {
+                    if (numExch == 1)
+                        fprintf(scalarFile, "\tNCR[%s]", columnHeader[i].c_str());
+                    else
+                        fprintf(scalarFile, "\tNCR%d[%s]", exchIdx, columnHeader[i].c_str());
+                    }
+                }
+            else
+                {
+                // GTR-style model, or fallback
+                size_t numStates = exchParm->getNumStates();
+                size_t expectedGtrRates = numStates * (numStates - 1) / 2;
+
+                if (numRates == expectedGtrRates)
+                    {
+                    for (size_t i=0; i<numStates; i++)
+                        {
+                        for (size_t j=i+1; j<numStates; j++)
+                            {
+                            if (numExch == 1)
+                                fprintf(scalarFile, "\tR[%zu-%zu]", i, j);
+                            else
+                                fprintf(scalarFile, "\tR%d[%zu-%zu]", exchIdx, i, j);
+                            }
+                        }
+                    }
+                else
+                    {
+                    // generic fallback
+                    for (size_t i=0; i<numRates; i++)
+                        {
+                        if (numExch == 1)
+                            fprintf(scalarFile, "\tR[%zu]", i);
+                        else
+                            fprintf(scalarFile, "\tR%d[%zu]", exchIdx, i);
+                        }
+                    }
+                }
             }
         }
 
@@ -478,42 +680,89 @@ void McmcOutput::writeScalarSample(int gen, double lnL, double lnP) {
 
     fprintf(scalarFile, "%d\t", gen);
     fprintf(scalarFile, "%.2lf\t", lnL);
-    fprintf(scalarFile, "%.2lf\t", lnP);
-    
-    // print the insertion/deletion rates
-    ParameterIndelRates* indelRatesParm = model->findParameter<ParameterIndelRates>();
-    if (indelRatesParm != nullptr)
+    fprintf(scalarFile, "%.2lf", lnP);
+
+    const std::vector<Parameter*>& parms = model->getParameters();
+
+    // Print all indel-rate parameters
+    for (Parameter* p : parms)
         {
-        fprintf(scalarFile, "\t%.6f", indelRatesParm->getInsertionRate());
-        fprintf(scalarFile, "\t%.6f", indelRatesParm->getDeletionRate());
-        }
-        
-    // print the stationary frequencies 
-    ParameterFrequencies* freqsParm = model->findParameter<ParameterFrequencies>();
-    if (freqsParm != nullptr)
-        {
-        const std::vector<double>& freqs = freqsParm->getFrequencies();
-        for (size_t i=0; i<freqs.size(); i++)
-            fprintf(scalarFile, "\t%.6f", freqs[i]);
+        ParameterIndelRates* indelRatesParm =
+            dynamic_cast<ParameterIndelRates*>(p);
+
+        if (indelRatesParm != nullptr)
+            {
+            fprintf(scalarFile, "\t%.6f", indelRatesParm->getInsertionRate());
+            fprintf(scalarFile, "\t%.6f", indelRatesParm->getDeletionRate());
+            }
         }
 
-    // print the exchangeability rates 
-    ParameterExchangeabilities* exchParm = model->findParameter<ParameterExchangeabilities>();
-    if (exchParm != nullptr)
+    // Print all stationary-frequency parameters
+    for (Parameter* p : parms)
         {
-        const std::vector<double>& rates = exchParm->getRates();
-        for (size_t i=0; i<rates.size(); i++)
-            fprintf(scalarFile, "\t%.6f", rates[i]);
+        ParameterFrequencies* freqsParm =
+            dynamic_cast<ParameterFrequencies*>(p);
+
+        if (freqsParm != nullptr)
+            {
+            const std::vector<double>& freqs = freqsParm->getFrequencies();
+
+            for (size_t i=0; i<freqs.size(); i++)
+                fprintf(scalarFile, "\t%.6f", freqs[i]);
+            }
         }
-    
+
+    // Print all exchangeability-rate parameters
+    for (Parameter* p : parms)
+        {
+        ParameterExchangeabilities* exchParm =
+            dynamic_cast<ParameterExchangeabilities*>(p);
+
+        if (exchParm != nullptr)
+            {
+            const std::vector<double>& rates = exchParm->getRates();
+
+            for (size_t i=0; i<rates.size(); i++)
+                fprintf(scalarFile, "\t%.6f", rates[i]);
+            }
+        }
+
     fprintf(scalarFile, "\n");
 }
 
 void McmcOutput::writeTreeSample(int gen) {
 
-    fprintf(treeFile, "   tree gen_%d = ", gen);
-    writeNewick(treeFile, treeParm->getTree());
-    fprintf(treeFile, "\n");
+    if (model->getNumFamilies() == 0)
+        {
+        // single-family case
+        fprintf(treeFile, "   tree gen_%d = ", gen);
+        writeNewick(treeFile, treeParm->getTree());
+        fprintf(treeFile, "\n");
+        }
+    else
+        {
+        // multi-family case: write one sample to each family tree log
+        int numFamilies = model->getNumFamilies();
+
+        if ((int)familyTreeFiles.size() != numFamilies)
+            Msg::error("Mismatch between number of families and tree output files");
+
+        for (int f=0; f<numFamilies; f++)
+            {
+            FILE* out = familyTreeFiles[f];
+
+            if (out == nullptr)
+                Msg::error("Family tree output file is not open");
+
+            ParameterTree* familyTree =
+                model->getSubModel(f)->getTree();
+
+            fprintf(out, "   tree gen_%d = ", gen);
+            writeNewick(out, familyTree->getTree());
+            fprintf(out, "\n");
+            }
+        }
 }
+
 
 

@@ -4,6 +4,8 @@
 #include <set>
 #include <vector>
 #include "UserSettings.hpp"
+#include "FamilyData.hpp"
+#include "SubModel.hpp"
 class LikelihoodCalculator;
 class Parameter;
 class Partition;
@@ -39,7 +41,12 @@ class Model {
         void                                    restoreLikelihoodCache(void);
         bool                                    hasAnyCognateDirty(void) const;                     // check if any cognates are dirty
         size_t                                  getNumDirtyCognates(void) const;                    // get count of dirty cognates (for diagnostics)
-        
+        void                                    registerParameter(Parameter* p);
+        void                                    registerCalculator(LikelihoodCalculator* c);
+        States*                                 getStates(void) const { return states; }
+        int                                     getNumFamilies(void) const { return (int)subModels.size(); }
+        SubModel*                               getSubModel(int i) const { return subModels[i]; }
+
     private:
         bool                                    alignmentsAreConsistent(std::vector<class ParameterAlignment*>& alns);
         bool                                    initializeAlignments(void);
@@ -48,6 +55,8 @@ class Model {
         bool                                    initializeStates(void);
         bool                                    initializeSubstitutionModel(void);
         bool                                    initializeTree(void);
+        bool                                    initializeSingleFamily(void);
+        void                                    initializeMultiFamily(void);
         void                                    plotAscii(const std::map<int,int>& data);
         RandomVariable*                         rng;
         SubstitutionModel                       modelType;
@@ -72,6 +81,8 @@ class Model {
         bool                                    cacheInitialized;   // flag to track if cache is initialized
         std::vector<size_t>                     dirtyIndices;       // temporary storage for dirty calculator 
         std::vector<LikelihoodCalculator*>      dirtyCalcs;         // indices (avoid repeated allocation)
+        std::vector<FamilyData*>                familyData;
+        std::vector<SubModel*>                  subModels;
 };
 
 

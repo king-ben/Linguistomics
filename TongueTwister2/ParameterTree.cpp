@@ -134,39 +134,75 @@ void ParameterTree::getTrees(std::vector<Tree*>& allTrees) {
 
 void ParameterTree::initialize(const std::set<unsigned>& uniqueTaxonCombinations) {
 
-    // check that the necessary keys are in the JSON object
+    // Single-family path: read from global JsonData object
     JsonData& jd = JsonData::jsonInstance();
+
     if (jd.hasKey("Tree") == false)
         Msg::error("Could not find \"Tree\" key in JSON object");
     if (jd.hasKey("Taxa") == false)
         Msg::error("Could not find \"Taxa\" key in JSON object");
-        
-    // get the prior for the branch length (default value is 10.0)
-    if (jd.hasKey("BranchLengthLambda") == true)
-        brlenLambda = jd.getValue<double>("BranchLengthLambda");
-        
-    // read the taxon names
-    canonicalTaxonList = jd.getValue<std::vector<std::string>>("Taxa");
 
-    // read the Newick string
-    std::string newickString = jd.getValue<std::string>("Tree");
-    
+    // default branch length prior
+    double lambda = brlenLambda;
+
+    // support both possible names
+    if (jd.hasKey("BranchLengthLambda") == true)
+        lambda = jd.getValue<double>("BranchLengthLambda");
+    else if (jd.hasKey("BrlenPriorVal") == true)
+        lambda = jd.getValue<double>("BrlenPriorVal");
+
+    std::vector<std::string> taxa =
+        jd.getValue<std::vector<std::string>>("Taxa");
+
+    std::string newickString =
+        jd.getValue<std::string>("Tree");
+
+    initialize(uniqueTaxonCombinations, taxa, newickString, lambda);
+}
+
+void ParameterTree::initialize(const std::set<unsigned>& uniqueTaxonCombinations,
+                               const std::vector<std::string>& taxa,
+                               const std::string& newickString,
+                               double branchLengthLambda) {
+
+    // Store branch-length prior value
+    brlenLambda = branchLengthLambda;
+
+    // Important: this depends on brlenLambda, so update it whenever lambda changes
+    lnProbLessMax = log(1.0 - exp(-brlenLambda * MAX_BRLEN));
+
+    // Store canonical taxon order
+    canonicalTaxonList = taxa;
+
+    if (canonicalTaxonList.empty())
+        Msg::error("Cannot initialize tree with empty taxon list");
+
+    if (newickString.empty())
+        Msg::error("Cannot initialize tree with empty Newick string");
+
     // instantiate the full tree
-    fullTree.trees[0] = new Tree(rng, newickString, canonicalTaxonList, brlenLambda, MAX_BRLEN);
+    fullTree.trees[0] = new Tree(rng,
+                                 newickString,
+                                 canonicalTaxonList,
+                                 brlenLambda,
+                                 MAX_BRLEN);
+
     fullTree.trees[1] = new Tree(*fullTree.trees[0]);
-    
+
     // instantiate the subtrees
     for (const unsigned& bs : uniqueTaxonCombinations)
         {
         Tree* st0 = new Tree(*fullTree.trees[0]);
         makeSubtree(*st0, bs);
+
         Tree* st1 = new Tree(*st0);
-        subTrees.insert( std::make_pair(bs, TreePair(st0, st1)) );
+
+        subTrees.insert(std::make_pair(bs, TreePair(st0, st1)));
         }
-        
+
     if (checkTipToTipDistances(0.001) == false)
         Msg::error("Problem with subtree branch lengths");
-        
+
     initializeBranchMappings();
 }
 
